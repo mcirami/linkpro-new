@@ -1,0 +1,109 @@
+.creator.course_creator {
+
+    #links_page {
+
+        .creator_wrap {
+
+            .left_column {
+
+                .button{
+                    display: block;
+                }
+
+                .edit_form form {
+                        .submit_circle.textarea, .cancel_icon.textarea {
+                            bottom: 15px;
+                            right: 10px;
+                            z-index: 3;
+                    }
+                }
+            }
+
+            .preview {
+
+                .inner_content_wrap {
+                    min-height: 300px;
+                }
+
+                .header {
+                    min-height: unset;
+                    border-bottom: 2px solid #000;
+                }
+
+                .top_section {
+                    padding: 35px 20px 20px;
+                }
+
+                .logo {
+                    max-width: 175px;
+                    margin: 0 auto;
+                }
+
+                .title {
+                    padding-top: 20px;
+                    margin: 0;
+                    text-align: center;
+                    font-size: 1.6rem;
+                }
+
+                .intro_text {
+                    padding: 20px;
+
+                    p {
+                        margin: 0;
+                    }
+                }
+
+                .sections {
+
+                    section {
+
+                        p {
+                            margin: 0;
+                            text-align: left;
+                        }
+
+                        &.video {
+                            padding: 0;
+
+                            .text_wrap {
+                                padding: 15px;
+
+                                h3 {
+                                    font-size: 1.4rem;
+                                }
+                            }
+
+                            p {
+                                margin-top: 10px;
+                            }
+                        }
+
+                        &.text {
+                            padding: 15px;
+
+                            p {
+                                text-align: center;
+                            }
+                        }
+
+                        .button_wrap {
+                            &.above {
+                                margin-bottom: 20px;
+                            }
+
+                            &.below {
+                                margin-top: 20px;
+                            }
+
+                            .button {
+                                display: block;
+                                margin: 0 auto;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

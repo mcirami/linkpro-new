@@ -1,0 +1,26 @@
+.courses_grid.all_courses {
+
+    .section_wrap {
+        margin-bottom: 20px;
+
+        h2 {
+
+            span {
+                font-style: oblique;
+            }
+        }
+
+        .sections {
+            grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+            padding: 0;
+
+            .column {
+                @include boxShadow;
+            }
+
+            .column_title {
+                padding: 10px;
+            }
+        }
+    }
+}
