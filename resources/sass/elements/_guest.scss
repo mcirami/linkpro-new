@@ -100,18 +100,15 @@
 
         input {
             border: 1px solid $borderGray;
-            border-top-right-radius: 6px;
-            -webkit-border-top-right-radius: 6px;
-            -moz-border-radius-topright: 6px;
-            border-top-left-radius: 6px;
-            -webkit-border-top-left-radius: 6px;
-            -moz-border-radius-topleft: 6px;
-            border-bottom-right-radius: 0;
-            -webkit-border-bottom-right-radius: 0;
-            -moz-border-radius-bottomright: 0;
-            border-bottom-left-radius: 0;
-            -webkit-border-bottom-left-radius: 0;
-            -moz-border-radius-bottomleft: 0;
+            border-radius: 6px;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+        }
+
+        input[type=checkbox] {
+            border-radius: 4px;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
         }
 
         .form-check-label {

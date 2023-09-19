@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ContactRequest;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Inertia\Inertia;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 
 class ContactMailController extends Controller
@@ -14,7 +15,7 @@ class ContactMailController extends Controller
     public function index() {
 
         Javascript::put([]);
-        return view('contact.show');
+        return Inertia::render('Contact/Contact');
     }
 
     public function contactSendMail(ContactRequest $request) {
@@ -22,9 +23,9 @@ class ContactMailController extends Controller
         $reason = $request->reason;
 
         if ($reason == "general" || $reason == "support") {
-            $email = 'support@link.pro';
+            $email = 'matteo@link.pro';//'support@link.pro';
         } else {
-            $email = 'partners@link.pro';
+            $email = 'matteo@link.pro'; //'partners@link.pro';
         }
 
         Mail::to($email)->send(new ContactMail($request));

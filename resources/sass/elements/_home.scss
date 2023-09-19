@@ -48,6 +48,10 @@
         &.two_col {
             padding: 40px 0;
 
+            h2 {
+                font-size: 1.8rem;
+            }
+
             &.top {
                 display: -webkit-box;
                 display: -ms-flexbox;

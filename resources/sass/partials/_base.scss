@@ -99,10 +99,10 @@ main {
 }
 
 .container {
-    max-width: 1500px;
+   /* max-width: 1500px;
     display: inline-block;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: auto;*/
 
     @include query(mobile) {
         padding: 0 20px;

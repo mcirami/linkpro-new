@@ -22,12 +22,13 @@ use App\Http\Controllers\MailchimpController;
 use App\Http\Controllers\ShopifyController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Auth\CourseRegisterController;
 use App\Http\Controllers\Auth\CoursePasswordController;
 use App\Http\Controllers\Admin\AdminStatsController;
 use App\Http\Controllers\AffiliateController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -200,7 +201,9 @@ Route::group(['middleware' => ['course.user:course']], function() {
     Route::get('/{user:username}/course/{course:slug}/checkout', [PurchaseController::class, 'show'])->name('course.checkout');
     Route::get('/pre-register-link-pro', [PageController::class, 'showPreRegister'])->name('pre.register');
 });
-Route::get('/{course:slug?}/login', [LoginController::class, 'customLogin'])->name('customLogin');
+*/
+Route::get('/{course:slug?}/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+/*
 Route::post('/custom-login', [LoginController::class, 'customLoginPost'])->name('customLoginPost');
 
 Route::get('/{user:username}/{landing_page:slug}', [LandingPageController::class, 'show'])->name('live.landing.page');

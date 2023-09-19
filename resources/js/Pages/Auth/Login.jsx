@@ -9,7 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Login({ status, canResetPassword, course = null }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
+        identity: '',
         password: '',
         remember: false,
     });
@@ -45,28 +45,26 @@ export default function Login({ status, canResetPassword, course = null }) {
                         {course &&
                             <>
                                 <p className="text-center">to Access</p>
-                                <div className="course_heading" style="background: {{ $course->header_color }}">
-                                    {/*<img src="{{ $course->logo }}" alt="{{ $course->title }}">*/}
-                                    <h3  style="color: course->header_text_color">course.title</h3>
+                                <div className="course_heading" style={{ background: course.header_color }}>
+                                    <img className="mx-auto" src={ course.logo } alt={ course.title} />
+                                    <h3 style={{ color: course.header_text_color }}>{course.title}</h3>
                                 </div>
                             </>
                         }
                         <form onSubmit={submit}>
                             <div className="form-group relative p-0 mb-5">
-                                {/*<InputLabel htmlFor="email" value="Email" />*/}
-
                                 <TextInput
-                                    id="email"
-                                    type="email"
-                                    name="email"
+                                    id="identity"
+                                    type="text"
+                                    name="identity"
                                     value={data.email}
                                     className="block w-full animate"
                                     autoComplete="username"
                                     isFocused={true}
-                                    onChange={(e) => setData('email', e.target.value)}
+                                    onChange={(e) => setData('identity', e.target.value)}
                                 />
                                 <InputLabel htmlFor="identity" value="E-mail or UserName" />
-                                <InputError message={errors.email} className="mt-2" />
+                                <InputError message={errors.identity} className="mt-2" />
                             </div>
 
                             <div className="form-group relative p-0 ">

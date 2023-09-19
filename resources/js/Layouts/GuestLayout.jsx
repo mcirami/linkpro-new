@@ -14,7 +14,7 @@ export default function Guest({ children, ...props }) {
                 <div className="column left">
                     <h1>
                         <Link href="/">
-                            <img src="images/logo.png" alt="Link Pro" />
+                            <img src='images/logo.png' alt="Link Pro" />
                         </Link>
                     </h1>
                 </div>
@@ -24,7 +24,7 @@ export default function Guest({ children, ...props }) {
                     <Link className="button transparent" href={route('register')}>Sign Up</Link>
                 </div>
             </header>
-            <main className="w-full text-center">
+            <main className="w-full">
                 {children}
             </main>
             <GuestFooter />
