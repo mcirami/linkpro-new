@@ -33,7 +33,8 @@ class User extends \TCG\Voyager\Models\User
         'mailchimp_server',
         'mailchimp_token',
         'mailchimp_lists',
-        'role_id'
+        'role_id',
+        'avatar'
     ];
 
     /**

@@ -207,7 +207,6 @@ form .bottom_row a {
         margin: 0;
         align-self: flex-start;
         -webkit-align-self: flex-start;
-        text-transform: capitalize;
     }
 
     &.page_name {
@@ -560,6 +559,14 @@ form .bottom_row a {
                     -moz-border-radius: 8px;
                     margin-bottom: 5px;
                     position: relative;
+                    transition: all 500ms ease-in-out;
+                    -ms-transition: all 100ms ease-in-out;
+                    -moz-transition: all 100ms ease-in-out;
+                    -webkit-transition: all 100ms ease-in-out;
+
+                    &:hover {
+                        box-shadow: 0 0 14px 0 $borderGray;
+                    }
 
                     &.disabled {
                         &:before {
@@ -589,6 +596,7 @@ form .bottom_row a {
                         flex-wrap: nowrap;
                         justify-content: space-between;
                         -webkit-justify-content: space-between;
+                        color: $blue;
 
                         svg {
                             transition: all 500ms linear;
@@ -722,6 +730,11 @@ form .bottom_row a {
                     a {
                         display: block;
                         margin-top: 5px;
+                        color: $blue;
+
+                        &:hover {
+                            color: $hoverBlue;
+                        }
                     }
 
                     p {

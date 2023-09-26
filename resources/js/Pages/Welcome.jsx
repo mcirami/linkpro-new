@@ -25,8 +25,8 @@ export default function Welcome({ auth }) {
                         <div id="desktop_video" className="col desktop">
                             <div className="video_wrap">
                                 <video autoPlay loop muted playsInline>
-                                    <source src="videos/home-image-loop-top-2.mp4" type="video/mp4" />
-                                        <source src="videos/home-image-loop-top-2.webm" type="video/webm" />
+                                    <source src={Vapor.asset('videos/home-image-loop-top-2.mp4')} type="video/mp4" />
+                                        <source src={Vapor.asset('videos/home-image-loop-top-2.webm')} type="video/webm" />
                                 </video>
                             </div>
                         </div>
@@ -36,8 +36,8 @@ export default function Welcome({ auth }) {
                         <div className="col left">
                             <div className="video_wrap">
                                 <video autoPlay loop muted playsInline>
-                                    <source src='videos/home-image-loop-bottom.mp4' type="video/mp4" />
-                                    <source src='videos/home-image-loop-bottom.webm' type="video/webm" />
+                                    <source src={Vapor.asset('videos/home-image-loop-bottom.mp4')} type="video/mp4" />
+                                    <source src={Vapor.asset('videos/home-image-loop-bottom.webm')} type="video/webm" />
                                 </video>
                             </div>
                         </div>
@@ -53,13 +53,13 @@ export default function Welcome({ auth }) {
                             <p>LinkPro is all about business. We're in this to build all of our clients bottom line. Join Today to let LinkPro help you leverage the intersection of media & business to kick your revenue into gear.</p>
                         </div>
                         <div className="col right">
-                            <img src='images/laptop-image.png' alt="" />
+                            <img src={Vapor.asset('images/laptop-image.png')} alt="" />
                         </div>
                     </section>
 
                     <section className="two_col phone">
                         <div className="col left">
-                            <img src='images/img-phone.png' alt="" />
+                            <img src={Vapor.asset('images/img-phone.png')} alt="" />
                         </div>
                         <div className="col">
                             <h2>Self-Managed Platform</h2>
@@ -73,7 +73,7 @@ export default function Welcome({ auth }) {
                             <p>Contact Us to discuss how LinkPro will work directly with you to cross promote other products & services to increase your bottom line. Get paid every week for all revenue generated from our partners.</p>
                         </div>
                         <div className="col right">
-                            <img src='images/bottom-image.png' alt="" />
+                            <img src={Vapor.asset('images/bottom-image.png')} alt="" />
                         </div>
                     </section>
                 </div>

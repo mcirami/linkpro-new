@@ -1,3 +1,6 @@
+<?php
+?>
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -11,10 +14,9 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        <script type="text/javascript" src=''></script>
         @routes
         @viteReactRefresh
-        @vite(['resources/js/app.jsx',"resources/js/Pages/{$page['component']}.jsx"])
+        @vite(['resources/js/app.jsx',"resources/js/custom.jsx", "resources/js/Pages/{$page['component']}.jsx"])
         @inertiaHead
     </head>
     <body class="font-sans antialiased">

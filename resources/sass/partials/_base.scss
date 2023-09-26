@@ -153,11 +153,20 @@ button {
     border-radius: 50px;
     -webkit-border-radius: 50px;
     -moz-border-radius: 50px;
-    padding: 0 6px 4px;
+    padding: 4px 6px;
     margin-left: auto;
     border: none;
     width: 28px;
     height: 28px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
 
     @media all and (max-width: 768px) {
         padding: 0 4px 0;
@@ -179,7 +188,7 @@ button {
 
     svg {
         width: 100%;
-        height: 100%;
+        height: auto;
     }
 }
 

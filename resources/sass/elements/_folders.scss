@@ -115,11 +115,11 @@
     }
 }
 
-.icon_breadcrumb {
+.icon_links {
     padding: 0 5%;
     margin-bottom: 10px;
 
-    .breadcrumb_links {
+    .links_row {
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -135,13 +135,16 @@
         -webkit-align-items: center;
         position: relative;
 
-        a {
-            @include ossemibold;
-            font-size: 15px;
-            margin-right:auto;
+        .breadcrumb_links {
+            a {
+                @include ossemibold;
+                font-size: 15px;
+                margin-right: auto;
+                color: $blue;
 
-            &:first-child {
-                margin-right: 2px;
+                &:first-child {
+                    margin-right: 2px;
+                }
             }
         }
     }

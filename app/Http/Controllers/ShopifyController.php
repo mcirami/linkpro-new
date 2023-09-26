@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\ShopifyStore;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
-use Shopify\Rest\Admin2022_01\Shop;
 use Signifly\Shopify\Shopify;
 use SocialiteProviders\Manager\Config;
 
@@ -30,6 +30,12 @@ class ShopifyController extends Controller
         return redirect($install_url);*/
     }
 
+
+    /**
+     * @return RedirectResponse
+     *
+     * @var ShopifyStore $shopifyStore
+     */
     public function callback() {
 
         try {
@@ -38,7 +44,7 @@ class ShopifyController extends Controller
             $domain = $shopifyUser->getNickname();
 
             $shopify = new Shopify(
-                env('SHOPIFY_API_KEY'),
+                //env('SHOPIFY_API_KEY'),
                 $accessToken,
                 $domain,
                 env('SHOPIFY_API_VERSION')
@@ -59,7 +65,13 @@ class ShopifyController extends Controller
                 array_push($productsArray, $productObject);
             }
 
-            $shopifyStore = Auth::user()->shopifyStores()->create([
+            /*Log::channel( 'webhooks' )->info( "--timestamp--" .
+                                              Carbon::now() .
+                                              '--productsArray---' .
+                                              json_encode($productsArray)
+            );*/
+
+            $shopifyStore = Auth::user()->ShopifyStores()->create([
                 'access_token' => $accessToken,
                 'domain' => $domain,
                 'products' => $productsArray
@@ -91,7 +103,7 @@ class ShopifyController extends Controller
 
     public function getStores() {
         $user = Auth::user();
-        $stores = $user->shopifyStores()->get();
+        $stores = $user->ShopifyStores()->get();
         return response()->json([
             'stores' => $stores
         ]);

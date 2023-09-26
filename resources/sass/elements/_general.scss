@@ -676,6 +676,7 @@ a.delete {
     -moz-border-radius-topleft: 20px;
     font-size: 30px;
     text-align:center;
+    padding: 10px 0;
 
     &.creator_section {
         border-bottom: none;
@@ -687,6 +688,7 @@ a.delete {
 
     svg {
         color: $blue;
+        margin: 0 auto;
 
         @media screen and (max-width: 768px) {
             height: 35px;

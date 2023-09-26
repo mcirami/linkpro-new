@@ -210,7 +210,7 @@ class LinkService {
      */
     public function updateLinksPositions($request) {
 
-        if ($request["userLinks"] && !empty($request['userLinks']) ) {
+        if (array_key_exists("userLinks", $request) && !empty($request['userLinks']) ) {
             foreach ( $request["userLinks"] as $index => $link ) {
                 if ( array_key_exists( "type", $link ) && $link["type"] == "folder" ) {
                     $currentFolder = Folder::findOrFail( $link["id"] );
@@ -251,7 +251,8 @@ class LinkService {
                 'shopify_products',
                 'shopify_id',
                 'type',
-                'course_id'
+                'course_id',
+                'description'
             ]);
             $newLink->setTable( 'deleted_links' );
             $newLink->link_id = $link->id;

@@ -98,7 +98,7 @@ class CourseController extends Controller
         $categories = Category::with('children')->whereNull('parent_id')->get();
 
         Javascript::put([
-            'courseData'        => $courseData,
+            'courseData'    => $courseData,
             'offerData'     => $offerData,
             'username'      => $user["username"],
             'categories'    => $categories

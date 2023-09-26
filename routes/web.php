@@ -50,104 +50,105 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
+/*Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');*/
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    /*Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-/*
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');*/
+
     Route::get('/edit-account', [UserController::class, 'edit'])->name('user.edit');
 
-    Route::get('/register/create-page', [PageController::class, 'showCreatePage'])->name('create.page');
-    Route::get('/email-test', [MailController::class, 'sendEmail']);
+        Route::get('/register/create-page', [PageController::class, 'showCreatePage'])->name('create.page');
+        Route::get('/email-test', [MailController::class, 'sendEmail']);
 
-    Route::post('/subscribe/create', [SubscriptionController::class, 'store'])->name('subscribe.post');
-    Route::post('/subscribe/cancel', [SubscriptionController::class, 'cancel'])->name('subscribe.cancel');
-    Route::post('/subscribe/resume', [SubscriptionController::class, 'resume'])->name('subscribe.resume');
-    Route::post('/subscribe/check-code', [SubscriptionController::class, 'checkCode'])->name('check.code');
-    Route::post('/change-plan', [SubscriptionController::class, 'changePlan'])->name('subscribe.change.plan');
+        Route::post('/subscribe/create', [SubscriptionController::class, 'store'])->name('subscribe.post');
+        Route::post('/subscribe/cancel', [SubscriptionController::class, 'cancel'])->name('subscribe.cancel');
+        Route::post('/subscribe/resume', [SubscriptionController::class, 'resume'])->name('subscribe.resume');
+        Route::post('/subscribe/check-code', [SubscriptionController::class, 'checkCode'])->name('check.code');
+        Route::post('/change-plan', [SubscriptionController::class, 'changePlan'])->name('subscribe.change.plan');
 
-    Route::post('/update-account/{user}', [UserController::class, 'updateAccountInfo'])->name('user.update.info');
-    Route::post('/update-card', [UserController::class, 'updateCard'])->name('user.update.card');
-    Route::post('/update-payment-method', [UserController::class, 'updateMethod'])->name('user.update.payment');
+        Route::post('/update-account/{user}', [UserController::class, 'updateAccountInfo'])->name('user.update.info');
+        Route::post('/update-card', [UserController::class, 'updateCard'])->name('user.update.card');
+        Route::post('/update-payment-method', [UserController::class, 'updateMethod'])->name('user.update.payment');
 
-    Route::post('/folder/new', [FolderController::class, 'store'])->name('add.folder');
+        Route::post('/folder/new', [FolderController::class, 'store'])->name('add.folder');
 
-    Route::get('/auth/shopify', [ShopifyController::class, 'auth'])->name('shopify.auth');
-    Route::get('/auth/shopify/callback', [ShopifyController::class, 'callback']);
-    Route::get('/shopify/get-products/{id}', [ShopifyController::class, 'getAllProducts'])->name('shopify.get.products');
-    Route::get('/shopify/get-stores', [ShopifyController::class, 'getStores'])->name('shopify.get.stores');
+        Route::get('/auth/shopify', [ShopifyController::class, 'auth'])->name('shopify.auth');
+        Route::get('/auth/shopify/callback', [ShopifyController::class, 'callback']);
+        Route::get('/shopify/get-products/{id}', [ShopifyController::class, 'getAllProducts'])->name('shopify.get.products');
+        Route::get('/shopify/get-stores', [ShopifyController::class, 'getStores'])->name('shopify.get.stores');
 
-    Route::get('/auth/mailchimp', [MailchimpController::class, 'auth'])->name('mailchimp.auth');
-    Route::get('/auth/mailchimp/callback', [MailchimpController::class, 'callback']);
-    Route::get('/mailchimp/list', [MailchimpController::class, 'getLists'])->name('mailchimp.get.lists');
-    Route::post('/mailchimp/remove-connection', [MailchimpController::class, 'removeConnection'])->name('mailchimp.remove.connection');
+        Route::get('/auth/mailchimp', [MailchimpController::class, 'auth'])->name('mailchimp.auth');
+        Route::get('/auth/mailchimp/callback', [MailchimpController::class, 'callback']);
+        Route::get('/mailchimp/list', [MailchimpController::class, 'getLists'])->name('mailchimp.get.lists');
+        Route::put('/mailchimp/remove-connection', [MailchimpController::class, 'removeConnection'])->name('mailchimp.remove.connection');
 
-    Route::get('/get-aff-icons', [IconController::class, 'getAffIcons']);
-    Route::get('/get-standard-icons', [IconController::class, 'getStandardIcons']);
-    Route::get('/get-custom-icons', [IconController::class, 'getCustomIcons']);
+        Route::get('/get-aff-icons', [IconController::class, 'getAffIcons']);
+        Route::get('/get-standard-icons', [IconController::class, 'getStandardIcons']);
+        Route::get('/get-custom-icons', [IconController::class, 'getCustomIcons']);
 
-    Route::group(['prefix' => 'dashboard'], function() {
-        Route::post('/links/new', [LinkController::class, 'store']);
-        Route::post('/links/update/{link}', [LinkController::class, 'update']);
-        Route::post('/links/status/{link}', [LinkController::class, 'updateStatus']);
-        Route::post('/links/update-positions', [LinkController::class, 'updatePositions']);
-        Route::post('/links/delete/{link}', [LinkController::class, 'destroy']);
-        Route::post('/page/new', [PageController::class, 'store'])->name('page.new');
-        Route::post('/page/update-header-image/{page}', [PageController::class, 'updateHeaderImage'])->name('page.header.update');
-        Route::post('/page/update-profile-image/{page}', [PageController::class, 'updateProfileImage'])->name('page.profile.update');
-        Route::post('/page/update-name/{page}', [PageController::class, 'updateName'])->name('page.name.update');
-        Route::post('/page/update-title/{page}', [PageController::class, 'updateTitle'])->name('page.title.update');
-        Route::post('/page/update-bio/{page}', [PageController::class, 'updateBio'])->name('page.bio.update');
-        Route::post('/page/update-profile-layout/{page}', [PageController::class, 'updateProfileLayout'])->name('profile.layout.update');
+        Route::group(['prefix' => 'dashboard'], function() {
+            Route::post('/links/new', [LinkController::class, 'store']);
+            Route::put('/links/update/{link}', [LinkController::class, 'update']);
+            Route::patch('/links/status/{link}', [LinkController::class, 'updateStatus']);
+            Route::patch('/links/update-positions', [LinkController::class, 'updatePositions']);
+            Route::delete('/links/delete/{link}', [LinkController::class, 'destroy']);
 
-        Route::get('/page/get-links/{page}', [LinkController::class, 'getPageLinks'])->name('page.get.links');
+            Route::post('/page/new', [PageController::class, 'store'])->name('page.new');
+            Route::patch('/page/update-header-image/{page}', [PageController::class, 'updateHeaderImage'])->name('page.header.update');
+            Route::patch('/page/update-profile-image/{page}', [PageController::class, 'updateProfileImage'])->name('page.profile.update');
+            Route::patch('/page/update-name/{page}', [PageController::class, 'updateName'])->name('page.name.update');
+            Route::patch('/page/update-title/{page}', [PageController::class, 'updateTitle'])->name('page.title.update');
+            Route::patch('/page/update-bio/{page}', [PageController::class, 'updateBio'])->name('page.bio.update');
+            Route::patch('/page/update-profile-layout/{page}', [PageController::class, 'updateProfileLayout'])->name('profile.layout.update');
 
-        Route::get('/pages/folder/links/{folder}', [FolderController::class, 'getFolderLinks'])->name('get.folder.links');
-        Route::post('/folder/status/{folder}', [FolderController::class, 'updateFolderStatus']);
-        Route::post('/folder/delete/{folder}', [FolderController::class, 'destroy']);
-        Route::post('/folder/update-name/{folder}', [FolderController::class, 'updateName']);
-    });
+            Route::get('/page/get-links/{page}', [LinkController::class, 'getPageLinks'])->name('page.get.links');
 
-    Route::group(['prefix' => 'creator-center'], function() {
-        Route::get('/add-landing-page', [LandingPageController::class, 'store'])->name('add.landing.page');
-        Route::get('/add-course', [CourseController::class, 'store'])->name('add.course');
-
-        Route::group(['prefix' => 'landing-page'], function() {
-            Route::post('/save-image/{landing_page}', [LandingPageController::class, 'saveImage'])->name('lp.save.image');
-            Route::post('/save-data/{landing_page}', [LandingPageController::class, 'saveLandingPageData'])->name('lp.save.data');
-            Route::post('/add-section/{landing_page}', [LandingPageController::class, 'addSection'])->name('lp.add.section');
-            Route::post('/delete-section/{landing_page_section}', [LandingPageController::class, 'deleteSection'])->name('delete.section');
-            Route::post('/update-section-data/{landing_page_section}', [LandingPageController::class, 'updateSectionData'])->name('update.section.data');
-            Route::post('/update-section-image/{landing_page_section}', [LandingPageController::class, 'updateSectionImage'])->name('update.section.image');
-            Route::post('/publish/{landing_page}', [LandingPageController::class, 'publishLandingPage'])->name('publish.landing_page');
-            Route::post('/activate/{landing_page}', [LandingPageController::class, 'activateLandingPage'])->name('activate.landing_page');
-            Route::put('/update-sections-positions', [LandingPageController::class, 'updateSectionsPositions']);
+            Route::get('/pages/folder/links/{folder}', [FolderController::class, 'getFolderLinks'])->name('get.folder.links');
+            Route::patch('/folder/status/{folder}', [FolderController::class, 'updateFolderStatus']);
+            Route::delete('/folder/delete/{folder}', [FolderController::class, 'destroy']);
+            Route::patch('/folder/update-name/{folder}', [FolderController::class, 'updateName']);
         });
 
-        Route::group(['prefix' => 'course'], function() {
-            Route::post('/save-data/{course}', [CourseController::class, 'saveCourseData'])->name('course.save.data');
-            Route::post('/save-image/{course}', [CourseController::class, 'saveImage'])->name('course.save.image');
-            Route::post('/add-section/{course}', [CourseController::class, 'addSection'])->name('course.add.section');
-            Route::post('/update-section-image/{course}', [CourseController::class, ''])->name('course.section.image');
-            Route::post('/delete-section/{course_section}', [CourseController::class, 'deleteSection'])->name('delete.course.section');
-            Route::post('/update-section-data/{course_section}', [CourseController::class, 'updateSectionData'])->name('update.course.section.data');
-            Route::put('/update-sections-positions', [CourseController::class, 'updateSectionsPositions']);
-        });
+        /*Route::group(['prefix' => 'creator-center'], function() {
+            Route::get('/add-landing-page', [LandingPageController::class, 'store'])->name('add.landing.page');
+            Route::get('/add-course', [CourseController::class, 'store'])->name('add.course');
 
-        Route::group(['prefix' => 'offer'], function() {
-            Route::post('/update-icon/{offer}', [OfferController::class, 'updateOfferIcon'])->name('update.offer.icon');
-            Route::post('/update-data/{offer}', [OfferController::class, 'updateOfferData'])->name('update.offer.data');
-            Route::post('/publish/{offer}', [OfferController::class, 'publishOffer'])->name('publish.offer');
-        });
-    });
+            Route::group(['prefix' => 'landing-page'], function() {
+                Route::post('/save-image/{landing_page}', [LandingPageController::class, 'saveImage'])->name('lp.save.image');
+                Route::post('/save-data/{landing_page}', [LandingPageController::class, 'saveLandingPageData'])->name('lp.save.data');
+                Route::post('/add-section/{landing_page}', [LandingPageController::class, 'addSection'])->name('lp.add.section');
+                Route::post('/delete-section/{landing_page_section}', [LandingPageController::class, 'deleteSection'])->name('delete.section');
+                Route::post('/update-section-data/{landing_page_section}', [LandingPageController::class, 'updateSectionData'])->name('update.section.data');
+                Route::post('/update-section-image/{landing_page_section}', [LandingPageController::class, 'updateSectionImage'])->name('update.section.image');
+                Route::post('/publish/{landing_page}', [LandingPageController::class, 'publishLandingPage'])->name('publish.landing_page');
+                Route::post('/activate/{landing_page}', [LandingPageController::class, 'activateLandingPage'])->name('activate.landing_page');
+                Route::put('/update-sections-positions', [LandingPageController::class, 'updateSectionsPositions']);
+            });
 
-    Route::get('/get-course-categories', [CourseController::class, 'getCourseCategories']);
+            Route::group(['prefix' => 'course'], function() {
+                Route::post('/save-data/{course}', [CourseController::class, 'saveCourseData'])->name('course.save.data');
+                Route::post('/save-image/{course}', [CourseController::class, 'saveImage'])->name('course.save.image');
+                Route::post('/add-section/{course}', [CourseController::class, 'addSection'])->name('course.add.section');
+                Route::post('/update-section-image/{course}', [CourseController::class, ''])->name('course.section.image');
+                Route::post('/delete-section/{course_section}', [CourseController::class, 'deleteSection'])->name('delete.course.section');
+                Route::post('/update-section-data/{course_section}', [CourseController::class, 'updateSectionData'])->name('update.course.section.data');
+                Route::put('/update-sections-positions', [CourseController::class, 'updateSectionsPositions']);
+            });
 
-    Route::post('logout', [UserController::class, 'logout'])->name('logout');*/
+            Route::group(['prefix' => 'offer'], function() {
+                Route::post('/update-icon/{offer}', [OfferController::class, 'updateOfferIcon'])->name('update.offer.icon');
+                Route::post('/update-data/{offer}', [OfferController::class, 'updateOfferData'])->name('update.offer.data');
+                Route::post('/publish/{offer}', [OfferController::class, 'publishOffer'])->name('publish.offer');
+            });
+        });*/
+
+        Route::get('/get-course-categories', [CourseController::class, 'getCourseCategories']);
+
+        Route::post('logout', [UserController::class, 'logout'])->name('logout');
 });
 
 
@@ -166,7 +167,7 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Auth::routes();
-/*
+
 Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], function() {
 
     Route::group(['prefix' => 'dashboard'], function() {
@@ -201,35 +202,35 @@ Route::group(['middleware' => ['course.user:course']], function() {
     Route::get('/{user:username}/course/{course:slug}/checkout', [PurchaseController::class, 'show'])->name('course.checkout');
     Route::get('/pre-register-link-pro', [PageController::class, 'showPreRegister'])->name('pre.register');
 });
-*/
+
 Route::get('/{course:slug?}/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-/*
-Route::post('/custom-login', [LoginController::class, 'customLoginPost'])->name('customLoginPost');
+
+//Route::post('/custom-login', [LoginController::class, 'customLoginPost'])->name('customLoginPost');
+Route::post('/send-reset-course-password', [CoursePasswordController::class, 'sendResetCoursePassword'])->name('send.reset.course.password');
+Route::post('/reset-course-password', [CoursePasswordController::class, 'resetCoursePassword'])->name('reset.course.password');
 
 Route::get('/{user:username}/{landing_page:slug}', [LandingPageController::class, 'show'])->name('live.landing.page');
 
-Route::post('/send-reset-course-password', [CoursePasswordController::class, 'sendResetCoursePassword'])->name('send.reset.course.password');
-Route::post('/reset-course-password', [CoursePasswordController::class, 'resetCoursePassword'])->name('reset.course.password');
 Route::post('/course-register', [CourseRegisterController::class, 'customRegistration'])->name('course.register');
 Route::post('/checkout/purchase', [PurchaseController::class, 'store'])->name('course.purchase');
 
 Route::post('/mailchimp/subscribe', [MailchimpController::class, 'subscribeToList'])->name('mailchimp.subscribe');
-*/
+
 Route::get('/contact', [ContactMailController::class, 'index'])->name('contact');
 Route::post('/contact/send', [ContactMailController::class, 'contactSendMail'])->name('contact.send');
-/*
+
 Route::post('/braintree/webhooks/charged-successfully', [WebhookController::class, 'chargedSuccessfully']);
 Route::post('/braintree/webhooks/sub-went-active', [WebhookController::class, 'subWentActive']);
 
 Route::get('/get-icons', [IconController::class, 'getIcons']);
 
 Route::view('/','home')->name('guest-home');
-*/
+
 Route::view('/terms-and-conditions', 'utility.terms')->name('terms');
 Route::view('/privacy-policy', 'utility.privacy')->name('privacy');
 
 Route::view('/how-it-works', 'utility.how-it-works')->name('how-it-works');
-/*
+
 Route::view('/plan-options', 'subscription.public-plans')->name('public.plans');
 
 Route::post('/check-page-auth/{page}', [PageController::class, 'pageAuth'])->name('check.page.auth');
@@ -237,6 +238,6 @@ Route::get('/email-subscription/{user}', [UserController::class, 'emailSubscript
 Route::post('/link-click/{link}', [TrackingController::class, 'storeLinkVisit']);
 Route::post('/folder-click/{folder}', [TrackingController::class, 'storeFolderClick']);
 Route::get('/setup', [UtilityController::class, 'showSetupPage'])->name('setup.page');
-Route::get('/{page}', [PageController::class, 'show'])->name('show.live.page');*/
+Route::get('/{page}', [PageController::class, 'show'])->name('show.live.page');
 
 require __DIR__.'/auth.php';

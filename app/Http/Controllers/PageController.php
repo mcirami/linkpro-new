@@ -9,10 +9,12 @@ use App\Http\Requests\PageTitleRequest;
 use App\Models\Page;
 use App\Models\User;
 use App\Services\PageService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\UserTrait;
 use Illuminate\Support\Facades\Cookie;
+use Inertia\Inertia;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 
 class PageController extends Controller
@@ -99,7 +101,7 @@ class PageController extends Controller
 
         $pageService->editPage($page);
 
-        return view('pages.edit');
+        return Inertia::render('Dashboard/App');
     }
 
     public function updateHeaderImage(Request $request, Page $page, PageService $pageService) {

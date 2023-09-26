@@ -5,13 +5,17 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Course;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
+use phpDocumentor\Reflection\Types\Void_;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -29,13 +33,88 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request): void
     {
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        //return redirect()->intended(RouteServiceProvider::HOME);
+    }
+
+    protected function authenticated(Request $request, $user) {
+
+        $loginURL = url()->previous();
+        $roles = $user->getRoleNames();
+        //$permissions = $user->getPermissionsViaRoles()->pluck('name');
+        $courseID = isset($_GET['course']) ? $_GET['course'] : null;
+        $course = null;
+        if ($courseID) {
+            $course = Course::findOrFail($courseID);
+            $creator = User::where('id', '=', $course->user_id)->get()->pluck('username');
+        }
+
+        //Session::put('permissions', $permissions);
+
+        if ($roles->contains('admin')) {
+
+            $previousURL = Session::get( 'url.intended' );
+
+            if ( $previousURL ) {
+                return Redirect::intended();
+            } else {
+                if ($course) {
+                    return redirect('/' . $creator[0] . '/course/' . $course->slug);
+                } else if (str_contains($loginURL, "admin")) {
+                    return redirect( '/admin' );
+                } else {
+                    return redirect( '/dashboard' );
+                }
+            }
+
+        } else if ($roles->contains("course.user") && $roles->contains('lp.user')) {
+
+            $previousURL = Session::get( 'url.intended' );
+            if ( $previousURL ) {
+                return Redirect::intended();
+            } else {
+                return redirect( '/dashboard' );
+            }
+
+        } else if ($roles->contains('lp.user')) {
+
+            $userPages = $user->pages()->get();
+
+            if ( $userPages->isEmpty() ) {
+                return redirect()->route( 'create.page' );
+            } else {
+                $previousURL = Session::get( 'url.intended' );
+                if ( $previousURL ) {
+                    return Redirect::intended();
+                } else {
+                    return redirect( '/dashboard' );
+                }
+            }
+
+        } else if ($roles->contains("course.user")) {
+
+            $previousURL = Session::get('url.intended');
+            if ($previousURL) {
+                return Redirect($previousURL);
+            } else if ($course) {
+                return redirect('/' . $creator[0] . '/course/' . $course->slug);
+            } else {
+                return redirect('/courses');
+            }
+        } else {
+            $userPages = $user->pages()->get();
+
+            if ( $userPages->isEmpty() ) {
+                return redirect()->route( 'create.page' );
+            }
+        }
+
+        return 0;
     }
 
     /**

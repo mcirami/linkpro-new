@@ -30,5 +30,21 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
+    'braintree' => [
+        'environment' => env('BRAINTREE_ENV', 'sandbox'),
+        'merchantId' => env('BRAINTREE_MERCHANT_ID'),
+        'publicKey' => env('BRAINTREE_PUBLIC_KEY'),
+        'privateKey' => env('BRAINTREE_PRIVATE_KEY')
+    ],
+    'mailchimp' => [
+        'client_id' => env('MAILCHIMP_CLIENT_ID'),
+        'client_secret' => env('MAILCHIMP_CLIENT_SECRET'),
+        'redirect' => env('MAILCHIMP_REDIRECT_URI')
+    ],
+    'shopify' => [
+        'client_id' => env('SHOPIFY_CLIENT_ID'),
+        'client_secret' => env('SHOPIFY_CLIENT_SECRET'),
+        'redirect' => env('SHOPIFY_REDIRECT_URI'),
+        'scopes' => env('SHOPIFY_APP_SCOPES')
+    ]
 ];

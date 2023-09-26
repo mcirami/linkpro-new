@@ -86,7 +86,7 @@ export default function Register() {
                                     <InputError message={errors.password_confirmation} className="mt-2" />
                                 </div>
 
-                                <div className="form-group form-check text-center mt-2 flex align-center justify-center">
+                                <div className="form-group form-check mt-2 flex align-center">
                                     <Checkbox
                                         className="form-check-input"
                                         name="terms"
@@ -97,8 +97,9 @@ export default function Register() {
                                     {/*<input className="form-check-input" type="checkbox" name="remember" id="remember" required />
 */}
                                     <label className="form-check-label" htmlFor="terms">
-                                        Check here to agree to LinkPro's <a target="_blank" href={ route('terms') }>Terms and Conditions</a> and
-                                        <a target="_blank" href={ route('privacy') }>Privacy Policy</a>
+                                        Check here to agree to LinkPro's
+                                        <Link target="_blank" href={ route('terms') }>Terms and Conditions</Link> and
+                                        <Link target="_blank" href={ route('privacy') }> Privacy Policy</Link>
                                     </label>
                                 </div>
                                 <div className="block mt-4 text-center">
@@ -107,7 +108,7 @@ export default function Register() {
                                     </PrimaryButton>
                                     <Link
                                         href={route('login')}
-                                        className="text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        className="text-blue-600 font-bold text-sm hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                     >
                                         Already on LinkPro? Login Now
                                     </Link>

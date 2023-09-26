@@ -219,6 +219,13 @@ class PageService {
 
         $page->update(['profile_img' => $amazonPath]);
 
+        if ($page->default) {
+            $user = $page->user()->first();
+            $user->update([
+                'avatar' => $amazonPath
+            ]);
+        }
+
         return $amazonPath;
 
     }

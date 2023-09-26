@@ -149,6 +149,20 @@
                 @media all and (max-width: 992px) {
                     font-size: 16px;
                 }
+
+                &:not(.button) {
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-orient: horizontal;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: row;
+                    flex-direction: row;
+                    -ms-flex-wrap: nowrap;
+                    flex-wrap: nowrap;
+                    align-items: center;
+                    -webkit-align-items: center;
+                }
             }
         }
     }
@@ -227,6 +241,7 @@
             li {
 
                 a {
+                    color: $blue;
                     display: block;
                     padding: 15px 20px;
                 }

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {SubmitContactForm} from '@/Services/ContactRequests.js';
+//import {SubmitContactForm} from '@/Services/ContactRequests.js';
 import {BiMailSend} from 'react-icons/bi';
 import {useForm} from '@inertiajs/react';
 import TextInput from '@/Components/TextInput.jsx';

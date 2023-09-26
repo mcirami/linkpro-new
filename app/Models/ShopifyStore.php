@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ShopifyStore extends Model
 {
@@ -26,18 +27,20 @@ class ShopifyStore extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are not mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'user_id',
-        'access_token',
-        'domain',
-        'products'
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at'
     ];
 
-    public function user() {
+    /**
+     * @return BelongsTo
+     */
+    public function User(): BelongsTo {
         return $this->belongsTo(User::class);
     }
 }
