@@ -22,7 +22,7 @@ const MailchimpIntegration = ({connectionError, integrationType, editID}) => {
             <h3>Add your Mailchimp account as a LinkPro button!</h3>
             <p className="mb-4">Connect your Mailchimp account by clicking the button below.</p>
             <p className="small">Note: You will be redirected away from Link Pro to log into Mailchimp. You will need to either already have or create a new MailChimp account of your own to use this integration.</p>
-            <div className="button_wrap mt-4">
+            <div id="scrollTo" className="button_wrap mt-4">
                 <a className="button blue"
                    href="#"
                    onClick={(e) => handleMailchimpClick(e)}

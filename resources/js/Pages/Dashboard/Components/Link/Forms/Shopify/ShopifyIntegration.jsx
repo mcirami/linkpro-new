@@ -34,7 +34,7 @@ const ShopifyIntegration = ({
             <p className="mb-4">In connecting Shopify, you are sharing your Shopify store name and Product details with LinkPro.</p>
             <p className="small my-4">Note: You will be redirected away from LinkPro to log into Shopify. You will need to either already have or create a a Shopify store of your own to use this integration.</p>
 
-            <form onSubmit={handleSubmit} className="link_form shopify_domain">
+            <form id="scrollTo" onSubmit={handleSubmit} className="link_form shopify_domain">
                 <label htmlFor="domain">Enter your .myshopify.com URL to log into your store.</label>
                 <div className="input_wrap">
                     <input type="text"

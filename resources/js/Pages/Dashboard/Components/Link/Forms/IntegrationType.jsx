@@ -48,6 +48,15 @@ const IntegrationType = ({
         if(value === "shopify") {
             fetchStores()
         }
+
+        setTimeout(function(){
+            document.querySelector('#scrollTo').scrollIntoView({
+                behavior: 'smooth',
+                block: "start",
+                inline: "nearest"
+            });
+
+        }, 300)
     }
 
     const fetchLists = () => {

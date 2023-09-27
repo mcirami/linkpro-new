@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Signifly\Shopify\Shopify;
 use SocialiteProviders\Manager\Config;
@@ -25,9 +27,6 @@ class ShopifyController extends Controller
         $config = new Config($clientId, $clientSecret, "/auth/shopify/callback", $additionalProviderConfig);
 
         return Socialite::driver('shopify')->setConfig($config)->setScopes([$scopes])->redirect();
-
-        /*$install_url = "https://" . $domain . ".myshopify.com/admin/oauth/authorize?client_id=0c0c550ed3f1008d7e62c6b2aff0e206&scope=read_products,read_product_listings&redirect_uri=" . urlencode("https://0037-174-86-205-0.ngrok.io/auth/shopify/callback");
-        return redirect($install_url);*/
     }
 
 
@@ -65,17 +64,12 @@ class ShopifyController extends Controller
                 array_push($productsArray, $productObject);
             }
 
-            /*Log::channel( 'webhooks' )->info( "--timestamp--" .
-                                              Carbon::now() .
-                                              '--productsArray---' .
-                                              json_encode($productsArray)
-            );*/
-
-            $shopifyStore = Auth::user()->ShopifyStores()->create([
+            $dataObject = [
                 'access_token' => $accessToken,
                 'domain' => $domain,
                 'products' => $productsArray
-            ]);
+            ];
+            $shopifyStore = $this->createShopifyStore($dataObject);
 
             return redirect()->route('dashboard', ['redirected' => "shopify", 'store' => $shopifyStore->id]);
 
@@ -106,6 +100,29 @@ class ShopifyController extends Controller
         $stores = $user->ShopifyStores()->get();
         return response()->json([
             'stores' => $stores
+        ]);
+    }
+
+    private function createShopifyStore($data) {
+
+        $userId = Auth::id();
+        $domain = $data['domain'];
+
+        Validator::make($data,
+            [
+                'access_token'  => 'required|string|max:255|unique:shopify',
+                'domain'        => [
+                    'required', 'string', 'max:255',
+                    Rule::unique('shopify', 'domain')->where('user_id', $userId)
+                ],
+                'products'      => 'required|json'
+            ]
+        );
+
+        return Auth::user()->ShopifyStores()->create([
+            'access_token' => $data['access_token'],
+            'domain' => $domain,
+            'products' => $data['products']
         ]);
     }
 }

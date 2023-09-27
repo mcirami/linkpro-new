@@ -47,7 +47,8 @@ const IntegrationForm = ({
                              connectionError,
                              shopifyStores,
                              setShopifyStores,
-                             redirectedType
+                             redirectedType,
+                             storeID
 }) => {
 
     const [customIconArray, setCustomIconArray] = useState([]);
@@ -592,7 +593,7 @@ const IntegrationForm = ({
                                             setSelectedProducts={setSelectedProducts}
                                             setShowAddStore={setShowAddStore}
                                             shopifyStores={shopifyStores}
-
+                                            storeID={storeID}
                                         />
                                         <SelectedProducts
                                             currentLink={currentLink}

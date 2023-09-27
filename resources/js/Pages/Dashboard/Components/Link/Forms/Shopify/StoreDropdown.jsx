@@ -12,6 +12,7 @@ const StoreDropdown = ({
                            setSelectedProducts,
                            setShowAddStore,
                            shopifyStores,
+                           storeID
 }) => {
 
     const handleStoreChange = (e) => {
@@ -33,12 +34,12 @@ const StoreDropdown = ({
     return (
         <div className="my_row relative">
             <select
-                className={currentLink.shopify_id ? "active" : ""}
+                className={currentLink.shopify_id || storeID ? "active" : ""}
                 name="shopify_store"
                 onChange={(e) => handleStoreChange(e)}
                 onBlur={(e) => HandleBlur(e.target)}
                 onFocus={(e) => HandleFocus(e.target)}
-                value={currentLink.shopify_id || undefined}
+                value={currentLink.shopify_id || storeID || undefined}
             >
                 <option value=""></option>
                 {!isEmpty(shopifyStores) && shopifyStores?.map((store) => {

@@ -11,10 +11,10 @@
 
     <!-- Scripts -->
     {{--<script src="{{ asset('js/app.js') }}" defer></script>--}}
-     @if(Route::current()->getName() == 'course.checkout')
+     {{--@if(Route::current()->getName() == 'course.checkout')--}}
         <script src="https://js.braintreegateway.com/web/3.82.0/js/client.min.js"></script>
         <script src="https://js.braintreegateway.com/web/dropin/1.32.0/js/dropin.min.js"></script>
-    @endif
+   {{-- @endif--}}
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">

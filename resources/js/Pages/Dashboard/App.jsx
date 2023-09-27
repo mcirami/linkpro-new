@@ -82,7 +82,7 @@ function App({auth}) {
     const [accordionValue, setAccordionValue] = useState(null);
     const [inputType, setInputType] = useState(null);
     const [integrationType, setIntegrationType] = useState(null);
-    //const [storeID, setStoreID] = useState(null);
+    const [storeID, setStoreID] = useState(null);
     const [shopifyStores, setShopifyStores] = useState([]);
 
     const [showUpgradePopup, setShowUpgradePopup] = useState(false);
@@ -164,7 +164,6 @@ function App({auth}) {
         const storeID = urlParams?.get('store');
         const error = urlParams?.get('connection_error');
 
-        console.log("storeID: ", storeID)
         if (redirected && redirected !== "") {
             setInputType(localStorage.getItem('inputType') || null)
             setAccordionValue("integration");
@@ -172,10 +171,9 @@ function App({auth}) {
             setIntegrationType(localStorage.getItem('integrationType') || null);
             setEditID(JSON.parse(localStorage.getItem('editID')) || null)
             setShowLinkForm(JSON.parse(localStorage.getItem('showLinkForm')) || false)
-            if(storeID) {
-
+            if(storeID && storeID !== "") {
+                setStoreID(storeID)
             }
-            //setStoreID(storeID);
             const scrollTimeout = setTimeout(function(){
                 document.querySelector('#scrollTo').scrollIntoView({
                     behavior: 'smooth',
@@ -184,12 +182,14 @@ function App({auth}) {
                 });
 
                 urlParams.delete('redirected')
+                urlParams.delete('store');
+                urlParams.delete('connection_error');
                 window.history.pushState({}, document.title, href);
                 localStorage.clear();
 
             }, 800)
 
-            if (error) {
+            if (error && error !== "") {
                 setConnectionError(error)
             }
 
@@ -589,6 +589,7 @@ function App({auth}) {
                                                                                     shopifyStores={shopifyStores}
                                                                                     setShopifyStores={setShopifyStores}
                                                                                     redirectedType={redirectedType}
+                                                                                    storeID={storeID}
                                                                                 />
 
                                                                             </div>

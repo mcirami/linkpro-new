@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PageBioRequest;
 use App\Http\Requests\PageNameRequest;
-use App\Http\Requests\PagePassword;
 use App\Http\Requests\PageTitleRequest;
 use App\Models\Page;
 use App\Models\User;
 use App\Services\PageService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\UserTrait;
@@ -176,12 +174,15 @@ class PageController extends Controller
     }
 
     public function redirect(Request $request) {
-        $param = $request->redirected;
+        $redirected = $request->redirected;
+        $storeID = $request->store;
+        $error = $request->connection_error;
+
         $user = Auth::user();
         $page = $user->pages()->where('user_id', $user["id"])->where('default', true)->get();
 
-        if ($param) {
-            $url = '/dashboard/pages/' . $page[0]->id . "?redirected=" . $param;
+        if ($redirected) {
+            $url = '/dashboard/pages/' . $page[0]->id . "?redirected=" . $redirected . "&store=" . $storeID . "&connection_error=" . $error;
         } else {
             $url = '/dashboard/pages/' . $page[0]->id;
         }

@@ -23,7 +23,7 @@ class ShopifyStore extends Model
      * @var array
      */
     protected $casts = [
-        'products' => 'array'
+        'products'  => 'array',
     ];
 
     /**

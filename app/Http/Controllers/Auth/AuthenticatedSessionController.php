@@ -7,15 +7,17 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Course;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
-use phpDocumentor\Reflection\Types\Void_;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -30,19 +32,28 @@ class AuthenticatedSessionController extends Controller
         ])->with(['course' => $course]);
     }
 
+
     /**
-     * Handle an incoming authentication request.
+     * @param LoginRequest $request
+     *
+     * @return RedirectResponse
+     * @throws ValidationException
      */
-    public function store(LoginRequest $request): void
-    {
+    public function store(LoginRequest $request): RedirectResponse {
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        //return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
-    protected function authenticated(Request $request, $user) {
+    /**
+     * @param Request $request
+     * @param $user
+     *
+     * @return Application|\Illuminate\Foundation\Application|RedirectResponse|Redirector|int
+     */
+    protected function authenticated(Request $request, $user): \Illuminate\Foundation\Application|int|Redirector|RedirectResponse|Application {
 
         $loginURL = url()->previous();
         $roles = $user->getRoleNames();
@@ -53,8 +64,6 @@ class AuthenticatedSessionController extends Controller
             $course = Course::findOrFail($courseID);
             $creator = User::where('id', '=', $course->user_id)->get()->pluck('username');
         }
-
-        //Session::put('permissions', $permissions);
 
         if ($roles->contains('admin')) {
 
