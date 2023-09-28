@@ -41,7 +41,7 @@ export const updateIcon = (packets, id) => {
  */
 export const updateOfferData = (packets, id) => {
 
-    return axios.post('/creator-center/offer/update-data/' + id, packets)
+    return axios.patch('/creator-center/offer/update-data/' + id, packets)
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);

@@ -16,7 +16,8 @@ body.fixed {
             padding-left: 100px;
 
             @media screen and (max-width: 768px) {
-                padding-left: calc(var(--bs-gutter-x) * 0.5);
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
             }
         }
     }
@@ -31,6 +32,14 @@ img {
 
 a {
     text-decoration: none;
+
+    &.blue:not(.button) {
+        color: $blue;
+
+        &:hover {
+            color: $hoverBlue;
+        }
+    }
 }
 
 main {

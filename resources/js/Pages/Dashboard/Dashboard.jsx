@@ -61,7 +61,7 @@ export const PageContext = createContext();
 import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext.jsx';
 import {Head} from '@inertiajs/react';
 
-function App({auth}) {
+function Dashboard({auth}) {
 
     const [userLinks, dispatch] = useReducer(reducer, myLinksArray);
     const [folderLinks, dispatchFolderLinks] = useReducer(folderLinksReducer, []);
@@ -661,4 +661,4 @@ function App({auth}) {
     );
 }
 
-export default App;
+export default Dashboard;

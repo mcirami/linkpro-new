@@ -3,7 +3,7 @@ import {updateFolderName} from '@/Services/FolderRequests.jsx';
 import {
     LINKS_ACTIONS,
 } from '@/Services/Reducer.jsx';
-import {UserLinksContext} from '../../App';
+import {UserLinksContext} from '../../Dashboard.jsx';
 
 const FolderNameInput = ({folderID}) => {
 

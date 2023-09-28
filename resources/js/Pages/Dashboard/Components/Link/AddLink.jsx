@@ -1,6 +1,6 @@
 import { ImPlus } from "react-icons/im";
 import {useContext} from 'react';
-import {UserLinksContext} from '../../App';
+import {UserLinksContext} from '../../Dashboard.jsx';
 
 const AddLink = ({
                      subStatus,

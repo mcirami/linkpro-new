@@ -25,7 +25,7 @@ function Menu() {
         });
     }
 
-    const userPermissions = useMemo(() => getUserPermissions(auth.user.roles[0].permissions), [auth.user.roles[0].permissions]);
+    const userPermissions = useMemo(() => getUserPermissions(auth.user.permissions), [auth.user.permissions]);
     const handleOnClick = (e) => {
         e.preventDefault();
         setIsOpen(!isOpen);

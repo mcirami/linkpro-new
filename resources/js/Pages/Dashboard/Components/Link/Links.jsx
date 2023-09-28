@@ -6,7 +6,7 @@ import Link from './Link';
 import {
     UserLinksContext,
     FolderLinksContext,
-} from '../../App';
+} from '../../Dashboard.jsx';
 import {
     updateLinksPositions,
     updateLinkStatus,

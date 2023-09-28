@@ -166,6 +166,7 @@
 
                 table {
                     min-width: 600px;
+                    width: 100%;
 
                     thead {
 
@@ -205,7 +206,11 @@
                             }
 
                             a {
-                                margin-right: 8%
+                                margin-right: 8%;
+
+                                @include query(mobile) {
+                                    font-size: .9rem;
+                                }
                             }
                         }
                     }

@@ -265,7 +265,7 @@ export const publishPage = (packets, id) => {
  */
 export const activatePage = (id) => {
 
-    return axios.post('/creator-center/landing-page/activate/' + id)
+    return axios.patch('/creator-center/landing-page/activate/' + id)
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);

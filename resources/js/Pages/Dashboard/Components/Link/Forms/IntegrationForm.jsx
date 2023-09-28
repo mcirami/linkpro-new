@@ -9,7 +9,7 @@ import IconList from '../IconList';
 import {
     PageContext,
     UserLinksContext,
-} from '../../../App';
+} from '../../../Dashboard.jsx';
 import {
     canvasPreview,
     useDebounceEffect,

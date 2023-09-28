@@ -6,7 +6,7 @@ import {
     PageContext,
     UserLinksContext,
     FolderLinksContext,
-} from '../../App';
+} from '../../Dashboard.jsx';
 
 import {
     LINKS_ACTIONS,

@@ -99,7 +99,7 @@ class PageController extends Controller
 
         $pageService->editPage($page);
 
-        return Inertia::render('Dashboard/App');
+        return Inertia::render('Dashboard/Dashboard');
     }
 
     public function updateHeaderImage(Request $request, Page $page, PageService $pageService) {
@@ -178,16 +178,18 @@ class PageController extends Controller
         $storeID = $request->store;
         $error = $request->connection_error;
 
-        $user = Auth::user();
-        $page = $user->pages()->where('user_id', $user["id"])->where('default', true)->get();
+        $user = Auth::User();
+        $page = $user->pages()->where('user_id', $user->id)->where('default', true)->first();
 
         if ($redirected) {
-            $url = '/dashboard/pages/' . $page[0]->id . "?redirected=" . $redirected . "&store=" . $storeID . "&connection_error=" . $error;
+            $url = '/dashboard/pages/' . $page->id . "?redirected=" . $redirected . "&store=" . $storeID . "&connection_error=" . $error;
         } else {
-            $url = '/dashboard/pages/' . $page[0]->id;
+            $url = '/dashboard/pages/' . $page->id;
         }
 
-        return redirect($url);
+        return Inertia::location($url);
+
+        //return redirect($url);
     }
 
     public function showPreRegister() {

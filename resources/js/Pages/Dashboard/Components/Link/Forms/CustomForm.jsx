@@ -19,7 +19,7 @@ import {
     FolderLinksContext,
     PageContext,
     UserLinksContext,
-} from '../../../App';
+} from '../../../Dashboard.jsx';
 import {
     addLink,
     checkURL,

@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {PageContext} from '../../App';
+import {PageContext} from '../../Dashboard.jsx';
 import {FiThumbsDown, FiThumbsUp} from 'react-icons/Fi';
 import {pageBio} from '@/Services/PageRequests.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';

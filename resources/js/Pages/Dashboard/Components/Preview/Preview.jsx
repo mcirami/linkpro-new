@@ -3,7 +3,7 @@ import React, {
     useState,
     useEffect,
 } from 'react';
-import {PageContext, UserLinksContext} from '../../App';
+import {PageContext, UserLinksContext} from '../../Dashboard.jsx';
 import {IoIosCloseCircleOutline} from 'react-icons/io';
 import AccordionLinks from './AccordionLinks';
 import {checkIcon} from '@/Services/UserService.jsx';

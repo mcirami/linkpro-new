@@ -113,10 +113,10 @@ Route::middleware('auth')->group(function () {
             Route::patch('/folder/update-name/{folder}', [FolderController::class, 'updateName']);
         });
 
-        /*Route::group(['prefix' => 'creator-center'], function() {
-            Route::get('/add-landing-page', [LandingPageController::class, 'store'])->name('add.landing.page');
+        Route::group(['prefix' => 'creator-center'], function() {
+            /*Route::get('/add-landing-page', [LandingPageController::class, 'store'])->name('add.landing.page');
             Route::get('/add-course', [CourseController::class, 'store'])->name('add.course');
-
+*/
             Route::group(['prefix' => 'landing-page'], function() {
                 Route::post('/save-image/{landing_page}', [LandingPageController::class, 'saveImage'])->name('lp.save.image');
                 Route::post('/save-data/{landing_page}', [LandingPageController::class, 'saveLandingPageData'])->name('lp.save.data');
@@ -125,10 +125,10 @@ Route::middleware('auth')->group(function () {
                 Route::post('/update-section-data/{landing_page_section}', [LandingPageController::class, 'updateSectionData'])->name('update.section.data');
                 Route::post('/update-section-image/{landing_page_section}', [LandingPageController::class, 'updateSectionImage'])->name('update.section.image');
                 Route::post('/publish/{landing_page}', [LandingPageController::class, 'publishLandingPage'])->name('publish.landing_page');
-                Route::post('/activate/{landing_page}', [LandingPageController::class, 'activateLandingPage'])->name('activate.landing_page');
+                Route::patch('/activate/{landing_page}', [LandingPageController::class, 'activateLandingPage'])->name('activate.landing_page');
                 Route::put('/update-sections-positions', [LandingPageController::class, 'updateSectionsPositions']);
             });
-
+        /*
             Route::group(['prefix' => 'course'], function() {
                 Route::post('/save-data/{course}', [CourseController::class, 'saveCourseData'])->name('course.save.data');
                 Route::post('/save-image/{course}', [CourseController::class, 'saveImage'])->name('course.save.image');
@@ -138,16 +138,15 @@ Route::middleware('auth')->group(function () {
                 Route::post('/update-section-data/{course_section}', [CourseController::class, 'updateSectionData'])->name('update.course.section.data');
                 Route::put('/update-sections-positions', [CourseController::class, 'updateSectionsPositions']);
             });
-
+        */
             Route::group(['prefix' => 'offer'], function() {
                 Route::post('/update-icon/{offer}', [OfferController::class, 'updateOfferIcon'])->name('update.offer.icon');
-                Route::post('/update-data/{offer}', [OfferController::class, 'updateOfferData'])->name('update.offer.data');
+                Route::patch('/update-data/{offer}', [OfferController::class, 'updateOfferData'])->name('update.offer.data');
                 Route::post('/publish/{offer}', [OfferController::class, 'publishOffer'])->name('publish.offer');
             });
-        });*/
+        });
 
         Route::get('/get-course-categories', [CourseController::class, 'getCourseCategories']);
-
         Route::post('logout', [UserController::class, 'logout'])->name('logout');
 });
 

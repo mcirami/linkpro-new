@@ -5,7 +5,7 @@ import React, {
 import {
     UserLinksContext,
     FolderLinksContext,
-} from '../../App';
+} from '../../Dashboard.jsx';
 import {
     updateLinksPositions,
     updateLinkStatus,

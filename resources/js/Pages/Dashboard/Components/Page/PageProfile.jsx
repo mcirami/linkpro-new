@@ -5,7 +5,7 @@ import React, {
     forwardRef,
 } from 'react';
 import {MdEdit} from 'react-icons/md';
-import {PageContext} from '../../App';
+import {PageContext} from '../../Dashboard.jsx';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
 import {profileImage} from '@/Services/PageRequests.jsx';

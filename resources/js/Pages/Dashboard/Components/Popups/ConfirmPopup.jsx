@@ -4,7 +4,7 @@ import {
     deleteLink,
     updateLinkStatus,
 } from '@/Services/LinksRequest.jsx';
-import {UserLinksContext, FolderLinksContext} from '../../App';
+import {UserLinksContext, FolderLinksContext} from '../../Dashboard.jsx';
 import {
     LINKS_ACTIONS,
     FOLDER_LINKS_ACTIONS,

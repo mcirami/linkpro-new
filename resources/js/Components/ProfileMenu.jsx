@@ -6,13 +6,7 @@ const ProfileMenu = () => {
 
     const { auth } = usePage().props;
 
-    const getUserRoles = (roles) => {
-        return roles.map((role) => {
-            return role.name;
-        });
-    }
-
-    const userRoles = useMemo(() => getUserRoles(auth.user.roles), [auth.user.roles]);
+    const userRoles = auth.user.roles;
 
     return (
         <div className="nav_links_wrap">

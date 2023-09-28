@@ -1,25 +1,23 @@
-import ContactForm from './ContactForm';
-import {Head} from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ContactLayout from '@/Pages/Contact/ContactLayout.jsx';
 function Contact({auth}) {
 
     return (
+        <>
+            { auth.user.username ?
 
-        <GuestLayout>
-            <Head title="Contact Us" />
+                    <AuthenticatedLayout>
+                        <ContactLayout />
+                    </AuthenticatedLayout>
 
-            <div className="container" id="contact_page">
-                <div className="my_row form_page">
-                    <div className="card guest">
-                        <h2 className="page_title text-center">Contact Us</h2>
-                        <div id="contact_form" className="card-body text-center">
-                            <ContactForm />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </GuestLayout>
+                    :
 
+                    <GuestLayout>
+                        <ContactLayout />
+                    </GuestLayout>
+            }
+        </>
     )
 }
 

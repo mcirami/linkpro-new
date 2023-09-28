@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {MdAddCircleOutline} from 'react-icons/md';
 import {FiChevronDown} from 'react-icons/Fi';
-import {PageContext} from '../../App';
+import {PageContext} from '../../Dashboard.jsx';
 import AddPageForm from './AddPageForm';
 
 const PageNav = ({ allUserPages, setAllUserPages, userSub, subStatus, setShowUpgradePopup, setOptionText }) => {

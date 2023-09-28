@@ -21,7 +21,7 @@ import {
     FolderLinksContext,
     PageContext,
     UserLinksContext,
-} from '../../../App';
+} from '../../../Dashboard.jsx';
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 import {acceptTerms} from '@/Services/UserService.jsx';
 

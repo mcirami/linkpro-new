@@ -13,6 +13,7 @@ use App\Services\TrackingServices;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 use App\Http\Traits\PermissionTrait;
 
@@ -83,7 +84,9 @@ class CourseController extends Controller
             'offers'        => $offers,
             'landingPage'   => $landingPageData
         ]);
-        return view('courses.creator');
+        //return view('courses.creator');
+
+        return Inertia::render('CreatorCenter/CreatorCenter');
     }
 
     public function edit(Course $course, CourseService $courseService) {
