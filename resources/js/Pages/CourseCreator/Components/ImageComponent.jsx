@@ -1,58 +1,47 @@
 import React, {
-    forwardRef,
     useEffect,
     useRef,
     useState,
+    forwardRef,
 } from 'react';
 import {MdEdit} from 'react-icons/md';
-import ReactCrop from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
 import {
-    canvasPreview,
     createImage,
+    canvasPreview,
     useDebounceEffect,
-    onImageLoad,
     getFileToUpload,
+    onImageLoad,
 } from '@/Services/ImageService.jsx';
-import {
-    updateImage,
-    updateSectionImage,
-} from '@/Services/LandingPageRequests.jsx';
-import {LP_ACTIONS} from '../Reducer';
-import CropTools from '@/Utils/CropTools';
+import { updateIcon} from '@/Services/OfferRequests.jsx';
+import { updateImage} from '@/Services/CourseRequests.jsx';
+import {OFFER_ACTIONS, LP_ACTIONS} from '../Reducer';
+import CropTools from '../../../Utils/CropTools';
+import ReactCrop from 'react-image-crop';
 
 const ImageComponent = forwardRef(function ImageComponent(props, ref) {
 
     const {
+        placeholder,
         completedCrop,
         setCompletedCrop,
         setShowLoader,
         elementName,
         cropArray,
-        pageData = null,
+        data,
         dispatch = null,
-        sections = null,
-        setSections = null,
-        currentSection = null
+        type
     } = props;
 
     const [disableButton, setDisableButton] = useState(true);
     const [elementLabel, setElementLabel] = useState(elementName);
-    const [upImg, setUpImg] = useState();
-    const imgRef = useRef();
+    const [upImg, setUpImg] = useState('');
+    const imgRef = useRef(null);
     const previewCanvasRef = ref;
-
     const [crop, setCrop] = useState(cropArray);
     const [scale, setScale] = useState(1)
     const [rotate, setRotate] = useState(0)
     const [aspect, setAspect] = useState(cropArray['aspect'] || 16 / 9)
-
-    useEffect(() => {
-
-        const words = elementName.split("_");
-        setElementLabel( elementName === "hero" ? "Header Image" : words.join(" "));
-
-    },[elementName])
 
     useDebounceEffect(
         async () => {
@@ -76,12 +65,18 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
         [completedCrop[elementName]?.isCompleted, scale, rotate],
     )
 
+    useEffect(() => {
+
+        const words = elementName.split("_");
+        setElementLabel( words.join(" "));
+
+    },[elementName])
+
     const onSelectFile = (e) => {
         let files = e.target.files || e.dataTransfer.files;
         if (!files.length) {
             return;
         }
-
         setCrop(undefined)
         setDisableButton(false);
         document.querySelector("." + CSS.escape(elementName) + "_form .bottom_section").classList.remove("hidden");
@@ -92,7 +87,21 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
         }
 
         createImage(files[0], setUpImg);
+
     };
+
+    /*function handleToggleAspectClick() {
+        if (aspect) {
+            setAspect(undefined)
+        } else if (imgRef.current) {
+            const { width, height } = imgRef.current
+            setAspect(16 / 9)
+            const newCrop = centerAspectCrop(width, height, 16 / 9)
+            setCrop(newCrop)
+            // Updates the preview
+            setCompletedCrop(convertToPixelCrop(newCrop, width, height))
+        }
+    }*/
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -129,45 +138,12 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                 ext: response.extension,
             };
 
-            if(sections) {
-
-                updateSectionImage(packets, currentSection.id)
-                .then((data) => {
-                    if (data.success) {
-                        setSections(sections.map((section) => {
-                            if (section.id === currentSection.id) {
-                                return {
-                                    ...section,
-                                    image: data.imagePath,
-                                }
-                            }
-                            return section;
-                        }))
-
-                        setShowLoader({
-                            show: false,
-                            icon: '',
-                            position: ''
-                        });
-
-                        setUpImg(null);
-                        delete completedCrop[elementName];
-                        setCompletedCrop(completedCrop);
-                        document.querySelector(
-                            "." + CSS.escape(elementName) +
-                            "_form .bottom_section").
-                            classList.
-                            add("hidden");
-                    }
-                })
-
-            } else {
-
-                updateImage(packets, pageData["id"]).
+            if(elementName.includes('icon')) {
+                updateIcon(packets, data["id"]).
                     then((data) => {
                         if (data.success) {
                             dispatch({
-                                type: LP_ACTIONS.UPDATE_PAGE_DATA,
+                                type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
                                 payload: {
                                     value: data.imagePath,
                                     name: elementName
@@ -182,14 +158,48 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                             setUpImg(null);
                             delete completedCrop[elementName];
                             setCompletedCrop(completedCrop);
-                            document.querySelector(
-                                "." + CSS.escape(elementName) +
-                                "_form .bottom_section").
-                                classList.
-                                add("hidden");
+                            document.querySelector("." + CSS.escape(elementName) +
+                                "_form .bottom_section").classList.add("hidden");
+                        } else {
+                            setShowLoader({
+                                show: false,
+                                icon: '',
+                                position: ''
+                            });
                         }
                     })
+            } else {
+                updateImage(packets, data["id"])
+                .then((data) => {
+                    if (data.success) {
+                        dispatch({
+                            type: LP_ACTIONS.UPDATE_PAGE_DATA,
+                            payload: {
+                                value: data.imagePath,
+                                name: elementName
+                            }
+                        })
+                        setShowLoader({
+                            show: false,
+                            icon: '',
+                            position: ''
+                        });
+
+                        setUpImg(null);
+                        delete completedCrop[elementName];
+                        setCompletedCrop(completedCrop);
+                        document.querySelector("." + CSS.escape(elementName) +
+                            "_form .bottom_section").classList.add("hidden");
+                    } else {
+                        setShowLoader({
+                            show: false,
+                            icon: '',
+                            position: ''
+                        });
+                    }
+                })
             }
+
         }).catch((error) => {
             console.error(error);
             setDisableButton(false);
@@ -204,7 +214,6 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
         const copy = {...completedCrop};
         delete copy[elementName];
         setCompletedCrop(copy);
-
         document.querySelector("." + CSS.escape(elementName) + "_form .bottom_section").classList.add("hidden");
     };
 
@@ -212,14 +221,21 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
         <article className="my_row page_settings">
             <div className="column_wrap">
                 <form onSubmit={handleSubmit} className={`${elementName}_form`}>
-                    {!completedCrop[elementName] && (
+                    {!completedCrop[elementName]?.isCompleted && (
                         <>
                             <div className="top_section">
                                 <label
                                     htmlFor={`${elementName}_file_upload`}
                                     className="custom"
                                 >
-                                    {elementLabel}
+                                    {data["icon"] ?
+                                        <img src={data["icon"]} alt=""/>
+                                        :
+                                        ""
+                                    }
+                                    {type === "extPreview" &&
+                                        placeholder
+                                    }
                                     <span className="edit_icon">
                                         <MdEdit />
                                         <div className="hover_text edit_image">
@@ -228,21 +244,25 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                                     </span>
                                 </label>
                                 <input
-                                    className="custom"
+                                    className={`custom ${data["icon"] ? "active" : "" }`}
                                     id={`${elementName}_file_upload`}
                                     type="file"
                                     accept="image/png, image/jpeg, image/jpg, image/gif"
                                     onChange={onSelectFile}
                                 />
+                                {type === "inlinePreview" &&
+                                    <label>{placeholder}</label>
+                                }
                             </div>
                             <div className="my_row info_text file_types">
                                 <p className="m-0 char_count w-100 ">
-                                    Allowed File Types:{" "}
+                                    Allowed File Types:
                                     <span>png, jpg, jpeg, gif</span>
                                 </p>
                             </div>
                         </>
                     )}
+
                     <div className="bottom_section hidden">
                         <div className="crop_section">
                             <CropTools
@@ -253,14 +273,14 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                             />
                             <ReactCrop
                                 crop={crop}
-                                aspect={aspect}
                                 onChange={(_, percentCrop) => setCrop(percentCrop)}
-                                onComplete={(c) => setCompletedCrop({
+                                onComplete={(c) =>  setCompletedCrop({
                                     ...completedCrop,
                                     [`${elementName}`]: {
                                         isCompleted: c
                                     }
                                 })}
+                                aspect={aspect}
                             >
                                 <img
                                     onLoad={(e) => onImageLoad(e, aspect, setCrop)}
@@ -269,6 +289,23 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                                     style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
                                     alt="Crop me"/>
                             </ReactCrop>
+                            {(type === "inlinePreview" && completedCrop[elementName]?.isCompleted) &&
+                                <div className="icon_col">
+                                    <p>Icon Preview</p>
+                                    <canvas
+                                        ref={ref => previewCanvasRef.current[elementName] = ref}
+                                        // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
+                                        style={{
+                                            backgroundSize: `cover`,
+                                            backgroundRepeat: `no-repeat`,
+                                            width: completedCrop[elementName]?.isCompleted ? `100%` : 0,
+                                            height: completedCrop[elementName]?.isCompleted ? `100%` : 0,
+                                            borderRadius: `20px`,
+                                        }}
+
+                                    />
+                                </div>
+                            }
                         </div>
                         <div className="bottom_row">
                             <button

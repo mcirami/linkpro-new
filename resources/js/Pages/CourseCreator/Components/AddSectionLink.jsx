@@ -1,22 +1,24 @@
 import React from 'react';
 import { ImPlus } from "react-icons/im";
-import {addSection} from '../../../Services/LandingPageRequests';
+import {addSection} from '@/Services/CourseRequests.jsx';
+import {capitalize, toUpper} from 'lodash';
 
-const AddImageSection = ({
-                             sections,
-                             setSections,
-                             pageID,
-                             setOpenIndex
+const AddSectionLink = ({
+                            sections,
+                            setSections,
+                            courseID,
+                            setOpenIndex,
+                            type
 }) => {
 
     const handleOnClick = (e) => {
         e.preventDefault();
 
         const packets = {
-            type: "image"
+            type: type
         }
 
-        addSection(packets, pageID)
+        addSection(packets, courseID)
         .then((response) => {
             if (response.success) {
                 setSections([
@@ -43,9 +45,9 @@ const AddImageSection = ({
     return (
         <a className="icon_wrap" href="#" onClick={(e) => handleOnClick(e)}>
             <ImPlus />
-            <h3>Add Image Section</h3>
+            <h3>Add {capitalize(type)} Section</h3>
         </a>
     );
 };
 
-export default AddImageSection;
+export default AddSectionLink;

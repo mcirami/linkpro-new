@@ -5,10 +5,10 @@ import InputComponent from './InputComponent';
 import ColorPicker from './ColorPicker';
 import ImageComponent from './ImageComponent';
 import SectionButtonOptions from './SectionButtonOptions';
-const courses = user.courses;
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import {setOpen} from 'browser-sync/dist/options';
+
+const courses = user.courses;
 
 const Section = ({
                      section,

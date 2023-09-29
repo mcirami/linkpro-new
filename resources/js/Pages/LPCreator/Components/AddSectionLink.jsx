@@ -1,19 +1,21 @@
 import React from 'react';
 import { ImPlus } from "react-icons/im";
-import {addSection} from '../../../Services/LandingPageRequests';
+import {addSection} from '@/Services/LandingPageRequests.jsx';
+import {capitalize} from 'lodash';
 
-const AddTextSection = ({
+const AddSectionLink = ({
                             sections,
                             setSections,
                             pageID,
-                            setOpenIndex
+                            setOpenIndex,
+                            type
 }) => {
 
     const handleOnClick = (e) => {
         e.preventDefault();
 
         const packets = {
-            type: "text"
+            type: type
         }
 
         addSection(packets, pageID)
@@ -44,9 +46,9 @@ const AddTextSection = ({
     return (
         <a className="icon_wrap" href="#" onClick={(e) => handleOnClick(e)}>
             <ImPlus />
-            <h3>Add Text Section</h3>
+            <h3>Add {capitalize(type)} Section</h3>
         </a>
     );
 };
 
-export default AddTextSection;
+export default AddSectionLink;

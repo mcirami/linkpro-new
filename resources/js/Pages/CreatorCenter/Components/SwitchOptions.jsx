@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import IOSSwitch from '../../../Utils/IOSSwitch';
-import {updateOfferData} from '../../../Services/OfferRequests';
+import {updateOfferData} from '@/Services/OfferRequests.jsx';
 import {Link} from '@inertiajs/react';
 
 const SwitchOptions = ({offer}) => {

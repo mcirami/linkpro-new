@@ -1,10 +1,10 @@
 import React, {useRef, useState} from 'react';
-import { ToolTipContextProvider } from '../../Utils/ToolTips/ToolTipContext';
+import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext';
 import TableComponent from './Components/TableComponent';
 import {FaPlus} from 'react-icons/fa';
-import ToolTipIcon from '../../Utils/ToolTips/ToolTipIcon';
-import IOSSwitch from '../../Utils/IOSSwitch';
-import {activatePage} from '../../Services/LandingPageRequests';
+import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
+import IOSSwitch from '@/Utils/IOSSwitch';
+import {activatePage} from '@/Services/LandingPageRequests';
 import Preview from './Components/Preview';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import {Head, Link} from '@inertiajs/react';
@@ -128,10 +128,10 @@ function CreatorCenter() {
                                     <TableComponent offers={offers}/>
 
                                     <div className="link_wrap my_row">
-                                        <a className="blue" href="/creator-center/add-course">
+                                        <Link className="blue" href={route('add.course')}>
                                             <FaPlus />
                                             Add New Course
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

@@ -11,11 +11,13 @@ use App\Services\LandingPageService;
 use App\Services\OfferService;
 use App\Services\TrackingServices;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 use App\Http\Traits\PermissionTrait;
+use Symfony\Component\HttpFoundation\Response;
 
 class CourseController extends Controller
 {
@@ -107,11 +109,15 @@ class CourseController extends Controller
             'categories'    => $categories
         ]);
 
-        return view('courses.edit');
+        return Inertia::render('CourseCreator/CourseCreator');
 
     }
 
-    public function store() {
+
+    /**
+     * @return RedirectResponse|Response
+     */
+    public function store(): Response|RedirectResponse {
         $user = Auth::user();
 
         $course = $user->Courses()->create();
@@ -120,8 +126,7 @@ class CourseController extends Controller
             'course_id' => $course->id,
         ]);
 
-        return redirect('/creator-center/course/' . $course->id);
-
+        return Inertia::location('/creator-center/course/' . $course->id);
     }
 
     public function saveCourseData(Request $request, Course $course, CourseService $courseService) {

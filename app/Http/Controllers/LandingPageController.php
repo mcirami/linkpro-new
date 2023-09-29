@@ -15,7 +15,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
+use Symfony\Component\HttpFoundation\Response;
 
 class LandingPageController extends Controller
 {
@@ -46,8 +48,9 @@ class LandingPageController extends Controller
         return view('landing-page.show');
     }
 
+
     /**
-     * @return Application|RedirectResponse|Redirector
+     * @return RedirectResponse|Response
      */
     public function store() {
         $user = Auth::user();
@@ -58,15 +61,18 @@ class LandingPageController extends Controller
             $landingPage = $user->LandingPages()->create([]);
         }
 
-        return redirect('/creator-center/landing-page/' . $landingPage->id);
+        return Inertia::location('/creator-center/course/' . $landingPage->id);
     }
+
 
     /**
      * @param LandingPage $landingPage
+     * @param LandingPageService $service
+     * @param CourseService $courseService
      *
-     * @return Application|Factory|View|never
+     * @return \Inertia\Response
      */
-    public function edit(LandingPage $landingPage, LandingPageService $service, CourseService $courseService) {
+    public function edit(LandingPage $landingPage, LandingPageService $service, CourseService $courseService): \Inertia\Response {
 
         $user = Auth::user();
 
@@ -83,7 +89,7 @@ class LandingPageController extends Controller
             'username' => $user["username"]
         ]);
 
-        return view('landing-page.edit');
+        return Inertia::render('LPCreator/LPCreator');
     }
 
     /**

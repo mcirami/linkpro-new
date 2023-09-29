@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import DOMPurify from 'dompurify';
-import SectionImage from '../../LPCreator/Components/Preview/SectionImage';
 import draftToHtml from 'draftjs-to-html';
 
 const PreviewSection = ({section}) => {

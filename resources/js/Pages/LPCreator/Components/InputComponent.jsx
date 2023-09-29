@@ -1,13 +1,13 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FiThumbsDown, FiThumbsUp} from 'react-icons/Fi';
 import {
     updateData,
     updateSectionData,
-} from '../../../Services/LandingPageRequests';
+} from '@/Services/LandingPageRequests.jsx';
 import {LP_ACTIONS} from '../Reducer';
 import EditorComponent from './EditorComponent';
 import validator from 'validator/es';
-import {HandleFocus} from '../../../Utils/InputAnimations';
+import {HandleFocus} from '@/Utils/InputAnimations.jsx';
 
 const InputComponent = ({
                             placeholder,

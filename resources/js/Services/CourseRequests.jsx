@@ -7,7 +7,7 @@ import EventBus from '../Utils/Bus';
  */
 export const updateImage = (packets, id) => {
 
-    return axios.post('/creator-center/course/save-image/' + id, packets)
+    return axios.patch('/creator-center/course/save-image/' + id, packets)
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
@@ -41,7 +41,7 @@ export const updateImage = (packets, id) => {
  */
 export const updateData = (packets, id, elementName) => {
 
-    return axios.post('/creator-center/course/save-data/' + id, packets)
+    return axios.patch('/creator-center/course/save-data/' + id, packets)
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
@@ -115,7 +115,7 @@ export const addSection = (packets, id, elementName) => {
  */
 export const updateSectionData = (packets, id, elementName) => {
 
-    return axios.post('/creator-center/course/update-section-data/' + id, packets)
+    return axios.patch('/creator-center/course/update-section-data/' + id, packets)
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
@@ -151,44 +151,9 @@ export const updateSectionData = (packets, id, elementName) => {
  * Submit a request to update landing page section image
  * return object
  */
-/*export const updateSectionImage = (packets, id) => {
-
-    return axios.post('/creator-center/course/update-section-image/' + id, packets)
-    .then(
-        (response) => {
-            const returnMessage = JSON.stringify(response.data.message);
-            //EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
-            EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
-
-            return {
-                success : true,
-                imagePath: response.data.imagePath
-            }
-        }
-    )
-    .catch((error) => {
-        if (error.response !== undefined) {
-            EventBus.dispatch("error",
-                {message: "There was an error saving your image."});
-            console.error("ERROR:: ", error.response.data);
-        } else {
-            console.error("ERROR:: ", error);
-        }
-
-        return {
-            success : false,
-        }
-
-    });
-}*/
-
-/**
- * Submit a request to update landing page section image
- * return object
- */
 export const deleteSection = (id, packets) => {
 
-    return axios.post('/creator-center/course/delete-section/' + id, packets)
+    return axios.delete('/creator-center/course/delete-section/' + id, packets)
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
@@ -244,7 +209,7 @@ export const getCourseCategories = () => {
 }
 
 export const updateSectionsPositions = (packets) => {
-    return axios.put('/creator-center/course/update-sections-positions', packets)
+    return axios.patch('/creator-center/course/update-sections-positions', packets)
     .then(
         (response) => {
             const returnedResponse = response.data.message;

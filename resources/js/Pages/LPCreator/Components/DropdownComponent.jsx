@@ -1,6 +1,6 @@
-import React, {useEffect, useRef} from 'react';
-import {updateSectionData} from '../../../Services/LandingPageRequests';
-import {HandleFocus} from '../../../Utils/InputAnimations';
+import React from 'react';
+import {updateSectionData} from '@/Services/LandingPageRequests.jsx';
+import {HandleFocus} from '@/Utils/InputAnimations.jsx';
 
 const DropdownComponent = ({
                                courses,
@@ -42,7 +42,7 @@ const DropdownComponent = ({
     }
 
     return (
-        <div className="position-relative">
+        <div className="relative">
             <select className={buttonCourseId ? "active" : ""}
                     name="courses"
                     id="courses"

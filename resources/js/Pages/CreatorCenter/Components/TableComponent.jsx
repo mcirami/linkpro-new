@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
-import ToolTipIcon from '../../../Utils/ToolTips/ToolTipIcon';
+import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import SwitchOptions from './SwitchOptions';
-import InfoText from '../../../Utils/ToolTips/InfoText';
+import InfoText from '@/Utils/ToolTips/InfoText';
 
 const TableComponent = ({offers}) => {
 

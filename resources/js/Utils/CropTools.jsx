@@ -18,7 +18,7 @@ const CropTools = ({
                 <a href="#" className="number_control" onClick={(e) => handleScaleChange(e, scale, setScale, "decrease")}>
                     <HiMinus />
                 </a>
-                <div className="position-relative">
+                <div className="relative">
                     <input
                         className="active animate"
                         id="scale-input"
@@ -37,7 +37,7 @@ const CropTools = ({
                 <a href="#" className="number_control" onClick={(e) => handleRotateChange(e, rotate, setRotate, "decrease")}>
                     <HiMinus />
                 </a>
-                <div className="position-relative">
+                <div className="relative">
                     <input
                         className="active animate"
                         id="rotate-input"

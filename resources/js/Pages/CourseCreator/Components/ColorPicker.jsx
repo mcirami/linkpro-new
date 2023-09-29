@@ -4,14 +4,14 @@ import {RiCloseCircleFill} from 'react-icons/ri';
 import {
     updateData,
     updateSectionData,
-} from '@/Services/LandingPageRequests.jsx';
+} from '@/Services/CourseRequests.jsx';
 import {LP_ACTIONS} from '../Reducer';
 
 
 const ColorPicker = ({
                          label,
                          elementName,
-                         pageData = null,
+                         courseData = null,
                          dispatch = null,
                          sections = null,
                          setSections = null,
@@ -57,15 +57,14 @@ const ColorPicker = ({
             setPickerBg({background: color});
 
             setColorValues((prev) => ({
-                    ...prev,
-                    previous: color
+                ...prev,
+                previous: color
             }))
-
         } else {
-            setPickerBg({ background: pageData[elementName] })
+            setPickerBg({ background: courseData[elementName] })
             setColorValues((prev) => ({
                 ...prev,
-                previous: pageData[elementName]
+                previous: courseData[elementName]
             }))
         }
 
@@ -108,7 +107,6 @@ const ColorPicker = ({
     }
 
     const handleSave = (e) => {
-
         e.preventDefault();
 
         if (sections) {
@@ -136,16 +134,16 @@ const ColorPicker = ({
                 [`${elementName}`]: colorValues.current,
             };
 
-            updateData(packets, pageData["id"], elementName).
-                then((response) => {
-                    if (response.success) {
-                        setShowPicker(false);
-                        setColorValues({
-                            previous: colorValues.current,
-                            current:  colorValues.current
-                        })
-                    }
-                })
+            updateData(packets, courseData["id"], elementName)
+            .then((response) => {
+                if (response.success) {
+                    setShowPicker(false);
+                    setColorValues({
+                        previous: colorValues.current,
+                        current:  colorValues.current
+                    })
+                }
+            })
         }
     }
 
@@ -210,7 +208,7 @@ const ColorPicker = ({
                 {showPicker &&
                     <div className="picker_wrapper">
                         <div className="close_icon icon_wrap">
-                            <a href="#" onClick={(e) => { handleClose(e) }}>
+                            <a href="#" onClick={(e) => {handleClose(e)} }>
                                 <RiCloseCircleFill />
                             </a>
                         </div>

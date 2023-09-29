@@ -7,10 +7,10 @@ import htmlToDraft from "html-to-draftjs";
 
 import {
     updateSectionData,
-} from '../../../Services/LandingPageRequests';
+} from '@/Services/LandingPageRequests.jsx';
 import {
     updateData as updateCourseData
-} from '../../../Services/CourseRequests';
+} from '@/Services/CourseRequests';
 import isJSON from 'validator/es/lib/isJSON';
 
 const EditorComponent = ({

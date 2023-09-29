@@ -7,7 +7,7 @@ import EventBus from '../Utils/Bus';
  */
 export const updateIcon = (packets, id) => {
 
-    return axios.post('/creator-center/offer/update-icon/' + id, packets)
+    return axios.patch('/creator-center/offer/update-icon/' + id, packets)
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
@@ -74,7 +74,7 @@ export const updateOfferData = (packets, id) => {
  */
 export const publishOffer = (packets, id) => {
 
-    return axios.post('/creator-center/offer/publish/' + id, packets)
+    return axios.patch('/creator-center/offer/publish/' + id, packets)
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);

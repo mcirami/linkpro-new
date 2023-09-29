@@ -1,39 +1,40 @@
 import React, {useEffect, useState} from 'react';
-import {updateSectionData} from '@/Services/LandingPageRequests.jsx';
-import DropdownComponent from './DropdownComponent';
-import ColorPicker from './ColorPicker';
-import InputComponent from './InputComponent';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import {updateSectionData} from '@/Services/CourseRequests.jsx';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
 import Slider from '@mui/material/Slider';
+import ColorPicker from './ColorPicker';
+import InputComponent from './InputComponent';
 import IOSSwitch from '@/Utils/IOSSwitch';
 
 const SectionButtonOptions = ({
                                   position,
-                                  buttonPosition,
-                                  includeButton,
                                   sections,
                                   setSections,
                                   currentSection,
-                                  id,
-                                  courses = null,
-                                  buttonCourseId = null,
-                                  buttonSize,
+                                  id
 }) => {
+
+    const {
+        button_position,
+        button,
+        button_text,
+        button_size
+    } = currentSection;
 
     const [includeButtonValue, setIncludeButtonValue] = useState(false);
     const [buttonPositionValue, setButtonPositionValue] = useState("above");
-    const [buttonSizeState, setButtonSizeState] = useState(buttonSize);
+    const [buttonSizeState, setButtonSizeState] = useState(button_size);
 
     useEffect(() => {
-        setIncludeButtonValue(includeButton)
+        setIncludeButtonValue(button)
     },[])
 
     useEffect(() => {
-        setButtonPositionValue(buttonPosition)
+        setButtonPositionValue(button_position)
     },[])
 
     const handleSwitchChange = () => {
@@ -110,7 +111,7 @@ const SectionButtonOptions = ({
 
     return (
         <>
-            <div className={`switch_wrap page_settings border_wrap`}>
+            <div className={`switch_wrap page_settings border_wrap ${!button ? "mb-4" : "" }`}>
                 <h3>Include Button</h3>
                 <IOSSwitch
                     onChange={handleSwitchChange}
@@ -138,17 +139,17 @@ const SectionButtonOptions = ({
                                 <FormControlLabel
                                     value="above"
                                     control={
-                                    <Radio
-                                        checked={ (buttonPositionValue === "above" || !buttonPositionValue) && true}
-                                    />}
+                                        <Radio
+                                            checked={ (buttonPositionValue === "above" || !buttonPositionValue) && true}
+                                        />}
                                     label="Above"
                                 />
                                 <FormControlLabel
                                     value="below"
                                     control={
-                                    <Radio
-                                        checked={buttonPositionValue === "below" && true}
-                                    />}
+                                        <Radio
+                                            checked={buttonPositionValue === "below" && true}
+                                        />}
                                     label="Below"
                                 />
                             </RadioGroup>
@@ -198,14 +199,7 @@ const SectionButtonOptions = ({
                     sections={sections}
                     setSections={setSections}
                     currentSection={currentSection}
-                    value={currentSection["button_text"]}
-                />
-                <DropdownComponent
-                    courses={courses}
-                    buttonCourseId={buttonCourseId}
-                    sections={sections}
-                    setSections={setSections}
-                    id={id}
+                    value={button_text}
                 />
             </div>
         </>

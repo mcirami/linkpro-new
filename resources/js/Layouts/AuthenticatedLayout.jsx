@@ -4,10 +4,10 @@ import ProfileMenu from '@/Components/ProfileMenu.jsx';
 import Menu from '@/Menu/Menu.jsx';
 import AuthenticatedFooter from '@/Layouts/AuthenticatedFooter.jsx';
 
-export default function Authenticated({ children }) {
+export default function Authenticated({ children, ...props }) {
 
     return (
-        <div id="app" className="member">
+        <div id="app_wrap" className="member">
             <div className="my_row">
                 <Menu />
                 <header className="my_row nav_row">

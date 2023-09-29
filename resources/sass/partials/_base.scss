@@ -9,7 +9,7 @@ body.fixed {
     overflow: hidden;
 }
 
-#app {
+#app_wrap {
     &.member {
         .container {
             max-width: 1600px !important;

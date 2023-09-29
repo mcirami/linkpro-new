@@ -2,7 +2,7 @@ import React from 'react';
 
 import {LP_ACTIONS} from '../Reducer';
 import {IoWarningOutline} from 'react-icons/io5';
-import {publishPage} from '../../../Services/LandingPageRequests';
+import {publishPage} from '@/Services/LandingPageRequests.jsx';
 
 const PublishButton = ({pageData, dispatch}) => {
 

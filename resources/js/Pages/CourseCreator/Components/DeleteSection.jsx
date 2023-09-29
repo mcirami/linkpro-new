@@ -1,15 +1,15 @@
 import React from 'react';
-import {deleteSection} from '../../../Services/LandingPageRequests';
+import {deleteSection} from '@/Services/CourseRequests.jsx';
 
 const DeleteSection = ({id, sections, setSections, setOpenIndex}) => {
 
     const handleDeleteClick = (e) => {
         e.preventDefault();
-        setOpenIndex([])
+        setOpenIndex([]);
 
-        const newSectionsArray =  sections.filter((section) => {
+        const newSectionsArray = sections.filter((section) => {
             return section.id !== id;
-        })
+        });
 
         const packets = {
             sections: newSectionsArray
@@ -24,7 +24,7 @@ const DeleteSection = ({id, sections, setSections, setOpenIndex}) => {
     }
 
     return (
-        <a className="button red float-right" href="#"
+        <a className="button red ml-auto" href="#"
            onClick={(e) => handleDeleteClick(e)}>
             Delete Section
         </a>
