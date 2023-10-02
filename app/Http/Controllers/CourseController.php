@@ -183,7 +183,7 @@ class CourseController extends Controller
 
     public function showAllCourses(CourseService $courseService) {
 
-        $authUserID = Auth::user()->id;
+        $authUserID = Auth::id();
 
         $purchasedCourses = $courseService->getUserPurchasedCourses($authUserID);
         $unPurchasedCourses = $courseService->getUnpurchasedCourses($authUserID);

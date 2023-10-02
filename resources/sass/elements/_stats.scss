@@ -5,6 +5,10 @@
         width: auto;
         display: flex;
         padding: 20px 10px;
+        box-shadow: none;
+        -moz-box-shadow: none;
+        -webkit-box-shadow: none;
+        -o-box-shadow: none;
     }
 
     input, select {
@@ -41,9 +45,9 @@
 
         .refresh_button {
             position: absolute;
-            padding: 2px;
-            width: 40px;
-            height: 40px;
+            padding: 5px;
+            width: 50px;
+            height: 50px;
             background: white;
             color: blue;
             border-radius: 6px;
@@ -167,6 +171,7 @@
             }
 
             .column {
+                position: relative;
 
                 @media all and (max-width: 768px) {
                     width: 100%;
@@ -176,24 +181,34 @@
                 select {
                     width: 100%;
                 }
+
+                svg {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    width: 30px;
+                    height: 30px;
+                    color: $blue;
+                }
             }
 
             .react-datepicker-wrapper {
+                width: 100%;
 
                 input {
                     width: 100%;
                 }
 
-                .react-datepicker__input-container:after {
+                /*.react-datepicker__input-container:after {
                     content: '';
-                    background: url('../../../public/images/icon-calendar.png') no-repeat;
+                    background: url('images/icon-calendar.png') no-repeat;
                     background-size: 100%;
                     position: absolute;
                     width: 20px;
                     height: 24px;
                     right: 15px;
                     top: 10px;
-                }
+                }*/
             }
 
             .react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range, .react-datepicker__month-text--selected, .react-datepicker__month-text--in-selecting-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--selected, .react-datepicker__quarter-text--in-selecting-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--selected, .react-datepicker__year-text--in-selecting-range, .react-datepicker__year-text--in-range, .react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected, .react-datepicker__quarter-text--keyboard-selected, .react-datepicker__year-text--keyboard-selected {

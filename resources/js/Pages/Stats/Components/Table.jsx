@@ -40,7 +40,7 @@ const Table = ({
     }
 
     return (
-        <table className="table table-borderless" {...getTableProps()}>
+        <table className="w-full table rounded-t-sm table-borderless" {...getTableProps()}>
             <thead>
             {headerGroups?.map(headerGroup => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
@@ -98,7 +98,7 @@ const Table = ({
                                 {row.original.userStats?.length > 0 &&
                                     <tr>
                                         <td colSpan="5">
-                                            <table className="table table-borderless user_stats">
+                                            <table className="table table-borderless user_stats w-full">
                                                 <thead>
                                                 <tr onClick={(e) => handleRowClick(index)}>
                                                     <th scope="col">

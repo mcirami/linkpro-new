@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {getPageStats} from '../../../Services/StatsRequests';
+import {getPageStats} from '@/Services/StatsRequests.jsx';
 import Filters from './Filters';
 import {isEmpty} from 'lodash';
 import Table from './Table';

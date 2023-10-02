@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Services\StatsServices;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 
 class StatsController extends Controller
 {
-    /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function show() {
 
-        Javascript::put([]);
-        return view('stats.show');
+    /**
+     * @return Response
+     */
+    public function show(): \Inertia\Response {
+
+        return Inertia::render('Stats/Stats');
     }
 
     /**

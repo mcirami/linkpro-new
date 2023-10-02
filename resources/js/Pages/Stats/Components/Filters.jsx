@@ -2,7 +2,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import RefreshButton from './RefreshButton';
-
+import {FaRegCalendarAlt} from 'react-icons/fa';
 export const Filters = ({
                             handleDateChange,
                             startDate,
@@ -86,6 +86,7 @@ export const Filters = ({
                         maxDate={new Date()}
                         placeholderText='Start Date'
                     />
+                    <FaRegCalendarAlt />
                 </div>
                 <div className="column">
                     <DatePicker
@@ -98,6 +99,7 @@ export const Filters = ({
                         maxDate={new Date()}
                         placeholderText='End Date'
                     />
+                    <FaRegCalendarAlt />
                 </div>
                 {tab !== "affiliate" &&
                     <div className="column">

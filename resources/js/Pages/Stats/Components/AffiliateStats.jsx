@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import {
     getAffiliateStats,
-} from '../../../Services/StatsRequests';
+} from '@/Services/StatsRequests.jsx';
 import Filters from './Filters';
 import {isEmpty} from 'lodash';
 import Table from './Table';
