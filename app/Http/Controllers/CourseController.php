@@ -34,14 +34,12 @@ class CourseController extends Controller
         $hasCourseAccess = $this->checkCoursePermission($course);
         $sections        = $course->CourseSections()->get();
 
-        Javascript::put( [
+        return Inertia::render( 'SingleCourse/Course' )->with( [
             'course'            => $course,
-            'sections'          => $sections,
             'creator'           => $user->username,
+            'sections'          => $sections,
             'hasCourseAccess'   => $hasCourseAccess,
         ] );
-
-        return view( 'courses.show' )->with( [ 'course' => $course ] );
     }
 
     public function showCourseLander(Request $request, User $user, Course $course, TrackingServices $trackingServices) {
@@ -58,16 +56,14 @@ class CourseController extends Controller
 
         $sections        = $course->CourseSections()->get();
 
-        Javascript::put( [
+        return Inertia::render( 'SingleCourse/Course' )->with( [
             'course'            => $course,
-            'sections'          => $sections,
             'creator'           => $user->username,
+            'sections'          => $sections,
             'hasCourseAccess'   => $hasCourseAccess,
             'affRef'            => $responseData['affRef'],
             'clickId'           => $responseData['clickId']
         ] );
-
-        return view( 'courses.show' )->with( [ 'course' => $course ] );
     }
 
     public function showCreatorCenter(OfferService $offerService, LandingPageService $landingPageService) {
@@ -82,13 +78,7 @@ class CourseController extends Controller
 
         $offers = $offerService->getOffers($user);
 
-        Javascript::put([
-            'offers'        => $offers,
-            'landingPage'   => $landingPageData
-        ]);
-        //return view('courses.creator');
-
-        return Inertia::render('CreatorCenter/CreatorCenter');
+        return Inertia::render('CreatorCenter/CreatorCenter')->with(['offers' => $offers, 'landingPage' => $landingPageData]);
     }
 
     public function edit(Course $course, CourseService $courseService) {
@@ -102,14 +92,11 @@ class CourseController extends Controller
         $offerData = $courseService->getCourseOfferData($course);
         $categories = Category::with('children')->whereNull('parent_id')->get();
 
-        Javascript::put([
-            'courseData'    => $courseData,
-            'offerData'     => $offerData,
-            'username'      => $user["username"],
+        return Inertia::render('CourseCreator/CourseCreator')->with([
+            'courseArray'    => $courseData,
+            'offerArray'     => $offerData,
             'categories'    => $categories
         ]);
-
-        return Inertia::render('CourseCreator/CourseCreator');
 
     }
 

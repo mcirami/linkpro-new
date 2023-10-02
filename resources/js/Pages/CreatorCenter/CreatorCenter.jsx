@@ -9,9 +9,7 @@ import Preview from './Components/Preview';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import {Head, Link} from '@inertiajs/react';
 
-const offers = user.offers;
-const landingPage = user.landingPage;
-function CreatorCenter() {
+function CreatorCenter({offers, landingPage}) {
 
     const [infoText, setInfoText] = useState({section:'', text:[]});
     const [infoTextOpen, setInfoTextOpen] = useState(false)
@@ -51,7 +49,7 @@ function CreatorCenter() {
                         setTriangleRef,
                         triangleRef
                     }}>
-                        {offers.length === 0 ?
+                        {offers?.length === 0 ?
                             <>
                                 <h3>Become a LinkPro Course Creator to generate revenue from your social following and beyond!</h3>
                                 <ul>

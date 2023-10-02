@@ -13,7 +13,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
@@ -83,13 +82,15 @@ class LandingPageController extends Controller
         $landingPageData = $service->getLPData($landingPage);
         $courses = $courseService->getCourses($user);
 
-        Javascript::put([
+        /*Javascript::put([
             'landingPage' => $landingPageData,
             'courses' => $courses,
             'username' => $user["username"]
-        ]);
+        ]);*/
 
-        return Inertia::render('LPCreator/LPCreator');
+        return Inertia::render('LPCreator/LPCreator')->with(['landingPageArray' => $landingPageData,
+                                                             'courses' => $courses,
+                                                             'username' => $user["username"]]);
     }
 
     /**

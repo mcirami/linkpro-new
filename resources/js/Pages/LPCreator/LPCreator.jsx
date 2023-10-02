@@ -1,7 +1,5 @@
 import React, {useState, useRef, useReducer, useEffect} from 'react';
 
-const landingPageArray = user.landingPage;
-const username = user.username;
 import {Loader} from '../../Utils/Loader';
 import {Flash} from '../../Utils/Flash';
 import InputComponent from './Components/InputComponent';
@@ -34,7 +32,7 @@ import {updateSectionsPositions} from '../../Services/LandingPageRequests';
 import {Head} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 
-function LPCreator() {
+function LPCreator({landingPageArray, courses, username}) {
 
     const [showTiny, setShowTiny]   = useState(false);
 
@@ -296,6 +294,7 @@ function LPCreator() {
                                                                     handleMouseEnter={handleMouseEnter}
                                                                     showTiny={showTiny}
                                                                     setShowTiny={setShowTiny}
+                                                                    courses={courses}
                                                                 />
                                                             )
                                                         })}

@@ -5,12 +5,15 @@ import MenuData from './MenuData';
 import {toUpper} from 'lodash';
 import MenuItem from './MenuItem';
 import {Link, usePage} from '@inertiajs/react';
-const courseData = user?.course;
-const creator = user?.creator;
+//const courseData = user?.course;
+//const creator = user?.creator;
 
 function Menu() {
 
     const { auth } = usePage().props;
+
+    const creator = auth.user.username;
+    const courseData = auth.user.courseData;
 
     const [isHovering, setIsHovering] = useState({
         status: false,

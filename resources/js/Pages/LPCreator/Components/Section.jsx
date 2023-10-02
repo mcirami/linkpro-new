@@ -8,8 +8,6 @@ import SectionButtonOptions from './SectionButtonOptions';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 
-const courses = user.courses;
-
 const Section = ({
                      section,
                      index,
@@ -23,7 +21,8 @@ const Section = ({
                      setShowLoader,
                      handleMouseEnter,
                      showTiny,
-                     setShowTiny
+                     setShowTiny,
+                     courses
 }) => {
 
     const {

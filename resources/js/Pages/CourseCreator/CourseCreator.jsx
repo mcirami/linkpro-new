@@ -1,8 +1,5 @@
 import React, {useState, useRef, useReducer, useEffect} from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
-const courseArray = user.courseData;
-const offerArray = user.offerData;
-const username = user.username;
 
 import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext';
 import {Loader} from '@/Utils/Loader';
@@ -39,9 +36,12 @@ import {
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import {updateSectionsPositions} from '../../Services/CourseRequests';
-import {Head} from '@inertiajs/react';
+import {Head, usePage} from '@inertiajs/react';
 
-function CourseCreator() {
+function CourseCreator({courseArray, offerArray, categories}) {
+
+    const { auth } = usePage().props;
+    const username = auth.user.username;
 
     const [showTiny, setShowTiny]   = useState(false);
 
@@ -262,6 +262,7 @@ function CourseCreator() {
                                                         id={courseData["id"]}
                                                         dispatch={dispatch}
                                                         value={courseData["category"] || ""}
+                                                        categories={categories}
                                                     />
                                                     {courseData["slug"] && offerData["published"] ?
                                                         <div className="url_wrap">

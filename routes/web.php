@@ -43,8 +43,6 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
@@ -177,7 +175,6 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], funct
         });
     });
 
-
     Route::get('/plans', [SubscriptionController::class, 'plans'])->name('plans.get');
     Route::get('/subscribe', [SubscriptionController::class, 'purchase'])->name('subscribe.get');
 
@@ -223,7 +220,7 @@ Route::post('/braintree/webhooks/sub-went-active', [WebhookController::class, 's
 
 Route::get('/get-icons', [IconController::class, 'getIcons']);
 
-Route::view('/','home')->name('guest-home');
+//Route::view('/','home')->name('guest-home');
 
 Route::view('/terms-and-conditions', 'utility.terms')->name('terms');
 Route::view('/privacy-policy', 'utility.privacy')->name('privacy');

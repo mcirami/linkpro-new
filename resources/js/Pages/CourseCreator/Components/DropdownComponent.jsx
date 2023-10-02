@@ -3,12 +3,11 @@ import {updateData} from '@/Services/CourseRequests.jsx';
 import {LP_ACTIONS} from '../Reducer';
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 
-const categories = user.categories;
-
 const DropdownComponent = ({
                                id,
                                dispatch,
-                               value
+                               value,
+                               categories
 }) => {
 
     const [selectedCategory, setSelectedCategory] = useState(value)

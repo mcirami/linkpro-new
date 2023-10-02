@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
@@ -32,6 +33,7 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
         $subscription = null;
+        $course = $request->route('course');
 
         if($user) {
             $subscription = $user->subscriptions()->first();
@@ -48,7 +50,8 @@ class HandleInertiaRequests extends Middleware
                     'subscription'  => [
                         'name'      => $subscription ? $subscription->name : null,
                         'ends_at'   => $subscription ? $subscription->ends_at : null
-                    ]
+                    ],
+                    'courseData'   => $course
                 ],
             ],
             'ziggy' => fn () => [

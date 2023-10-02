@@ -4,7 +4,7 @@ import ProfileMenu from '@/Components/ProfileMenu.jsx';
 import Menu from '@/Menu/Menu.jsx';
 import AuthenticatedFooter from '@/Layouts/AuthenticatedFooter.jsx';
 
-export default function Authenticated({ children, ...props }) {
+export default function Authenticated({ children }) {
 
     return (
         <div id="app_wrap" className="member">

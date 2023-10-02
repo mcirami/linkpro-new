@@ -53,7 +53,7 @@ const TableComponent = ({offers}) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {offers.map((offer) => {
+                    {offers?.map((offer) => {
                         return (
                             <SwitchOptions
                                 key={offer.id}
