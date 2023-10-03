@@ -160,7 +160,7 @@ export const updateLinkStatus = (packets, itemID, url) => {
 
 export const deleteLink = (packets, itemID) => {
 
-    return axios.delete('/dashboard/links/delete/' + itemID, packets).then(
+    return axios.put('/dashboard/links/delete/' + itemID, packets).then(
         (response) => {
             const links = response.data.links;
             const returnMessage = JSON.stringify(response.data.message);

@@ -1,5 +1,5 @@
 import React from 'react';
-import {deleteSection} from '../../../Services/LandingPageRequests';
+import {deleteSection} from '@/Services/LandingPageRequests.jsx';
 
 const DeleteSection = ({id, sections, setSections, setOpenIndex}) => {
 

@@ -20,13 +20,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LandingPageController extends Controller
 {
+
     /**
      * @param User $user
      * @param LandingPage $landingPage
      *
-     * @return Application|Factory|View|never
+     * @return \Inertia\Response
      */
-    public function show(User $user, LandingPage $landingPage) {
+    public function show(User $user, LandingPage $landingPage): \Inertia\Response {
 
         /*if (!$landingPage->published) {
             return abort(404);
@@ -39,12 +40,11 @@ class LandingPageController extends Controller
                                 ->orderBy('position')
                                 ->get();
 
-        Javascript::put([
-            'livePage' => $landingPage,
-            'liveSections' => $sections,
-        ]);
 
-        return view('landing-page.show');
+        return Inertia::render('LiveLP/LandingPage')->with([
+            'page' => $landingPage,
+            'sections' => $sections,
+        ]);
     }
 
 

@@ -93,7 +93,7 @@ Route::middleware('auth')->group(function () {
             Route::put('/links/update/{link}', [LinkController::class, 'update']);
             Route::patch('/links/status/{link}', [LinkController::class, 'updateStatus']);
             Route::patch('/links/update-positions', [LinkController::class, 'updatePositions']);
-            Route::delete('/links/delete/{link}', [LinkController::class, 'destroy']);
+            Route::put('/links/delete/{link}', [LinkController::class, 'destroy']);
 
             Route::post('/page/new', [PageController::class, 'store'])->name('page.new');
             Route::patch('/page/update-header-image/{page}', [PageController::class, 'updateHeaderImage'])->name('page.header.update');
@@ -107,7 +107,7 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/pages/folder/links/{folder}', [FolderController::class, 'getFolderLinks'])->name('get.folder.links');
             Route::patch('/folder/status/{folder}', [FolderController::class, 'updateFolderStatus']);
-            Route::delete('/folder/delete/{folder}', [FolderController::class, 'destroy']);
+            Route::put('/folder/delete/{folder}', [FolderController::class, 'destroy']);
             Route::patch('/folder/update-name/{folder}', [FolderController::class, 'updateName']);
         });
 
@@ -150,7 +150,7 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], funct
             Route::patch('/save-image/{landing_page}', [LandingPageController::class, 'saveImage'])->name('lp.save.image');
             Route::patch('/save-data/{landing_page}', [LandingPageController::class, 'saveLandingPageData'])->name('lp.save.data');
             Route::post('/add-section/{landing_page}', [LandingPageController::class, 'addSection'])->name('lp.add.section');
-            Route::delete('/delete-section/{landing_page_section}', [LandingPageController::class, 'deleteSection'])->name('delete.section');
+            Route::put('/delete-section/{landing_page_section}', [LandingPageController::class, 'deleteSection'])->name('delete.section');
             Route::patch('/update-section-data/{landing_page_section}', [LandingPageController::class, 'updateSectionData'])->name('update.section.data');
             Route::patch('/update-section-image/{landing_page_section}', [LandingPageController::class, 'updateSectionImage'])->name('update.section.image');
             Route::patch('/publish/{landing_page}', [LandingPageController::class, 'publishLandingPage'])->name('publish.landing_page');
@@ -163,7 +163,7 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], funct
             Route::patch('/save-data/{course}', [CourseController::class, 'saveCourseData'])->name('course.save.data');
             Route::patch('/save-image/{course}', [CourseController::class, 'saveImage'])->name('course.save.image');
             Route::post('/add-section/{course}', [CourseController::class, 'addSection'])->name('course.add.section');
-            Route::delete('/delete-section/{course_section}', [CourseController::class, 'deleteSection'])->name('delete.course.section');
+            Route::put('/delete-section/{course_section}', [CourseController::class, 'deleteSection'])->name('delete.course.section');
             Route::patch('/update-section-data/{course_section}', [CourseController::class, 'updateSectionData'])->name('update.course.section.data');
             Route::patch('/update-sections-positions', [CourseController::class, 'updateSectionsPositions']);
         });

@@ -190,7 +190,7 @@ export const updateSectionImage = (packets, id) => {
  */
 export const deleteSection = (id, packets) => {
 
-    return axios.delete('/creator-center/landing-page/delete-section/' + id, packets)
+    return axios.put('/creator-center/landing-page/delete-section/' + id, packets)
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);

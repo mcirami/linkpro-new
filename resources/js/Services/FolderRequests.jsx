@@ -43,7 +43,7 @@ export const addFolder = (packets) => {
  */
 export const deleteFolder = (packets, folderID) => {
 
-    return axios.delete('/dashboard/folder/delete/' + folderID, packets)
+    return axios.put('/dashboard/folder/delete/' + folderID, packets)
     .then(
         (response) => {
             const links = response.data.links;

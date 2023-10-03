@@ -153,7 +153,7 @@ export const updateSectionData = (packets, id, elementName) => {
  */
 export const deleteSection = (id, packets) => {
 
-    return axios.delete('/creator-center/course/delete-section/' + id, packets)
+    return axios.put('/creator-center/course/delete-section/' + id, packets)
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
