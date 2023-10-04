@@ -54,7 +54,7 @@ function Menu() {
         });
     }
 
-    const handleSubmit = async (e) => {
+    const logout = async (e) => {
         e.preventDefault();
 
         const url = courseData ? '/logout?course=' + courseData["slug"] : '/logout';
@@ -119,7 +119,7 @@ function Menu() {
                             <a style={{ color: courseData && courseData["header_text_color"] }}
                                id="logout"
                                href="#"
-                               onClick={(e) => handleSubmit(e)}
+                               onClick={(e) => logout(e)}
                                onMouseOver={() => handleMouseOver("logout")}
                                onMouseOut={handleMouseOut}>
                                 <span className="menu_icon" style={ courseData && { color: courseData["header_text_color"]}}>

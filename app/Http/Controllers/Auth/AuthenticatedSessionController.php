@@ -129,14 +129,18 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request)
     {
+        $courseSlug = isset($_GET['course']) && $_GET['course'] !== "" ? $_GET['course'] : null;
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        $path = $courseSlug ? "/". $courseSlug . "/login" : "/login";
+
+        return response()->json(['path' => $path]);
     }
 }

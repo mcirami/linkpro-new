@@ -11,8 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 
 class UserController extends Controller
@@ -110,7 +109,7 @@ class UserController extends Controller
 
         return view(
             'users.emailSubscription', [
-                'siteURL'       => \URL::to('/') . "/",
+                'siteURL'       => URL::to('/') . "/",
                 'message'       => $data["message"],
                 'userID'        => $user['id'],
                 'subscribed'    => $data['subscribed']
@@ -118,7 +117,7 @@ class UserController extends Controller
         );
     }
 
-    public function logout(Request $request) {
+    /*public function logout(Request $request) {
         Auth::logout();
         Session::forget('url.intended');
         Session::forget('permissions');
@@ -132,5 +131,5 @@ class UserController extends Controller
         $request->session()->flush();
 
         return response()->json(['path' => $path, 'course' => $course]);
-    }
+    }*/
 }

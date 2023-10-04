@@ -112,7 +112,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::get('/get-course-categories', [CourseController::class, 'getCourseCategories']);
-        Route::post('logout', [UserController::class, 'logout'])->name('logout');
+        //Route::post('logout', [UserController::class, 'logout'])->name('logout');
 });
 
 
