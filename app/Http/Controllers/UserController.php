@@ -123,7 +123,7 @@ class UserController extends Controller
         Session::forget('url.intended');
         Session::forget('permissions');
         $course = $request->get('course');
-        if (isset($course)) {
+        if (isset($course) && $course !== "") {
             $path = "/". $course . "/login";
         } else {
             $path = "/login";

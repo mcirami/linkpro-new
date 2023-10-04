@@ -181,16 +181,19 @@ class CourseController extends Controller
         return response()->json(['message' => "Section Deleted"]);
     }
 
-    public function showAllCourses(CourseService $courseService) {
+    /**
+     * @param CourseService $courseService
+     *
+     * @return mixed
+     */
+    public function showAllCourses(CourseService $courseService): mixed {
 
         $authUserID = Auth::id();
 
         $purchasedCourses = $courseService->getUserPurchasedCourses($authUserID);
         $unPurchasedCourses = $courseService->getUnpurchasedCourses($authUserID);
 
-        Javascript::put([]);
-
-        return view('courses.all')->with([
+        return Inertia::render('AllCourses/Courses')->with([
             'purchasedCourses'      => $purchasedCourses,
             'unPurchasedCourses'    => $unPurchasedCourses,
         ]);

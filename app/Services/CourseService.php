@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\CourseSection;
 use App\Models\Link;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -128,21 +129,35 @@ class CourseService {
     }
 
     public function getUnpurchasedCourses($authUserID) {
-        return Course::whereDoesntHave('purchases',
+        $courses = Course::whereDoesntHave('purchases',
             function (Builder $query)  use($authUserID) {
             $query->where('user_id', '=', $authUserID);
         })->whereHas('offer', function($query) {
             $query->where('active', true)->where('public', true)->where('published', true);
         })->leftJoin('users', 'users.id', '=', 'courses.user_id')
-          ->select('courses.*', 'users.username')
-          ->get();
+          ->leftJoin('course_sections', function($query) {
+              $query->on('course_sections.course_id', '=', 'courses.id')
+                    ->whereNotNull('course_sections.video_link');
+          })
+            ->select('courses.*', 'users.username', 'course_sections.video_link', 'course_sections.position')
+            ->get();
+
+        $unique = $courses->sortBy('position')->unique('id');
+        return $unique->values()->all();
     }
 
     public function getUserPurchasedCourses($userID) {
-        return Course::whereHas('purchases', function (Builder $query) use($userID) {
+        $courses = Course::whereHas('purchases', function (Builder $query) use($userID) {
             $query->where('user_id', 'like', $userID);
         })->leftJoin('users', 'users.id', '=', 'courses.user_id')
-          ->select('courses.*', 'users.username')->get();
+            ->leftJoin('course_sections', function($query) {
+                $query->on('course_sections.course_id', '=', 'courses.id')
+                      ->whereNotNull('course_sections.video_link');
+            })
+            ->select('courses.*', 'users.username', 'course_sections.video_link', 'course_sections.position')->get();
+
+        $unique = $courses->sortBy('position')->unique('id');
+        return $unique->values()->all();
     }
 
     public function updateAllSectionsPositions($request) {
