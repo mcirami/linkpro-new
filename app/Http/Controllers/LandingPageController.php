@@ -49,18 +49,18 @@ class LandingPageController extends Controller
 
 
     /**
-     * @return RedirectResponse|Response
+     * @return mixed
      */
-    public function store() {
+    public function store(): mixed {
         $user = Auth::user();
 
         if ($user->LandingPages()->exists()) {
-            return redirect()->route('creator.center');
+            return Inertia::render('CreatorCenter/CreatorCenter');
         } else {
             $landingPage = $user->LandingPages()->create([]);
         }
 
-        return Inertia::location('/creator-center/course/' . $landingPage->id);
+        return Inertia::location('/creator-center/landing-page/' . $landingPage->id);
     }
 
 

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {FiThumbsDown, FiThumbsUp} from 'react-icons/Fi';
-//import NumberFormat from 'react-currency-format';
+import CurrencyInput from 'react-currency-input-field';
 import validator from 'validator/es';
 import {
     updateData,
@@ -32,6 +32,8 @@ const InputComponent = ({
     const [charactersLeft, setCharactersLeft] = useState(maxChar);
     const [isValid, setIsValid] = useState(false)
     let dollarUSLocale = Intl.NumberFormat('en-US');
+    const limit = 1000;
+    const prefix = '$';
 
     useEffect(() => {
         if(maxChar) {
@@ -58,12 +60,11 @@ const InputComponent = ({
         }
     },[])
 
-    const handleChange = (e) => {
-        let value;
+    const handleChange = (value, _, values) => {
+        //let value;
 
         if (type === "currency") {
-            value = e.floatValue;
-            if (isNaN(value)) {
+            if (Number.isNaN(Number(value)) || Number(value) > limit) {
                 setIsValid(false);
             } else {
                 setIsValid(true);
@@ -290,11 +291,11 @@ const InputComponent = ({
 
                 return (
                     <>
-                        <input
+                        <CurrencyInput
                             className={`animate ${offerData[elementName]} && active`}
-                            type="text"
-                            value={offerData[elementName] ? "$" + dollarUSLocale.format(offerData[elementName]) : ""}
-                            onChange={(e) => handleChange(e)}
+                            decimalsLimit={2}
+                            defaultValue={offerData[elementName] || ""}
+                            onValueChange={(e) => handleChange(e)}
                             onKeyDown={event => {
                                 if (event.key === 'Enter') {
                                     handleSubmit(event);
@@ -302,6 +303,8 @@ const InputComponent = ({
                             }}
                             onBlur={(e) => handleSubmit(e)}
                             onFocus={(e) => HandleFocus(e.target)}
+                            prefix={prefix}
+                            step={.1}
                         />
                         <label>{placeholder}</label>
                     </>
