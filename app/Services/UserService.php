@@ -65,11 +65,12 @@ class UserService {
         }
 
         $data = [
-            'user' => $this->user,
-            'subscription' => $subscription,
-            'payment_method' => $paymentMethod,
-            'token' => $token,
-            'payment_method_token' => $paymentMethodToken
+            'user'                  => $this->user,
+            /*'permissions'           => $this->user->getAllPermissions()->pluck('name'),*/
+            'subscription'          => $subscription,
+            'payment_method'        => $paymentMethod,
+            'token'                 => $token,
+            'payment_method_token'  => $paymentMethodToken
         ];
 
         return $data;
@@ -108,6 +109,12 @@ class UserService {
 
             $result = $gateway->customer()->update(
                 $customerID,
+                /*[
+                    'paymentMethodNonce' => $request->payment_method_nonce,
+                    'options' => [
+                        'makeDefault' => true,
+                    ],
+                ]*/
                 [
                     'paymentMethodNonce' => $request->payment_method_nonce,
                     'creditCard' => [
@@ -128,8 +135,16 @@ class UserService {
 
             if ($result->success) {
 
-                $this->user->pm_last_four = $result->customer->paymentMethods[0]->last4;
+                $pmLastFour = $result->customer->paymentMethods[0]->last4;
+
+                $this->user->pm_last_four = $pmLastFour;
                 $this->user->save();
+
+                /*return [
+                    'success'       => true,
+                    'message'       => "Credit Card Updated",
+                    'pmLastFour'    => $pmLastFour
+                ];*/
 
             } else {
                 $errorString = "";
@@ -138,7 +153,11 @@ class UserService {
                     $errorString .= 'Error: ' . $error->code . ": " . $error->message . "\n";
                 }
 
-                return back()->withErrors('An error occurred with the message: '. $result->message);
+                /*return [
+                    'status'    => 'error',
+                    'message'   => 'An error occurred with the fucking message: '. $result->message,
+                ];*/
+                return back()->withErrors('An error occurred with the message: '. $errorString);
             }
 
         } else {
@@ -147,7 +166,8 @@ class UserService {
                 echo($error->code . ": " . $error->message . "\n");
             }
 
-            return back()->withErrors('An error occurred with the message: '. $customer->message);
+            return response()->json(['success' => false, 'error' => 'An error occurred with the shit ass message: '. $customer->message]);
+            //return back()->withErrors('An error occurred with the message: '. $customer->message);
         }
     }
 

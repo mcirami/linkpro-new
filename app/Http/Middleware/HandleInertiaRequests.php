@@ -31,7 +31,10 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $user = $request->user();
+        $user = null;
+        if($request->user()) {
+            $user = $request->user()->makeHidden(['mailchimp_token', 'mailchimp_lists', 'mailchimp_server' ]);
+        }
         $subscription = null;
         $course = $request->route('course');
 
@@ -43,8 +46,8 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => [
-                    'username'      => $user ? $user->username : null,
-                    'permissions'   => $user ? $user->getPermissionsViaRoles() : null,
+                    'userInfo'      => $user,
+                    'permissions'   => $user ? $user->getAllPermissions()->pluck('name') : null,
                     'roles'         => $user ? $user->getRoleNames() : null,
                     'avatar'        => $user ? $user->avatar : null,
                     'subscription'  => [

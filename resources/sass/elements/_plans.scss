@@ -195,6 +195,7 @@
                 }
 
                 h2 {
+                    font-size: 1.8rem;
                     margin-bottom: 20px;
                     padding-bottom: 20px;
                     border-bottom: 1px solid $borderGray;
@@ -209,6 +210,10 @@
                     color: $black;
                     text-align: center;
                     /*margin-top: auto;*/
+                }
+
+                h5 {
+                    @include osbold;
                 }
 
                 &.update_info {

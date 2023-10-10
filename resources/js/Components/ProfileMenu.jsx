@@ -30,7 +30,7 @@ const ProfileMenu = () => {
                                 Vapor.asset('images/profile-placeholder-img.png') :
                                 auth.user.avatar }
                              alt="User Profile" />
-                        <span id="username">{auth.user.username}</span>
+                        <span id="username">{auth.user.userInfo.username}</span>
                     </Link>
                 </li>
             </ul>

@@ -7,11 +7,14 @@ use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
+use Inertia\Inertia;
+use Inertia\Response;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 
 class UserController extends Controller
@@ -33,26 +36,19 @@ class UserController extends Controller
     /**
      * @param UserService $userService
      *
-     * @return Application|Factory|View
+     * @return \Inertia\Response
      */
-    public function edit(UserService $userService) {
-
-        $landingPageData = null;
+    public function edit(UserService $userService): \Inertia\Response {
 
         $data = $userService->getUserInfo();
 
-        Javascript::put([
-            'user_info' => Auth::user(),
-            'landingPageData' => $landingPageData
-        ]);
-
-        return view('users.edit', [
+        return Inertia::render('User/User')->with([
             'user'                  => $data['user'],
+            /*'permissions'           => $data['permissions'],*/
             'subscription'          => $data["subscription"],
             'payment_method'        => $data["payment_method"],
             'token'                 => $data['token'],
-            'payment_method_token'  => $data['payment_method_token'],
-            'landingPageData'       => $landingPageData,
+            'payment_method_token'  => $data['payment_method_token']
         ]);
     }
 
@@ -70,18 +66,22 @@ class UserController extends Controller
         return redirect()->back()->with(['success' => 'Changes saved successfully']);
     }
 
+
     /**
      * @param Request $request
      * @param UserService $userService
      *
-     * @return RedirectResponse
+     *
      */
     public function updateCard(Request $request, UserService $userService) {
 
+        dd($request);
         $userService->updateCard($request);
 
+        //return response()->json(['success' => true, 'message' => "Credit Card Updated", 'pmLastFour' => $pmLastFour]);
         return redirect()->back()->with(['success' => 'Credit Card Updated']);
-
+        //return Inertia::render('User/User', ['success' => true, 'message' => "Credit Card Updated", 'pmLastFour' => $pmLastFour]);
+        //return response()->json($pmLastFour);
     }
 
     /**

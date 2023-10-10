@@ -12,8 +12,9 @@ function Menu() {
 
     const { auth } = usePage().props;
 
-    const creator = auth.user.username;
+    const creator = auth.user.userInfo.username;
     const courseData = auth.user.courseData;
+    const userPermissions = auth.user.permissions;
 
     const [isHovering, setIsHovering] = useState({
         status: false,
@@ -22,13 +23,7 @@ function Menu() {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const getUserPermissions = (permissions) => {
-        return permissions.map((permission) => {
-            return permission.name;
-        });
-    }
 
-    const userPermissions = useMemo(() => getUserPermissions(auth.user.permissions), [auth.user.permissions]);
     const handleOnClick = (e) => {
         e.preventDefault();
         setIsOpen(!isOpen);

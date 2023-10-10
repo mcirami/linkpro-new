@@ -24,6 +24,7 @@
         "lodash.range": "^3.2.0",
         "prettier": "^2.3.2",
         "prop-types": "^15.7.2",
+        "react-braintree-fields": "^2.0.0",
         "react-color": "^2.19.3",
         "react-currency-input-field": "^3.6.11",
         "react-datepicker": "^4.5.0",

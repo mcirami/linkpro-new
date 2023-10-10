@@ -66,7 +66,13 @@ class CourseController extends Controller
         ] );
     }
 
-    public function showCreatorCenter(OfferService $offerService, LandingPageService $landingPageService) {
+    /**
+     * @param OfferService $offerService
+     * @param LandingPageService $landingPageService
+     *
+     * @return \Inertia\Response
+     */
+    public function showCreatorCenter(OfferService $offerService, LandingPageService $landingPageService): \Inertia\Response {
 
         $user = Auth::user();
 
@@ -128,7 +134,14 @@ class CourseController extends Controller
         return response()->json(['message' => $key["key"] .  " Updated", 'slug' => $key["slug"]]);
     }
 
-    public function saveImage(Request $request, Course $course, CourseService $courseService) {
+    /**
+     * @param Request $request
+     * @param Course $course
+     * @param CourseService $courseService
+     *
+     * @return JsonResponse
+     */
+    public function saveImage(Request $request, Course $course, CourseService $courseService): JsonResponse {
         $userID = Auth::id();
 
         if ($course->user_id != $userID) {

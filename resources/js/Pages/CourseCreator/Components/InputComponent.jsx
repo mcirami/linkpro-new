@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FiThumbsDown, FiThumbsUp} from 'react-icons/Fi';
 import CurrencyInput from 'react-currency-input-field';
 import validator from 'validator/es';
@@ -60,18 +60,24 @@ const InputComponent = ({
         }
     },[])
 
-    const handleChange = (value, _, values) => {
-        //let value;
-
-        if (type === "currency") {
-            if (Number.isNaN(Number(value)) || Number(value) > limit) {
-                setIsValid(false);
-            } else {
-                setIsValid(true);
-            }
+    const handleCurrencyChange = (value, _) => {
+        if (Number.isNaN(Number(value)) || Number(value) > limit) {
+            setIsValid(false);
         } else {
-            value = e.target.value;
+            setIsValid(true);
         }
+
+        dispatchOffer({
+            type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
+            payload: {
+                value: value,
+                name: elementName
+            }
+        })
+    }
+
+    const handleChange = (e) => {
+        let value = e.target.value;
 
         let check;
 
@@ -124,20 +130,13 @@ const InputComponent = ({
                     }
                 })
             }
-        } else if (type === "currency") {
-
-            dispatchOffer({
-                type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
-                payload: {
-                    value: value,
-                    name: elementName
-                }
-            })
         }
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        console.log(e.target.value);
 
         if (e.target.value === "") {
             e.target.classList.remove('active');
@@ -295,7 +294,7 @@ const InputComponent = ({
                             className={`animate ${offerData[elementName]} && active`}
                             decimalsLimit={2}
                             defaultValue={offerData[elementName] || ""}
-                            onValueChange={(e) => handleChange(e)}
+                            onValueChange={handleCurrencyChange}
                             onKeyDown={event => {
                                 if (event.key === 'Enter') {
                                     handleSubmit(event);
