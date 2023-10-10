@@ -11,11 +11,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 use Inertia\Response;
-use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 
 class UserController extends Controller
 {
@@ -75,7 +73,6 @@ class UserController extends Controller
      */
     public function updateCard(Request $request, UserService $userService) {
 
-        dd($request);
         $userService->updateCard($request);
 
         //return response()->json(['success' => true, 'message' => "Credit Card Updated", 'pmLastFour' => $pmLastFour]);
@@ -116,20 +113,4 @@ class UserController extends Controller
                 ]
         );
     }
-
-    /*public function logout(Request $request) {
-        Auth::logout();
-        Session::forget('url.intended');
-        Session::forget('permissions');
-        $course = $request->get('course');
-        if (isset($course) && $course !== "") {
-            $path = "/". $course . "/login";
-        } else {
-            $path = "/login";
-        }
-
-        $request->session()->flush();
-
-        return response()->json(['path' => $path, 'course' => $course]);
-    }*/
 }

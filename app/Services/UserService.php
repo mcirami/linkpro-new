@@ -90,7 +90,9 @@ class UserService {
             $this->user->password = Hash::make($request->password);
         }
 
-        $this->user->email = $request->email;
+        if ($request->email) {
+            $this->user->email = $request->email;
+        }
 
         $this->user->save();
     }

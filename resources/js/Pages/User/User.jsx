@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import {Head, usePage} from '@inertiajs/react';
 import PaymentComponent from '@/Pages/User/Components/PaymentComponent.jsx';
+import UserForm from '@/Pages/User/Components/UserForm.jsx';
 
 const User = ({
                   subscription,
@@ -26,10 +27,6 @@ const User = ({
         setCurrentDateTime(date);
     }, [])
 
-    const handleChange = () => {
-
-    }
-
     return (
 
         <AuthenticatedLayout>
@@ -39,64 +36,14 @@ const User = ({
                     <h2 className="page_title">Update Account Settings</h2>
                     <div className={`card inline-block ${permissions.includes("view subscription details") &&
                     (!subscription || subscription.braintree_id === " bypass" ? " two_columns" : "")}`}>
-                        {/*@if (count($errors) > 0)
-                        <div className="alert alert-danger">
-                            <ul>
-                                @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif*/}
                         <div className="card-body">
                             <div className={`my_row ${permissions.includes("view subscription details") && " three_columns "} ${!subscription || subscription.braintree_id === "bypass" ? "two_columns" : ""}`}>
                                 <div className={`column update_info ${!permissions.includes('view subscription details') ? "w-full" : ""}`}>
-                                    <h2 className="text-uppercase">Account Info</h2>
-                                    <form method="POST" action={`/update-account/${userInfo.id}`}>
-                                        <div className="form_inputs">
-                                            <div className="user_account mb-5 my_row">
-                                                <h5 className="my_row mb-4 text-left">Update Email</h5>
-                                                <div className="input_wrap my_row relative">
-                                                    <input id="email"
-                                                           type="email"
-                                                           className="w-full animate bg-white @error('email') is-invalid @enderror"
-                                                           name="email"
-                                                           value={ userInfo.email }
-                                                           autoComplete="email"
-                                                           required
-                                                           onChange={handleChange}
-                                                    />
-                                                    <label className="z-2" htmlFor="email">E-Mail Address</label>
-                                                </div>
-                                               {/* @if ($errors->has('email'))
-                                                <span className="invalid-feedback" role="alert">
-                                                                <strong>{{ $errors->first('email')  }}</strong>
-                                                            </span>
-                                                @endif*/}
-                                            </div>
-                                            <div className="user_account">
-                                                <h5 className="my_row my_row mb-4 text-left">Change Password</h5>
-                                                <div className="input_wrap my_row relative mb-2">
-                                                    <input id="password" type="password" className="w-full animate bg-white @error('password') is-invalid @enderror" name="password" autoComplete="new-password" />
-                                                    <label className="z-2" htmlFor="password">New Password</label>
-                                                </div>
-                                               {/* @error($errors->has('password'))
-                                                <span className="invalid-feedback" role="alert">
-                                                                <strong>{{ $errors->first('password')  }}</strong>
-                                                            </span>
-                                                @enderror*/}
-                                            </div>
-                                            <div className="input_wrap my_row relative">
-                                                <input id="password-confirm" type="password" className="w-full animate bg-white" name="password_confirmation" autoComplete="new-password" />
-                                                <label className="z-2" htmlFor="password-confirm">Confirm New Password</label>
-                                            </div>
-                                        </div>
-                                        <div className="form_buttons">
-                                            <button type="submit" className="button blue text-uppercase">
-                                                Update My Info
-                                            </button>
-                                        </div>
-                                    </form>
+
+                                    <UserForm
+                                        userInfo={userInfo}
+                                    />
+
                                 </div>
                                 {permissions.includes('view subscription details') &&
 
@@ -123,7 +70,7 @@ const User = ({
                                                     </div>
                                                     <div className="canceled_text">
                                                         <p>Your subscrition has been cancelled. It will end on:<br />
-                                                            <span>{/*{{\Carbon\Carbon::createFromDate($subscription->ends_at)->format('F j, Y')}}*/}
+                                                            <span>
                                                                 {new Date(subscription.ends_at).toLocaleDateString()}
                                                             </span>
                                                         </p>

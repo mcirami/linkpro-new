@@ -27,9 +27,15 @@ class UpdateUserRequest extends FormRequest
     {
         $user = Auth::User();
 
-        if ($request->password !== null) {
+        if ($request->password && $request->email) {
             return [
                 'email' => 'required|string|email|max:255|unique:users,email,' . $user["id"],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+            ];
+        }
+
+        if ($request->password) {
+            return [
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
             ];
         }
@@ -37,5 +43,6 @@ class UpdateUserRequest extends FormRequest
         return [
             'email' => 'required|string|email|max:255|unique:users,email,' . $user["id"],
         ];
+
     }
 }

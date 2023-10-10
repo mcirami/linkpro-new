@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/subscribe/check-code', [SubscriptionController::class, 'checkCode'])->name('check.code');
     Route::post('/change-plan', [SubscriptionController::class, 'changePlan'])->name('subscribe.change.plan');
 
-    Route::post('/update-account/{user}', [UserController::class, 'updateAccountInfo'])->name('user.update.info');
+    Route::put('/update-account/{user}', [UserController::class, 'updateAccountInfo'])->name('user.update.info');
     Route::post('/update-card', [UserController::class, 'updateCard'])->name('user.update.card');
     Route::post('/update-payment-method', [UserController::class, 'updateMethod'])->name('user.update.payment');
 
@@ -112,7 +112,6 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/get-course-categories', [CourseController::class, 'getCourseCategories']);
-    //Route::post('logout', [UserController::class, 'logout'])->name('logout');
 });
 
 
@@ -219,8 +218,6 @@ Route::post('/braintree/webhooks/charged-successfully', [WebhookController::clas
 Route::post('/braintree/webhooks/sub-went-active', [WebhookController::class, 'subWentActive']);
 
 Route::get('/get-icons', [IconController::class, 'getIcons']);
-
-//Route::view('/','home')->name('guest-home');
 
 Route::view('/terms-and-conditions', 'utility.terms')->name('terms');
 Route::view('/privacy-policy', 'utility.privacy')->name('privacy');
