@@ -41,7 +41,7 @@ import {Head, usePage} from '@inertiajs/react';
 function CourseCreator({courseArray, offerArray, categories}) {
 
     const { auth } = usePage().props;
-    const username = auth.user.username;
+    const username = auth.user.userInfo.username;
 
     const [showTiny, setShowTiny]   = useState(false);
 

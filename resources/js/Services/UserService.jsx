@@ -1,10 +1,12 @@
 import axios from 'axios';
 import EventBus from '../Utils/Bus';
 import {isEmpty} from 'lodash';
-
-const userSub = user.userSub;
+import {usePage} from '@inertiajs/react';
 
 export const checkSubStatus = () => {
+
+    const { auth } = usePage().props;
+    const userSub = auth.user.subscription;
 
     if (userSub) {
 
@@ -186,6 +188,65 @@ export const acceptTerms = () => {
                 console.error(error.response);
             }
 
+        } else {
+            console.error("ERROR:: ", error);
+        }
+
+        return {
+            success : false
+        }
+    });
+}
+
+export const updateUserInfo = (packets, userId) => {
+
+    return axios.put('/update-account/' + userId, packets).then(
+        (response) => {
+            const messageData = response.data.message;
+            let message = "";
+            if (messageData.email && messageData.password) {
+                message = "Your email and password have been updated";
+            } else if (messageData.email ) {
+                message = "Your email has been updated";
+            } else {
+                message = "Your password has been updated";
+            }
+
+            EventBus.dispatch("success", { message: message });
+
+            return {
+                success : true,
+            }
+        },
+
+    ).catch(error => {
+        if (error.response) {
+            EventBus.dispatch("error", { message: "there was a problem updating your info" });
+            console.error(error.response);
+        } else {
+            console.error("ERROR:: ", error);
+        }
+
+        return {
+            success : false
+        }
+    });
+}
+export const getUserPages = () => {
+
+    return axios.get('/get-user-pages').then(
+        (response) => {
+            const pages = response.data.pages;
+
+            return {
+                success : true,
+                pages : pages,
+            }
+        },
+
+    ).catch(error => {
+        if (error.response) {
+            console.error(error.response);
         } else {
             console.error("ERROR:: ", error);
         }

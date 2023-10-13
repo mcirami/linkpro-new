@@ -85,16 +85,25 @@ class UserService {
 
     public function updateUserInfo($request, $user) {
 
+        $message = [
+            'password'  => null,
+            'email'     => null
+        ];
 
         if ($request->password) {
             $this->user->password = Hash::make($request->password);
+            $message["password"] =  "password";
         }
 
         if ($request->email) {
             $this->user->email = $request->email;
+
+            $message["email"] = "email";
         }
 
         $this->user->save();
+
+        return $message;
     }
 
     public function updateCard($request) {

@@ -33,7 +33,7 @@ class HandleInertiaRequests extends Middleware
     {
         $user = null;
         if($request->user()) {
-            $user = $request->user()->makeHidden(['mailchimp_token', 'mailchimp_lists', 'mailchimp_server' ]);
+            $user = $request->user()->makeHidden(['mailchimp_token', 'mailchimp_lists', 'mailchimp_server', 'braintree_id', 'permissions', 'roles', 'settings' ]);
         }
         $subscription = null;
         $course = $request->route('course');
@@ -49,10 +49,11 @@ class HandleInertiaRequests extends Middleware
                     'userInfo'      => $user,
                     'permissions'   => $user ? $user->getAllPermissions()->pluck('name') : null,
                     'roles'         => $user ? $user->getRoleNames() : null,
-                    'avatar'        => $user ? $user->avatar : null,
                     'subscription'  => [
-                        'name'      => $subscription ? $subscription->name : null,
-                        'ends_at'   => $subscription ? $subscription->ends_at : null
+                        'name'              => $subscription ? $subscription->name : null,
+                        'ends_at'           => $subscription ? $subscription->ends_at : null,
+                        'braintree_status'  => $subscription ? $subscription->braintree_status : null,
+                        'braintree_id'      => $subscription ? $subscription->braintree_id : null,
                     ],
                     'courseData'   => $course
                 ],

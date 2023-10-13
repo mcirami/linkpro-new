@@ -63,12 +63,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/email-test', [MailController::class, 'sendEmail']);
 
     Route::post('/subscribe/create', [SubscriptionController::class, 'store'])->name('subscribe.post');
-    Route::post('/subscribe/cancel', [SubscriptionController::class, 'cancel'])->name('subscribe.cancel');
-    Route::post('/subscribe/resume', [SubscriptionController::class, 'resume'])->name('subscribe.resume');
+    Route::put('/subscribe/cancel', [SubscriptionController::class, 'cancel'])->name('subscribe.cancel');
+    Route::put('/subscribe/resume', [SubscriptionController::class, 'resume'])->name('subscribe.resume');
     Route::post('/subscribe/check-code', [SubscriptionController::class, 'checkCode'])->name('check.code');
-    Route::post('/change-plan', [SubscriptionController::class, 'changePlan'])->name('subscribe.change.plan');
+    Route::put('/subscribe/change-plan', [SubscriptionController::class, 'changePlan'])->name('subscribe.change.plan');
 
     Route::put('/update-account/{user}', [UserController::class, 'updateAccountInfo'])->name('user.update.info');
+    Route::get('/get-user-pages', [UserController::class, 'getAllUserPages'])->name('user.get.pages');
     Route::post('/update-card', [UserController::class, 'updateCard'])->name('user.update.card');
     Route::post('/update-payment-method', [UserController::class, 'updateMethod'])->name('user.update.payment');
 

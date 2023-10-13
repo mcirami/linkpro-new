@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {MdCheckCircle} from 'react-icons/md';
 import {deleteFolder} from '@/Services/FolderRequests.jsx';
-import {UserLinksContext} from '../../Dashboard.jsx';
+import {UserLinksContext} from '../../Pages/Dashboard/Dashboard.jsx';
 import {
     LINKS_ACTIONS,
 } from '@/Services/Reducer.jsx';

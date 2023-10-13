@@ -26,9 +26,8 @@ const ProfileMenu = () => {
 
                     <Link className="nav-link" href={ route('user.edit') } role="button">
                         <img id="user_image" src={
-                            auth.user.avatar.includes('default') ?
-                                Vapor.asset('images/profile-placeholder-img.png') :
-                                auth.user.avatar }
+                            auth.user.userInfo.avatar.includes('default') ?
+                                Vapor.asset('images/profile-placeholder-img.png') : auth.user.userInfo.avatar }
                              alt="User Profile" />
                         <span id="username">{auth.user.userInfo.username}</span>
                     </Link>

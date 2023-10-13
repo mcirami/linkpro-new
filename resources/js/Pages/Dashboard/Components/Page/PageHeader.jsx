@@ -8,13 +8,13 @@ import {MdEdit} from 'react-icons/md';
 import { PageContext } from '../../Dashboard.jsx';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
-import {headerImage} from '../../../../Services/PageRequests';
+import {headerImage} from '@/Services/PageRequests.jsx';
 import {
     canvasPreview,
     useDebounceEffect,
     onImageLoad,
     createImage, getFileToUpload,
-} from '../../../../Services/ImageService';
+} from '@/Services/ImageService.jsx';
 import ToolTipIcon from '../../../../Utils/ToolTips/ToolTipIcon';
 import CropTools from '../../../../Utils/CropTools';
 import EventBus from '../../../../Utils/Bus';

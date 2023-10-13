@@ -381,8 +381,9 @@ class SubscriptionService {
                     }
 
                     $data = [
-                        "success" => true,
-                        "message" => "Your Subscription Has Been Cancelled"
+                        "success"   => true,
+                        "message"   => "Your Subscription Has Been Cancelled",
+                        "ends_at"  => $endDateMail
                     ];
 
                 } else {

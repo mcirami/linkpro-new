@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {useForm} from '@inertiajs/react';
 import {isEmpty} from 'lodash';
+import {updateUserInfo} from '@/Services/UserService.jsx';
 
 const UserForm = ({userInfo}) => {
 
@@ -14,15 +15,19 @@ const UserForm = ({userInfo}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(`/update-account/${userInfo.id}`, {
-            preserveScroll: true,
-            onSuccess: () => {
+        const packets = {
+            email: data.email,
+            password: data.password,
+            password_confirmation: data.password_confirmation
+        }
+        updateUserInfo(packets, userInfo.id)
+        .then((data) => {
+            if (data.success) {
+
                 reset('password', 'password_confirmation')
                 setUserEmail(data.email)
-            },
-        });
-
-        reset('password', 'password_confirmation')
+            }
+        })
     }
 
     const handleFocus = (e) => {

@@ -11,12 +11,15 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Http\Traits\UserTrait;
 
 class UserController extends Controller
 {
+    use UserTrait;
 
     /**
      * @param User $user
@@ -43,7 +46,7 @@ class UserController extends Controller
         return Inertia::render('User/User')->with([
             'user'                  => $data['user'],
             /*'permissions'           => $data['permissions'],*/
-            'subscription'          => $data["subscription"],
+            'subscriptionInfo'          => $data["subscription"],
             'payment_method'        => $data["payment_method"],
             'token'                 => $data['token'],
             'payment_method_token'  => $data['payment_method_token']
@@ -55,13 +58,14 @@ class UserController extends Controller
      * @param UserService $userService
      * @param User $user
      *
-     * @return RedirectResponse
+     *
      */
     public function updateAccountInfo(UpdateUserRequest $request, UserService $userService, User $user) {
 
-        $userService->updateUserInfo($request, $user);
+        $message = $userService->updateUserInfo($request, $user);
 
-        return redirect()->back()->with(['success' => 'Changes saved successfully']);
+        return response()->json(["message" => $message]);
+        //return redirect()->back()->with(['success' => 'Changes saved successfully']);
     }
 
 
@@ -112,5 +116,13 @@ class UserController extends Controller
                 'subscribed'    => $data['subscribed']
                 ]
         );
+    }
+
+    public function getAllUserPages() {
+        $user = Auth::user();
+
+        $pages = $this->getUserPages($user);
+
+        return response()->json(['success' => true, 'pages' => $pages]);
     }
 }

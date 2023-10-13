@@ -16,20 +16,19 @@ import PageTitle from './Components/Page/PageTitle';
 import PageBio from './Components/Page/PageBio';
 import AddLink from './Components/Link/AddLink';
 import PreviewButton from './Components/Preview/PreviewButton';
-import { Flash } from '@/Utils/Flash.jsx';
-import { UpgradePopup } from './Components/Popups/UpgradePopup';
-import { ConfirmPopup } from './Components/Popups/ConfirmPopup';
+import { UpgradePopup } from '@/Utils/Popups/UpgradePopup';
+import { ConfirmPopup } from '@/Utils/Popups/ConfirmPopup';
 import { Loader } from '@/Utils/Loader.jsx';
 import AddFolder from './Components/Folder/AddFolder';
 import FolderLinks from './Components/Folder/FolderLinks';
-import { ConfirmFolderDelete } from './Components/Popups/ConfirmFolderDelete';
+import { ConfirmFolderDelete } from '@/Utils/Popups/ConfirmFolderDelete';
 import {ErrorBoundary} from 'react-error-boundary';
 import {updateLinksPositions, getAllLinks} from '@/Services/LinksRequest.jsx';
 import {
     previewButtonRequest,
 } from '@/Services/PageRequests.jsx';
 import {checkSubStatus} from '@/Services/UserService.jsx';
-import DowngradeAlert from './Components/Popups/DowngradeAlert';
+import DowngradeAlert from '@/Utils/Popups/DowngradeAlert';
 import {
     folderLinksReducer,
     reducer,
@@ -37,9 +36,8 @@ import {
 } from '@/Services/Reducer.jsx';
 import PageHeaderLayout from './Components/Page/PageHeaderLayout';
 import LivePageButton from './Components/LivePageButton';
-import EventBus from '../../Utils/Bus';
 import InfoText from '../../Utils/ToolTips/InfoText';
-import {MessageAlertPopup} from './Components/Popups/MessageAlertPopup';
+import {MessageAlertPopup} from '@/Utils/Popups/MessageAlertPopup';
 import StandardForm from './Components/Link/Forms/StandardForm';
 import FormBreadcrumbs from './Components/Link/Forms/FormBreadcrumbs';
 import DeleteIcon from './Components/Link/Forms/DeleteIcon';
@@ -60,6 +58,7 @@ export const PageContext = createContext();
 
 import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext.jsx';
 import {Head} from '@inertiajs/react';
+import SetFlash from '@/Utils/SetFlash.jsx';
 
 function Dashboard({auth}) {
 
@@ -104,11 +103,6 @@ function Dashboard({auth}) {
         icon: "",
         position: ""
     });
-    const [flash, setFlash] = useState({
-        show: false,
-        type: '',
-        msg: ''
-    });
 
     const [row, setRow] = useState(null);
     const [value, setValue] = useState(null);
@@ -117,24 +111,6 @@ function Dashboard({auth}) {
     const [showPreview, setShowPreview] = useState(false);
 
     const [connectionError, setConnectionError] = useState(false);
-
-    useEffect(() => {
-        EventBus.on('success', (data) => {
-            showFlash(true, 'success', data.message.replace(/"/g, ""))
-
-            return () => EventBus.remove("success");
-        });
-
-    }, []);
-
-    useEffect(() => {
-        EventBus.on('error', (data) => {
-            showFlash(true, 'error', data.message.replace(/"/g, ""))
-
-            return () => EventBus.remove("error");
-        });
-
-    }, []);
 
     useEffect(() => {
         previewButtonRequest(setShowPreviewButton);
@@ -227,10 +203,6 @@ function Dashboard({auth}) {
         )
     }
 
-    const showFlash = (show = false, type='', msg='') => {
-        setFlash({show, type, msg})
-    }
-
     const handleDisabledClick = (e) => {
         const type = e.target.dataset.type;
         if (!subStatus) {
@@ -265,14 +237,7 @@ function Dashboard({auth}) {
                                 />
                             }
 
-                            {flash.show &&
-                                <Flash
-                                    {...flash}
-                                    setFlash={setFlash}
-                                    removeFlash={showFlash}
-                                    pageSettings={pageSettings}
-                                />
-                            }
+                            <SetFlash />
 
                             {showUpgradePopup &&
                                 <UpgradePopup

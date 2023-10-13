@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\SubscriptionTrait;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
+use function Pest\Laravel\json;
 
 class SubscriptionController extends Controller
 {
@@ -64,7 +65,7 @@ class SubscriptionController extends Controller
      * @param Request $request
      * @param SubscriptionService $subscriptionService
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return mixed
      */
     public function changePlan(Request $request, SubscriptionService $subscriptionService) {
 
@@ -78,15 +79,9 @@ class SubscriptionController extends Controller
 
             return redirect()->route('pages.edit', [$page[0]->id])->with(['success' => $data["message"]]);
 
-
-        } else {
-            if ($data["success"] == true) {
-                return redirect()->back()->with(['success' => $data["message"]]);
-            }
         }
 
-        return back()->withErrors($data["message"]);
-
+        return response()->json(['success' => $data["success"], 'message' => $data["message"]]);
     }
 
     /**
@@ -112,34 +107,30 @@ class SubscriptionController extends Controller
      * @param Request $request
      * @param SubscriptionService $subscriptionService
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function cancel(Request $request, SubscriptionService $subscriptionService) {
+    public function cancel(Request $request, SubscriptionService $subscriptionService): \Illuminate\Http\JsonResponse {
 
         $data = $subscriptionService->cancelSubscription($request);
 
-        if ($data["success"] == true) {
-            return redirect()->back()->with(['success' => $data["message"]]);
-        } else {
-            return back()->withErrors($data["message"]);
-        }
+        return response()->json([
+            'success' => $data["success"],
+            'message' => $data["message"],
+            'ends_at' => array_key_exists('ends_at', $data) ? $data["ends_at"] : null,
+        ]);
     }
 
     /**
      * @param Request $request
      * @param SubscriptionService $subscriptionService
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return mixed
      */
     public function resume(Request $request, SubscriptionService $subscriptionService) {
 
         $data = $subscriptionService->resumeSubscription($request);
 
-        if ($data["success"] == true) {
-
-            return redirect()->back()->with(['success' => $data["message"]]);
-
-        } elseif ($data["bypass"]) {
+        if (array_key_exists('bypass', $data) && $data["bypass"]) {
 
             $newData = $subscriptionService->updateSubscriptionManually($request->discountCode);
 
@@ -149,10 +140,12 @@ class SubscriptionController extends Controller
             if($newData["success"]) {
                 return redirect()->route('pages.edit', [$page[0]->id])->with( ['success' => $newData["message"]] );
             }
-
-        } else {
-            return back()->withErrors($data["message"]);
         }
+
+        return response()->json([
+            'success' => $data["success"],
+            'message' => $data["message"],
+        ]);
     }
 
     public function checkCode(Request $request, SubscriptionService $subscriptionService) {
