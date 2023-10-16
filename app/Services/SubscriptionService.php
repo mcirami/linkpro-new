@@ -284,30 +284,30 @@ class SubscriptionService {
                             $userPage->save();
                         }
                     }
+                }
 
-                    if($planId == "premier") {
-                        if ( $this->user->email_subscription ) {
+                if($planId == "premier") {
+                    if ( $this->user->email_subscription ) {
 
-                            $userData = ( [
-                                'plan'   => ucfirst( $planId ),
-                                'userID' => $this->user->id,
-                            ] );
+                        $userData = ( [
+                            'plan'   => ucfirst( $planId ),
+                            'userID' => $this->user->id,
+                        ] );
 
-                            $this->user->notify( new NotifyAboutUpgrade( $userData ) );
-                        }
-
-                        $data = [
-                            "success" => true,
-                            "message" => "Your plan has been upgraded to the Premier level"
-                        ];
+                        $this->user->notify( new NotifyAboutUpgrade( $userData ) );
                     }
 
-                    if ($planId == "pro") {
-                        $data = [
-                            "success" => true,
-                            "message" => "Your plan has been downgraded to the Pro level"
-                        ];
-                    }
+                    $data = [
+                        "success" => true,
+                        "message" => "Your plan has been upgraded to the Premier level"
+                    ];
+                }
+
+                if ($planId == "pro") {
+                    $data = [
+                        "success" => true,
+                        "message" => "Your plan has been downgraded to the Pro level"
+                    ];
                 }
 
             } else {

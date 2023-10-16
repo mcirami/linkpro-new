@@ -1,16 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {getUserPages} from '@/Services/UserService.jsx';
-import {BiChevronLeft} from 'react-icons/bi';
 import ConfirmPlanChange from '@/Pages/User/Components/ConfirmPlanChange.jsx';
+import {changePlan} from '@/Services/SubscriptionRequests.jsx';
 
 const ChoosePlanContent = ({
-                               auth,
                                showSection,
                                setShowSection,
+                               subscription,
                                setSubscription
 }) => {
 
-    const subscription = auth.user.subscription
     const [pages, setPages] = useState({});
 
     useEffect(() => {
@@ -29,6 +28,25 @@ const ChoosePlanContent = ({
             type
         ]))
     }
+
+    const handleUpgradeClick = (e, subscriptionLevel) => {
+        e.preventDefault();
+
+        const packets = {
+            level: subscriptionLevel
+        }
+
+        changePlan(packets).then((response) => {
+            if(response.success) {
+                setShowSection([]);
+                setSubscription(prev => ({
+                    ...prev,
+                    name: subscriptionLevel
+                }))
+            }
+        })
+    }
+
 
     return (
         <div id="popup_choose_level" className="inline-block relative w-full">
@@ -149,12 +167,13 @@ const ChoosePlanContent = ({
                                             <sup>$</sup>19.99<span>/ mo</span>
                                         </h3>
                                     </div>
-                                    <form action={ route('subscribe.change.plan') } method="post" id="popup_pro_level_form">
-                                        <input className="level" name="level" type="hidden" value="premier" />
-                                        <button type="submit" className='button black_gradient'>
-                                            Upgrade To Premier
-                                        </button>
-                                    </form>
+                                    <a href="#"
+                                       className='button black_gradient'
+                                       onClick={(e) => handleUpgradeClick(e, "premier")}
+                                    >
+                                        Upgrade To Premier
+                                    </a>
+
                                 </div>
                                 :
                                 ""

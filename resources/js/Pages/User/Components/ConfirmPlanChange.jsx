@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import {cancelSubscription, changePlan} from '@/Services/SubscriptionRequests.jsx';
 
 const ConfirmPlanChange = ({
-                               subscription,
                                pages,
                                showSection,
                                setShowSection,
+                               subscription,
                                setSubscription
 }) => {
 
@@ -34,11 +34,15 @@ const ConfirmPlanChange = ({
 
             const packets = {
                 defaultPage: defaultPage,
-                level: subscription.name
+                level: "pro"
             }
 
             changePlan(packets).then((response) => {
                 if(response.success) {
+                    setSubscription(prev => ({
+                        ...prev,
+                        name: "pro",
+                    }))
                     setShowSection([])
                 }
             })
@@ -55,23 +59,10 @@ const ConfirmPlanChange = ({
             <h2>Confirm</h2>
             <form action="" method="">
 
-                {showSection.includes("downgrade") ?
-                    <>
-                        <h3>By downgrading your account to Pro you will lose access to password protect your links and you will be limited to 1 unique link.</h3>
-                        {pages.length > 1 &&
-                            <>
-                                <p>You currently have {pages.length} links.</p>
-                                <label htmlFor="defaultPage">Select which link you would like to stay active:</label>
-                                <select name="defaultPage" onChange={(e) => setDefaultPage(e.target.value)}>
-                                    {pages.map(page => {
-                                        return (
-                                            <option value={page.id}>{page.name}</option>
-                                        )
-                                    })}
-                                </select>
-                            </>
-                        }
-                    </>
+                {showSection.includes("changePlan") ?
+
+                    <h3>By downgrading your account to Pro you will lose access to password protect your links and you will be limited to 1 unique link.</h3>
+
                     :
                     subscription.name === "pro" ?
                         <h3>By downgrading your account to Free your subscription will be cancelled, your icons will be limited to 8 and you will no longer be able to use custom icons.</h3>
@@ -79,9 +70,23 @@ const ConfirmPlanChange = ({
                         <h3>By downgrading your plan to Free your subscription will be cancelled. You will be limited to 1 unique link, your icons will be limited to 8, and you will no longer be able to use custom icons.</h3>
 
                 }
+                {pages.length > 1 && subscription.name === "premier" &&
+                    <>
+                        <p>You currently have {pages.length} links.</p>
+                        <label htmlFor="defaultPage">Select which link you would like to stay active:</label>
+                        <select name="defaultPage" onChange={(e) => setDefaultPage(e.target.value)}>
+                            {pages.map(page => {
+                                return (
+                                    <option value={page.id}>{page.name}</option>
+                                )
+                            })}
+                        </select>
+                    </>
+                }
                 <p className="confirm_text">Do you want to continue?</p>
                 <div className="button_row">
-                    <a href="#" className='button green'
+                    <a href="#"
+                       className='button green'
                         onClick={(e) => handleClick()}
                     >
                         Yes
@@ -90,7 +95,7 @@ const ConfirmPlanChange = ({
                        href="#"
                        onClick={(e) => {
                            setShowSection(showSection.filter((section) => {
-                               return section !== "downgrade" && section !== "cancel"
+                               return section !== "changePlan" && section !== "cancel"
                            }))
                        }}
                     >No</a>

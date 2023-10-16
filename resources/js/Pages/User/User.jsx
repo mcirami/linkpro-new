@@ -41,7 +41,6 @@ const User = ({
                         {showSection.includes("plans") || showSection.includes("cancel") ?
 
                             <ChoosePlanContent
-                                auth={auth}
                                 showSection={showSection}
                                 setShowSection={setShowSection}
                                 subscription={subscription}
