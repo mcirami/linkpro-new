@@ -6,6 +6,7 @@ use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\SubscriptionTrait;
+use Inertia\Inertia;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 use function Pest\Laravel\json;
 
@@ -88,7 +89,7 @@ class SubscriptionController extends Controller
      * @param Request $request
      * @param SubscriptionService $subscriptionService
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     *
      */
     public function plans(Request $request, SubscriptionService $subscriptionService) {
 
@@ -96,11 +97,10 @@ class SubscriptionController extends Controller
 
         $subscription = $subscriptionService->showPlansPage();
 
-        Javascript::put([
-            'user_info' => Auth::user(),
+        return Inertia::render('Plans/Plans')->with([
+            'subscription' => $subscription,
+            'path' => $path["url"]
         ]);
-
-        return view('subscription.plans', ['subscription' => $subscription, 'path' => $path["url"]]);
     }
 
     /**
