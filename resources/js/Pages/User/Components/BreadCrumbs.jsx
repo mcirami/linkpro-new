@@ -9,7 +9,7 @@ const BreadCrumbs = ({
     return (
         <div className="breadcrumb_links">
             <ul>
-                { (showSection.includes("plans") || showSection.includes("cancel") ) &&
+                { (showSection.includes("plans") || showSection.includes("cancel") || showSection.includes("methods") ) &&
                     <li>
                         <a className="back" href="#" onClick={(e) => {
                             e.preventDefault();

@@ -3,9 +3,10 @@ import {useForm} from '@inertiajs/react';
 import {isEmpty} from 'lodash';
 import {updateUserInfo} from '@/Services/UserService.jsx';
 
-const UserForm = ({userInfo}) => {
-
-    const [userEmail, setUserEmail] = useState(userInfo.email)
+const UserForm = ({
+                      userInfo,
+                      setUserInfo
+}) => {
 
     const { data, setData, put, processing, errors, reset } = useForm({
         email: null,
@@ -25,7 +26,10 @@ const UserForm = ({userInfo}) => {
             if (data.success) {
 
                 reset('password', 'password_confirmation')
-                setUserEmail(data.email)
+                setUserInfo({
+                    ...userInfo,
+                    email: data.email
+                })
             }
         })
     }
@@ -45,9 +49,9 @@ const UserForm = ({userInfo}) => {
                         <div className="input_wrap my_row relative">
                             <input id="email"
                                    type="email"
-                                   className={`w-full animate bg-white ${userEmail ? "active" : ""} ${errors.email ? "border-danger" : ""} `}
+                                   className={`w-full animate bg-white ${userInfo.email ? "active" : ""} ${errors.email ? "border-danger" : ""} `}
                                    name="email"
-                                   defaultValue={ userEmail }
+                                   defaultValue={ userInfo.email }
                                    autoComplete="email"
                                    onChange={(e) => setData('email', e.target.value)}
                             />

@@ -2,15 +2,22 @@ import React, {useEffect, useState, useRef} from 'react';
 import {router, useForm} from '@inertiajs/react';
 import axios from 'axios';
 import EventBus from '@/Utils/Bus.jsx';
+import {toLower} from 'lodash';
 //import { Braintree, HostedField } from 'react-braintree-fields';
 
-const PaymentComponent = ({paymentMethod, user, authToken}) => {
+const PaymentComponent = ({
+                              paymentMethod,
+                              userInfo,
+                              setUserInfo,
+                              authToken,
+                              setShowSection
+}) => {
 
 /*    const { data, setData, post, processing, errors, wasSuccessful } = useForm({
         nonce: '',
         postal_code: ''
     });*/
-    const [userInfo, setUserInfo] = useState(user);
+
     const [braintreeInstance, setBraintreeInstance] = useState(undefined);
 
     /*const [tokenize, setTokenizeFunc] = useState();
@@ -111,19 +118,22 @@ const PaymentComponent = ({paymentMethod, user, authToken}) => {
                         },
                         expirationDate: {
                             selector: '#expiration-date',
-                            placeholder: 'MM/YYYY'
+                            placeholder: 'MM/YY'
                         },
-                        postalCode: {
+                        /*postalCode: {
                             selector: '#postal_code',
                             placeholder: 'xxxxx',
-                        }
+                        }*/
                     }
                 },function (err, hostedFieldsInstance) {
                     if (err) {
                         console.error(err);
                         return;
                     }
-                    updateForm.addEventListener('submit', function(event) {
+
+                    setBraintreeInstance(hostedFieldsInstance);
+
+                    /*updateForm.addEventListener('submit', function(event) {
                         event.preventDefault();
                         hostedFieldsInstance.tokenize(function(tokenizeErr, payload) {
                             if (tokenizeErr) {
@@ -136,7 +146,7 @@ const PaymentComponent = ({paymentMethod, user, authToken}) => {
                             document.querySelector('#nonce').value = payload.nonce;
                             updateForm.submit();
                         });
-                    }, false);
+                    }, false);*/
                     /*document.querySelector('#update-cc-form button').removeAttribute('disabled')
                     hostedFieldsInstance.on('validityChange', function (event) {
                         var field = event.fields[event.emittedBy];
@@ -197,7 +207,6 @@ const PaymentComponent = ({paymentMethod, user, authToken}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        let state = braintreeInstance.getState();
         var updateForm = document.querySelector('#update-cc-form');
         braintreeInstance.tokenize(function(tokenizeErr, payload) {
             if (tokenizeErr) {
@@ -205,14 +214,11 @@ const PaymentComponent = ({paymentMethod, user, authToken}) => {
                 return;
             }
 
-            const postalCode = document.querySelector('#postal_code iframe #postal-code');
+            const postalCode = document.querySelector('#postal_code').value;
             console.log("payload: ", payload);
             console.log("postalCode: ", postalCode);
 
-            setUserInfo({
-                ...userInfo,
-                pm_last_four: payload.details.lastFour
-            })
+
             // If this was a real integration, this is where you would
             // send the nonce to your server.
             //updateForm.submit();
@@ -231,7 +237,8 @@ const PaymentComponent = ({paymentMethod, user, authToken}) => {
                 },
             )*/
             const packets = {
-                nonce: payload.nonce
+                nonce: payload.nonce,
+                postalCode: postalCode
             }
             return axios.post('/update-card', packets)
             .then(
@@ -240,6 +247,11 @@ const PaymentComponent = ({paymentMethod, user, authToken}) => {
                     EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
 
                     console.log(response.data);
+
+                    setUserInfo({
+                        ...userInfo,
+                        pm_last_four: payload.details.lastFour
+                    })
                     /*return {
                         success : true,
                     }*/
@@ -265,11 +277,11 @@ const PaymentComponent = ({paymentMethod, user, authToken}) => {
     return (
         <>
             <h2 className="text-uppercase">Billing Info</h2>
-            {paymentMethod.includes("credit") ?
+            {toLower(paymentMethod).includes("credit") ?
                 <>
-                    <form id="update-cc-form" className="mb-0" method="post" action={route('user.update.card')}>
+                    <form id="update-cc-form" className="mb-0" method="" action="">
                         <h4 className="mb-4">Your current payment type is</h4>
-                        <input id="nonce" name="payment_method_nonce" type="hidden" />
+                        {/*<input id="nonce" name="payment_method_nonce" type="hidden" />*/}
                         <div className="form-group form_inputs mt-0 mb-4 relative">
                             <div className="animate active bg-white" id="card_number"></div>
                             <label>Card Number</label>
@@ -285,7 +297,8 @@ const PaymentComponent = ({paymentMethod, user, authToken}) => {
                             </div>
                         </div>
                         <div className="form_inputs relative mb-4">
-                            <div id="postal_code" className="hosted-field animate active bg-white"></div>
+                            {/*<div id="postal_code" className="hosted-field animate active bg-white"></div>*/}
+                            <input className="w-full animate active bg-white" type="text" id="postal_code" placeholder="xxxxx"/>
                             <label>Postal Code</label>
                         </div>
                         {/*{@error('card')
@@ -295,9 +308,12 @@ const PaymentComponent = ({paymentMethod, user, authToken}) => {
                          @enderror}*/}
                         <div className="form-group row form_buttons">
                             <div className="col-12">
-                                <button type="submit" className="button blue text-uppercase" >
+                                <a href="#"
+                                   className="button blue text-uppercase"
+                                   onClick={(event) => handleSubmit(event)}
+                                >
                                     Update Card
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </form>
@@ -330,7 +346,13 @@ const PaymentComponent = ({paymentMethod, user, authToken}) => {
                     }
                 </div>
             }
-            <a href="#" className="button blue text-uppercase open_payment_method">
+            <a href="#"
+               className="button blue text-uppercase"
+               onClick={(e) => setShowSection((prev) => [
+                   ...prev,
+                   "methods"
+               ])}
+            >
                 Change Payment Method
             </a>
         </>

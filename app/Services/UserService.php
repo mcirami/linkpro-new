@@ -118,31 +118,28 @@ class UserService {
 
             $token = $customer->paymentMethods[0]->token;
 
-            $result = $gateway->customer()->update(
+            /*$result = $gateway->customer()->update(
                 $customerID,
-                /*[
-                    'paymentMethodNonce' => $request->payment_method_nonce,
-                    'options' => [
-                        'makeDefault' => true,
-                    ],
-                ]*/
                 [
                     'paymentMethodNonce' => $request->payment_method_nonce,
                     'creditCard' => [
                         'options' => [
-                            'updateExistingToken' => $token
+                            'updateExistingToken'   => $token,
                         ],
                         'billingAddress' => [
-                            'postalCode' => '63304',
+                            'postalCode' => $request->postalCode,
                             'options' => [
                                 'updateExisting' => true
                             ]
                         ]
-                    ],
-
+                    ]
                 ]
-            );
+            );*/
 
+            $result = $gateway->paymentMethod()->update($token, [
+                'paymentMethodNonce' => $request->payment_method_nonce,
+
+            ]);
 
             if ($result->success) {
 
@@ -151,11 +148,10 @@ class UserService {
                 $this->user->pm_last_four = $pmLastFour;
                 $this->user->save();
 
-                /*return [
+                return [
                     'success'       => true,
                     'message'       => "Credit Card Updated",
-                    'pmLastFour'    => $pmLastFour
-                ];*/
+                ];
 
             } else {
                 $errorString = "";
@@ -164,11 +160,11 @@ class UserService {
                     $errorString .= 'Error: ' . $error->code . ": " . $error->message . "\n";
                 }
 
-                /*return [
-                    'status'    => 'error',
+                return [
+                    'success'    => 'false',
                     'message'   => 'An error occurred with the fucking message: '. $result->message,
-                ];*/
-                return back()->withErrors('An error occurred with the message: '. $errorString);
+                ];
+                //return back()->withErrors('An error occurred with the message: '. $errorString);
             }
 
         } else {
@@ -177,7 +173,7 @@ class UserService {
                 echo($error->code . ": " . $error->message . "\n");
             }
 
-            return response()->json(['success' => false, 'error' => 'An error occurred with the shit ass message: '. $customer->message]);
+            return response()->json(['success' => false, 'error' => 'An error occurred with the message: '. $customer->message]);
             //return back()->withErrors('An error occurred with the message: '. $customer->message);
         }
     }
@@ -218,12 +214,21 @@ class UserService {
                 $this->user->pm_type = $paymentMethod;
                 $this->user->save();
 
+                return [
+                    'success'       => true,
+                    'message'       => "Payment Method Changed",
+                ];
+
             } else {
                 foreach($result->errors->deepAll() AS $error) {
                     echo($error->code . ": " . $error->message . "\n");
                 }
 
-                return back()->withErrors('An error occurred with the message: '. $result->message);
+                return [
+                    'success'    => 'false',
+                    'message'   => 'An error occurred with the fucking message: '. $result->message,
+                ];
+                //return back()->withErrors('An error occurred with the message: '. $result->message);
             }
 
         } else {
@@ -231,8 +236,8 @@ class UserService {
             foreach($updateResult->errors->deepAll() AS $error) {
                 echo($error->code . ": " . $error->message . "\n");
             }
-
-            return back()->withErrors('An error occurred with the message: '. $updateResult->message);
+            return response()->json(['success' => false, 'error' => 'An error occurred with the message: '. $updateResult->message]);
+            //return back()->withErrors('An error occurred with the message: '. $updateResult->message);
         }
 
     }

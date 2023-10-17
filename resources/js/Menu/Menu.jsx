@@ -133,7 +133,7 @@ function Menu() {
                 <div className="menu_bottom">
                     <div className="menu">
                         <ul>
-                            {creator ?
+                            {auth.user.courseData ?
                                 <li>
                                     <a href={`${window.location.origin}/${creator}`}
                                        style={ courseData && {color: courseData["header_text_color"] }}
