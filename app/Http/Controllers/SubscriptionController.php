@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Services\SubscriptionService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\SubscriptionTrait;
 use Inertia\Inertia;
-use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
-use function Pest\Laravel\json;
 
 class SubscriptionController extends Controller
 {
@@ -17,49 +16,19 @@ class SubscriptionController extends Controller
     /**
      * @param SubscriptionService $subscriptionService
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return \Inertia\Response
      */
-    public function purchase(SubscriptionService $subscriptionService) {
+    public function purchase(SubscriptionService $subscriptionService): \Inertia\Response {
 
         $data = $subscriptionService->showPurchasePage();
 
-        Javascript::put([
-            'user_info' => Auth::user(),
+        return Inertia::render('Subscription/Purchase')->with([
+            'plan' => $data['plan'],
+            'token' => $data['token'],
+            'price' => $data["price"],
+            'existing' => $data["existing"],
+            'bypass' => $data['bypass']
         ]);
-
-        return view('subscription.index', [ 'plan' => $data['plan'],
-                                            'token' => $data['token'],
-                                            'price' => $data["price"],
-                                            'existing' => $data["existing"],
-                                            'bypass' => $data['bypass'] ]);
-    }
-
-    /**
-     * @param Request $request
-     * @param SubscriptionService $subscriptionService
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request, SubscriptionService $subscriptionService) {
-
-
-        $data = $subscriptionService->newSubscription($request);
-
-        $user = Auth::user();
-        $page = $user->pages()->where('user_id', $user["id"])->where('default', true)->get();
-
-        if ($data["success"]) {
-            return redirect()->route('pages.edit', [$page[0]->id])->with( ['success' => $data["message"]] );
-        } elseif($data["bypass"]) {
-            $newData = $subscriptionService->createManualSubscription($request->discountCode);
-
-            if($newData["success"]) {
-                return redirect()->route('pages.edit', [$page[0]->id])->with( ['success' => $newData["message"]] );
-            }
-
-        } else {
-            return back()->withErrors($data["message"]);
-        }
     }
 
     /**
@@ -68,7 +37,35 @@ class SubscriptionController extends Controller
      *
      * @return mixed
      */
-    public function changePlan(Request $request, SubscriptionService $subscriptionService) {
+    public function store(Request $request, SubscriptionService $subscriptionService): mixed {
+
+
+        $data = $subscriptionService->newSubscription($request);
+
+        $user = Auth::user();
+        $page = $user->pages()->where('user_id', $user["id"])->where('default', true)->first();
+
+        if ($data["success"]) {
+            $url = '/dashboard/pages/' . $page->id;
+            return Inertia::location($url)->with(['message' => $data["message"]]);
+        } elseif($data["bypass"]) {
+            $newData = $subscriptionService->createManualSubscription($request->discountCode);
+            $url = '/dashboard/pages/' . $page->id;
+            if($newData["success"]) {
+                return Inertia::location($url)->with(['message' => $newData["message"]]);
+            }
+        }
+
+        return response()->json(['success' => false, 'message' => $data["message"]]);
+    }
+
+    /**
+     * @param Request $request
+     * @param SubscriptionService $subscriptionService
+     *
+     * @return mixed
+     */
+    public function changePlan(Request $request, SubscriptionService $subscriptionService): mixed {
 
         $path = $request->session()->get('_previous');
 
@@ -76,10 +73,9 @@ class SubscriptionController extends Controller
 
         if( (str_contains($path["url"], '/subscribe') || str_contains($path["url"], '/plans') ) && $data["success"] == true ) {
             $user = Auth::user();
-            $page = $user->pages()->where('user_id', $user["id"])->where('default', true)->get();
-
-            return redirect()->route('pages.edit', [$page[0]->id])->with(['success' => $data["message"]]);
-
+            $page = $user->pages()->where('user_id', $user["id"])->where('default', true)->first();
+            $url = '/dashboard/pages/' . $page->id;
+            return Inertia::location($url)->with(['message' => $data["message"]]);
         }
 
         return response()->json(['success' => $data["success"], 'message' => $data["message"]]);
@@ -89,9 +85,9 @@ class SubscriptionController extends Controller
      * @param Request $request
      * @param SubscriptionService $subscriptionService
      *
-     *
+     * @return \Inertia\Response
      */
-    public function plans(Request $request, SubscriptionService $subscriptionService) {
+    public function plans(Request $request, SubscriptionService $subscriptionService): \Inertia\Response {
 
         $path = $request->session()->get('_previous');
 
@@ -135,10 +131,11 @@ class SubscriptionController extends Controller
             $newData = $subscriptionService->updateSubscriptionManually($request->discountCode);
 
             $user = Auth::user();
-            $page = $user->pages()->where('user_id', $user["id"])->where('default', true)->get();
+            $page = $user->pages()->where('user_id', $user["id"])->where('default', true)->first();
 
             if($newData["success"]) {
-                return redirect()->route('pages.edit', [$page[0]->id])->with( ['success' => $newData["message"]] );
+                $url = '/dashboard/pages/' . $page->id;
+                return Inertia::location($url)->with(['message' => $newData["message"]]);
             }
         }
 
@@ -148,7 +145,13 @@ class SubscriptionController extends Controller
         ]);
     }
 
-    public function checkCode(Request $request, SubscriptionService $subscriptionService) {
+    /**
+     * @param Request $request
+     * @param SubscriptionService $subscriptionService
+     *
+     * @return JsonResponse
+     */
+    public function checkCode(Request $request, SubscriptionService $subscriptionService): \Illuminate\Http\JsonResponse {
 
         $planID = $request->planId;
         $code = $request->code;
@@ -156,7 +159,6 @@ class SubscriptionController extends Controller
         $match = $this->checkPromoCode($planID, $code);
 
         $data = $subscriptionService->getCodeReturnMessage($match, $planID, $code);
-
 
         return response()->json(['success' => $data["success"],'message' => $data["message"]]);
 

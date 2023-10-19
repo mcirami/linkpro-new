@@ -832,6 +832,14 @@ form .bottom_row a {
 
 .form_page.checkout {
 
+    .page_title {
+        margin-bottom :0;
+    }
+
+    .pricing {
+        margin: 0;
+    }
+
     .zoid-outlet {
         width: 100% !important;
     }
@@ -842,9 +850,9 @@ form .bottom_row a {
 
     .payment_form_wrap {
         position: relative;
-        padding: 0 40px;
+        padding-left: 40px;
 
-        @media all and (max-width: 992px) {
+        @include query(tablet){
             padding: 0;
         }
     }
@@ -856,7 +864,20 @@ form .bottom_row a {
         -moz-transition: .5s all linear;
         -o-transition: .5s all linear;
 
-        button {
+        a {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            justify-content: center;
+            -webkit-justify-content: center;
+            align-items: center;
+            -webkit-align-items: center;
             height: 0;
             padding: 0;
             width: 20%;
@@ -884,7 +905,7 @@ form .bottom_row a {
             max-height: 1000px;
             margin-bottom: 20px;
 
-            button {
+            a {
                 height: 40px;
             }
 
@@ -895,52 +916,25 @@ form .bottom_row a {
             }
         }
 
-        #promo_success_message {
-            opacity: 0;
-            transition: .5s all linear;
-            -webkit-transition: .5s all linear;
-            -moz-transition: .5s all linear;
-            -o-transition: .5s all linear;
-            max-height: 0;
+        #promo_response {
 
             p {
                 padding-top: 5px;
-                color: $blue;
                 margin-bottom: 0;
 
                 &.success {
                     @include osbold;
+                    color: $blue;
+                }
+
+                &.error {
+                    @include osbold;
+                    color: $red;
                 }
 
                 span {
                     @include osbold;
                 }
-            }
-
-            &.active {
-                opacity: 1;
-                max-height: 500px;
-            }
-        }
-
-        #promo_error_message {
-            opacity: 0;
-            transition: .5s all ease-in;
-            -webkit-transition: .5s all ease-in;
-            -moz-transition: .5s all ease-in;
-            -o-transition: .5s all ease-in;
-            max-height: 0;
-
-            p {
-                @include osbold;
-                padding-top: 5px;
-                color: $red;
-                margin-bottom: 0;
-            }
-
-            &.active {
-                opacity: 1;
-                max-height: 50px;
             }
         }
     }
@@ -952,8 +946,8 @@ form .bottom_row a {
     }
 
     .card-body {
-        overflow: hidden;
-        min-height: 42vh;
+        /*overflow: hidden;
+        min-height: 42vh;*/
         position: relative;
         padding: 0;
     }
@@ -984,11 +978,11 @@ form .bottom_row a {
             margin-bottom: 40px;
         }
 
-        a {
+        a:not(.button) {
             color: $blue;
         }
 
-        .braintree-sheet__content--form .braintree-form__field-group label {
+        .braintree-sheet__content--form .braintree-form__field-group label, svg {
             width: 100%;
         }
 
@@ -1038,16 +1032,22 @@ form .bottom_row a {
     }
 
     .plan_details {
-        padding-right: 60px;
+        padding-right: 40px;
         border-right: 1px solid $gray;
 
-        @media all and (max-width: 768px) {
+        @include query(tablet) {
             padding: 0;
             border: none;
         }
 
         h2 {
             margin-bottom: 20px;
+        }
+
+        .column {
+            @include query(tablet) {
+                max-width: unset !important;
+            }
         }
     }
 

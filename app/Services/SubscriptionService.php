@@ -158,7 +158,7 @@ class SubscriptionService {
 
             if ( $result->success ) {
 
-                $subscription = $this->user->subscriptions()->create( [
+                $this->user->subscriptions()->create( [
                     'name'             => $result->subscription->planId,
                     'braintree_id'     => $result->subscription->id,
                     'braintree_status' => strtolower( $result->subscription->status ),
@@ -192,7 +192,7 @@ class SubscriptionService {
 
                 $data = [
                     "success" => true,
-                    "message" => "Your plan has been changed to the " . $request->level . " level"
+                    "message" => "Your plan has been changed to the " . ucfirst($planID) . " level"
                 ];
 
             } else {

@@ -66,7 +66,6 @@ class UserService {
 
         $data = [
             'user'                  => $this->user,
-            /*'permissions'           => $this->user->getAllPermissions()->pluck('name'),*/
             'subscription'          => $subscription,
             'payment_method'        => $paymentMethod,
             'token'                 => $token,

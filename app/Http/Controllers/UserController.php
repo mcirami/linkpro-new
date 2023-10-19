@@ -45,8 +45,7 @@ class UserController extends Controller
 
         return Inertia::render('User/User')->with([
             'user'                  => $data['user'],
-            /*'permissions'           => $data['permissions'],*/
-            'subscriptionInfo'          => $data["subscription"],
+            'subscriptionInfo'      => $data["subscription"],
             'payment_method'        => $data["payment_method"],
             'token'                 => $data['token'],
             'payment_method_token'  => $data['payment_method_token']

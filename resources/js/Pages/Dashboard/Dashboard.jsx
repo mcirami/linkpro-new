@@ -59,8 +59,9 @@ export const PageContext = createContext();
 import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext.jsx';
 import {Head} from '@inertiajs/react';
 import SetFlash from '@/Utils/SetFlash.jsx';
+import EventBus from '@/Utils/Bus.jsx';
 
-function Dashboard({auth}) {
+function Dashboard({auth, message = null}) {
 
     const [userLinks, dispatch] = useReducer(reducer, myLinksArray);
     const [folderLinks, dispatchFolderLinks] = useReducer(folderLinksReducer, []);
@@ -111,6 +112,13 @@ function Dashboard({auth}) {
     const [showPreview, setShowPreview] = useState(false);
 
     const [connectionError, setConnectionError] = useState(false);
+
+    useEffect(() => {
+        if(message) {
+            EventBus.dispatch("success", { message: message });
+        }
+
+    },[])
 
     useEffect(() => {
         previewButtonRequest(setShowPreviewButton);

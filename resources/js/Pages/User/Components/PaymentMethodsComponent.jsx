@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import EventBus from '@/Utils/Bus.jsx';
+import {updatePaymentMethod} from '@/Services/SubscriptionRequests.jsx';
 
 const PaymentMethodsComponent = ({
                                      token,
@@ -10,11 +11,10 @@ const PaymentMethodsComponent = ({
                                      setShowSection
 }) => {
 
+    const [braintreeInstance, setBraintreeInstance] = useState(null);
 
     useEffect(() => {
-        const updatePaymentForm = document.querySelector('#update_payment_method_form');
-        /*const pmType = document.querySelector('#pm_type');
-        const pmLastFour = document.querySelector('#pm_last_four');*/
+
         const client_token =  token;
         const subscriptionName = subscription.name;
         let amount;
@@ -61,67 +61,45 @@ const PaymentMethodsComponent = ({
                 console.log('Create Error', createErr);
                 return;
             }
-            updatePaymentForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-                instance.requestPaymentMethod(function (err, payload) {
-                    if (err) {
-                        console.log('Request Payment Method Error', err);
-                        return;
-                    }
 
-                    /*pmType.value = payload.type;
+            setBraintreeInstance(instance);
 
-                    // Add the nonce to the form and submit
-                    document.querySelector('#method_nonce').value = payload.nonce;*/
-                    //updatePaymentForm.submit();
-
-                    let pmLastFour = null;
-                    if ( payload.details.lastFour !== undefined) {
-                        pmLastFour = payload.details.lastFour;
-                    }
-
-                    const packets = {
-                        payment_method_nonce: payload.nonce,
-                        pm_last_four: pmLastFour,
-                        pm_type: payload.type
-                    }
-                    return axios.post('/update-payment-method', packets)
-                    .then(
-                        (response) => {
-                            const returnMessage = JSON.stringify(response.data.message);
-                            EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
-
-                            setUserInfo({
-                                ...userInfo,
-                                pm_last_four: pmLastFour,
-                                pm_type: payload.type
-                            })
-
-                            setShowSection([]);
-                            /*return {
-                                success : true,
-                            }*/
-                        }
-                    )
-                    .catch((error) => {
-                        if (error.response !== undefined) {
-                            EventBus.dispatch("error",
-                                {message: "There was an error updating your credit card."});
-                            console.error("ERROR:: ", error.response.data);
-                        } else {
-                            console.error("ERROR:: ", error);
-                        }
-
-                        /*return {
-                            success : false,
-                        }*/
-
-                    });
-
-                });
-            });
         });
     },[])
+
+    const handleSubmit = (e) => {
+
+        e.preventDefault();
+        braintreeInstance.requestPaymentMethod(function (err, payload) {
+            if (err) {
+                console.log('Request Payment Method Error', err);
+                return;
+            }
+
+            let pmLastFour = null;
+            if ( payload.details.lastFour !== undefined) {
+                pmLastFour = payload.details.lastFour;
+            }
+
+            const packets = {
+                payment_method_nonce: payload.nonce,
+                pm_last_four: pmLastFour,
+                pm_type: payload.type
+            }
+
+            updatePaymentMethod(packets).then((response) => {
+                if (response.success) {
+                    setUserInfo({
+                        ...userInfo,
+                        pm_last_four: pmLastFour,
+                        pm_type: payload.type
+                    })
+
+                    setShowSection([]);
+                }
+            })
+        });
+    }
 
     return (
         <div id="popup_payment_method" className="form_page checkout">
@@ -140,9 +118,12 @@ const PaymentMethodsComponent = ({
                         <div className="bt-drop-in-wrapper">
                             <div id="bt-dropin-update"></div>
                         </div>
-                        <button type="submit" className='button blue'>
+                        <a href="#"
+                           className='button blue'
+                           onClick={(e) => handleSubmit(e)}
+                        >
                             Submit
-                        </button>
+                        </a>
                     </form>
                 </div>
             </div>

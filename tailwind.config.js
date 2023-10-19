@@ -16,6 +16,13 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
+        screens: {
+            'sm': '550px',
+            'md': '768px',
+            'lg': '992px',
+            'xl': '1199px',
+            '2xl': '1536px',
+        },
         container: {
             center: true,
         },

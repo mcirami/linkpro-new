@@ -64,9 +64,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/subscribe/create', [SubscriptionController::class, 'store'])->name('subscribe.post');
     Route::put('/subscribe/cancel', [SubscriptionController::class, 'cancel'])->name('subscribe.cancel');
-    Route::put('/subscribe/resume', [SubscriptionController::class, 'resume'])->name('subscribe.resume');
+    Route::post('/subscribe/resume', [SubscriptionController::class, 'resume'])->name('subscribe.resume');
     Route::post('/subscribe/check-code', [SubscriptionController::class, 'checkCode'])->name('check.code');
-    Route::put('/subscribe/change-plan', [SubscriptionController::class, 'changePlan'])->name('subscribe.change.plan');
+    Route::post('/subscribe/change-plan', [SubscriptionController::class, 'changePlan'])->name('subscribe.change.plan');
 
     Route::put('/update-account/{user}', [UserController::class, 'updateAccountInfo'])->name('user.update.info');
     Route::get('/get-user-pages', [UserController::class, 'getAllUserPages'])->name('user.get.pages');

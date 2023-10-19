@@ -3,7 +3,7 @@ import axios from 'axios';
 
 window.addEventListener("load", function(){
 
-    const flashMessage = document.getElementById('laravel_flash');
+    /*const flashMessage = document.getElementById('laravel_flash');
 
     if (flashMessage) {
 
@@ -114,18 +114,18 @@ window.addEventListener("load", function(){
             e.preventDefault();
             confirmCancelPopup.classList.remove('open');
         });
-    }
+    }*/
 
-    const discountLink = document.querySelector('.discount_link');
+    /*const discountLink = document.querySelector('.discount_link');
 
     if (discountLink) {
         discountLink.addEventListener('click', function(e) {
             e.preventDefault();
             document.querySelector('.discount_wrap').classList.add('open');
         });
-    }
+    }*/
 
-    const promoCodeForm = document.querySelector('#submit_discount_code');
+    /*const promoCodeForm = document.querySelector('#submit_discount_code');
     if (promoCodeForm) {
         promoCodeForm.addEventListener('submit', function(event) {
             event.preventDefault();
@@ -184,7 +184,7 @@ window.addEventListener("load", function(){
             });
 
         })
-    }
+    }*/
 
     $(window).on('resize', function() {
 
@@ -450,7 +450,7 @@ window.addEventListener("load", function(){
         });
 
     }
-
+/*
     const braintreeDropin = document.querySelector('#bt-dropin');
     if (braintreeDropin) {
         let spinner = document.querySelector('#loading_spinner');
@@ -561,7 +561,7 @@ window.addEventListener("load", function(){
                     });
             }
         }
-    }
+    }*/
 
     const inputs = document.querySelectorAll('input.animate');
 
