@@ -45,18 +45,16 @@ class SubscriptionController extends Controller
         $user = Auth::user();
         $page = $user->pages()->where('user_id', $user["id"])->where('default', true)->first();
 
-        if ($data["success"]) {
-            $url = '/dashboard/pages/' . $page->id;
-            return Inertia::location($url)->with(['message' => $data["message"]]);
-        } elseif($data["bypass"]) {
+        $newData = null;
+        if(array_key_exists("bypass", $data) && $data["bypass"]) {
             $newData = $subscriptionService->createManualSubscription($request->discountCode);
-            $url = '/dashboard/pages/' . $page->id;
-            if($newData["success"]) {
-                return Inertia::location($url)->with(['message' => $newData["message"]]);
-            }
         }
 
-        return response()->json(['success' => false, 'message' => $data["message"]]);
+        $success = $newData ? $newData['success'] : $data['success'];
+        $message = $newData ? $newData['message'] : $data['message'];
+        //$url = '/dashboard/pages/' . $page->id;
+
+        return response()->json(['success' => $success, 'message' => $message, 'url' => "/dashboard"]);
     }
 
     /**
@@ -85,18 +83,15 @@ class SubscriptionController extends Controller
      * @param Request $request
      * @param SubscriptionService $subscriptionService
      *
-     * @return \Inertia\Response
+     *
      */
-    public function plans(Request $request, SubscriptionService $subscriptionService): \Inertia\Response {
+    public function plans(Request $request, SubscriptionService $subscriptionService) {
 
         $path = $request->session()->get('_previous');
 
-        $subscription = $subscriptionService->showPlansPage();
+        /*$subscription = $subscriptionService->showPlansPage();*/
 
-        return Inertia::render('Plans/Plans')->with([
-            'subscription' => $subscription,
-            'path' => $path["url"]
-        ]);
+        return Inertia::render('Plans/Plans')->with([ 'path' => $path["url"] ]);
     }
 
     /**

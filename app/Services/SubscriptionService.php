@@ -411,9 +411,10 @@ class SubscriptionService {
             $errorString = explode('not found', $e );
 
             DB::table('transaction_errors')->insert([
-                'code' => 'find plan error',
-                'message' => $errorString[0],
-                'attribute' => 'find plan error',
+                'code'          => 'find plan error',
+                'message'       => $errorString[0],
+                'attribute'     => 'find plan error',
+                'created_at'    => Carbon::now()
             ]);
 
             $data = [

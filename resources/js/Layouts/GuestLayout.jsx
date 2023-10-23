@@ -1,6 +1,7 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link } from '@inertiajs/react';
 import GuestFooter from '@/Layouts/GuestFooter.jsx';
+import InputAnimations from '@/Utils/InputAnimations.jsx';
 
 export default function Guest({ children, ...props }) {
 
@@ -10,6 +11,7 @@ export default function Guest({ children, ...props }) {
 
     return (
         <div className="guest min-h-screen flex flex-col items-center">
+            <InputAnimations />
             <header className="guest_header w-full">
                 <div className="column left">
                     <h1>

@@ -10,7 +10,7 @@ const ContactLayout = () => {
             <div className="container" id="contact_page">
                 <div className="my_row form_page">
                     <div className="card guest">
-                        <h2 className="page_title text-center">Contact Us</h2>
+                        <h2 className="page_title text-center !mb-2">Contact Us</h2>
                         <div id="contact_form" className="card-body text-center">
                             <ContactForm/>
                         </div>

@@ -61,7 +61,7 @@ export default function Register() {
                                         type="password"
                                         name="password"
                                         value={data.password}
-                                        className="mt-1 block w-full"
+                                        className="mt-1 block w-full animate"
                                         autoComplete="new-password"
                                         onChange={(e) => setData('password', e.target.value)}
                                         required
@@ -77,7 +77,7 @@ export default function Register() {
                                         type="password"
                                         name="password_confirmation"
                                         value={data.password_confirmation}
-                                        className="mt-1 block w-full"
+                                        className="mt-1 block w-full animate"
                                         autoComplete="new-password"
                                         onChange={(e) => setData('password_confirmation', e.target.value)}
                                         required

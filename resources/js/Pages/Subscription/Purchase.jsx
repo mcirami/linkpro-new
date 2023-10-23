@@ -5,6 +5,7 @@ import {capitalize} from 'lodash';
 import PromoComponent from '@/Pages/Subscription/Components/PromoComponent.jsx';
 import {Loader} from '@/Utils/Loader.jsx';
 import {purchaseSubscription} from '@/Services/SubscriptionRequests.jsx';
+import SetFlash from '@/Utils/SetFlash.jsx';
 
 function Purchase({
                       plan,
@@ -110,17 +111,17 @@ function Purchase({
                 purchaseSubscription(url, packets).then((response) => {
 
                     if(response.success) {
-                        router.get('/dashboard')
+                        router.get(response.url, {message: response.message})
                     }
+
+                    setShowLoader({
+                        show: false,
+                        position: "",
+                        icon: ""
+                    })
                 })
             });
         }
-
-        setShowLoader({
-            show: false,
-            position: "",
-            icon: ""
-        })
     }
 
     const switchStatement = () => {
@@ -194,6 +195,7 @@ function Purchase({
     return (
         <AuthenticatedLayout>
             <Head title="Purchase Subscription" />
+            <SetFlash />
             <div className="my_row form_page plans checkout">
                 <div className="container">
                     <h2 className="page_title mb-0 w-100">
@@ -231,16 +233,6 @@ function Purchase({
                                         setPromoCode={setPromoCode}
                                     />
                                     <div className="my_row">
-                                       {/* @php
-                                        if ($bypass == true) {
-                                        $route = route('subscribe.change.plan');
-                                    } elseif ($existing) {
-                                        $route = route('subscribe.resume');
-                                    } else {
-                                        $route = route('subscribe.post');
-                                    }
-                                        @endphp*/}
-
                                         <form method="" id="payment-form" action="">
                                             <section>
                                                 <input id="form_discount_code" type="hidden" name="discountCode" />

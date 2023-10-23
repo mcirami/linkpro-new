@@ -30,7 +30,7 @@ import {
     FOLDER_LINKS_ACTIONS,
     LINKS_ACTIONS,
 } from '@/Services/Reducer.jsx';
-import EventBus from '../../../../../Utils/Bus';
+import EventBus from '@/Utils/Bus';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';

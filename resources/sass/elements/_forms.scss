@@ -52,7 +52,7 @@ select {
     -moz-border-radius: 8px;
     height: 55px;
     padding: 15px 40px 15px 15px;
-    //background-color: transparent;
+    background-color: transparent;
     position: relative;
     z-index: 2;
 
@@ -71,7 +71,7 @@ select {
         top: 15px;
         left: 15px;
         transition: top 500ms ease-in-out, font-size 500ms ease-in-out, color 500ms ease-in-out;
-        z-index: 2;
+        z-index: 1;
     }
 
     &.active {

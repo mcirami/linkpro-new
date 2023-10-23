@@ -9,7 +9,7 @@ import {
 import {LP_ACTIONS, OFFER_ACTIONS} from '../Reducer';
 import {updateOfferData} from '@/Services/OfferRequests.jsx';
 import EditorComponent from '../../LPCreator/Components/EditorComponent';
-import {HandleFocus} from '@/Utils/InputAnimations.jsx';
+//import {HandleFocus} from '@/Utils/InputAnimations.jsx';
 
 const InputComponent = ({
                             placeholder,
@@ -232,7 +232,7 @@ const InputComponent = ({
             case 'text' || 'url' :
                 return (
                     <>
-                        <input className={ value !== "" ? "active" : ""}
+                        <input className={"animate"}
                                maxLength={maxChar}
                                name={elementName}
                                type={type}
@@ -244,7 +244,7 @@ const InputComponent = ({
                                    }
                                }}
                                onBlur={(e) => handleSubmit(e)}
-                               onFocus={(e) => HandleFocus(e.target)}
+                               /*onFocus={(e) => HandleFocus(e.target)}*/
                                onPaste={(e) => handleChange(e)}
                         />
                         <label htmlFor={elementName}>{placeholder}</label>
@@ -254,7 +254,7 @@ const InputComponent = ({
                 return (
                     <>
                         <textarea
-                            className={value !== "" ? "active" : ""}
+                            className={"animate"}
                             name={elementName}
                             defaultValue={value || ""}
                             rows={5}
@@ -265,7 +265,7 @@ const InputComponent = ({
                                 }
                             }}
                             onBlur={(e) => handleSubmit(e)}
-                            onFocus={(e) => HandleFocus(e.target)}
+                            /*onFocus={(e) => HandleFocus(e.target)}*/
                             onPaste={(e) => handleChange(e)}
                         ></textarea>
                         <label htmlFor={elementName}>{placeholder}</label>
@@ -291,7 +291,7 @@ const InputComponent = ({
                 return (
                     <>
                         <CurrencyInput
-                            className={`animate ${offerData[elementName]} && active`}
+                            className={`animate`}
                             decimalsLimit={2}
                             defaultValue={offerData[elementName] || ""}
                             onValueChange={handleCurrencyChange}
@@ -301,7 +301,7 @@ const InputComponent = ({
                                 }
                             }}
                             onBlur={(e) => handleSubmit(e)}
-                            onFocus={(e) => HandleFocus(e.target)}
+                            /*onFocus={(e) => HandleFocus(e.target)}*/
                             prefix={prefix}
                             step={.1}
                         />
@@ -311,7 +311,7 @@ const InputComponent = ({
             default:
                 return (
                     <>
-                        <input className={value !== "" ? "active" : ""}
+                        <input className={"animate"}
                                maxLength={maxChar}
                                name={elementName}
                                type={type}
@@ -323,7 +323,7 @@ const InputComponent = ({
                                    }
                                }}
                                onBlur={(e) => handleSubmit(e)}
-                               onFocus={(e) => HandleFocus(e.target)}
+                               /*onFocus={(e) => HandleFocus(e.target)}*/
                         />
                         <label htmlFor={elementName}>{placeholder}</label>
                     </>

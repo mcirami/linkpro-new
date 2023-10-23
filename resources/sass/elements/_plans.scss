@@ -58,9 +58,10 @@
         }
 
         .sub_title {
+            @include ossemibold;
             color: $blue;
             text-align: center;
-            font-size: 18px;
+            font-size: 1.3rem;
         }
 
         ul {

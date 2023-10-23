@@ -1,4 +1,5 @@
 const userLinks = user.links;
+
 const myLinksArray = userLinks?.map(({
                                      id,
                                      type,

@@ -1,6 +1,7 @@
 import React from 'react';
 
-export const Loader = ({showLoader}) => {
+export const
+    Loader = ({showLoader}) => {
 
     return (
         <div className="loader_popup" style={{ position:`${showLoader.position}`}}>

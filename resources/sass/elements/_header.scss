@@ -137,6 +137,12 @@
                 -moz-border-radius: 100%;
             }
 
+            #username {
+                @include ossemibold;
+                font-size: 18px;
+                color: $blue;
+            }
+
             a {
                 @include ossemibold;
                 font-size: 18px;

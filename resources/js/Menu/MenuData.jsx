@@ -47,7 +47,7 @@ const MenuData = [
         name: 'settings',
         url: '/edit-account',
         icon: <RiUserSettingsLine />,
-        permission: 'all'
+        permission: 'has permission'
     },
     {
         id: 'contact_us',

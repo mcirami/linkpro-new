@@ -1,6 +1,6 @@
 import React from 'react';
 import {updateSectionData} from '@/Services/LandingPageRequests.jsx';
-import {HandleFocus} from '@/Utils/InputAnimations.jsx';
+//import {HandleFocus} from '@/Utils/InputAnimations.jsx';
 
 const DropdownComponent = ({
                                courses,
@@ -43,12 +43,12 @@ const DropdownComponent = ({
 
     return (
         <div className="relative">
-            <select className={buttonCourseId ? "active" : ""}
+            <select className={"animate"}
                     name="courses"
                     id="courses"
                     onChange={(e) => handleChange(e)}
                     value={buttonCourseId || ""}
-                    onFocus={(e) => HandleFocus(e.target)}
+                    /*onFocus={(e) => HandleFocus(e.target)}*/
             >
                 <option></option>
                 {courses?.map((course, index) => {

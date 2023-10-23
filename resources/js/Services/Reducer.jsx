@@ -1,4 +1,4 @@
-import myLinksArray from '../Pages/Dashboard/Components/Link/LinkItems';
+//import myLinksArray from '../Pages/Dashboard/Components/Link/LinkItems';
 
 export const LINKS_ACTIONS = {
     SET_LINKS: 'set-links',
@@ -185,7 +185,7 @@ export function reducer(userLinks, action) {
             })
 
         default:
-            return myLinksArray;
+            return userLinks;
     }
 }
 
@@ -376,7 +376,7 @@ export function origLinksReducer(originalArray, action) {
 
         default:
 
-            return myLinksArray;
+            return originalArray;
     }
 }
 

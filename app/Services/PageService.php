@@ -60,7 +60,7 @@ class PageService {
      */
     public function createNewPage($request) {
 
-        $path = $request->session()->get('_previous');
+        //$path = $request->session()->get('_previous');
 
         $name = preg_replace("/[\s_]/", "-", strtolower($request->name));
 
@@ -79,7 +79,7 @@ class PageService {
             'default' => $default,
         ]);
 
-        if(str_contains($path["url"], 'create-page')) {
+        if($request->createPage) {
             $userData = ([
                 'username' => $name,
                 'link' => $name,
@@ -117,7 +117,7 @@ class PageService {
     /**
      * Show Edit Page
      *
-     * @return void
+     *
      */
 
     public function editPage($page) {
@@ -154,6 +154,16 @@ class PageService {
             'userSub'       => $userSubscription,
 	        'affStatus'     => count($affStatus) > 0 ? $affStatus[0] : null
         ]);
+
+        return [
+            'links'         => $linksArray,
+            'icons'         => $standardIcons,
+            'page'          => $page,
+            'user_pages'    => $userPages,
+            'allPageNames'  => $pageNames,
+            'userSub'       => $userSubscription,
+            'affStatus'     => count($affStatus) > 0 ? $affStatus[0] : null
+        ];
     }
 
     /*

@@ -3,11 +3,13 @@ import { Link } from '@inertiajs/react';
 import ProfileMenu from '@/Components/ProfileMenu.jsx';
 import Menu from '@/Menu/Menu.jsx';
 import AuthenticatedFooter from '@/Layouts/AuthenticatedFooter.jsx';
+import InputAnimations from '@/Utils/InputAnimations.jsx';
 
 export default function Authenticated({ children }) {
 
     return (
         <div id="app_wrap" className="member">
+            <InputAnimations />
             <div className="my_row">
                 <Menu />
                 <header className="my_row nav_row">

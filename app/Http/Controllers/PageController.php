@@ -13,12 +13,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\UserTrait;
 use Illuminate\Support\Facades\Cookie;
 use Inertia\Inertia;
-use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
+use App\Http\Traits\PageTrait;
+
 
 class PageController extends Controller
 {
 
-    use UserTrait;
+    use UserTrait, PageTrait;
 
     public function show(PageService $pageService, Page $page) {
 
@@ -55,24 +56,24 @@ class PageController extends Controller
 
     }
 
-    public function showCreatePage(PageService $pageService) {
+    public function showCreatePage() {
 
         $user = Auth::user();
+        $userPages = $this->getUserPages($user);
 
-        if( count($this->getUserPages($user)) > 0) {
-            return redirect('/dashboard');
+        if( count($userPages) > 0) {
+            $url = '/dashboard/pages/' . $userPages[0]->id;
+            return Inertia::location($url);
         }
 
-        $pageService->showCreatePage();
+        $pages = $this->getAllPages();
 
-        return view('pages.create');
+        return Inertia::render('Register/CreatePage', ['pageNames' => $pages]);
     }
 
     public function store(PageNameRequest $request, PageService $pageService) {
 
         $page = $pageService->createNewPage($request);
-
-        //$linkService->addLink($page);
 
         return response()->json(['message'=> 'New Link Added', 'page_id' => $page->id]);
     }
@@ -97,9 +98,9 @@ class PageController extends Controller
             return abort(404);
         }
 
-        $pageService->editPage($page);
+        $data = $pageService->editPage($page);
 
-        return Inertia::render('Dashboard/Dashboard');
+        return Inertia::render('Dashboard/Dashboard')->with(["data" => $data]);
     }
 
     public function updateHeaderImage(Request $request, Page $page, PageService $pageService) {
@@ -177,6 +178,7 @@ class PageController extends Controller
         $redirected = $request->redirected;
         $storeID = $request->store;
         $error = $request->connection_error;
+        $message = $request->message ?: null;
 
         $user = Auth::User();
         $page = $user->pages()->where('user_id', $user->id)->where('default', true)->first();
@@ -187,15 +189,15 @@ class PageController extends Controller
             $url = '/dashboard/pages/' . $page->id;
         }
 
-        return Inertia::location($url);
+        if ($message) {
+            $url = $url . '/?message=' . $message;
+        }
 
-        //return redirect($url);
+        return Inertia::location($url);
     }
 
     public function showPreRegister() {
 
-        Javascript::put([]);
-
-        return view('pages.pre-register');
+        return Inertia::render('PreRegister/PreRegister');
     }
 }

@@ -459,13 +459,3 @@
         }
     }
 }
-
-#pre_register {
-    .grid_columns {
-        h3 {
-            @include query(tablet) {
-                font-size: 1.4em;
-            }
-        }
-    }
-}

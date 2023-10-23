@@ -6,16 +6,15 @@ export const purchaseSubscription = (url, packets) => {
 
     return axios.post(url, packets).then(
         (response) => {
-            const returnMessage = JSON.stringify(response.data.message);
+            console.log(response);
+            const returnMessage = response.data.message;
             const success = response.data.success;
-            if(success) {
-                EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
-            } else {
-                EventBus.dispatch("error", { message: returnMessage.replace("_", " ") });
-            }
+            const url = response.data.url;
 
             return {
                 success : success,
+                message : returnMessage,
+                url : url
             }
         },
 

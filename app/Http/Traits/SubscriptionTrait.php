@@ -71,6 +71,7 @@ trait SubscriptionTrait {
                 'code'          => $error->code,
                 'message'       => $error->message,
                 'attribute'     => $error->attribute,
+                'created_at'    => Carbon::now()
             ]);
         }
     }

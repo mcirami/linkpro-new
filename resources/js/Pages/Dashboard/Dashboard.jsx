@@ -61,9 +61,13 @@ import {Head} from '@inertiajs/react';
 import SetFlash from '@/Utils/SetFlash.jsx';
 import EventBus from '@/Utils/Bus.jsx';
 
-function Dashboard({auth, message = null}) {
+function Dashboard({
+                       auth,
+                       message = null,
+                       data,
+}) {
 
-    const [userLinks, dispatch] = useReducer(reducer, myLinksArray);
+    const [userLinks, dispatch] = useReducer(reducer, data.links);
     const [folderLinks, dispatchFolderLinks] = useReducer(folderLinksReducer, []);
 
     const [pageSettings, setPageSettings] = useState(page);
@@ -114,8 +118,15 @@ function Dashboard({auth, message = null}) {
     const [connectionError, setConnectionError] = useState(false);
 
     useEffect(() => {
+
+        const data = getUrlParams();
+        message = data.urlParams?.get('message');
+
         if(message) {
             EventBus.dispatch("success", { message: message });
+            data.urlParams?.delete('message');
+            window.history.pushState({}, document.title, data.href);
+            localStorage.clear();
         }
 
     },[])
@@ -141,12 +152,12 @@ function Dashboard({auth, message = null}) {
     const [redirectedType, setRedirectedType] = useState(null);
 
     useEffect(() => {
-        const href = window.location.href.split('?')[0]
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const redirected = urlParams?.get('redirected');
-        const storeID = urlParams?.get('store');
-        const error = urlParams?.get('connection_error');
+
+        const data = getUrlParams();
+
+        const redirected = data.urlParams?.get('redirected');
+        const storeID = data.urlParams?.get('store');
+        const error = data.urlParams?.get('connection_error');
 
         if (redirected && redirected !== "") {
             setInputType(localStorage.getItem('inputType') || null)
@@ -165,10 +176,10 @@ function Dashboard({auth, message = null}) {
                     inline: "nearest"
                 });
 
-                urlParams.delete('redirected')
-                urlParams.delete('store');
-                urlParams.delete('connection_error');
-                window.history.pushState({}, document.title, href);
+                data.urlParams.delete('redirected')
+                data.urlParams.delete('store');
+                data.urlParams.delete('connection_error');
+                window.history.pushState({}, document.title, data.href);
                 localStorage.clear();
 
             }, 800)
@@ -180,7 +191,25 @@ function Dashboard({auth, message = null}) {
             return () => window.clearTimeout(scrollTimeout);
         }
 
-    }, [])
+    }, []);
+
+    useEffect(() => {
+
+        EventBus.dispatch("success", { message: message });
+
+
+    },[])
+
+    const getUrlParams = () => {
+        const href = window.location.href.split('?')[0]
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+
+        return {
+            href,
+            urlParams
+        }
+    }
 
     const myErrorHandler = (Error, {componentStack: string}) => {
 

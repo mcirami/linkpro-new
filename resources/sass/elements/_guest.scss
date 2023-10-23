@@ -127,6 +127,14 @@
             width: 100%;
         }
     }
+
+    &.user_account {
+        .card {
+            .input_wrap {
+                background: $white;
+            }
+        }
+    }
 }
 
 .live_page {

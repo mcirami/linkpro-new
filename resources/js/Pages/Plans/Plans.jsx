@@ -1,20 +1,23 @@
 import React from 'react';
-import {Head, usePage} from '@inertiajs/react';
+import {Head, router, usePage} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 
-function Plans({path, subscription}) {
+function Plans({path}) {
 
     const { auth } = usePage().props;
+    const subscriptionName = auth.user.subscription.name;
+    const braintreeStatus = auth.user.subscription.braintree_status;
+    const braintreeID = auth.user.subscription.braintree_id;
 
     return (
         <AuthenticatedLayout>
             <Head title="Subscription Plans"/>
             <div className="container">
                 <div className="my_row form_page plans text-center">
-                    {path.includes('/create-page') ?
+                    {path.includes('create-page') ?
                         <>
-                            <h2 className="page_title m-0">Welcome to Link Pro!</h2>
-                            <p className="sub_title">Continue free forever or upgrade for advanced features!</p>
+                            <h2 className="page_title !m-0">Welcome to Link Pro!</h2>
+                            <p className="sub_title mb-5">Continue free forever or upgrade for advanced features!</p>
                         </>
                         :
                         <h2 className="page_title">Upgrade Now For Advanced Features!</h2>
@@ -22,9 +25,9 @@ function Plans({path, subscription}) {
                     <div className="card inline-block">
                         <div className="card-body">
                             <div className={`my_row three_columns ${
-                                (subscription && subscription.name === "premier") && (subscription.braintree_status === "active" ||
-                                subscription.braintree_status === "pending") ? "two_columns" : ""}`}>
-                                { (!subscription || (subscription && subscription.name !== "premier") ) || (subscription.braintree_status !== "active" && subscription.braintree_status !== "pending") ?
+                                (subscriptionName === "premier") && (braintreeStatus === "active" ||
+                                    braintreeStatus === "pending") ? "two_columns" : ""}`}>
+                                { (!subscriptionName || (subscriptionName !== "premier") ) || (braintreeStatus !== "active" && braintreeStatus !== "pending") ?
                                     <div className="column pro">
                                         <h2 className="text-uppercase">Pro</h2>
                                         <ul>
@@ -58,12 +61,12 @@ function Plans({path, subscription}) {
                                         </div>
                                         <div className="button_row">
 
-                                            { (subscription && subscription.name === "pro") &&
-                                            (subscription.braintree_status === "active" ||
-                                                subscription.braintree_status === "pending") ?
+                                            { (subscriptionName === "pro") &&
+                                            (braintreeStatus === "active" ||
+                                                braintreeStatus === "pending") ?
                                                 <span className='button disabled'>Current</span>
                                                 :
-                                                subscription && subscription.braintree_status === "active" ?
+                                                braintreeStatus === "active" ?
                                                     <button className='button blue open_popup' data-type="downgrade" data-level="pro">
                                                         Downgrade My Plan
                                                     </button>
@@ -104,13 +107,13 @@ function Plans({path, subscription}) {
                                     </div>
                                     <div className="button_row">
                                         {
-                                            (subscription && subscription.name === "premier") &&
-                                            (subscription.braintree_status === "active" || subscription.braintree_status === "pending") ?
+                                            (subscriptionName === "premier") &&
+                                            (braintreeStatus === "active" || braintreeStatus === "pending") ?
                                                 <span className='button disabled'>Current</span>
                                             :
-                                                subscription &&
-                                                (subscription.braintree_status === "active" || subscription.braintree_status === "pending") &&
-                                                subscription.braintree_id !== "bypass" ?
+                                                subscriptionName &&
+                                                (braintreeStatus === "active" || braintreeStatus === "pending") &&
+                                                braintreeID !== "bypass" ?
                                                 <button className="open_popup button black_gradient" data-type="upgrade" data-level="premier">
                                                     Go Premier
                                                 </button>
@@ -145,7 +148,7 @@ function Plans({path, subscription}) {
                                     </div>
                                 </div>
                             </div>
-                            {path.includes('/create-page') &&
+                            {path.includes('create-page') &&
                                 <div className="my_row">
                                     <div className="column free plans_page">
                                         <h2 className="text-uppercase">Free</h2>

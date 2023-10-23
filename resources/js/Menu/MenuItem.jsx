@@ -1,5 +1,5 @@
 import React from 'react';
-import {toUpper} from 'lodash';
+import {isEmpty, toUpper} from 'lodash';
 import HoverText from '../Utils/HoverText';
 import {Link} from '@inertiajs/react';
 
@@ -16,8 +16,9 @@ const MenuItem = ({
     const {id, name, url, icon, permission} = item;
 
     return (
-        ( (userPermissions.includes(permission) || permission === "all") && id !== "pre_register") ||
-        (id === "pre_register" && !userPermissions.includes("view dashboard") ) ?
+        ( (userPermissions?.includes(permission) || permission === "all") && id !== "pre_register") ||
+        (id === "pre_register" && !userPermissions?.includes("view dashboard") ) ||
+        (id === "settings" && !isEmpty(userPermissions)) ?
             <li>
                 <Link id={id}
                    style={courseData && {color: courseData["header_text_color"]}}

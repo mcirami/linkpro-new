@@ -288,17 +288,17 @@ const PaymentComponent = ({
                         </div>
                         <div className="form_inputs mb-4 columns-2">
                             <div className="w-full relative">
-                                <div className="animate active bg-white" id="expiration-date"></div>
+                                <div className="animate active !bg-white" id="expiration-date"></div>
                                 <label>Expiration Date</label>
                             </div>
                             <div className="w-full relative">
-                                <div className="animate active bg-white" id="cvv"></div>
-                                <label>CVV (3 digits)</label>
+                                <div className="animate active !bg-white" id="cvv"></div>
+                                <label>CVV</label>
                             </div>
                         </div>
                         <div className="form_inputs relative mb-4">
-                            {/*<div id="postal_code" className="hosted-field animate active bg-white"></div>*/}
-                            <input className="w-full animate active bg-white" type="text" id="postal_code" placeholder="xxxxx"/>
+                            {/*<div id="postal_code" className="hosted-field animate active !bg-white"></div>*/}
+                            <input className="w-full animate active !bg-white" type="text" id="postal_code" placeholder="xxxxx" />
                             <label>Postal Code</label>
                         </div>
                         {/*{@error('card')
