@@ -5,15 +5,15 @@ import React, {
 } from 'react';
 import {PageContext, UserLinksContext} from '../../Dashboard.jsx';
 import {IoIosCloseCircleOutline} from 'react-icons/io';
-import AccordionLinks from './AccordionLinks';
+import AccordionLinks from '../../../../Components/LinkComponents/AccordionLinks.jsx';
 import {checkIcon} from '@/Services/UserService.jsx';
 import Header from './Header';
 import ProfileImage from './ProfileImage';
 import ProfileText from './ProfileText';
-import Folder from './Folder';
-import FormIcon from './FormIcon';
-import SubscribeForm from './SubscribeForm';
-import StoreProducts from './StoreProducts';
+import Folder from '../../../../Components/LinkComponents/Folder.jsx';
+import FormIcon from '../../../../Components/LinkComponents/FormIcon.jsx';
+import SubscribeForm from '../../../../Components/LinkComponents/SubscribeForm.jsx';
+import StoreProducts from '../../../../Components/LinkComponents/StoreProducts.jsx';
 import {UseLoadPreviewHeight, UseResizePreviewHeight} from '@/Services/PreviewHooks.jsx';
 
 const Preview = ({
@@ -28,18 +28,13 @@ const Preview = ({
                      setShowPreview
 }) => {
 
-    const { userLinks } = useContext(UserLinksContext);
-    const [iconCount, setIconCount] = useState(null);
-    const {pageSettings} = useContext(PageContext);
-    const [clickType, setClickType] = useState(null);
-
     const loadPreviewHeight = UseLoadPreviewHeight();
     const resizePreviewHeight = UseResizePreviewHeight();
 
-    const ClosePreview = () => {
-        document.querySelector('body').classList.remove('fixed');
-        setShowPreview(false);
-    }
+    const { userLinks } = useContext(UserLinksContext);
+    const {pageSettings} = useContext(PageContext);
+    const [iconCount, setIconCount] = useState(null);
+    const [clickType, setClickType] = useState(null);
 
     useEffect(() => {
 
@@ -64,11 +59,16 @@ const Preview = ({
 
         window.addEventListener('resize', handleResize);
 
-        handleResize()
+        //handleResize()
         return () => {
             window.removeEventListener('resize', handleResize);
         }
     }, []);
+
+    const ClosePreview = () => {
+        document.querySelector('body').classList.remove('fixed');
+        setShowPreview(false);
+    }
 
     const accordionLinks = value !== null ? userLinks[value].links : null;
     const mailchimpListId = value !== null ? userLinks[value].mailchimp_list_id : null;

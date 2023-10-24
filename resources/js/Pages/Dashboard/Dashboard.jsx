@@ -127,6 +127,8 @@ function Dashboard({
             data.urlParams?.delete('message');
             window.history.pushState({}, document.title, data.href);
             localStorage.clear();
+
+            return () => EventBus.remove("success");
         }
 
     },[])
@@ -192,13 +194,6 @@ function Dashboard({
         }
 
     }, []);
-
-    useEffect(() => {
-
-        EventBus.dispatch("success", { message: message });
-
-
-    },[])
 
     const getUrlParams = () => {
         const href = window.location.href.split('?')[0]

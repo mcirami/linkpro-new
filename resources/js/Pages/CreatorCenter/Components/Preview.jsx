@@ -1,14 +1,14 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React from 'react';
 import {isEmpty} from 'lodash';
 import PreviewSection from './PreviewSection';
 import {UseLoadPreviewHeight, UseResizePreviewHeight} from '@/Services/PreviewHooks.jsx';
 
 const Preview = ({landingPage}) => {
 
-    const {header_color, header_text_color, hero, logo, sections, slogan} = landingPage;
-
     const loadPreviewHeight = UseLoadPreviewHeight(20);
     const resizePreviewHeight = UseResizePreviewHeight(20);
+
+    const {header_color, header_text_color, hero, logo, sections, slogan} = landingPage;
 
     return (
         <div className="links_wrap preview lp_creator">

@@ -1,6 +1,9 @@
-import FolderLinks from './FolderLinks';
+import FolderLinks from './FolderLinks.jsx';
 import React from 'react';
+import {TrackFolderClick} from '@/Services/TrackClicks.jsx';
+
 const Folder = ({
+                    id,
                     colClasses,
                     mainIndex,
                     links,
@@ -33,6 +36,8 @@ const Folder = ({
                 });
 
             }, 300)
+
+            TrackFolderClick(id);
         }
     }
 

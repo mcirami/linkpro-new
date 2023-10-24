@@ -11,20 +11,24 @@ const SetFlash = () => {
     });
 
     useEffect(() => {
-        EventBus.on('success', (data) => {
-            showFlash(true, 'success', data.message.replace(/"/g, ""))
 
-            return () => EventBus.remove("success");
+
+        EventBus.on('success', (data) => {
+            if(data.message) {
+                showFlash(true, 'success', data.message.replace(/"/g, ""))
+            }
         });
+
+        return () => EventBus.remove("success");
 
     }, []);
 
     useEffect(() => {
         EventBus.on('error', (data) => {
             showFlash(true, 'error', data.message.replace(/"/g, ""))
-
-            return () => EventBus.remove("error");
         });
+
+        return () => EventBus.remove("error");
 
     }, []);
 

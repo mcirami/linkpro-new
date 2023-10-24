@@ -1,5 +1,6 @@
 import React from 'react';
 import {checkIcon} from '@/Services/UserService.jsx';
+import {TrackIconClick} from '@/Services/TrackClicks.jsx';
 
 const AccordionLinks = ({icons}) => {
 
@@ -20,7 +21,7 @@ const AccordionLinks = ({icons}) => {
         <div className="icon_col">
             {active_status ?
                 <>
-                    <a href={source} target="_blank">
+                    <a href={source} target="_blank" onClick={(e) => TrackIconClick(id)}>
                         <img src={checkIcon(icon, "preview")} alt={name} title={name}/>
                     </a>
                     <p>

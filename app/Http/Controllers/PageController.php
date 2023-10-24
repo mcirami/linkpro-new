@@ -37,23 +37,11 @@ class PageController extends Controller
 
         $links = $pageService->getUserLinks($page, $subscribed);
 
-        $value = session('authorized');
-
-        if($page->custom) {
-            return view('pages.custom.' . $page->name, [
-                'page'  => $page,
-                'authorized' => $value,
-            ]);
-
-        } else {
-            return view('pages.show', [
-                'links' => $links,
-                'page'  => $page,
-                'authorized' => $value,
-                'subscribed' => $subscribed
-            ]);
-        }
-
+        return Inertia::render('LivePage/LivePage')->with([
+            'links'         => $links,
+            'page'          => $page,
+            'subscribed'    => $subscribed
+        ]);
     }
 
     public function showCreatePage() {

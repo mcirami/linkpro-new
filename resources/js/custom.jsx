@@ -223,7 +223,7 @@ window.addEventListener("load", function(){
         })
     }
 
-    let row = null;
+    /*let row = null;
     function insertContent(content, element, cb) {
 
         const currentRow = element.dataset.row * 4;
@@ -248,9 +248,9 @@ window.addEventListener("load", function(){
         }
         iconsWrap[0].after(content);
         cb();
-    }
+    }*/
 
-    const folders = document.querySelectorAll('.live_page .icon_col.folder');
+    /*const folders = document.querySelectorAll('.live_page .icon_col.folder');
     if (folders.length > 0) {
         let content = null;
         folders.forEach((element) => {
@@ -318,8 +318,8 @@ window.addEventListener("load", function(){
             })
         });
     }
-
-    const linkTrackers = document.querySelectorAll('.link_tracker');
+*/
+    /*const linkTrackers = document.querySelectorAll('.link_tracker');
 
     if (linkTrackers) {
 
@@ -342,9 +342,9 @@ window.addEventListener("load", function(){
                 });
             })
         })
-    }
+    }*/
 
-    function trackFolderClick(folderID) {
+   /* function trackFolderClick(folderID) {
         axios.post('/folder-click/' + folderID,).then(
             (response) => {
                 //console.log(JSON.stringify(response.data.message));
@@ -356,7 +356,7 @@ window.addEventListener("load", function(){
                 console.error("ERROR:: ", error);
             }
         });
-    }
+    }*/
 
     const mcSubscribeForm = document.querySelector('#mc_subscribe_form');
     if (mcSubscribeForm) {
@@ -450,7 +450,7 @@ window.addEventListener("load", function(){
         });
 
     }
-/*
+/* STILL MIGHT NEED TO TRANSFER THIS TO REACT
     const braintreeDropin = document.querySelector('#bt-dropin');
     if (braintreeDropin) {
         let spinner = document.querySelector('#loading_spinner');

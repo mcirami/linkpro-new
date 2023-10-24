@@ -48,6 +48,7 @@
         "autoprefixer": "^10.4.12",
         "axios": "^1.1.2",
         "bootstrap": "^5.1.0",
+        "eslint-plugin-react-hooks": "^4.6.0",
         "jquery": "^3.6",
         "laravel-vapor": "^0.6.0",
         "laravel-vite-plugin": "^0.8.0",

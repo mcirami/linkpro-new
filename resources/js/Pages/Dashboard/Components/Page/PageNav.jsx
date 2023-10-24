@@ -6,9 +6,8 @@ import AddPageForm from './AddPageForm';
 
 const PageNav = ({ allUserPages, setAllUserPages, userSub, subStatus, setShowUpgradePopup, setOptionText }) => {
 
-    const { pageSettings, setPageSettings } = useContext(PageContext);
-
     const [isEditing, setIsEditing] = useState(false);
+    const { pageSettings, setPageSettings } = useContext(PageContext);
 
     const pageList = allUserPages.filter(element => element.id !== pageSettings["id"]);
 

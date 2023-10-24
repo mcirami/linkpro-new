@@ -7,9 +7,7 @@ const SubscribeForm = ({dataRow, row, mailchimpListId, clickType}) => {
     return (
         <>
             {mailchimpListId !== undefined &&
-                <div className={`my_row form ${dataRow == row && clickType === "mailchimp" ?
-                    "open" :
-                    ""}`}>
+                <div className={`my_row form ${dataRow == row && clickType === "mailchimp" ? "open" : ""}`}>
                     {dataRow == row &&
                         <div className="form_wrap">
                             <form onSubmit={(e) => e.preventDefault()}>
