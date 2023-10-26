@@ -199,6 +199,7 @@ const Links = ({
                                     handleOnClick={handleOnClick}
                                     fetchFolderLinks={fetchFolderLinks}
                                     handleChange={handleChange}
+                                    subStatus={subStatus}
                                 />
                             )
                         })}

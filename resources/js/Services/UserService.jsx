@@ -1,12 +1,8 @@
 import axios from 'axios';
 import EventBus from '../Utils/Bus';
 import {isEmpty} from 'lodash';
-import {usePage} from '@inertiajs/react';
 
-export const checkSubStatus = () => {
-
-    const { auth } = usePage().props;
-    const userSub = auth.user.subscription;
+export const checkSubStatus = (userSub) => {
 
     if (userSub) {
 
@@ -36,7 +32,7 @@ export const checkSubStatus = () => {
     return false;
 }
 
-export const checkIcon = (icon, type) => {
+export const checkIcon = (icon, type, subStatus) => {
     let asset;
 
     if(type === "preview") {
@@ -46,7 +42,7 @@ export const checkIcon = (icon, type) => {
     }
 
     if (icon && icon.toString().includes('custom')) {
-        return checkSubStatus() ? icon : asset;
+        return subStatus ? icon : asset;
     } else {
         return icon;
     }

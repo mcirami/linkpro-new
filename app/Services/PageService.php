@@ -145,21 +145,10 @@ class PageService {
 
 		$affStatus = DB::table('affiliates')->where('user_id', $this->user->id)->pluck('status');
 
-        Javascript::put([
-            'links'         => $linksArray,
-            'icons'         => $standardIcons,
-            'page'          => $page,
-            'user_pages'    => $userPages,
-            'allPageNames'  => $pageNames,
-            'userSub'       => $userSubscription,
-	        'affStatus'     => count($affStatus) > 0 ? $affStatus[0] : null
-        ]);
-
         return [
             'links'         => $linksArray,
-            'icons'         => $standardIcons,
             'page'          => $page,
-            'user_pages'    => $userPages,
+            'userPages'     => $userPages,
             'allPageNames'  => $pageNames,
             'userSub'       => $userSubscription,
             'affStatus'     => count($affStatus) > 0 ? $affStatus[0] : null

@@ -3,9 +3,8 @@ import {FiThumbsDown, FiThumbsUp} from 'react-icons/Fi';
 import {PageContext} from '../../Dashboard.jsx';
 import {updatePageName} from '@/Services/PageRequests.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
-let pageNames = user.allPageNames;
 
-const PageName = () => {
+const PageName = ({pageNames}) => {
 
     const { pageSettings, setPageSettings } = useContext(PageContext);
 

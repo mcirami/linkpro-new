@@ -10,13 +10,13 @@ import {TrackIconClick} from '@/Services/TrackClicks.jsx';
 
 function LivePage({links, page, subscribed}) {
 
+    const {user_id, header_img, profile_layout, profile_img, title, bio, name} = page;
+
     const [headerStyle, setHeaderStyle] = useState({});
     const [iconCount, setIconCount] = useState(null);
     const [row, setRow] = useState(null);
     const [value, setValue] = useState(null);
     const [clickType, setClickType] = useState(null);
-
-    const {header_img, profile_layout, profile_img, title, bio, name} = page;
 
     useEffect(() => {
         if(header_img) {
@@ -93,7 +93,7 @@ function LivePage({links, page, subscribed}) {
 
                                         let displayIcon = null;
                                         if(type !== "folder") {
-                                            displayIcon = checkIcon(icon, "preview");
+                                            displayIcon = checkIcon(icon, "preview", subscribed);
                                         }
 
                                         let colClasses = "";
@@ -121,6 +121,7 @@ function LivePage({links, page, subscribed}) {
                                                                     name={name}
                                                                     clickType={clickType}
                                                                     setClickType={setClickType}
+                                                                    subStatus={subscribed}
                                                                 />
                                                                 :
                                                                 subscribed &&
@@ -183,6 +184,7 @@ function LivePage({links, page, subscribed}) {
                                                         row={row}
                                                         mailchimpListId={mailchimpListId}
                                                         clickType={clickType}
+                                                        userId={user_id}
                                                     />
                                                     :
                                                     ""
@@ -208,7 +210,11 @@ function LivePage({links, page, subscribed}) {
                                                                     innerLinkFull,
                                                                     index) => {
                                                                     return (
-                                                                        <AccordionLinks key={index} icons={innerLinkFull}/>
+                                                                        <AccordionLinks
+                                                                            key={index}
+                                                                            icons={innerLinkFull}
+                                                                            subStatus={subscribed}
+                                                                        />
                                                                     )
                                                                 })
                                                                 :

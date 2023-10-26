@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import {FiThumbsDown, FiThumbsUp} from 'react-icons/Fi';
-import {addPage} from '../../../../Services/PageRequests';
+import {addPage} from '@/Services/PageRequests.jsx';
 
-let pageNames = user.allPageNames;
-
-const AddPageForm = ({setIsEditing, setAllUserPages, allUserPages }) => {
+const AddPageForm = ({setIsEditing, setAllUserPages, allUserPages, pageNames}) => {
 
     const [newPageName, setNewPageName] = useState(null);
     const [available, setAvailability] = useState(false);

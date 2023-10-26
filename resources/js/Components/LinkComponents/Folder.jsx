@@ -13,8 +13,9 @@ const Folder = ({
                     dataRow,
                     name,
                     clickType,
-                    setClickType
-                }) => {
+                    setClickType,
+                    subStatus
+}) => {
 
     const folderClick = (e, index) => {
         e.preventDefault();
@@ -49,7 +50,11 @@ const Folder = ({
                 <div className="folder_icons preview">
                     {links.slice(0, 9).map(( innerLinkIcons, index ) => {
                         return (
-                            <FolderLinks key={index} icons={innerLinkIcons} />
+                            <FolderLinks
+                                key={index}
+                                icons={innerLinkIcons}
+                                subStatus={subStatus}
+                            />
                         )
                     })}
                 </div>

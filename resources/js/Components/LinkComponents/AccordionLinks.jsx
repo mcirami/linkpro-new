@@ -2,7 +2,7 @@ import React from 'react';
 import {checkIcon} from '@/Services/UserService.jsx';
 import {TrackIconClick} from '@/Services/TrackClicks.jsx';
 
-const AccordionLinks = ({icons}) => {
+const AccordionLinks = ({icons, subStatus}) => {
 
     const {id, name, email, phone, icon, url, active_status} = icons
     let source;
@@ -22,7 +22,7 @@ const AccordionLinks = ({icons}) => {
             {active_status ?
                 <>
                     <a href={source} target="_blank" onClick={(e) => TrackIconClick(id)}>
-                        <img src={checkIcon(icon, "preview")} alt={name} title={name}/>
+                        <img src={checkIcon(icon, "preview", subStatus)} alt={name} title={name}/>
                     </a>
                     <p>
                         {name?.length >

@@ -88,7 +88,7 @@ class PageController extends Controller
 
         $data = $pageService->editPage($page);
 
-        return Inertia::render('Dashboard/Dashboard')->with(["data" => $data]);
+        return Inertia::render('Dashboard/Dashboard')->with(["userData" => $data]);
     }
 
     public function updateHeaderImage(Request $request, Page $page, PageService $pageService) {

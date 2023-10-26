@@ -8,7 +8,8 @@ const Link = ({
                   link,
                   handleOnClick,
                   fetchFolderLinks,
-                  handleChange
+                  handleChange,
+                  subStatus
 }) => {
 
     const type = link.type || null;
@@ -18,7 +19,7 @@ const Link = ({
     if (type === "folder") {
         hasLinks = link.links.length > 0;
     } else {
-        displayIcon = checkIcon(link.icon);
+        displayIcon = checkIcon(link.icon, "", subStatus);
     }
 
     const {
@@ -69,8 +70,7 @@ const Link = ({
 
                                         return (
                                             <div className="image_col" key={index}>
-                                                <img src={checkIcon(
-                                                    icon)} alt=""/>
+                                                <img src={checkIcon(icon, "", subStatus)} alt=""/>
                                             </div>
                                         )
                                     })

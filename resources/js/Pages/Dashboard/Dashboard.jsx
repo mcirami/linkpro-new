@@ -4,10 +4,10 @@ import React, {
     createContext,
     useEffect,
     useRef,
+    useMemo,
 } from 'react';
 import Preview from './Components/Preview/Preview';
 import Links from './Components/Link/Links';
-import myLinksArray from './Components/Link/LinkItems';
 import PageHeader from './Components/Page/PageHeader';
 import PageProfile from './Components/Page/PageProfile';
 import PageName from './Components/Page/PageName';
@@ -47,11 +47,6 @@ import CustomForm from './Components/Link/Forms/CustomForm';
 import IntegrationForm from './Components/Link/Forms/IntegrationForm';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
-const page = user.page;
-const userPages = user.user_pages;
-const userSub = user.userSub;
-const affStatus = user.affStatus;
-
 export const UserLinksContext = createContext();
 export const FolderLinksContext = createContext();
 export const PageContext = createContext();
@@ -62,12 +57,13 @@ import SetFlash from '@/Utils/SetFlash.jsx';
 import EventBus from '@/Utils/Bus.jsx';
 
 function Dashboard({
-                       auth,
                        message = null,
-                       data,
+                       userData,
 }) {
 
-    const [userLinks, dispatch] = useReducer(reducer, data.links);
+    const {links, page, userPages, allPageNames, userSub, affStatus} = userData;
+
+    const [userLinks, dispatch] = useReducer(reducer, links);
     const [folderLinks, dispatchFolderLinks] = useReducer(folderLinksReducer, []);
 
     const [pageSettings, setPageSettings] = useState(page);
@@ -101,7 +97,10 @@ function Dashboard({
     const pageHeaderRef = useRef();
     const leftColWrap = useRef();
 
-    const [subStatus] = useState(checkSubStatus());
+    const subStatus = useMemo(
+        () => {
+            return checkSubStatus(userSub)
+    },[]);
 
     const [showLoader, setShowLoader] = useState({
         show: false,
@@ -337,11 +336,14 @@ function Dashboard({
                                                     subStatus={subStatus}
                                                     setShowUpgradePopup={setShowUpgradePopup}
                                                     setOptionText={setOptionText}
+                                                    pageNames={allPageNames}
                                                 />
 
                                                 <div ref={leftColWrap} className="content_wrap my_row" id="left_col_wrap">
                                                     <div className="top_section">
-                                                        <PageName />
+                                                        <PageName
+                                                            pageNames={allPageNames}
+                                                        />
 
                                                         <PageHeader
                                                             ref={nodesRef}

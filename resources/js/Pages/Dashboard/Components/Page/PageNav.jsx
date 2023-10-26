@@ -4,7 +4,15 @@ import {FiChevronDown} from 'react-icons/Fi';
 import {PageContext} from '../../Dashboard.jsx';
 import AddPageForm from './AddPageForm';
 
-const PageNav = ({ allUserPages, setAllUserPages, userSub, subStatus, setShowUpgradePopup, setOptionText }) => {
+const PageNav = ({
+                     allUserPages,
+                     setAllUserPages,
+                     userSub,
+                     subStatus,
+                     setShowUpgradePopup,
+                     setOptionText,
+                     pageNames
+}) => {
 
     const [isEditing, setIsEditing] = useState(false);
     const { pageSettings, setPageSettings } = useContext(PageContext);
@@ -92,6 +100,7 @@ const PageNav = ({ allUserPages, setAllUserPages, userSub, subStatus, setShowUpg
                             setIsEditing={setIsEditing}
                             setAllUserPages={setAllUserPages}
                             allUserPages={allUserPages}
+                            pageNames={pageNames}
                         />
                     </div>
 

@@ -125,7 +125,7 @@ const Preview = ({
 
                                 let displayIcon = null;
                                 if(type !== "folder") {
-                                    displayIcon = checkIcon(icon, "preview");
+                                    displayIcon = checkIcon(icon, "preview", subStatus);
                                 }
 
                                 let colClasses = "";
@@ -152,6 +152,7 @@ const Preview = ({
                                                             name={name}
                                                             clickType={clickType}
                                                             setClickType={setClickType}
+                                                            subStatus={subStatus}
                                                         />
                                                         :
                                                         subStatus &&
@@ -237,7 +238,11 @@ const Preview = ({
                                                                 innerLinkFull,
                                                                 index) => {
                                                                 return (
-                                                                    <AccordionLinks key={index} icons={innerLinkFull}/>
+                                                                    <AccordionLinks
+                                                                        key={index}
+                                                                        icons={innerLinkFull}
+                                                                        subStatus={subStatus}
+                                                                    />
                                                                 )
                                                             })
                                                             :

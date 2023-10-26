@@ -1,5 +1,4 @@
 import axios from 'axios';
-import EventBus from '../Utils/Bus';
 
 /**
  * Submit a request to get aff offer icons
