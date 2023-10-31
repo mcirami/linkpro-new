@@ -38,30 +38,4 @@ window.addEventListener("load", function(){
             })
         })
     }
-
-    const loginForm = document.querySelector('#custom_login_form');
-
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            $.ajax({
-                url: $(this).attr('action'),
-                data: $(this).serialize(),
-                type: "POST",
-                dataType: 'json',
-                success: function(data) {
-
-                    if(data.success) {
-                        window.location.reload();
-                    } else {
-                        const invalidDiv = document.querySelector('#custom_login_form .invalid-feedback');
-                        invalidDiv.innerHTML = data.error;
-                        invalidDiv.classList.add('d-block');
-                    }
-
-                }
-            })
-        });
-    }
 });

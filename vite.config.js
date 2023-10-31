@@ -6,7 +6,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/js/app.jsx', 'resources/js/custom.jsx'],
+            input: ['resources/js/app.jsx', 'resources/js/custom.jsx', 'resources/js/admin/admin.js', 'resources/sass/admin.scss'],
             refresh: true,
         }),
         react(),
@@ -15,6 +15,14 @@ export default defineConfig({
                 {
                     src: 'resources/js/custom.jsx',
                     dest: 'js'
+                },
+                {
+                    src: 'resources/js/admin/admin.js',
+                    dest: 'js/admin.js'
+                },
+                {
+                    src: 'resources/sass/admin.scss',
+                    dest: 'css/admin.css'
                 }
             ]
         })
