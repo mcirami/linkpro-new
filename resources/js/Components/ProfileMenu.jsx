@@ -8,15 +8,15 @@ const ProfileMenu = () => {
 
     const userRoles = auth.user.roles;
 
+    console.log(auth.user.subscription.name);
     return (
         <div className="nav_links_wrap">
             {/*Right Side Of Navbar*/}
             <ul className="ml-auto">
                 {!isEmpty(userRoles) ?
-                 (userRoles.includes('admin') || userRoles.includes('lp.user')) &&
-                    isEmpty(auth.user.subscription) ||
-                    (auth.user.subscription.name !== "premier" && !auth.user.subscription.ends_at) ||
-                    (auth.user.subscription.ends_at && auth.user.subscription.ends_at < Date(Date.now())) ?
+                     ( (userRoles.includes('admin') || userRoles.includes('lp.user')) && isEmpty(auth.user.subscription) ) ||
+                    (auth.user.subscription.name && auth.user.subscription.name !== "premier" && !auth.user.subscription.ends_at) ||
+                    (auth.user.subscription.ends_at && auth.user.subscription.ends_at < Date(Date.now()))  ?
                     <li className="upgrade_link">
                         <Link className="button blue" href={route('plans.get')}>Upgrade</Link>
                     </li>

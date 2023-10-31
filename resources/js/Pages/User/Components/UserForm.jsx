@@ -75,7 +75,7 @@ const UserForm = ({
                             <label className="z-2" htmlFor="password">New Password</label>
                         </div>
                     </div>
-                    <div className="input_wrap my_row relative">
+                    <div className="input_wrap my_row relative mb-3">
                         <input id="password_confirmation"
                                type="password"
                                className={`w-full animate bg-white ${data.password && "active"} ${errors.password_confirmation && "border-danger"} `}
