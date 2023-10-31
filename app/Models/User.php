@@ -6,6 +6,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
+use Inertia\Inertia;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Link as Link;
 use App\Models\Page as Page;
@@ -123,11 +126,52 @@ class User extends \TCG\Voyager\Models\User
 
     public function getRedirectRoute()
     {
-        $role = $this->roles()->first();
-        return match((int)$role->id) {
-            1 => 'admin',
-            2 => 'dashboard',
-            3 => 'all.courses',
-        };
+        $loginURL = url()->previous();
+        $roles = $this->getRoleNames();
+        $previousURL = Session::get( 'url.intended' );
+
+        $courseID = isset($_GET['course']) ? $_GET['course'] : null;
+        $course = null;
+        if ($courseID) {
+            $course = Course::findOrFail($courseID);
+            $creator = User::where('id', '=', $course->user_id)->get()->pluck('username');
+        }
+
+        if ( $previousURL ) {
+            return Inertia::location($previousURL);
+        }
+
+        if ($roles->contains('admin')) {
+
+            if ($course) {
+                return Inertia::location('/' . $creator[0] . '/course/' . $course->slug);
+            } else if (str_contains($loginURL, "admin")) {
+                return to_route( 'admin' );
+            }
+
+        } else if ($roles->contains("course.user") && $roles->contains('lp.user')) {
+
+            if ($course) {
+                return Inertia::location('/' . $creator[0] . '/course/' . $course->slug);
+            }
+
+        } else if ($roles->contains('lp.user')) {
+
+            $userPages = $this->pages()->get();
+
+            if ( $userPages->isEmpty() ) {
+                return to_route( 'create.page' );
+            }
+
+        } else if ($roles->contains("course.user")) {
+
+            if ($course) {
+                return Inertia::location('/' . $creator[0] . '/course/' . $course->slug);
+            } else {
+                return to_route('all.courses');
+            }
+        }
+
+        return to_route( 'dashboard' );
     }
 }

@@ -34,6 +34,11 @@ class PurchaseService {
 
         $user = $request->user ? User::findOrFail($request->user) : Auth::user();
 
+        $roles = $user->getRoleNames();
+        if (!$roles->contains("course.user")) {
+            $user->assignRole('course.user');
+        }
+
         $email = $user->email;
 
         $customer = $this->gateway->customer()->create( [

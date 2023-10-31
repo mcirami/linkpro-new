@@ -36,94 +36,15 @@ class AuthenticatedSessionController extends Controller
     /**
      * @param LoginRequest $request
      *
-     * @return RedirectResponse
+     * @return mixed
      * @throws ValidationException
      */
-    public function store(LoginRequest $request): RedirectResponse {
+    public function store(LoginRequest $request): mixed {
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
-    }
-
-    /**
-     * @param Request $request
-     * @param $user
-     *
-     * @return Application|\Illuminate\Foundation\Application|RedirectResponse|Redirector|int
-     */
-    protected function authenticated(Request $request, $user): \Illuminate\Foundation\Application|int|Redirector|RedirectResponse|Application {
-
-        $loginURL = url()->previous();
-        $roles = $user->getRoleNames();
-        //$permissions = $user->getPermissionsViaRoles()->pluck('name');
-        $courseID = isset($_GET['course']) ? $_GET['course'] : null;
-        $course = null;
-        if ($courseID) {
-            $course = Course::findOrFail($courseID);
-            $creator = User::where('id', '=', $course->user_id)->get()->pluck('username');
-        }
-
-        if ($roles->contains('admin')) {
-
-            $previousURL = Session::get( 'url.intended' );
-
-            if ( $previousURL ) {
-                return Redirect::intended();
-            } else {
-                if ($course) {
-                    return redirect('/' . $creator[0] . '/course/' . $course->slug);
-                } else if (str_contains($loginURL, "admin")) {
-                    return redirect( '/admin' );
-                } else {
-                    return redirect( '/dashboard' );
-                }
-            }
-
-        } else if ($roles->contains("course.user") && $roles->contains('lp.user')) {
-
-            $previousURL = Session::get( 'url.intended' );
-            if ( $previousURL ) {
-                return Redirect::intended();
-            } else {
-                return redirect( '/dashboard' );
-            }
-
-        } else if ($roles->contains('lp.user')) {
-
-            $userPages = $user->pages()->get();
-
-            if ( $userPages->isEmpty() ) {
-                return redirect()->route( 'create.page' );
-            } else {
-                $previousURL = Session::get( 'url.intended' );
-                if ( $previousURL ) {
-                    return Redirect::intended();
-                } else {
-                    return redirect( '/dashboard' );
-                }
-            }
-
-        } else if ($roles->contains("course.user")) {
-
-            $previousURL = Session::get('url.intended');
-            if ($previousURL) {
-                return Redirect($previousURL);
-            } else if ($course) {
-                return redirect('/' . $creator[0] . '/course/' . $course->slug);
-            } else {
-                return redirect('/courses');
-            }
-        } else {
-            $userPages = $user->pages()->get();
-
-            if ( $userPages->isEmpty() ) {
-                return redirect()->route( 'create.page' );
-            }
-        }
-
-        return 0;
+        return auth()->user()->getRedirectRoute();
     }
 
     public function customLoginPost(LoginRequest $request) {
@@ -138,12 +59,6 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
-       /* if (auth()->attempt($credentials)) {
-            return 1;
-        }
-
-        return 0;*/
     }
 
     /**
