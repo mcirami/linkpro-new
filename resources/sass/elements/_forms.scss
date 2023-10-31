@@ -92,6 +92,10 @@ select {
             }
         }
     }
+
+    &.error {
+        border: 1px solid $red;
+    }
 }
 
 #card_number {

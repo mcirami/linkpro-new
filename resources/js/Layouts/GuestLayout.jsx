@@ -26,7 +26,7 @@ export default function Guest({ children, ...props }) {
                     <Link className="button transparent" href={route('register')}>Sign Up</Link>
                 </div>
             </header>
-            <main className="w-full">
+            <main className="w-full !py-20">
                 {children}
             </main>
             <GuestFooter />

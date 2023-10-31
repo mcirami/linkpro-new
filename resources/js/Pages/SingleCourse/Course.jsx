@@ -5,11 +5,11 @@ import draftToHtml from 'draftjs-to-html';
 import DOMPurify from 'dompurify';
 import isJSON from 'validator/es/lib/isJSON';
 import {Head} from '@inertiajs/react';
-import AuthenticatedCourseLayout from '@/Layouts/AuthenticatedCourseLayout.jsx';
+import CourseLayout from '@/Layouts/CourseLayout.jsx';
 import Menu from '@/Menu/Menu.jsx';
-
-/*const course = user.course;
-const sections = user.sections;*/
+import EventBus from '@/Utils/Bus.jsx';
+import SetFlash from '@/Utils/SetFlash.jsx';
+import {isEmpty} from 'lodash';
 
 function Course({
                     auth,
@@ -25,6 +25,24 @@ function Course({
     const [indexValue, setIndexValue] = useState(null);
 
     const [introText, setIntroText] = useState(intro_text);
+
+    useEffect(() => {
+
+        const href = window.location.href.split('?')[0]
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const message = urlParams?.get('message');
+
+        if(message) {
+            EventBus.dispatch("success", { message: message });
+            urlParams?.delete('message');
+            window.history.pushState({}, document.title, href);
+            //localStorage.clear();
+
+            return () => EventBus.remove("success");
+        }
+
+    },[])
 
     useEffect(() => {
 
@@ -88,13 +106,16 @@ function Course({
         }
     }
 
+    console.log("auth: ", auth)
+
     return (
 
-        <AuthenticatedCourseLayout course={course} auth={auth}>
-            {auth.user.username &&
+        <CourseLayout course={course} auth={auth}>
+            {!isEmpty(auth.user.userInfo) &&
                 <Menu />
             }
             <Head title={title} />
+            <SetFlash />
             <div className="creator course_creator">
                 <div id="links_page" className="live_page course">
                     <div id="single_course" className="my_row">
@@ -149,7 +170,7 @@ function Course({
                     </div>
                 </div>
             </div>
-        </AuthenticatedCourseLayout>
+        </CourseLayout>
     )
 }
 

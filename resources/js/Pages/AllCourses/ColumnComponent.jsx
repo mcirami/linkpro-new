@@ -40,7 +40,7 @@ const ColumnComponent = ({course, type}) => {
                         {type === "purchased" ?
                             <IoIosPlayCircle />
                             :
-                            <Link className="button blue" href={username + "/course/" + slug}>
+                            <Link className="button blue" href={username + "/course-page/" + slug}>
                                 Learn More
                             </Link>
                         }

@@ -126,6 +126,26 @@ class AuthenticatedSessionController extends Controller
         return 0;
     }
 
+    public function customLoginPost(LoginRequest $request) {
+
+        $credentials = $request->except(['_token']);
+        $login = request()->input('identity');
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        request()->merge([$field => $login]);
+        unset($credentials["identity"]);
+        $credentials[$field] = $login;
+
+        $request->authenticate();
+
+        $request->session()->regenerate();
+
+       /* if (auth()->attempt($credentials)) {
+            return 1;
+        }
+
+        return 0;*/
+    }
+
     /**
      * Destroy an authenticated session.
      */

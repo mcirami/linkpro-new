@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
 import {capitalize} from 'lodash';
@@ -21,51 +21,58 @@ function Purchase({
         position: ""
     });
 
+    const loadRef = useRef(true);
     const [braintreeInstance, setBraintreeInstance] = useState(null);
     const [promoCode, setPromoCode] = useState(null);
 
     useEffect(() => {
 
-        var form = document.querySelector('#payment-form');
-        braintree.dropin.create({
-            authorization: token,
-            selector: '#bt-dropin',
-            paypal: {
-                flow: 'vault'
-            },
-            googlePay: {
-                googlePayVersion: 2,
-                merchantId: '0764-6991-5982',
-                transactionInfo: {
-                    totalPriceStatus: 'FINAL',
-                    totalPrice: price,
-                    currencyCode: 'USD'
+        const firstRender = loadRef.current;
+
+        if (firstRender) {
+            loadRef.current = false;
+            braintree.dropin.create({
+                authorization: token,
+                selector: '#bt-dropin',
+                paypal: {
+                    flow: 'vault'
                 },
-            },
-            venmo: {
-                allowDesktop: true,
-                paymentMethodUsage: 'multi_use',
-            },
-            applePay: {
-                displayName: 'LinkPro',
-                paymentRequest: {
-                    total: {
-                        label: 'LinkPro',
-                        amount: price
+                googlePay: {
+                    googlePayVersion: 2,
+                    merchantId: '0764-6991-5982',
+                    transactionInfo: {
+                        totalPriceStatus: 'FINAL',
+                        totalPrice: price,
+                        currencyCode: 'USD'
                     },
-                    // We recommend collecting billing address information, at minimum
-                    // billing postal code, and passing that billing postal code with all
-                    // Apple Pay transactions as a best practice.
-                    requiredBillingContactFields: ["postalAddress"]
+                },
+                venmo: {
+                    allowDesktop: true,
+                    paymentMethodUsage: 'multi_use',
+                },
+                applePay: {
+                    displayName: 'LinkPro',
+                    paymentRequest: {
+                        total: {
+                            label: 'LinkPro',
+                            amount: price
+                        },
+                        // We recommend collecting billing address information, at minimum
+                        // billing postal code, and passing that billing postal code with all
+                        // Apple Pay transactions as a best practice.
+                        requiredBillingContactFields: ["postalAddress"]
+                    }
                 }
-            }
-        }, function (createErr, instance) {
-            if (createErr) {
-                console.log('Create Error', createErr);
-                return;
-            }
-            setBraintreeInstance(instance);
-        });
+            }, function(createErr, instance) {
+                if (createErr) {
+                    console.log('Create Error', createErr);
+                    return;
+                }
+                setBraintreeInstance(instance);
+            });
+        } else {
+            console.log('Not a first Render');
+        }
     },[])
 
     const handleSubmit = (e) => {

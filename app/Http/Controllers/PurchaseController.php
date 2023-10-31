@@ -10,6 +10,7 @@ use App\Services\PurchaseService;
 use Illuminate\Http\Request;
 use App\Http\Traits\SubscriptionTrait;
 use Illuminate\Support\Facades\Session;
+use Inertia\Inertia;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 
 
@@ -22,14 +23,10 @@ class PurchaseController extends Controller
         //Session::put('creator', $user->username);
         $token = $purchaseService->getToken();
         $offer = $course->Offer()->first();
-        $affRef = $request->get('a') ? $request->get('a') : null;
-        $clickId = $request->get('cid') ? $request->get('cid') : null;
+        $affRef = $request->get('a') ? $request->get('a') : "none";
+        $clickId = $request->get('cid') ? $request->get('cid') : "internal";
 
-        Javascript::put([
-            'course'        => $course,
-        ]);
-
-        return view('purchase.show')->with([
+        return Inertia::render('Checkout/Checkout')->with([
             'token'             => $token,
             'offer'             => $offer,
             'course'            => $course,
@@ -44,6 +41,7 @@ class PurchaseController extends Controller
         $offer = Offer::findOrFail($request->offer);
 
         $data = $purchaseService->purchase($offer, $request);
+        $url = null;
 
         if ($data["success"]) {
 
@@ -51,11 +49,10 @@ class PurchaseController extends Controller
 
             $username = $offer->user()->pluck('username')->first();
             $courseSlug = $data["course_slug"];
-
-            return redirect('/' . $username . "/course/" . $courseSlug)->with( ['success' => $data["message"]] );
-        } else {
-            return back()->withErrors($data["message"]);
+            $url = '/' . $username . "/course/" . $courseSlug;
         }
+
+        return response()->json(['success' => $data["success"], 'message' => $data["message"], 'url' => $url]);
 
     }
 }

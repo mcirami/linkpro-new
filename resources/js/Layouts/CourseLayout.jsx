@@ -1,10 +1,11 @@
 import React from 'react';
 import AuthenticatedFooter from '@/Layouts/AuthenticatedFooter.jsx';
+import {isEmpty} from 'lodash';
 
-const AuthenticatedCourseLayout = ({auth, children, course}) => {
+const CourseLayout = ({auth, children, course}) => {
 
     return (
-        <div id="app_wrap" className={`my_row ${auth.user.username && "member"} course_page`}>
+        <div id="app_wrap" className={`my_row ${!isEmpty(auth.user.userInfo) ? "member" : ""} course_page`}>
             <div className="page_content my_row">
                 <header className="my_row nav_row" style={{background: course.header_color }}>
                     <nav>
@@ -28,4 +29,4 @@ const AuthenticatedCourseLayout = ({auth, children, course}) => {
     )
 }
 
-export default AuthenticatedCourseLayout;
+export default CourseLayout;

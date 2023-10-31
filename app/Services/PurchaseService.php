@@ -32,7 +32,7 @@ class PurchaseService {
 
         $nonce = $request->payment_method_nonce;
 
-        $user = isset($request->user) ? User::findOrFail($request->user) : Auth::user();
+        $user = $request->user ? User::findOrFail($request->user) : Auth::user();
 
         $email = $user->email;
 
@@ -82,7 +82,7 @@ class PurchaseService {
 
                 $data = [
                     "success"           => true,
-                    "message"           => "You Have Purchased This Course",
+                    "message"           => "Congrats! You Have Purchased The " . str_replace('-', " ", $course->slug) .  " Course",
                     "course_slug"       => $course->slug,
                     "purchase"          => $purchase
                 ];

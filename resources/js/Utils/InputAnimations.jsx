@@ -59,9 +59,8 @@ const InputAnimations = () => {
     },[])
 
     return (
-        <div>
-
-        </div>
+        <>
+        </>
     );
 };
 

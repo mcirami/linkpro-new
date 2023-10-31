@@ -252,3 +252,65 @@ export const getUserPages = () => {
         }
     });
 }
+
+export const registerUser = (packets) => {
+
+    return axios.post('/course-register', packets).then(
+        (response) => {
+            const success = response.data.success;
+            const user = response.data.user;
+            const errors = response.data.errors;
+
+            if (success) {
+                return {
+                    success : true,
+                    user : user
+                }
+            } else {
+                return {
+                    success: false,
+                    errors: errors
+                }
+            }
+        },
+
+    ).catch(error => {
+        if (error.response) {
+            console.error(error.response);
+        } else {
+            console.error("ERROR:: ", error);
+        }
+
+        return {
+            success : false
+        }
+    });
+}
+
+export const purchaseCourse = (packets) => {
+
+    return axios.post('/checkout/purchase', packets).then(
+        (response) => {
+            const success = response.data.success;
+            const url = response.data.url;
+            const message = response.data.message;
+
+            return {
+                success: success,
+                message: message,
+                url : url
+            }
+        },
+
+    ).catch(error => {
+        if (error.response) {
+            console.error(error.response);
+        } else {
+            console.error("ERROR:: ", error);
+        }
+
+        return {
+            success : false
+        }
+    });
+}
