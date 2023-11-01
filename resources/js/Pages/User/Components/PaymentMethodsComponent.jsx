@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
 import EventBus from '@/Utils/Bus.jsx';
 import {updatePaymentMethod} from '@/Services/SubscriptionRequests.jsx';
@@ -6,65 +6,69 @@ import {updatePaymentMethod} from '@/Services/SubscriptionRequests.jsx';
 const PaymentMethodsComponent = ({
                                      token,
                                      subscription,
-                                     userInfo,
-                                     setUserInfo,
                                      setShowSection
 }) => {
 
     const [braintreeInstance, setBraintreeInstance] = useState(null);
+    const loadRef = useRef(true);
+    const dropInRef = useRef(null);
 
     useEffect(() => {
+        const firstRender = loadRef.current;
 
-        const client_token =  token;
-        const subscriptionName = subscription.name;
-        let amount;
-        if (subscriptionName === "pro") {
-            amount = '4.99'
-        } else {
-            amount = '19.99'
-        }
-
-        braintree.dropin.create({
-            authorization: client_token,
-            selector: '#bt-dropin-update',
-            paypal: {
-                flow: 'vault'
-            },
-            googlePay: {
-                googlePayVersion: 2,
-                merchantId: '0764-6991-5982',
-                transactionInfo: {
-                    totalPriceStatus: 'FINAL',
-                    totalPrice: amount,
-                    currencyCode: 'USD'
-                },
-            },
-            venmo: {
-                allowDesktop: true,
-                paymentMethodUsage: 'multi_use',
-            },
-            applePay: {
-                displayName: 'LinkPro',
-                paymentRequest: {
-                    total: {
-                        label: 'LinkPro',
-                        amount: amount
-                    },
-                    // We recommend collecting billing address information, at minimum
-                    // billing postal code, and passing that billing postal code with all
-                    // Apple Pay transactions as a best practice.
-                    //requiredBillingContactFields: ["postalAddress"]
-                }
-            },
-        }, function (createErr, instance) {
-            if (createErr) {
-                console.log('Create Error', createErr);
-                return;
+        if(firstRender || dropInRef.current.innerHTML === "") {
+            loadRef.current = false;
+            const client_token = token;
+            const subscriptionName = subscription.name;
+            let amount;
+            if (subscriptionName === "pro") {
+                amount = '4.99'
+            } else {
+                amount = '19.99'
             }
 
-            setBraintreeInstance(instance);
+            braintree.dropin.create({
+                authorization: client_token,
+                selector: '#bt-dropin-update',
+                paypal: {
+                    flow: 'vault'
+                },
+                googlePay: {
+                    googlePayVersion: 2,
+                    merchantId: '0764-6991-5982',
+                    transactionInfo: {
+                        totalPriceStatus: 'FINAL',
+                        totalPrice: amount,
+                        currencyCode: 'USD'
+                    },
+                },
+                venmo: {
+                    allowDesktop: true,
+                    paymentMethodUsage: 'multi_use',
+                },
+                applePay: {
+                    displayName: 'LinkPro',
+                    paymentRequest: {
+                        total: {
+                            label: 'LinkPro',
+                            amount: amount
+                        },
+                        // We recommend collecting billing address information, at minimum
+                        // billing postal code, and passing that billing postal code with all
+                        // Apple Pay transactions as a best practice.
+                        //requiredBillingContactFields: ["postalAddress"]
+                    }
+                },
+            }, function(createErr, instance) {
+                if (createErr) {
+                    console.log('Create Error', createErr);
+                    return;
+                }
 
-        });
+                setBraintreeInstance(instance);
+
+            });
+        }
     },[])
 
     const handleSubmit = (e) => {
@@ -89,12 +93,6 @@ const PaymentMethodsComponent = ({
 
             updatePaymentMethod(packets).then((response) => {
                 if (response.success) {
-                    setUserInfo({
-                        ...userInfo,
-                        pm_last_four: pmLastFour,
-                        pm_type: payload.type
-                    })
-
                     setShowSection([]);
                 }
             })
@@ -112,11 +110,8 @@ const PaymentMethodsComponent = ({
                 <h2>Choose Another Way to Pay</h2>
                 <div className="text_wrap form_wrap">
                     <form id="update_payment_method_form" action="" method="">
-                        <input id="method_nonce" name="payment_method_nonce" type="hidden"/>
-                        <input id="pm_type" type="hidden" name="pm_type" value="" />
-                        <input id="pm_last_four" type="hidden" name="pm_last_four" value="" />
                         <div className="bt-drop-in-wrapper">
-                            <div id="bt-dropin-update"></div>
+                            <div ref={dropInRef} id="bt-dropin-update"></div>
                         </div>
                         <a href="#"
                            className='button blue'

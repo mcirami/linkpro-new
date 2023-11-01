@@ -40,7 +40,7 @@
         .card {
             max-width: 1200px;
 
-            &.two_columns {
+            &:has(.two_columns) {
                 max-width: 975px;
             }
 
@@ -88,6 +88,7 @@
 
                 p {
                     margin: 0;
+                    text-align: left;
                 }
 
                 svg {
@@ -98,7 +99,7 @@
 
         .my_row {
 
-            &.three_columns {
+            &.three_columns, &.two_columns {
                 display: -webkit-box;
                 display: -ms-flexbox;
                 display: flex;
@@ -112,44 +113,50 @@
                 -webkit-justify-content: center;
                 align-items: stretch;
                 -webkit-align-items: stretch;
+                column-gap: 25px;
+                -moz-column-gap: 25px;
+                -webkit-column-gap: 25px;
 
-                @media all and (max-width: 992px) {
+                .column {
+                    width: 100%;
+                }
+            }
+
+            &.two_columns {
+               @include query(smallMobile) {
+                    flex-wrap: wrap;
+                    -ms-flex-wrap: wrap;
+               }
+
+                .column {
+                    &:first-child {
+                        @include query(smallMobile) {
+                            margin-bottom: 20px;
+                        }
+                    }
+                }
+            }
+
+            &.three_columns {
+                @include query(tablet) {
                     flex-wrap: wrap;
                     -ms-flex-wrap: wrap;
                 }
 
-                &.two_columns {
-                    justify-items: center;
+                &.popup {
+                    .column.free {
+                        grid-column-end: unset;
+                    }
+                }
 
-                    .column {
-                        width: 100%;
-                        max-width: 400px;
-
-                        @media all and (max-width: 768px) {
-                            max-width: 300px;
-                        }
-
-                        &:first-child {
-                            margin-left: auto;
-
-                            @media all and (max-width: 992px) {
-                                margin-left: auto;
-                                margin-right: auto;
-                            }
-                        }
-
-                        &:last-child {
-                            margin-right: auto;
-
-                            @media all and (max-width: 992px) {
-                                margin: auto;
-                            }
-                        }
+                .column {
+                    @include query(tablet) {
+                        margin-bottom: 20px;
                     }
 
-                    &.popup {
-                        .column.free {
-                            grid-column-end: unset;
+                    &:last-child {
+                        @include query(tablet) {
+                            margin-bottom: 0;
                         }
                     }
                 }
@@ -162,8 +169,7 @@
                 -moz-border-radius: 30px;
                 padding: 30px 40px;
                 background: #edeef2;
-                width: 33.3%;
-                margin-right: 3%;
+                width: 100%;
                 display: -webkit-box;
                 display: -ms-flexbox;
                 display: flex;
@@ -181,9 +187,7 @@
 
                 @media all and (max-width: 992px) {
                     width: 100%;
-                    max-width: 350px;
                     height: auto;
-                    margin: 0 auto 20px;
                 }
 
                 &:last-child {
@@ -215,6 +219,14 @@
 
                 h5 {
                     @include osbold;
+                }
+
+                input[type=email] {
+                    padding: 15px;
+
+                    @include query(mobile) {
+                        padding: 10px;
+                    }
                 }
 
                 &.update_info {
@@ -366,6 +378,11 @@
                     border: none;
                     justify-content: flex-start;
                     -webkit-justify-content: flex-start;
+                    text-align: left;
+
+                    @include query(tablet) {
+                        text-align: center;
+                    }
 
                     &:nth-child(2) {
                         align-items: center;
@@ -381,60 +398,15 @@
                     }
 
                     h4 {
-                        color: $limeGreen;
                         text-align: left;
-                    }
-                }
-            }
-        }
+                        color: $limeGreen;
 
-        &.user_account {
-
-            .my_row {
-                &.three_columns {
-                    column-gap: 25px;
-                    -webkit-column-gap: 25px;
-                    -moz-column-gap: 25px;
-                }
-
-                .column {
-                    margin-right: 0;
-                    width: 100%;
-                }
-            }
-
-            .card:has(.two_columns) {
-                max-width: 900px;
-
-                .my_row.three_columns {
-                    @include query(tablet) {
-                        flex-wrap: nowrap;
-                        -ms-flex-wrap: nowrap;
-                        -webkit-flex-wrap: nowrap;
-                    }
-
-                    @include query(mobile) {
-                        flex-wrap: wrap;
-                        -ms-flex-wrap: wrap;
-                        -webkit-flex-wrap: wrap;
-                    }
-
-                    .column {
                         @include query(tablet) {
-                            margin: 0;
-                            max-width: unset;
+                            text-align: center;
                         }
-
-                        &:first-child {
-                            @include query(mobile) {
-                                margin-bottom: 20px;
-                            }
-                        }
-
                     }
                 }
             }
-
         }
     }
 }

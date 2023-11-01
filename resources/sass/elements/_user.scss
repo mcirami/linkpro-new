@@ -1,0 +1,85 @@
+.user_account {
+
+    .breadcrumb_links {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: $blue;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        -webkit-justify-content: flex-start;
+        align-items: center;
+        -webkit-align-items: center;
+
+        svg {
+            font-size: 1.5rem;
+        }
+
+        ul {
+            width: 100%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            -webkit-justify-content: flex-start;
+            align-items: center;
+            -webkit-align-items: center;
+            min-height: unset;
+            padding: 20px;
+
+            a {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                -ms-flex-wrap: nowrap;
+                flex-wrap: nowrap;justify-content: flex-start;
+                -webkit-justify-content: flex-start;
+                align-items: center;
+                -webkit-align-items: center;
+                color: $blue;
+
+                &:hover {
+                    color: $hoverBlue;
+                }
+
+                svg {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+
+    .column {
+        .bt-drop-in-wrapper {
+
+            [data-braintree-id="toggle"] {
+                display: none;
+            }
+
+            .braintree-heading {
+                width: 100%;
+                text-align: center;
+                @include osbold;
+            }
+        }
+    }
+}

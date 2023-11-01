@@ -43,6 +43,7 @@ const CheckoutLayout = ({
         const firstRender = loadRef.current;
 
         if (firstRender) {
+            loadRef.current = false;
             braintree.dropin.create({
                 authorization: token,
                 selector: '#bt-dropin',

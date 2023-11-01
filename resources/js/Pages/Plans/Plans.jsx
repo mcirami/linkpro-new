@@ -24,9 +24,9 @@ function Plans({path}) {
                     }
                     <div className="card inline-block">
                         <div className="card-body">
-                            <div className={`my_row three_columns ${
+                            <div className={`my_row  ${
                                 (subscriptionName === "premier") && (braintreeStatus === "active" ||
-                                    braintreeStatus === "pending") ? "two_columns" : ""}`}>
+                                    braintreeStatus === "pending") ? "two_columns" : "three_columns"}`}>
                                 { (!subscriptionName || (subscriptionName !== "premier") ) || (braintreeStatus !== "active" && braintreeStatus !== "pending") ?
                                     <div className="column pro">
                                         <h2 className="text-uppercase">Pro</h2>

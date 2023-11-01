@@ -55,8 +55,6 @@ const User = ({
                                 <PaymentMethodsComponent
                                     token={token}
                                     subscription={subscription}
-                                    userInfo={userInfo}
-                                    setUserInfo={setUserInfo}
                                     setShowSection={setShowSection}
                                 />
 
@@ -64,7 +62,7 @@ const User = ({
                                 <div className={`w-full inline-block ${showSection ? "inactive " : ""} ${ (permissions.includes("view subscription details") &&
                                 (!subscription || subscription.braintree_id === "bypass" ) ) || (!permissions.includes("view subscription details") && permissions.includes('view courses')) ? "two_columns" : ""}`}>
                                     <div className="card-body w-full inline-block">
-                                        <div className={`my_row ${permissions.includes("view subscription details") ? "three_columns " : ""} ${ (!subscription || subscription.braintree_id === "bypass") && !permissions.includes('view courses') ? "two_columns" : ""}`}>
+                                        <div className={`my_row ${permissions.includes("view subscription details") && subscription.braintree_id !== "bypass" ? "three_columns " : ""} ${ (!subscription || subscription.braintree_id === "bypass") && !permissions.includes('view courses') ? "two_columns" : ""}`}>
                                             <div className={`column update_info ${!permissions.includes('view subscription details') ? "!w-full" : ""}`}>
                                                 <UserForm
                                                     userInfo={userInfo}
@@ -88,8 +86,6 @@ const User = ({
                                                 <div className="column">
                                                     <PaymentComponent
                                                         paymentMethod={payment_method}
-                                                        userInfo={userInfo}
-                                                        setUserInfo={setUserInfo}
                                                         authToken={token}
                                                         setShowSection={setShowSection}
                                                     />
