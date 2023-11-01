@@ -8,7 +8,6 @@ const ProfileMenu = () => {
 
     const userRoles = auth.user.roles;
 
-    console.log(auth.user.subscription.name);
     return (
         <div className="nav_links_wrap">
             {/*Right Side Of Navbar*/}

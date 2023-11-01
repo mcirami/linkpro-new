@@ -6,27 +6,33 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/js/app.jsx', 'resources/js/custom.jsx', 'resources/js/admin/admin.js', 'resources/sass/admin.scss'],
+            input: ['resources/js/app.jsx', 'resources/js/custom.jsx'],
             refresh: true,
         }),
         react(),
-        viteStaticCopy({
+        /*viteStaticCopy({
             targets: [
                 {
                     src: 'resources/js/custom.jsx',
                     dest: 'js'
                 },
-                {
-                    src: 'resources/js/admin/admin.js',
-                    dest: 'js/admin.js'
-                },
-                {
-                    src: 'resources/sass/admin.scss',
-                    dest: 'css/admin.css'
-                }
             ]
-        })
+        })*/
     ],
+   /* build : {
+        rollupOptions: {
+            input: {
+                admin: 'resources/js/admin/admin.jsx'
+            },
+            output:
+                {
+                    format: 'es',
+                    strict: true,
+                    entryFileNames: "admin.js",
+                    dir: 'public/js/admin'
+                }
+        },
+    },*/
     resolve: {
         alias: {
             '$': 'jQuery'

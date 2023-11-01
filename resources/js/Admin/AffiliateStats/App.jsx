@@ -2,6 +2,7 @@ import {useCallback, useEffect, useMemo, useState} from 'react';
 import {getAffiliateStats} from '../../Services/StatsRequests';
 import Table from './Table';
 import Filter from '../Filter/App';
+import affiliateStats from '@/Pages/Stats/Components/AffiliateStats.jsx';
 
 function App() {
 

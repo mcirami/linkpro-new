@@ -1,4 +1,4 @@
-require('./custom');
+require('./custom.jsx');
 
 if (document.getElementById('admin_filters')) {
     require('./Filter');

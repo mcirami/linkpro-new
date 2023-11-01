@@ -61,9 +61,9 @@ const User = ({
                                 />
 
                                 :
-                                <div className={`${showSection ? "inactive " : ""} ${permissions.includes("view subscription details") &&
-                                (!subscription || subscription.braintree_id === " bypass") ? " two_columns" : ""}`}>
-                                    <div className="card-body">
+                                <div className={`w-full inline-block ${showSection ? "inactive " : ""} ${ (permissions.includes("view subscription details") &&
+                                (!subscription || subscription.braintree_id === "bypass" ) ) || (!permissions.includes("view subscription details") && permissions.includes('view courses')) ? "two_columns" : ""}`}>
+                                    <div className="card-body w-full inline-block">
                                         <div className={`my_row ${permissions.includes("view subscription details") ? "three_columns " : ""} ${ (!subscription || subscription.braintree_id === "bypass") && !permissions.includes('view courses') ? "two_columns" : ""}`}>
                                             <div className={`column update_info ${!permissions.includes('view subscription details') ? "!w-full" : ""}`}>
                                                 <UserForm

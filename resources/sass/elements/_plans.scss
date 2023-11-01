@@ -387,5 +387,54 @@
                 }
             }
         }
+
+        &.user_account {
+
+            .my_row {
+                &.three_columns {
+                    column-gap: 25px;
+                    -webkit-column-gap: 25px;
+                    -moz-column-gap: 25px;
+                }
+
+                .column {
+                    margin-right: 0;
+                    width: 100%;
+                }
+            }
+
+            .card:has(.two_columns) {
+                max-width: 900px;
+
+                .my_row.three_columns {
+                    @include query(tablet) {
+                        flex-wrap: nowrap;
+                        -ms-flex-wrap: nowrap;
+                        -webkit-flex-wrap: nowrap;
+                    }
+
+                    @include query(mobile) {
+                        flex-wrap: wrap;
+                        -ms-flex-wrap: wrap;
+                        -webkit-flex-wrap: wrap;
+                    }
+
+                    .column {
+                        @include query(tablet) {
+                            margin: 0;
+                            max-width: unset;
+                        }
+
+                        &:first-child {
+                            @include query(mobile) {
+                                margin-bottom: 20px;
+                            }
+                        }
+
+                    }
+                }
+            }
+
+        }
     }
 }
