@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -13,7 +12,6 @@ use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\IconController;
-use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\ContactMailController;
 use App\Http\Controllers\LandingPageController;
@@ -22,7 +20,6 @@ use App\Http\Controllers\MailchimpController;
 use App\Http\Controllers\ShopifyController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Auth\CourseRegisterController;
 use App\Http\Controllers\Auth\CoursePasswordController;
 use App\Http\Controllers\Admin\AdminStatsController;
@@ -49,14 +46,7 @@ Route::get('/', function () {
     ]);
 });
 
-/*Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');*/
-
 Route::middleware('auth')->group(function () {
-    /*Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');*/
 
     Route::get('/edit-account', [UserController::class, 'edit'])->name('user.edit');
 
@@ -224,7 +214,12 @@ Route::get('/get-icons', [IconController::class, 'getIcons']);
 Route::view('/terms-and-conditions', 'utility.terms')->name('terms');
 Route::view('/privacy-policy', 'utility.privacy')->name('privacy');
 
-Route::view('/how-it-works', 'utility.how-it-works')->name('how-it-works');
+Route::get('/how-it-works', function () {
+    return Inertia::render('HowItWorks/Index');
+})->name('how-it-works');
+Route::get('/setup', function () {
+    return Inertia::render('Setup/Index');
+})->name('setup.page');
 
 Route::view('/plan-options', 'subscription.public-plans')->name('public.plans');
 
@@ -232,7 +227,7 @@ Route::post('/check-page-auth/{page}', [PageController::class, 'pageAuth'])->nam
 Route::get('/email-subscription/{user}', [UserController::class, 'emailSubscription'])->name('email.subscription');
 Route::post('/link-click/{link}', [TrackingController::class, 'storeLinkVisit']);
 Route::post('/folder-click/{folder}', [TrackingController::class, 'storeFolderClick']);
-Route::get('/setup', [UtilityController::class, 'showSetupPage'])->name('setup.page');
+
 Route::get('/{page}', [PageController::class, 'show'])->name('show.live.page');
 
 require __DIR__.'/auth.php';

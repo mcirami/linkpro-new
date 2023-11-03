@@ -255,98 +255,77 @@
 
 .utility_page {
 
-    /*h3.page_title {
-        @include osbold;
-        text-align: center;
-        font-size: 40px;
-        margin-bottom: 50px;
+    .image_wrap {
+        @include boxShadow;
+        border-radius: 20px;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
 
-        @media all and (max-width: 992px) {
-            font-size: 40px;
-            margin-bottom: 50px;
-        }
-
-        @media all and (max-width: 992px) {
-            font-size: 35px;
-        }
-    }*/
-
-    .two_columns {
-        justify-content: center;
-        -webkit-justify-content: center;
-        align-items: center;
-        -webkit-align-items: center;
-        margin-bottom: 7%;
-
-        &:last-child {
-            margin-bottom: 0;
-        }
-
-        @media all and (max-width: 768px) {
-            margin-bottom: 0;
-        }
-
-        .image_wrap {
-            @include boxShadow;
+        img {
             border-radius: 20px;
             -webkit-border-radius: 20px;
             -moz-border-radius: 20px;
-
-            img {
-                border-radius: 20px;
-                -webkit-border-radius: 20px;
-                -moz-border-radius: 20px;
-            }
-        }
-
-        h3.column_title {
-            @include osbold;
-            font-size: 32px;
-            color: $blue;
-            text-transform: uppercase;
-            position: relative;
-            margin-bottom: 35px;
-
-            @media all and (max-width: 768px) {
-                margin-bottom: 15px;
-                font-size: 28px;
-
-            }
-
-            &:after {
-                content: '';
-                width: 70px;
-                height: 3px;
-                background: $blue;
-                position: absolute;
-                left: 112px;
-                top: 50%;
-
-                @media all and (max-width: 768px) {
-                    left: 100px;
-                    width: 50px;
-                }
-            }
-        }
-
-        p {
-            font-size: 18px;
-            line-height: 2.2;
-
-            @media all and (max-width: 768px) {
-                line-height: 1.8;
-                font-size: 16px;
-            }
-
-            strong {
-                @include osbold;
-            }
-        }
-
-        .column {
-            padding: 0 3%;
         }
     }
+
+    h3.column_title {
+        @include osbold;
+        font-size: 2rem;
+        color: $blue;
+        text-transform: uppercase;
+        position: relative;
+        margin-bottom: 35px;
+
+        @include query(tablet) {
+            font-size: 1.5rem;
+        }
+
+        @include query(mobile) {
+            margin-bottom: 15px;
+        }
+
+        &:after {
+            content: '';
+            width: 70px;
+            height: 3px;
+            background: $blue;
+            position: absolute;
+            left: 112px;
+            top: 50%;
+
+            @media all and (max-width: 768px) {
+                left: 100px;
+                width: 50px;
+            }
+        }
+    }
+
+    p {
+        font-size: 18px;
+        line-height: 2.2;
+
+        @include query(mobile) {
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        strong {
+            @include osbold;
+        }
+    }
+
+    .column {
+        padding: 0 3%;
+    }
+
+    .row {
+        margin-bottom: 6rem;
+
+        @include query(tablet) {
+            margin-bottom: 3rem;
+        }
+    }
+
 }
 
 .alert-success {

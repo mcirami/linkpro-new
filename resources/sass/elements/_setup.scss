@@ -229,8 +229,10 @@
         }
 
         h5 {
-            @include ossemibold;
+            @include osbold;
             color: $blue;
+            font-size: 1.1rem;
+            margin-top: 20px;
         }
 
         &.open {
