@@ -185,9 +185,9 @@ const IconList = ({
 
         if (accordionValue === "standard") {
             setFilteredIcons(iconList?.filter((i) => {
-                const iconName = i.name.toLowerCase().replace(" ", "");
+                const iconName = i.name && i.name.toLowerCase().replace(" ", "");
                 const userInput = searchInput.toLowerCase().replace(" ", "");
-                return iconName.match(userInput);
+                return iconName && iconName.match(userInput);
             }))
         } else {
 
@@ -196,9 +196,9 @@ const IconList = ({
                 iconList;
 
             setFilteredIcons(filterList?.filter((i) => {
-                const offerName = i.name.toLowerCase().replace(" ", "");
+                const offerName = i.name && i.name.toLowerCase().replace(" ", "");
                 const userInput = searchInput.toLowerCase().replace(" ", "");
-                return offerName.match(userInput);
+                return offerName && offerName.match(userInput);
             }))
 
         }

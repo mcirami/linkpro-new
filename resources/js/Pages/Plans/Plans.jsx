@@ -9,6 +9,8 @@ function Plans({path}) {
     const braintreeStatus = auth.user.subscription.braintree_status;
     const braintreeID = auth.user.subscription.braintree_id;
 
+    console.log(path);
+
     return (
         <AuthenticatedLayout>
             <Head title="Subscription Plans"/>

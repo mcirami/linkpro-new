@@ -77,22 +77,6 @@ class SubscriptionService {
     }
 
     /**
-     * Check if user has subscription and return current if true
-     *
-     * @return mixed|null
-     */
-    public function showPlansPage() {
-
-        $subscription = $this->getUserSubscriptions($this->user);
-
-        if (empty($subscription)) {
-            $subscription = null;
-        }
-
-        return $subscription;
-    }
-
-    /**
      * create new user Braintree customer and subscription
      *
      *

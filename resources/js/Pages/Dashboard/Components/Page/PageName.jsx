@@ -47,7 +47,6 @@ const PageName = ({pageNames}) => {
 
                     if (pageSettings["default"]) {
                         document.querySelector('#username').innerText = name;
-                        document.querySelector('#mobile_username').innerText = name;
                     }
                 }
             })

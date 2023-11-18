@@ -19,6 +19,7 @@ class IconController extends Controller
         $iconData = DB::table('offers')
                       ->where('offers.public', '=', true)
                       ->where('offers.active', '=', true)
+                      ->where('offers.published', '=', true)
                       ->leftJoin('courses', 'offers.course_id', '=', 'courses.id')
                      /* ->leftJoin('category_course', 'category_course.course_id', '=', 'courses.id')
                       ->leftJoin('categories', 'categories.id', '=', 'category_course.category_id')*/

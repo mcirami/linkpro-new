@@ -59,10 +59,11 @@ const User = ({
                                 />
 
                                 :
-                                <div className={`w-full inline-block ${showSection ? "inactive " : ""} ${ (permissions.includes("view subscription details") &&
+                                <div className={`w-full inline-block ${ (permissions.includes("view subscription details") &&
                                 (!subscription || subscription.braintree_id === "bypass" ) ) || (!permissions.includes("view subscription details") && permissions.includes('view courses')) ? "two_columns" : ""}`}>
                                     <div className="card-body w-full inline-block">
-                                        <div className={`my_row ${permissions.includes("view subscription details") && subscription.braintree_id !== "bypass" ? "three_columns " : ""} ${ (!subscription || subscription.braintree_id === "bypass") && !permissions.includes('view courses') ? "two_columns" : ""}`}>
+                                        <div className=
+                                                 {`my_row ${permissions.includes("view subscription details") && (subscription && subscription.braintree_id !== "bypass") ? "three_columns " : ""} ${ (!subscription || subscription.braintree_id === "bypass") ? "two_columns" : ""}`}>
                                             <div className={`column update_info ${!permissions.includes('view subscription details') ? "!w-full" : ""}`}>
                                                 <UserForm
                                                     userInfo={userInfo}

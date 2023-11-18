@@ -166,7 +166,7 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], funct
         });
     });
 
-    Route::get('/plans', [SubscriptionController::class, 'plans'])->name('plans.get');
+    Route::get('/plans', [SubscriptionController::class, 'showPlans'])->name('plans.get');
     Route::get('/subscribe', [SubscriptionController::class, 'purchase'])->name('subscribe.get');
 
     Route::post('/stats/link', [StatsController::class, 'getLinkStats']);
