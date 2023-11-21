@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { FaCirclePlay } from "react-icons/fa6";
 
 const SectionVideo = ({
                           title,
@@ -12,17 +13,22 @@ const SectionVideo = ({
     const [indexValue, setIndexValue] = useState(null);
 
     useEffect(() => {
-
-
         if(link) {
             let split;
             if (link.includes('youtube')) {
-                split = link.split("/embed/");
-                setImagePlaceholder("https://img.youtube.com/vi/" + split[1] +
-                    "/mqdefault.jpg");
+                let embedCode = "";
+                split = link.split("/embed/")[1];
+
+                if (split.includes("?")) {
+                    embedCode = split.split("?")[0];
+                } else {
+                    embedCode = split;
+                }
+
+                setImagePlaceholder("https://img.youtube.com/vi/" + embedCode + "/mqdefault.jpg");
             } else {
-                split = link.split("/video/");
-                setImagePlaceholder("https://vumbnail.com/" + split[1] + ".jpg")
+                split = link.split("/video/")[1];
+                setImagePlaceholder("https://vumbnail.com/" + split + ".jpg")
             }
         }
     },[link])
@@ -45,6 +51,9 @@ const SectionVideo = ({
                         :
                         <a href="#" data-index={index} onClick={(e) => handleOnClick(e)}>
                             <img src={imagePlaceholder} alt=""/>
+                            <span className="play_icon">
+                                <FaCirclePlay />
+                            </span>
                         </a>
                     }
                 </div>

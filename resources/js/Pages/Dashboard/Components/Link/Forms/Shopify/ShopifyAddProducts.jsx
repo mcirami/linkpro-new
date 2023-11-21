@@ -8,10 +8,13 @@ const ShopifyAddProducts = ({
                                 setDisplayAllProducts,
                                 setAllProducts,
                                 setShowLoader,
-                                currentLink
+                                currentLink,
+                                storeID
 }) => {
 
     const [error, setError] = useState(null);
+
+    const store = currentLink.shopify_id || storeID || null;
 
     useEffect(() => {
 
@@ -28,7 +31,7 @@ const ShopifyAddProducts = ({
     const handleClick = (e) => {
         e.preventDefault();
 
-        if (currentLink.shopify_id) {
+        if (store) {
             setShowLoader({show: true, icon: "loading", position: "absolute"});
 
             getAllProducts(currentLink.shopify_id).then(
@@ -48,7 +51,7 @@ const ShopifyAddProducts = ({
 
     return (
         <>
-            <a className="icon_wrap" href="resources/js/Pages/Dashboard/Components/Link/Forms/Shopify/ShopifyAddProducts#" onClick={(e) => handleClick(e)}>
+            <a className="icon_wrap" href="#" onClick={(e) => handleClick(e)}>
                 <ImPlus />
                 <h3>Add Products</h3>
             </a>

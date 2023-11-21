@@ -22,7 +22,11 @@
             .preview {
 
                 .inner_content_wrap {
-                    min-height: 300px;
+                    min-height: 670px;
+
+                    @include query(tablet) {
+                        min-height: 658px;
+                    }
                 }
 
                 .header {
@@ -76,6 +80,10 @@
 
                             p {
                                 margin-top: 10px;
+                            }
+
+                            a {
+                                position: relative;
                             }
                         }
 

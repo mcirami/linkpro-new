@@ -1,5 +1,5 @@
 import React from 'react';
-import {Head, router, usePage} from '@inertiajs/react';
+import {Head, Link, router, usePage} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 
 function Plans({path}) {
@@ -8,8 +8,6 @@ function Plans({path}) {
     const subscriptionName = auth.user.subscription.name;
     const braintreeStatus = auth.user.subscription.braintree_status;
     const braintreeID = auth.user.subscription.braintree_id;
-
-    console.log(path);
 
     return (
         <AuthenticatedLayout>
@@ -73,9 +71,9 @@ function Plans({path}) {
                                                         Downgrade My Plan
                                                     </button>
                                                 :
-                                                    <a className='button blue_gradient' href='/subscribe?plan=pro'>
+                                                    <Link className='button blue_gradient' href='/subscribe?plan=pro'>
                                                         Get Pro
-                                                    </a>
+                                                    </Link>
                                             }
                                         </div>
                                     </div>
@@ -120,9 +118,9 @@ function Plans({path}) {
                                                     Go Premier
                                                 </button>
                                            :
-                                            <a className='button black_gradient' href='/subscribe?plan=premier'>
+                                            <Link className='button black_gradient' href='/subscribe?plan=premier'>
                                                 Go Premier
-                                            </a>
+                                            </Link>
                                         }
                                     </div>
                                 </div>
@@ -182,7 +180,7 @@ function Plans({path}) {
                                                 </ul>
                                             </div>
                                             <div className="column">
-                                                <a className="button green_gradient" href={ route('dashboard') }>Continue</a>
+                                                <Link className="button green_gradient" href={ route('dashboard') }>Continue</Link>
                                             </div>
                                         </div>
                                     </div>

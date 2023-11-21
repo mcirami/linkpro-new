@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ShopifyStore;
 use Carbon\Carbon;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -108,9 +109,10 @@ class ShopifyController extends Controller
         $userId = Auth::id();
         $domain = $data['domain'];
 
+        //unique:shopify,user_id,' . $userId
         Validator::make($data,
             [
-                'access_token'  => 'required|string|max:255|unique:shopify',
+                'access_token'  => 'required|string|max:255|' . Rule::unique('shopify')->where(fn (Builder $query) => $query->where('user_id', $userId)),
                 'domain'        => [
                     'required', 'string', 'max:255',
                     Rule::unique('shopify', 'domain')->where('user_id', $userId)

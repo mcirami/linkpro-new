@@ -75,7 +75,7 @@ function CreatorCenter({offers, landingPage}) {
                                         </div>
                                     </li>
                                 </ul>
-                                <a className="button blue full" href="/creator-center/add-course">
+                                <a className="button blue" href="/creator-center/add-course">
                                     Get Started!
                                 </a>
                             </>

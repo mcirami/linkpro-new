@@ -4,7 +4,7 @@ import HoverText from '../Utils/HoverText';
 import MenuData from './MenuData';
 import {toUpper} from 'lodash';
 import MenuItem from './MenuItem';
-import {Link, usePage} from '@inertiajs/react';
+import {usePage} from '@inertiajs/react';
 
 function Menu() {
 

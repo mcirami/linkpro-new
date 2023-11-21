@@ -182,7 +182,7 @@ const EditorComponent = ({
                     init={{
                         height: 500,
                         width: 100 + '%',
-                        menubar: true,
+                        menubar: false,
                         menu: {
                             file: {
                                 title: 'File',

@@ -600,6 +600,7 @@ const IntegrationForm = ({
                                             setDisplayAllProducts={setDisplayAllProducts}
                                             setAllProducts={setAllProducts}
                                             setShowLoader={setShowLoader}
+                                            storeID={storeID}
                                         />
                                     </>
                                 }

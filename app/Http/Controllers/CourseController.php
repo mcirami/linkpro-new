@@ -32,7 +32,7 @@ class CourseController extends Controller
         }
 
         $hasCourseAccess = $this->checkCoursePermission($course);
-        $sections        = $course->CourseSections()->get();
+        $sections        = $course->CourseSections()->orderBy('position')->get();
 
         return Inertia::render( 'SingleCourse/Course' )->with( [
             'course'            => $course,
@@ -54,13 +54,14 @@ class CourseController extends Controller
 
         $hasCourseAccess = $this->checkCoursePermission($course);
 
-        $sections        = $course->CourseSections()->get();
+        $sections        = $course->CourseSections()->orderBy('position')->get();
 
         return Inertia::render( 'SingleCourse/Course' )->with( [
             'course'            => $course,
             'creator'           => $user->username,
             'sections'          => $sections,
             'hasCourseAccess'   => $hasCourseAccess,
+            'page'              => "lander",
             'affRef'            => $responseData['affRef'],
             'clickId'           => $responseData['clickId']
         ] );

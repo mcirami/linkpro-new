@@ -20,8 +20,6 @@ const Section = ({
                      videoCount,
                      textCount,
                      setHoverSection,
-                     showTiny,
-                     setShowTiny,
 }) => {
 
     const [lockVideo, setLockVideo] = useState(true);

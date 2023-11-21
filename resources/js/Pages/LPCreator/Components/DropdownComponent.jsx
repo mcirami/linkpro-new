@@ -43,12 +43,12 @@ const DropdownComponent = ({
 
     return (
         <div className="relative">
-            <select className={"animate"}
+            <select className={`animate ${buttonCourseId && "active"} `}
                     name="courses"
                     id="courses"
                     onChange={(e) => handleChange(e)}
                     value={buttonCourseId || ""}
-                    /*onFocus={(e) => HandleFocus(e.target)}*/
+                    onFocus={(e) => HandleFocus(e.target)}
             >
                 <option></option>
                 {courses?.map((course, index) => {

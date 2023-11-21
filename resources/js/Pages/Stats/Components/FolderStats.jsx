@@ -121,7 +121,7 @@ const FolderStats = ({
     }, [folderStatsDate])
 
     return (
-        <div className="stats_wrap my_row position-relative">
+        <div className="stats_wrap my_row relative">
             <Filters handleDateChange={handleDateChange}
                      startDate={folderStatsDate.startDate}
                      endDate={folderStatsDate.endDate}

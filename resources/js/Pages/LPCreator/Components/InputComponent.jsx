@@ -147,7 +147,7 @@ w
                 {{
                     "text" :
                         <div>
-                            <input className={"animate"}
+                            <input className={`animate ${textInputValue && "active"} `}
                                    maxLength={maxChar}
                                    name={elementName}
                                    type="text"
@@ -159,7 +159,7 @@ w
                                        }
                                    }}
                                    onBlur={(e) => handleSubmit(e)}
-                                   /*onFocus={(e) => HandleFocus(e.target)}*/
+                                   onFocus={(e) => HandleFocus(e.target)}
                             />
                             <label>{placeholder}</label>
                         </div>,

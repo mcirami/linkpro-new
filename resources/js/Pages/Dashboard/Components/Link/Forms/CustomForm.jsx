@@ -90,8 +90,6 @@ const CustomForm = ({
         }
     );
 
-    console.log(currentLink);
-
     useDebounceEffect(
         async () => {
             if (
@@ -625,7 +623,6 @@ const CustomForm = ({
                             setCustomIconArray={setCustomIconArray}
                             editID={editID}
                         />
-
                     </div>
                 </div>
 

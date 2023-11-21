@@ -243,6 +243,7 @@ button {
 
 .button, button {
     color: $white;
+    display: inline-block;
     width: 150px;
     padding: 10px;
     text-align: center;

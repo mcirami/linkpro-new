@@ -6,7 +6,8 @@ const SelectedProducts = ({
                               currentLink,
                               setDisplayAllProducts,
                               setAllProducts,
-                              setShowLoader
+                              setShowLoader,
+                              storeID
 }) => {
     return (
         <div className="my_row">
@@ -39,6 +40,7 @@ const SelectedProducts = ({
                     setAllProducts={setAllProducts}
                     setShowLoader={setShowLoader}
                     currentLink={currentLink}
+                    storeID={storeID}
                 />
             </div>
 

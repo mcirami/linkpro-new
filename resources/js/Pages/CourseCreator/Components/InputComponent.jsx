@@ -9,7 +9,7 @@ import {
 import {LP_ACTIONS, OFFER_ACTIONS} from '../Reducer';
 import {updateOfferData} from '@/Services/OfferRequests.jsx';
 import EditorComponent from '../../LPCreator/Components/EditorComponent';
-//import {HandleFocus} from '@/Utils/InputAnimations.jsx';
+import {HandleFocus} from '@/Utils/InputAnimations.jsx';
 
 const InputComponent = ({
                             placeholder,
@@ -31,7 +31,6 @@ const InputComponent = ({
 
     const [charactersLeft, setCharactersLeft] = useState(maxChar);
     const [isValid, setIsValid] = useState(false)
-    let dollarUSLocale = Intl.NumberFormat('en-US');
     const limit = 1000;
     const prefix = '$';
 
@@ -136,8 +135,6 @@ const InputComponent = ({
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log(e.target.value);
-
         if (e.target.value === "") {
             e.target.classList.remove('active');
         }
@@ -229,10 +226,11 @@ const InputComponent = ({
 
     const switchStatement = () => {
         switch(type) {
-            case 'text' || 'url' :
+            case 'text':
+            case 'url' :
                 return (
                     <>
-                        <input className={"animate"}
+                        <input className={`animate ${value && "active"} `}
                                maxLength={maxChar}
                                name={elementName}
                                type={type}
@@ -244,7 +242,7 @@ const InputComponent = ({
                                    }
                                }}
                                onBlur={(e) => handleSubmit(e)}
-                               /*onFocus={(e) => HandleFocus(e.target)}*/
+                               onFocus={(e) => HandleFocus(e.target)}
                                onPaste={(e) => handleChange(e)}
                         />
                         <label htmlFor={elementName}>{placeholder}</label>
@@ -265,7 +263,7 @@ const InputComponent = ({
                                 }
                             }}
                             onBlur={(e) => handleSubmit(e)}
-                            /*onFocus={(e) => HandleFocus(e.target)}*/
+                            onFocus={(e) => HandleFocus(e.target)}
                             onPaste={(e) => handleChange(e)}
                         ></textarea>
                         <label htmlFor={elementName}>{placeholder}</label>
@@ -301,7 +299,6 @@ const InputComponent = ({
                                 }
                             }}
                             onBlur={(e) => handleSubmit(e)}
-                            /*onFocus={(e) => HandleFocus(e.target)}*/
                             prefix={prefix}
                             step={.1}
                         />
@@ -323,7 +320,7 @@ const InputComponent = ({
                                    }
                                }}
                                onBlur={(e) => handleSubmit(e)}
-                               /*onFocus={(e) => HandleFocus(e.target)}*/
+                               onFocus={(e) => HandleFocus(e.target)}
                         />
                         <label htmlFor={elementName}>{placeholder}</label>
                     </>

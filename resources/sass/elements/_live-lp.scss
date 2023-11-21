@@ -9,6 +9,7 @@
         }
 
         #live_landing_page {
+            width: 100%;
             @include boxShadow;
             display: inline-block;
             border-radius: 10px;

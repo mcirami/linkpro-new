@@ -59,6 +59,8 @@ function CourseCreator({courseArray, offerArray, categories}) {
     const [infoClicked, setInfoClicked] = useState(null);
     const [triangleRef, setTriangleRef] = useState(null);
 
+    const initialRender = useRef(true);
+
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -99,7 +101,26 @@ function CourseCreator({courseArray, offerArray, categories}) {
             window.removeEventListener('resize', setPreviewButton);
         }
 
-    }, [])
+    }, []);
+
+    useEffect(() => {
+
+        function setPreview() {
+
+            if(window.innerWidth > 992) {
+                setShowPreview(false);
+                document.querySelector('body').classList.remove('fixed');
+            }
+
+        }
+
+        window.addEventListener('resize', setPreview);
+
+        return () => {
+            window.removeEventListener('resize', setPreview);
+        }
+
+    },[])
 
     const showFlash = (show = false, type='', msg='') => {
         setFlash({show, type, msg})
@@ -123,11 +144,48 @@ function CourseCreator({courseArray, offerArray, categories}) {
 
     }, []);
 
+    useEffect(() => {
+
+        const firstRender = initialRender.current;
+
+        if (!firstRender) {
+
+            document.querySelector('.menu_wrap').style.background = courseData["header_color"];
+
+        } else {
+            initialRender.current = false;
+        }
+
+
+    }, [courseData["header_color"]]);
+
+    useEffect(() => {
+
+        const firstRender = initialRender.current;
+
+        if (!firstRender) {
+
+            document.querySelectorAll('.menu_wrap a .menu_icon').forEach((div) => {
+                div.style.color = courseData["header_text_color"];
+            })
+            document.querySelector('.menu_top').style.borderColor = courseData["header_text_color"];
+            document.querySelectorAll('.menu_top a span').forEach((div) => {
+                div.style.background = courseData["header_text_color"];
+            })
+
+        } else {
+            initialRender.current = false;
+        }
+
+
+    }, [courseData["header_text_color"]]);
+
     const handleMouseHover = (e) => {
         setHoverSection(e.target.id)
     }
 
-    const url = window.location.protocol + "//" + window.location.host + "/" + username + "/course-page/" + courseData["slug"];
+    const landerUrl = window.location.protocol + "//" + window.location.host + "/" + username + "/course-page/" + courseData["slug"];
+    const liveUrl = window.location.protocol + "//" + window.location.host + "/" + username + "/course/" + courseData["slug"];
     let videoCount = 0;
     let textCount = 0;
 
@@ -265,10 +323,16 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         categories={categories}
                                                     />
                                                     {courseData["slug"] && offerData["published"] ?
-                                                        <div className="url_wrap">
-                                                            <p>Course URL:</p>
-                                                            <a target="_blank" href={url}>{url}</a>
-                                                        </div>
+                                                        <>
+                                                            <div className="url_wrap mb-4">
+                                                                <p>Landing Page:</p>
+                                                                <a target="_blank" href={landerUrl}>{landerUrl}</a>
+                                                            </div>
+                                                            <div className="url_wrap">
+                                                                <p>Live Page:</p>
+                                                                <a target="_blank" href={liveUrl}>{liveUrl}</a>
+                                                            </div>
+                                                        </>
                                                         :
                                                         ""
                                                     }
@@ -439,7 +503,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                             sections={sections}
                                             courseData={courseData}
                                             setShowPreview={setShowPreview}
-                                            url={url}
+                                            url={landerUrl}
                                             hoverSection={hoverSection}
                                             nodesRef={nodesRef}
                                             completedCrop={completedCrop}

@@ -14,11 +14,13 @@ import {isEmpty} from 'lodash';
 function Course({
                     auth,
                     course,
+                    creator,
                     sections,
                     hasCourseAccess,
-                    creator,
+                    page = null,
                     affRef = null,
                     clickId = null,
+
 }) {
 
     const {intro_video, intro_text, intro_background_color, title} = course;
@@ -106,8 +108,6 @@ function Course({
         }
     }
 
-    console.log("auth: ", auth)
-
     return (
 
         <CourseLayout course={course} auth={auth}>
@@ -158,6 +158,7 @@ function Course({
                                                             affRef={affRef}
                                                             clickId={clickId}
                                                             creator={creator}
+                                                            page={page}
                                                         />
                                                     </React.Fragment>
                                                 )

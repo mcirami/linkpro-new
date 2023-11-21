@@ -7,6 +7,7 @@ import {getIconPaths} from '@/Services/ImageService.jsx';
 import {getCourseCategories} from '@/Services/CourseRequests.jsx';
 import DropdownComponent from './Forms/DropdownComponent';
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
+import {isEmpty} from 'lodash';
 
 const IconList = ({
                       currentLink,
@@ -212,7 +213,7 @@ const IconList = ({
             case "custom" :
 
                 return (
-                    customIconArray ? customIconArray.map((iconPath, index) => {
+                    !isEmpty(customIconArray) ? customIconArray.map((iconPath, index) => {
                         const newPath = iconPath?.replace("public", "/storage");
 
                         return (
@@ -261,7 +262,7 @@ const IconList = ({
                         <div className="custom_icons">
                             <p>Custom Icons</p>
                             <div className="icons_wrap inner">
-                                {customIconArray ?
+                                {!isEmpty(customIconArray) ?
                                     customIconArray.map((iconPath, index) => {
                                         const newPath = iconPath.replace("public", "/storage");
 
@@ -385,10 +386,7 @@ const IconList = ({
             </div>
         }
 
-            <div className={
-                `icons_wrap my_row
-                ${accordionValue === "integration" ? "outer integration_icons" : ""}
-                ${activeIcon !== null ? " active" : ""}`}>
+            <div className={`icons_wrap my_row ${accordionValue === "integration" ? "outer integration_icons" : ""} ${activeIcon !== null || (customIconArray.length < 5 && (accordionValue === "custom" || accordionValue === "integration"  ) ) ? " active" : ""}`}>
 
                 {isLoading &&
                     <div id="loading_spinner" className="active">

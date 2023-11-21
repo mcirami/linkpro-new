@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {BiLock} from 'react-icons/bi';
+import {FaCirclePlay} from 'react-icons/fa6';
 
 const ColumnComponent = ({
                              section,
@@ -11,7 +12,8 @@ const ColumnComponent = ({
                              hasCourseAccess,
                              affRef,
                              clickId,
-                             creator
+                             creator,
+                             page
 }) => {
 
     const {
@@ -146,8 +148,8 @@ const ColumnComponent = ({
                         </div>
                     </div>
                     :
-                    hasCourseAccess || !lock_video ?
-                        <a className="my_row" href="#"
+                    (hasCourseAccess || !lock_video) && page !== "lander" ?
+                        <a className="my_row relative" href="#"
                            data-video={video_link}
                            data-index={index}
                            data-row={dataRow}
@@ -155,6 +157,9 @@ const ColumnComponent = ({
                              <span className="image_wrap my_row">
                                 <img src={imagePlaceholder} alt=""/>
                              </span>
+                            <span className="play_icon">
+                                <FaCirclePlay />
+                            </span>
                         </a>
                         :
                         <span className="image_wrap my_row">
@@ -177,14 +182,14 @@ const ColumnComponent = ({
                     <h3 style={{color: text_color}}>{video_title}</h3>
                 }
 
-                { !hasCourseAccess &&
+                { (!hasCourseAccess || page === "lander") &&
                     (button && button_position === "above") ?
                         <Button />
                         :
                         ""
                 }
                 <p style={{color: text_color}}>{text}</p>
-                { !hasCourseAccess &&
+                { (!hasCourseAccess || page === "lander") &&
                     (button && button_position === "below") ?
                             <Button />
                         :

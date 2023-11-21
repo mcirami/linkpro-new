@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {resumeSubscription} from '@/Services/SubscriptionRequests.jsx';
+import {Link} from '@inertiajs/react';
 
 const PlanComponent = ({
                            subscription,
@@ -102,9 +103,9 @@ const PlanComponent = ({
                         </a>
                     </form>
                     :
-                    <a className='button blue' href={ route('plans.get') }>
+                    <Link className='button blue' href={ route('plans.get') }>
                         Change My Plan
-                    </a>
+                    </Link>
             }
         </>
     );

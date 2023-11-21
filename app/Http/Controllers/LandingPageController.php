@@ -7,16 +7,10 @@ use App\Models\LandingPageSection;
 use App\Models\User;
 use App\Services\CourseService;
 use App\Services\LandingPageService;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
-use Symfony\Component\HttpFoundation\Response;
 
 class LandingPageController extends Controller
 {
@@ -29,9 +23,9 @@ class LandingPageController extends Controller
      */
     public function show(User $user, LandingPage $landingPage): \Inertia\Response {
 
-        /*if (!$landingPage->published) {
+        if (!$landingPage->published && !Auth::user()) {
             return abort(404);
-        }*/
+        }
 
         $sections = $landingPage->LandingPageSections()
                                 ->leftJoin('users', 'landing_page_sections.user_id', '=', 'users.id')
