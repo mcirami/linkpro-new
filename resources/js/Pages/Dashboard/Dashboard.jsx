@@ -606,11 +606,7 @@ function Dashboard({
                                                             <FolderLinks
                                                                 folderID={editFolderID}
                                                                 subStatus={subStatus}
-                                                                setShowUpgradePopup={setShowUpgradePopup}
-                                                                setOptionText={setOptionText}
-                                                                setEditFolderID={setEditFolderID}
                                                                 setEditID={setEditID}
-                                                                setShowConfirmFolderDelete={setShowConfirmFolderDelete}
                                                                 setAccordionValue={setAccordionValue}
                                                             />
                                                         </ErrorBoundary>

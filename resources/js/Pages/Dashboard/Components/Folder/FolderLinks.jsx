@@ -33,6 +33,7 @@ import FolderLink from './FolderLink';
 
 const FolderLinks = ({
                          folderID,
+                         subStatus,
                          setEditID,
                          setAccordionValue
 
@@ -147,6 +148,7 @@ const FolderLinks = ({
                                     <FolderLink
                                         key={link.id}
                                         link={link}
+                                        subStatus={subStatus}
                                         handleChange={handleChange}
                                         handleOnClick={handleOnClick}
                                     />

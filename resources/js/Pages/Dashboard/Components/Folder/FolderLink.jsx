@@ -8,12 +8,13 @@ import {CSS} from '@dnd-kit/utilities';
 const FolderLink = ({
                         link,
                         handleOnClick,
-                        handleChange
+                        handleChange,
+                        subStatus
 }) => {
 
     const linkID = link.id;
     let displayIcon;
-    displayIcon = checkIcon(link.icon);
+    displayIcon = checkIcon(link.icon, "edit", subStatus);
 
     const {
         attributes,

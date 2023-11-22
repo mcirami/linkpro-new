@@ -33,6 +33,8 @@ const IconList = ({
 
     const [activeIcon, setActiveIcon] = useState(null)
 
+    const [iconsWrapClasses, setIconsWrapClasses] = useState("");
+
     useEffect(() => {
 
         if (accordionValue === "offer") {
@@ -205,6 +207,25 @@ const IconList = ({
         }
 
     },[iconList, searchInput])
+
+    useEffect(() => {
+
+        let classes = "";
+
+        if(accordionValue === "integration") {
+            classes = "outer integration_icons";
+        }
+
+        if(activeIcon !== null ||
+            (customIconArray && customIconArray.length < 5 &&
+                (accordionValue === "custom" ||
+                    accordionValue === "integration") ) ) {
+            classes += " active";
+        }
+
+        setIconsWrapClasses(classes);
+
+    },[activeIcon, customIconArray]);
 
     const switchIconsList = () => {
 
@@ -386,7 +407,7 @@ const IconList = ({
             </div>
         }
 
-            <div className={`icons_wrap my_row ${accordionValue === "integration" ? "outer integration_icons" : ""} ${activeIcon !== null || (customIconArray.length < 5 && (accordionValue === "custom" || accordionValue === "integration"  ) ) ? " active" : ""}`}>
+            <div className={`icons_wrap my_row ${iconsWrapClasses}`}>
 
                 {isLoading &&
                     <div id="loading_spinner" className="active">
