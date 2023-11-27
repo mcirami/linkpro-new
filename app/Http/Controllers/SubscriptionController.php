@@ -43,7 +43,7 @@ class SubscriptionController extends Controller
         $data = $subscriptionService->newSubscription($request);
 
         $user = Auth::user();
-        $page = $user->pages()->where('user_id', $user["id"])->where('default', true)->first();
+        //$page = $user->pages()->where('user_id', $user["id"])->where('default', true)->first();
 
         $newData = null;
         if(array_key_exists("bypass", $data) && $data["bypass"]) {
@@ -68,15 +68,16 @@ class SubscriptionController extends Controller
         $path = $request->session()->get('_previous');
 
         $data = $subscriptionService->updateSubscription($request);
+        $url = null;
 
-        if( (str_contains($path["url"], '/subscribe') || str_contains($path["url"], '/plans') ) && $data["success"] == true ) {
+        if( ( str_contains($path["url"], '/subscribe') || str_contains($path["url"], '/plans') ) && $data["success"] == true ) {
             $user = Auth::user();
             $page = $user->pages()->where('user_id', $user["id"])->where('default', true)->first();
             $url = '/dashboard/pages/' . $page->id;
-            return Inertia::location($url)->with(['message' => $data["message"]]);
+            //return Inertia::location($url)->with(['message' => $data["message"]]);
         }
 
-        return response()->json(['success' => $data["success"], 'message' => $data["message"]]);
+        return response()->json(['success' => $data["success"], 'message' => $data["message"], 'url' => $url]);
     }
 
     /**

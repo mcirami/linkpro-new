@@ -9,6 +9,7 @@ import PlanComponent from '@/Pages/User/Components/PlanComponent.jsx';
 import PaymentMethodsComponent from '@/Pages/User/Components/PaymentMethodsComponent.jsx';
 import BreadCrumbs from '@/Pages/User/Components/BreadCrumbs.jsx';
 import {isEmpty} from 'lodash';
+import {Loader} from '@/Utils/Loader.jsx';
 
 const User = ({
                   subscriptionInfo,
@@ -25,6 +26,12 @@ const User = ({
     const [showSection, setShowSection] = useState([]);
     const [subscription, setSubscription] = useState(subscriptionInfo);
 
+    const [showLoader, setShowLoader] = useState({
+        show: false,
+        icon: "",
+        position: ""
+    });
+
     return (
 
         <AuthenticatedLayout>
@@ -34,6 +41,13 @@ const User = ({
                 <div className={`user_account my_row text-center form_page plans ${permissions.includes('view subscription details') ? "mt-4" : "" }`}>
                     <h2 className="page_title">Update Account Settings</h2>
                     <div className={`card inline-block relative`}>
+
+                        {showLoader.show &&
+                            <Loader
+                                showLoader={showLoader}
+                            />
+                        }
+
                         {!isEmpty(showSection) &&
                             <BreadCrumbs
                                 showSection={showSection}
@@ -47,6 +61,7 @@ const User = ({
                                 setShowSection={setShowSection}
                                 subscription={subscription}
                                 setSubscription={setSubscription}
+                                setShowLoader={setShowLoader}
                             />
 
                         :
@@ -56,6 +71,7 @@ const User = ({
                                     token={token}
                                     subscription={subscription}
                                     setShowSection={setShowSection}
+                                    setShowLoader={setShowLoader}
                                 />
 
                                 :
@@ -80,6 +96,7 @@ const User = ({
                                                         payment_method_token={payment_method_token}
                                                         showSection={showSection}
                                                         setShowSection={setShowSection}
+                                                        setShowLoader={setShowLoader}
                                                     />
                                                 </div>
                                             }

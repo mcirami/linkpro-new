@@ -7,7 +7,8 @@ const PlanComponent = ({
                            setSubscription,
                            userInfo,
                            payment_method_token,
-                           setShowSection
+                           setShowSection,
+                           setShowLoader
 }) => {
 
     const [currentDateTime, setCurrentDateTime] = useState("");
@@ -25,6 +26,12 @@ const PlanComponent = ({
     const handleResumeClick = (e) => {
         e.preventDefault();
 
+        setShowLoader({
+            show: true,
+            position: 'absolute',
+            icon: ""
+        })
+
         const packets = {
             payment_method_token: payment_method_token,
             planId: subscription.name
@@ -38,6 +45,12 @@ const PlanComponent = ({
                     braintree_status: "active"
                 }));
             }
+
+            setShowLoader({
+                show: false,
+                position: "",
+                icon: ""
+            })
         })
     }
 
@@ -68,7 +81,7 @@ const PlanComponent = ({
                             <img src={ Vapor.asset('images/plan-type-bg.png') } alt="" />
                         </div>
                         <div className="canceled_text">
-                            <p>Your subscrition has been cancelled. It will end on:<br />
+                            <p>Your subscription has been cancelled. It will end on:<br />
                                 <span>
                                     {new Date(subscription.ends_at).toLocaleDateString()}
                                 </span>

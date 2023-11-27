@@ -6,7 +6,8 @@ import {updatePaymentMethod} from '@/Services/SubscriptionRequests.jsx';
 const PaymentMethodsComponent = ({
                                      token,
                                      subscription,
-                                     setShowSection
+                                     setShowSection,
+                                     setShowLoader
 }) => {
 
     const [braintreeInstance, setBraintreeInstance] = useState(null);
@@ -74,6 +75,13 @@ const PaymentMethodsComponent = ({
     const handleSubmit = (e) => {
 
         e.preventDefault();
+
+        setShowLoader({
+            show: true,
+            position: 'absolute',
+            icon: ""
+        })
+
         braintreeInstance.requestPaymentMethod(function (err, payload) {
             if (err) {
                 console.log('Request Payment Method Error', err);
@@ -95,6 +103,12 @@ const PaymentMethodsComponent = ({
                 if (response.success) {
                     setShowSection([]);
                 }
+
+                setShowLoader({
+                    show: false,
+                    position: "",
+                    icon: ""
+                })
             })
         });
     }

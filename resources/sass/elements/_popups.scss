@@ -1,4 +1,4 @@
-#confirm_popup, #upgrade_popup, #confirm_popup_link, #confirm_cancel_popup, #confirm_folder_popup_link {
+#upgrade_popup, #confirm_popup_link, #confirm_cancel_popup, #confirm_folder_popup_link {
     display: none;
     opacity: 0;
     position: fixed;
@@ -33,13 +33,6 @@
     }
 }
 
-/*#popup_choose_level, #popup_payment_method {
-    opacity: 0;
-    transition: 100ms opacity linear;
-    -webkit-transition: 100ms opacity linear;
-    -moz-transition: 100ms opacity linear;
-    -o-transition: 100ms opacity linear;
-}*/
 #popup_choose_level, #popup_payment_method, #confirm_popup, #upgrade_popup, #confirm_popup_link, #confirm_folder_popup_link, #confirm_cancel_popup, #confirm_change_plan_details, #confirm_cancel_details {
 
     h2 {
@@ -422,7 +415,7 @@
     }
 }
 
-#upgrade_popup, #confirm_popup_link, #confirm_popup, #confirm_cancel_popup, #confirm_folder_popup_link {
+#upgrade_popup, #confirm_popup_link, #confirm_cancel_popup, #confirm_folder_popup_link {
 
     .close_popup {
         @media all and (max-width: 550px) {
@@ -489,5 +482,13 @@
         a.button:first-child {
             margin-right: 5%;
         }
+    }
+}
+
+.plans .card {
+    transition: 1000ms max-width ease-in-out;
+
+    &.active {
+        max-width: 600px;
     }
 }

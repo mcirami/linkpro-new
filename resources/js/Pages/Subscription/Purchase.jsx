@@ -93,7 +93,7 @@ function Purchase({
             url = '/subscribe/create';
         }
 
-        if (promoCode && promoCode.toLowerCase() === "freepremier" || promoCode && promoCode.toLowerCase() === "freepro") {
+        if (promoCode && (promoCode.toLowerCase() === "freepremier" || promoCode.toLowerCase() === "freepro") ) {
             const packets = {
                 level: plan,
             }

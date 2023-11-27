@@ -12,7 +12,6 @@ const SetFlash = () => {
 
     useEffect(() => {
 
-
         EventBus.on('success', (data) => {
             if(data.message) {
                 showFlash(true, 'success', data.message.replace(/"/g, ""))
@@ -25,7 +24,9 @@ const SetFlash = () => {
 
     useEffect(() => {
         EventBus.on('error', (data) => {
-            showFlash(true, 'error', data.message.replace(/"/g, ""))
+            if(data.message) {
+                showFlash(true, 'error', data.message.replace(/"/g, ""))
+            }
         });
 
         return () => EventBus.remove("error");

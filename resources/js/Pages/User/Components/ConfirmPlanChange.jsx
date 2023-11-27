@@ -6,11 +6,18 @@ const ConfirmPlanChange = ({
                                showSection,
                                setShowSection,
                                subscription,
-                               setSubscription
+                               setSubscription,
+                               setShowLoader
 }) => {
 
     const [defaultPage, setDefaultPage] = useState(null);
     const handleClick = (e) => {
+
+        setShowLoader({
+            show: true,
+            position: 'absolute',
+            icon: ""
+        })
 
         if(showSection.includes("cancel")) {
 
@@ -27,6 +34,12 @@ const ConfirmPlanChange = ({
                         ends_at: response.ends_at
                     }))
                 }
+
+                setShowLoader({
+                    show: false,
+                    position: "",
+                    icon: ""
+                })
             })
         }
 
@@ -45,6 +58,12 @@ const ConfirmPlanChange = ({
                     }))
                     setShowSection([])
                 }
+
+                setShowLoader({
+                    show: false,
+                    position: "",
+                    icon: ""
+                })
             })
         }
     }

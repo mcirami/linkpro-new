@@ -79,6 +79,7 @@ export const changePlan = (packets) => {
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
             const success = response.data.success;
+            const url = response.data.url;
 
             if (success) {
                 EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
@@ -88,6 +89,8 @@ export const changePlan = (packets) => {
 
             return {
                 success : success,
+                message : returnMessage,
+                url : url
             }
 
         },

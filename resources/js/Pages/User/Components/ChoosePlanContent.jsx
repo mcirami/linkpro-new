@@ -7,7 +7,8 @@ const ChoosePlanContent = ({
                                showSection,
                                setShowSection,
                                subscription,
-                               setSubscription
+                               setSubscription,
+                               setShowLoader
 }) => {
 
     const [pages, setPages] = useState({});
@@ -31,6 +32,12 @@ const ChoosePlanContent = ({
 
     const handleUpgradeClick = (e, subscriptionLevel) => {
         e.preventDefault();
+
+        setShowLoader({
+            show: true,
+            position: 'absolute',
+            icon: ""
+        })
 
         const packets = {
             level: subscriptionLevel
@@ -59,6 +66,8 @@ const ChoosePlanContent = ({
                         showSection={showSection}
                         setShowSection={setShowSection}
                         setSubscription={setSubscription}
+                        setShowLoader={setShowLoader}
+
                     />
                     :
                     <>
