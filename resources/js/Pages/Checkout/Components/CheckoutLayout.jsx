@@ -113,7 +113,6 @@ const CheckoutLayout = ({
 
             registerUser(packets).then((response) => {
 
-                console.log("response: ", response)
                 if (response.success) {
 
                     readyForPurchase(response.user);
@@ -185,14 +184,13 @@ const CheckoutLayout = ({
                         router.get(response.url, {message: JSON.stringify(response.message)})
                     } else {
                         EventBus.dispatch("error", { message: JSON.stringify(response.message) });
+
+                        setShowLoader({
+                            show: false,
+                            position: "",
+                            icon: ""
+                        })
                     }
-
-                    setShowLoader({
-                        show: false,
-                        position: "",
-                        icon: ""
-                    })
-
                 })
             });
     }

@@ -1,9 +1,9 @@
 @component('mail::message-course', ['course' => $data['course'], 'loginLink' => config('app.url') . $data['course']['slug'] . '/login'])
-# Welcome!
+# Course Purchased!
 
-<p class="sub_title">Thanks for registering for the {{ $data['course']['title'] }} course!</p>
+<p class="sub_title">You have purchased the {{ $data['course']['title'] }} course!</p>
 
-<p>Keep your account details handy:</p>
+<p>Login with your email or username below to access your course:</p>
 <p class="username">Username: <span>{{ $data['username'] }}</span></p>
 <br>
 

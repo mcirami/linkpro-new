@@ -7,18 +7,26 @@ use App\Models\Course;
 use App\Models\Offer;
 use App\Models\User;
 use App\Services\PurchaseService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Traits\SubscriptionTrait;
-use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
-use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
+use Inertia\Response;
 
 
 class PurchaseController extends Controller
 {
     use SubscriptionTrait;
 
-    public function show(Request $request, User $user, Course $course, PurchaseService $purchaseService) {
+    /**
+     * @param Request $request
+     * @param User $user
+     * @param Course $course
+     * @param PurchaseService $purchaseService
+     *
+     * @return Response
+     */
+    public function show(Request $request, User $user, Course $course, PurchaseService $purchaseService): Response {
 
         //Session::put('creator', $user->username);
         $token = $purchaseService->getToken();
@@ -36,7 +44,13 @@ class PurchaseController extends Controller
         ]);
     }
 
-    public function store(Request $request, PurchaseService $purchaseService) {
+    /**
+     * @param Request $request
+     * @param PurchaseService $purchaseService
+     *
+     * @return JsonResponse
+     */
+    public function store(Request $request, PurchaseService $purchaseService): JsonResponse {
 
         $offer = Offer::findOrFail($request->offer);
 
@@ -48,8 +62,7 @@ class PurchaseController extends Controller
             PurchasedItem::dispatch($data["purchase"]);
 
             $username = $offer->user()->pluck('username')->first();
-            $courseSlug = $data["course_slug"];
-            $url = '/' . $username . "/course/" . $courseSlug;
+            $url = config('app.url') . $username . "/course/" . $data["course_slug"];
         }
 
         return response()->json(['success' => $data["success"], 'message' => $data["message"], 'url' => $url]);

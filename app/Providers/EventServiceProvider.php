@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\PurchasedItem;
+use App\Listeners\SendPurchaseNotification;
 use App\Listeners\UpdateTransactionStatus;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -29,6 +30,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         PurchasedItem::class => [
             UpdateTransactionStatus::class,
+            SendPurchaseNotification::class,
         ],
     ];
 

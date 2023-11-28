@@ -82,9 +82,6 @@ class CourseRegisterController extends Controller
 
         Auth::login($user);
 
-        $permissions = $user->getPermissionsViaRoles()->pluck('name');
-        Session::put('permissions', $permissions);
-
         $course = Course::where('id', $data['course_id'])->select('title', 'slug', 'logo', 'header_color', 'header_text_color')->first();
 
         $userData = [
@@ -106,19 +103,11 @@ class CourseRegisterController extends Controller
      */
     protected function create(array $data)
     {
-        //$cookie = Cookie::get('lp_page_referral');
         $user = User::create([
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-
-        /*if($cookie) {
-            Referral::create([
-                'user_id' => $cookie,
-                'referral_id' => $user->id
-            ]);
-        }*/
 
         return $user;
     }
