@@ -36,10 +36,12 @@ class HandleInertiaRequests extends Middleware
             $user = $request->user()->makeHidden(['mailchimp_token', 'mailchimp_lists', 'mailchimp_server', 'braintree_id', 'permissions', 'roles', 'settings' ]);
         }
         $subscription = null;
+        $defaultPage = null;
         $course = $request->route('course');
 
         if($user) {
             $subscription = $user->subscriptions()->first();
+            $defaultPage = $request->user()->pages()->where('default', '=', 1)->pluck('id')->first();
         }
 
         return [
@@ -55,7 +57,8 @@ class HandleInertiaRequests extends Middleware
                         'braintree_status'  => $subscription ? $subscription->braintree_status : null,
                         'braintree_id'      => $subscription ? $subscription->braintree_id : null,
                     ],
-                    'courseData'   => $course
+                    'courseData'    => $course,
+                    'defaultPage'   => $defaultPage
                 ],
             ],
             'ziggy' => fn () => [

@@ -3,6 +3,7 @@ import '../css/app.css';
 import '../sass/app.scss'
 
 import { createRoot } from 'react-dom/client';
+import { hydrateRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
@@ -23,7 +24,7 @@ createInertiaApp({
         import.meta.glob('./custom.jsx'),
     ),
     setup({ el, App, props }) {
-        const root = createRoot(el);
+        const root = hydrateRoot(el);
         root.render(<App {...props} />);
     },
     progress: {

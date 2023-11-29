@@ -10,7 +10,8 @@ const MenuItem = ({
                       isOpen,
                       handleMouseOver,
                       handleMouseOut,
-                      courseData
+                      courseData,
+                      defaultPage
 }) => {
 
     const {id, name, url, icon, permission} = item;
@@ -22,7 +23,7 @@ const MenuItem = ({
             <li>
                 <Link id={id}
                    style={courseData && {color: courseData["header_text_color"]}}
-                   href={url}
+                   href={name === "pages" ? url + defaultPage : url}
                    onMouseOver={() => handleMouseOver(name)}
                    onMouseOut={handleMouseOut}
                 >

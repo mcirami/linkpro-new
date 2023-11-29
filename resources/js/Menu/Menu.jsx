@@ -13,6 +13,7 @@ function Menu() {
     const creator = auth.user.userInfo?.username;
     const courseData = auth.user.courseData;
     const userPermissions = auth.user.permissions;
+    const defaultPage = auth.user.defaultPage;
 
     const [isHovering, setIsHovering] = useState({
         status: false,
@@ -104,6 +105,7 @@ function Menu() {
                                     handleMouseOver={handleMouseOver}
                                     handleMouseOut={handleMouseOut}
                                     courseData={courseData}
+                                    defaultPage={defaultPage}
                                 />
                             )
                         })}

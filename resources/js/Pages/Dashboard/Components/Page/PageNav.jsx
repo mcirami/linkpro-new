@@ -3,6 +3,7 @@ import {MdAddCircleOutline} from 'react-icons/md';
 import {FiChevronDown} from 'react-icons/Fi';
 import {PageContext} from '../../Dashboard.jsx';
 import AddPageForm from './AddPageForm';
+import {Link} from '@inertiajs/react';
 
 const PageNav = ({
                      allUserPages,
@@ -83,7 +84,7 @@ const PageNav = ({
                                         </li>
                                         :
                                         <li id={page["id"]} key={page["id"]}>
-                                            <a href={"/dashboard/pages/" + page["id"]}>{page["name"]}</a>
+                                            <Link href={"/dashboard/pages/" + page["id"]}>{page["name"]}</Link>
                                         </li>
                                 )
                             })}
