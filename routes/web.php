@@ -192,7 +192,7 @@ Route::group(['middleware' => ['course.user:course']], function() {
 
 Route::get('/{course:slug?}/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 
-//Route::post('/custom-login', [AuthenticatedSessionController::class, 'customLoginPost'])->name('customLoginPost');
+Route::post('/custom-login', [AuthenticatedSessionController::class, 'customLoginPost'])->name('customLoginPost');
 Route::post('/send-reset-course-password', [CoursePasswordController::class, 'sendResetCoursePassword'])->name('send.reset.course.password');
 Route::post('/reset-course-password', [CoursePasswordController::class, 'resetCoursePassword'])->name('reset.course.password');
 
