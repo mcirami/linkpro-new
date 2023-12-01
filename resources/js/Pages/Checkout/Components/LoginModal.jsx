@@ -38,7 +38,7 @@ const LoginModal = ({setShowLogin}) => {
             <InputAnimations />
             <div className="modal-content card guest login_form bg-white">
                 <div className="standard_heading">
-                    <h3 className="modal-title text-center" id="loginModal">Log In</h3>
+                    <h3 className="modal-title text-center">Log In</h3>
                 </div>
                 <a className="close"
                    aria-label="Close"

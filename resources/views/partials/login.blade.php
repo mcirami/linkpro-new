@@ -3,7 +3,7 @@
     <div class="modal-dialog form_page" role="document">
         <div class="modal-content card guest login_form">
             <div class="standard_heading @isset($course) mb-0 @endisset">
-                <h3 class="modal-title text-center" id="loginModal">{{ __('Log In') }}</h3>
+                <h3 class="modal-title text-center">{{ __('Log In') }}</h3>
             </div>
             {{--@isset($course)
                 <p>to Access</p>
