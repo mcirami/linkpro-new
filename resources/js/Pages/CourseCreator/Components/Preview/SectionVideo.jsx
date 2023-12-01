@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { FaCirclePlay } from "react-icons/fa6";
+import {getVideoScreenshot} from '@/Services/VideoService.jsx';
 
 const SectionVideo = ({
                           title,
@@ -14,22 +15,7 @@ const SectionVideo = ({
 
     useEffect(() => {
         if(link) {
-            let split;
-            if (link.includes('youtube')) {
-                let embedCode = "";
-                split = link.split("/embed/")[1];
-
-                if (split.includes("?")) {
-                    embedCode = split.split("?")[0];
-                } else {
-                    embedCode = split;
-                }
-
-                setImagePlaceholder("https://img.youtube.com/vi/" + embedCode + "/mqdefault.jpg");
-            } else {
-                split = link.split("/video/")[1];
-                setImagePlaceholder("https://vumbnail.com/" + split + ".jpg")
-            }
+            setImagePlaceholder(getVideoScreenshot(link));
         }
     },[link])
 

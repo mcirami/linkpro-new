@@ -1,31 +1,23 @@
 import React, {useRef, useState} from 'react';
 import {Link} from '@inertiajs/react';
 import {IoIosPlayCircle} from 'react-icons/io';
+import {getVideoScreenshot} from '@/Services/VideoService.jsx';
 const ColumnComponent = ({course, type}) => {
 
     const {intro_video, video_link, username, slug, title, logo} = course;
     const [hovered, setHovered] = useState(null);
     const columnRef = useRef();
 
-    const videoLink = intro_video || video_link;
-
     const getImageUrl = (videoLink) => {
 
-        let imageUrl = null;
-        if (videoLink?.includes('youtube')) {
-            const videoCode = videoLink.split("embed/");
-            imageUrl = "https://img.youtube.com/vi/" + videoCode[1] + "/mqdefault.jpg";
-        } else if (videoLink?.includes("vimeo")) {
-            const videoCode = videoLink.split("video/");
-            imageUrl = "https://vumbnail.com/" + videoCode[1] + ".jpg";
-        } else {
-            imageUrl = logo;
+        if(videoLink) {
+            return getVideoScreenshot(videoLink);
         }
 
-        return imageUrl;
+        return logo;
     }
 
-    const imageUrl = getImageUrl(videoLink);
+    const imageUrl = getImageUrl(intro_video || video_link);
 
     return (
         <div ref={columnRef}
@@ -33,16 +25,16 @@ const ColumnComponent = ({course, type}) => {
              onMouseOver={() =>  setHovered(columnRef)}
              onMouseLeave={() => setHovered(null)}
         >
-            <Link href={username + "/course/" + slug}>
+            <Link href={ type === "purchased" ? username + "/course/" + slug : username + "/course-page/" + slug }>
                 <div className="column_image relative">
                     <img src={ imageUrl } alt={title} />
                     <div className="icon_box">
                         {type === "purchased" ?
                             <IoIosPlayCircle />
                             :
-                            <Link className="button blue" href={username + "/course-page/" + slug}>
+                            <span className="button blue">
                                 Learn More
-                            </Link>
+                            </span>
                         }
                     </div>
 

@@ -23,10 +23,9 @@
         <script src="https://js.braintreegateway.com/web/3.97.2/js/apple-pay.min.js" defer></script>
 
         <script src="https://js.braintreegateway.com/web/3.97.2/js/data-collector.min.js" defer></script>
-
         @routes
         @viteReactRefresh
-        @vite(['resources/js/app.jsx',"resources/js/custom.jsx", "resources/js/Pages/{$page['component']}.jsx"])
+        @vite(['resources/js/app.jsx', "resources/js/custom.jsx"])
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
