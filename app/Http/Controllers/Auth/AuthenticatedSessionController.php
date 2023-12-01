@@ -40,7 +40,7 @@ class AuthenticatedSessionController extends Controller
         return auth()->user()->getRedirectRoute();
     }
 
-    public function customLoginPost(LoginRequest $request) {
+    /*public function customLoginPost(LoginRequest $request) {
 
         $credentials = $request->except(['_token']);
         $login = request()->input('identity');
@@ -52,7 +52,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-    }
+    }*/
 
     /**
      * Destroy an authenticated session.

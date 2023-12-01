@@ -1,6 +1,6 @@
 import React from 'react';
 import {MdDragHandle} from 'react-icons/md';
-import Switch from '@mui/material/Switch';
+import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import {checkIcon} from '@/Services/UserService.jsx';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
@@ -56,7 +56,7 @@ const FolderLink = ({
 
                     <div className="my_row">
                         <div className="switch_wrap">
-                            <Switch
+                            <IOSSwitch
                                 onChange={(e) => handleChange(link)}
                                 checked={Boolean(link.active_status)}
                             />

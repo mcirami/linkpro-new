@@ -1,7 +1,7 @@
 import React from 'react';
 import {MdDragHandle} from 'react-icons/md';
 import {checkIcon} from '@/Services/UserService.jsx';
-import Switch from '@mui/material/Switch';
+import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 const Link = ({
@@ -93,7 +93,7 @@ const Link = ({
                     }
                     <div className="my_row">
                         <div className="switch_wrap">
-                            <Switch
+                            <IOSSwitch
                                 onChange={() => handleChange(link, hasLinks, type)}
                                 checked={Boolean(link.active_status)}
                             />

@@ -26,9 +26,10 @@ class CourseUser
     {
         if (!Auth::check()) {
             $name = $request->route()->getName();
-            //dd($name);
+
             session()->put('url.intended', $request->url());
             if ($name == 'live.course.lander' || $name == 'course.checkout') {
+
                 return $next($request);
             }
 
@@ -42,13 +43,6 @@ class CourseUser
 
             return redirect($path);
         }
-
-        $this->checkPermissions();
-
-        /*if ($user->hasRole('lp.user')) {
-
-            return redirect()->route('dashboard');
-        }*/
 
         return $next($request);
     }

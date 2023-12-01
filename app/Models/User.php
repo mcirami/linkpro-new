@@ -171,6 +171,8 @@ class User extends \TCG\Voyager\Models\User
             }
         }
 
-        return to_route( 'dashboard' );
+        $pageID = $this->pages()->where('default', '=', 1)->pluck('id')->first();
+        return Inertia::location('/dashboard/pages/' . $pageID);
+        //return to_route( 'dashboard' );
     }
 }

@@ -22,11 +22,10 @@ class LPUser
     {
         if (!Auth::check()) {
             session()->put('url.intended', $request->url());
-            return redirect()->route('login');
+            return to_route('login');
         }
 
         $user = Auth::user();
-        $this->checkPermissions();
 
         if ($user->hasAnyRole(['admin', 'lp.user'])) {
             return $next($request);
@@ -36,6 +35,6 @@ class LPUser
             return redirect('/courses');
         }
 
-        //return $next($request);
+        return $next($request);
     }
 }

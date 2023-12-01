@@ -9,7 +9,6 @@ window.addEventListener("load", function(){
             if (videoWrap[0] !== undefined) {
                 document.querySelector('#mobile_video').innerHTML = videoWrap[0].outerHTML;
                 videoWrap[0].remove();
-
             }
         } else {
             const videoWrap = document.querySelectorAll('#mobile_video .video_wrap');
