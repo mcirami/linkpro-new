@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Course;
 use App\Models\Offer;
+use App\Models\User;
 use App\Services\OfferService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,6 +62,13 @@ class OfferController extends Controller
             );
             return response()->json($returnData, 400);
         }
+    }
 
+    public function redirectToLandingPage(Offer $offer, User $user) {
+        $creator = $offer->user()->pluck('username')->first();
+        $slug = $offer->Course()->pluck('slug')->first();
+        $url = config('app.url') . "/" . $creator . "/course-page/" . $slug . "?a=" . $user->id;
+
+        return redirect($url);
     }
 }

@@ -14,8 +14,6 @@ class IconController extends Controller
 
     public function getAffIcons() {
 
-        $userID = Auth::id();
-
         $iconData = DB::table('offers')
                       ->where('offers.public', '=', true)
                       ->where('offers.active', '=', true)
@@ -46,7 +44,6 @@ class IconController extends Controller
 
         return response()->json([
             'iconData'  => $iconData,
-            'authUser'  => $userID,
         ]);
     }
 

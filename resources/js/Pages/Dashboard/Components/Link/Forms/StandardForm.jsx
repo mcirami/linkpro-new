@@ -37,7 +37,8 @@ const StandardForm = ({
                           setShowUpgradePopup,
                           setOptionText,
                           folderID,
-                          affStatus = null,
+                          affiliateStatus = null,
+                          setAffiliateStatus = null,
 
 }) => {
 
@@ -45,7 +46,6 @@ const StandardForm = ({
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
     const  { pageSettings } = useContext(PageContext);
     const [ showTerms, setShowTerms ] = useState(false);
-    const [affiliateStatus, setAffiliateStatus] = useState(affStatus);
 
     const [currentLink, setCurrentLink] = useState(
         userLinks.find(function(e) {
@@ -435,11 +435,9 @@ const StandardForm = ({
                 <div className="my_row mb-4">
                     {accordionValue === "offer" ?
                         <div className="external_link">
-                            <h3>Offer Landing Page:</h3>
+                            <h3>Tracking Link:</h3>
                             {currentLink.url ?
-                                <a href={currentLink.url.split(
-                                    "?")[0]} target="_blank">{currentLink.url.split(
-                                    "?")[0]}</a>
+                                <a className="inline-block" target="_blank" href={currentLink.url}>{currentLink.url}</a>
                                 :
                                 <p>Select An Icon Above</p>
                             }

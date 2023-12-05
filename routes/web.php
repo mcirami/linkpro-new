@@ -230,4 +230,6 @@ Route::post('/folder-click/{folder}', [TrackingController::class, 'storeFolderCl
 
 Route::get('/{page}', [PageController::class, 'show'])->name('show.live.page');
 
+Route::get('/offers/{offer}/{user}', [OfferController::class, 'redirectToLandingPage'])->name('show.offer.page');
+
 require __DIR__.'/auth.php';

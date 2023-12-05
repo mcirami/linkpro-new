@@ -8,6 +8,7 @@ import {getCourseCategories} from '@/Services/CourseRequests.jsx';
 import DropdownComponent from './Forms/DropdownComponent';
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 import {isEmpty} from 'lodash';
+import {usePage} from '@inertiajs/react';
 
 const IconList = ({
                       currentLink,
@@ -21,8 +22,11 @@ const IconList = ({
                       setCustomIconArray = null,
 }) => {
 
+    const { auth } = usePage().props;
+    const authUser = auth.user.userInfo?.id;
+
     const [isDefaultIcon, setIsDefaultIcon] = useState(false);
-    const [authUser, setAuthUser] = useState(null);
+
     const [searchInput, setSearchInput] = useState("");
     const [isLoading, setIsLoading] = useState(true);
 
@@ -75,10 +79,6 @@ const IconList = ({
                 } else {
                     //offerArray = data.iconData;
                     setIconList(data.iconData)
-                }
-
-                if (data.authUser) {
-                    setAuthUser(data.authUser);
                 }
 
                 setTimeout(() => {
@@ -154,7 +154,8 @@ const IconList = ({
             }
 
             if(iconType === "offer") {
-                url = window.location.origin + "/" + el.dataset.creator + "/course-page/" + el.dataset.slug + "?a=" + authUser;
+                //url = window.location.origin + "/" + el.dataset.creator + "/course-page/" + el.dataset.slug + "?a=" + authUser;
+                url = window.location.origin + "/offers/" + el.dataset.offer + "/" + authUser
                 setInputType("offer")
             }
 
@@ -332,6 +333,7 @@ const IconList = ({
                                         data-slug={icon.slug || ""}
                                         data-course={icon.course_id || ""}
                                         data-icontype={accordionValue}
+                                        data-offer={icon.offer_id || ""}
                                         data-index={index}
                                         alt=""
                                     />
@@ -359,6 +361,7 @@ const IconList = ({
                                         data-slug={icon.slug || ""}
                                         data-course={icon.course_id || ""}
                                         data-icontype={accordionValue}
+                                        data-offer={icon.offer_id || ""}
                                         data-index={index}
                                         alt=""
                                     />

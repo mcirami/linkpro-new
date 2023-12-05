@@ -62,6 +62,7 @@ function Dashboard({
 }) {
 
     const {links, page, userPages, allPageNames, userSub, affStatus} = userData;
+    const [affiliateStatus, setAffiliateStatus] = useState(affStatus);
 
     const [userLinks, dispatch] = useReducer(reducer, links);
     const [folderLinks, dispatchFolderLinks] = useReducer(folderLinksReducer, []);
@@ -521,7 +522,8 @@ function Dashboard({
                                                                                 setShowUpgradePopup={setShowUpgradePopup}
                                                                                 setOptionText={setOptionText}
                                                                                 folderID={editFolderID}
-                                                                                affStatus={affStatus}
+                                                                                affiliateStatus={affiliateStatus}
+                                                                                setAffiliateStatus={setAffiliateStatus}
                                                                             />
 
                                                                         </div>
