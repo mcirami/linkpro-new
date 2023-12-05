@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Events\PurchasedItem;
 use App\Models\Course;
 use App\Models\Offer;
+use App\Models\Purchase;
 use App\Models\User;
+use App\Notifications\CoursePurchasedNotification;
 use App\Services\PurchaseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Traits\SubscriptionTrait;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -59,10 +63,8 @@ class PurchaseController extends Controller
 
         if ($data["success"]) {
 
-            PurchasedItem::dispatch($data["purchase"]);
-
             $username = $offer->user()->pluck('username')->first();
-            $url = config('app.url') . $username . "/course/" . $data["course_slug"];
+            $url = config('app.url') . "/" . $username . "/course/" . $data["course_slug"];
         }
 
         return response()->json(['success' => $data["success"], 'message' => $data["message"], 'url' => $url]);

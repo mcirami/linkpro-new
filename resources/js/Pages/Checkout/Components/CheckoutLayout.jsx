@@ -179,7 +179,6 @@ const CheckoutLayout = ({
                 }
 
                 purchaseCourse(packets).then((response) => {
-
                     if (response.success) {
                         router.get(response.url, {message: JSON.stringify(response.message)})
                     } else {

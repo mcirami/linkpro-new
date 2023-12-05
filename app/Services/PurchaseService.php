@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Purchase;
+use App\Events\PurchasedItem;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\DB;
 use App\Http\Traits\SubscriptionTrait;
 
 class PurchaseService {
@@ -89,8 +88,9 @@ class PurchaseService {
                     "success"           => true,
                     "message"           => "Congrats! You Have Purchased The " . str_replace('-', " ", $course->slug) .  " Course",
                     "course_slug"       => $course->slug,
-                    "purchase"          => $purchase
                 ];
+
+                PurchasedItem::dispatch($purchase);
 
             } else {
 
@@ -109,7 +109,6 @@ class PurchaseService {
                 "message" => 'An error occurred with the message: ' . $customer->message
             ];
         }
-
 
         return $data;
     }

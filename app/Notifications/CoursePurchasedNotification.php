@@ -33,6 +33,8 @@ class CoursePurchasedNotification extends Notification
 
     /**
      * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
      */
     public function toMail(object $notifiable): MailMessage
     {

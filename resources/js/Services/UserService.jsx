@@ -291,6 +291,7 @@ export const purchaseCourse = (packets) => {
 
     return axios.post('/checkout/purchase', packets).then(
         (response) => {
+
             const success = response.data.success;
             const url = response.data.url;
             const message = response.data.message;

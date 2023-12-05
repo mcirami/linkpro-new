@@ -23,7 +23,7 @@ const MenuItem = ({
             <li>
                 <Link id={id}
                    style={courseData && {color: courseData["header_text_color"]}}
-                   href={name === "pages" ? url + defaultPage : url}
+                   href={ (name === "pages" && defaultPage) ? url + defaultPage : url}
                    onMouseOver={() => handleMouseOver(name)}
                    onMouseOut={handleMouseOut}
                 >
