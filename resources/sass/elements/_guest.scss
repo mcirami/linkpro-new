@@ -23,6 +23,10 @@
                     margin: 0;
                 }
 
+                h5 {
+                    @include osregular;
+                }
+
                 > p {
                     @include ossemibold;
                     font-size: 1.2rem;

@@ -26,6 +26,8 @@ use App\Http\Controllers\Admin\AdminStatsController;
 use App\Http\Controllers\AffiliateController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -195,6 +197,11 @@ Route::get('/{course:slug?}/login', [AuthenticatedSessionController::class, 'cre
 Route::post('/custom-login', [AuthenticatedSessionController::class, 'customLoginPost'])->name('customLoginPost');
 Route::post('/send-reset-course-password', [CoursePasswordController::class, 'sendResetCoursePassword'])->name('send.reset.course.password');
 Route::post('/reset-course-password', [CoursePasswordController::class, 'resetCoursePassword'])->name('reset.course.password');
+
+Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+Route::post('/send-reset-password-email', [PasswordResetLinkController::class, 'store'])->name('password.email');
+Route::post('/reset-password-submit', [NewPasswordController::class, 'store'])->name('password.store');
 
 Route::get('/{user:username}/{landing_page:slug}', [LandingPageController::class, 'show'])->name('live.landing.page');
 

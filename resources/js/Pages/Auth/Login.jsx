@@ -34,8 +34,6 @@ export default function Login({ status, canResetPassword, course = null }) {
 
             <div className="container">
 
-            {status && <div className="mb-4">{status}</div>}
-
                 <div className="my_row form_page">
                     <div className="card bg-white guest login_form">
 
@@ -51,6 +49,9 @@ export default function Login({ status, canResetPassword, course = null }) {
                                 </div>
                             </>
                         }
+                        {status && <div className="mb-4 w-full text-center">
+                            <p className="text-lg text-blue-800">{status}</p>
+                        </div>}
                         <form onSubmit={submit}>
                             <div className="form-group relative p-0 mb-5">
                                 <TextInput
