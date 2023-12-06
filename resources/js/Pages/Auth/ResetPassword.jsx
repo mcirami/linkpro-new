@@ -4,7 +4,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import {Head, router, useForm} from '@inertiajs/react';
+import {Head, useForm} from '@inertiajs/react';
 
 export default function ResetPassword({ token, email }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -22,11 +22,13 @@ export default function ResetPassword({ token, email }) {
 
     const submit = (e) => {
         e.preventDefault();
-        //post(route('password.store'));
-        router.post('/reset-password-submit', data);
+
+        post('/reset-password-submit', {
+            preserveScroll: true,
+            onSuccess: () => reset('login'),
+        })
     };
 
-    console.log("data: ", data);
     return (
         <GuestLayout>
             <Head title="Reset Password" />

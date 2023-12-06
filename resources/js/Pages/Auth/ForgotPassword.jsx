@@ -2,16 +2,20 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import {Head, router, useForm} from '@inertiajs/react';
+import {Head, useForm} from '@inertiajs/react';
 
 export default function ForgotPassword({ status }) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors, reset } = useForm({
         login: '',
     });
 
     const submit = (e) => {
         e.preventDefault();
-        router.post('/send-reset-password-email', data);
+
+        post('/send-reset-password-email', {
+            preserveScroll: true,
+            onSuccess: () => reset('login'),
+        })
 
     };
 

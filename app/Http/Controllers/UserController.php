@@ -59,12 +59,9 @@ class UserController extends Controller
      *
      *
      */
-    public function updateAccountInfo(UpdateUserRequest $request, UserService $userService, User $user) {
+    public function updateAccountInfo(UpdateUserRequest $request, UserService $userService) {
 
-        $message = $userService->updateUserInfo($request, $user);
-
-        return response()->json(["message" => $message]);
-        //return redirect()->back()->with(['success' => 'Changes saved successfully']);
+        $userService->updateUserInfo($request);
     }
 
 

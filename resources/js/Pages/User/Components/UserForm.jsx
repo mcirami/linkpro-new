@@ -1,35 +1,56 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useForm} from '@inertiajs/react';
 import {isEmpty} from 'lodash';
 import {updateUserInfo} from '@/Services/UserService.jsx';
+import EventBus from '@/Utils/Bus.jsx';
 
 const UserForm = ({
                       userInfo,
                       setUserInfo
 }) => {
 
-    const { data, setData, put, processing, errors, reset } = useForm({
+    const { data, setData, put, processing, errors, clearErrors, reset, setDefaults } = useForm({
         email: null,
         password: null,
         password_confirmation: null
     });
 
+    const passwordInput = useRef();
+    const confirmPasswordInput = useRef();
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const packets = {
-            email: data.email,
-            password: data.password,
-            password_confirmation: data.password_confirmation
-        }
-        updateUserInfo(packets, userInfo.id)
-        .then((data) => {
-            if (data.success) {
+        clearErrors()
 
-                reset('password', 'password_confirmation')
-                setUserInfo({
-                    ...userInfo,
-                    email: data.email
-                })
+        put('/update-account/', {
+            preserveScroll: true,
+            onSuccess: () => {
+                reset();
+
+                let message = "";
+                if (data.email && data.email !== userInfo.email && data.password) {
+
+                    message = "Your email and password have been updated";
+
+                    setUserInfo({
+                        ...userInfo,
+                        email: data.email
+                    })
+                } else if (data.email && data.email !== userInfo.email) {
+                    setUserInfo({
+                        ...userInfo,
+                        email: data.email
+                    })
+
+                    message = "Your email has been updated";
+                } else {
+                    message = "Your password has been updated";
+                }
+
+                EventBus.dispatch("success", { message: message });
+                passwordInput.current.value = null;
+                confirmPasswordInput.current.value = null;
+
             }
         })
     }
@@ -64,11 +85,13 @@ const UserForm = ({
                     <div className="user_account">
                         <h5 className="my_row my_row mb-4 text-left">Change Password</h5>
                         <div className="input_wrap my_row relative mb-2">
-                            <input id="password"
+                            <input ref={passwordInput}
+                                   id="password"
                                    type="password"
                                    className={`w-full animate bg-white ${data.password && "active"} ${errors.password && "border-danger"} `}
                                    name="password"
                                    autoComplete="new-password"
+                                   defaultValue={ data.password }
                                    onChange={(e) => setData('password', e.target.value)}
                                    onFocus={handleFocus}
                             />
@@ -76,11 +99,13 @@ const UserForm = ({
                         </div>
                     </div>
                     <div className="input_wrap my_row relative mb-3">
-                        <input id="password_confirmation"
+                        <input ref={confirmPasswordInput}
+                               id="password_confirmation"
                                type="password"
                                className={`w-full animate bg-white ${data.password && "active"} ${errors.password_confirmation && "border-danger"} `}
                                name="password_confirmation"
                                autoComplete="new-password"
+                               defaultValue={ data.password_confirmation }
                                onChange={(e) => setData('password_confirmation', e.target.value)}
                                onFocus={handleFocus}
                         />
