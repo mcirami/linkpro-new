@@ -93,6 +93,7 @@ class LinkService {
                 'page_id'           => $request->page_id,
                 'position'          => $position,
                 'folder_id'         => $request->folder_id,
+                'description'       => $request->description ? : null,
                 'type'              => $request->type
             ]);
 
@@ -134,6 +135,7 @@ class LinkService {
                 'icon'              => $iconPath,
                 'page_id'           => $request->page_id,
                 'position'          => $position,
+                'description'       => $request->description ? : null,
                 'type'              => $request->type
             ]);
         }
@@ -180,6 +182,7 @@ class LinkService {
             'shopify_products'  => $request->shopify_products ? $productIDs : null,
             'shopify_id'        => $request->shopify_id ? : null,
             'course_id'         => $request->course_id ? : null,
+            'description'       => $request->description ? : null,
             'icon'              => $iconPath,
             'type'              => $request->type,
         ]);

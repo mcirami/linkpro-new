@@ -53,9 +53,9 @@ const SubscribeForm = ({
     return (
         <>
             {mailchimpListId !== undefined &&
-                <div className={`my_row form ${dataRow == row && clickType === "mailchimp" ? "open" : ""}`}>
+                <div className={`my_row folder ${dataRow == row ? "open" : ""}`}>
                     {dataRow == row &&
-                        <div className="form_wrap">
+                        <div className="folder_content">
                             {successful ?
                                 <>
                                     <h3>Success!</h3>

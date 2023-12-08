@@ -35,7 +35,7 @@
     }
 }
 
-.my_row.folder, .my_row.form {
+.my_row.folder {
     opacity: 0;
     max-height: 0;
     -webkit-transition: max-height 50ms linear;
@@ -64,7 +64,7 @@
         margin-bottom: 0;
     }
 
-    .icons_wrap, .form_wrap {
+    .icons_wrap, .folder_content {
         padding: 20px !important;
         border: 1px solid rgba(0, 0, 0, 0.125);
         border-radius: 20px;

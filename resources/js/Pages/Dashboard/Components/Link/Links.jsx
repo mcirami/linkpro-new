@@ -152,7 +152,10 @@ const Links = ({
         if (active.id !== over.id) {
 
             setRow(null)
-            setValue(null)
+            setValue({
+                index: null,
+                url: null
+            })
             const oldIndex = userLinks.map(function(e) {
                 return e.id;
             }).indexOf(active.id);

@@ -24,6 +24,8 @@ import {
 } from '../../../Dashboard.jsx';
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 import {acceptTerms} from '@/Services/UserService.jsx';
+import IconDescription from './IconDescription.jsx';
+import {getTextValue} from '@/Services/IconRequests.jsx';
 
 const StandardForm = ({
                           accordionValue,
@@ -39,6 +41,8 @@ const StandardForm = ({
                           folderID,
                           affiliateStatus = null,
                           setAffiliateStatus = null,
+                          showTiny,
+                          setShowTiny
 
 }) => {
 
@@ -63,17 +67,29 @@ const StandardForm = ({
             shopify_products: null,
             shopify_id: null,
             course_id: null,
+            description: null,
             type: null,
         }
     );
 
-    const [charactersLeft, setCharactersLeft] = useState();
+    const [descChecked, setDescChecked] = useState(
+        Boolean(
+            currentLink.description &&
+            currentLink.description !== "" &&
+            currentLink.type === "advanced"
+        ));
+
+    const [charactersLeft, setCharactersLeft] = useState(11);
+
+    useEffect(() => {
+        if(setShowTiny) {
+            setShowTiny(true);
+        }
+    },[])
 
     useEffect(() => {
         if(currentLink.name) {
             setCharactersLeft(11 - currentLink.name.length);
-        } else {
-            setCharactersLeft(11);
         }
 
     },[charactersLeft])
@@ -103,7 +119,7 @@ const StandardForm = ({
                 ...currentLink,
                 name: value
             }))
-        });
+        },[]);
 
     const handleOnClick = e => {
 
@@ -132,6 +148,15 @@ const StandardForm = ({
 
             URL = data["url"];
             let packets;
+            let descValue = null;
+            let iconType = inputType;
+
+            if (currentLink.description && currentLink.description !== "") {
+                if(descChecked) {
+                    iconType = "advanced";
+                }
+                descValue = getTextValue(currentLink.description);
+            }
 
             switch (inputType) {
                 case "url":
@@ -141,7 +166,8 @@ const StandardForm = ({
                         icon: currentLink.icon,
                         page_id: pageSettings["id"],
                         folder_id: folderID,
-                        type: "url",
+                        description: descValue,
+                        type: iconType,
                     };
                     break;
                 case "email":
@@ -151,7 +177,8 @@ const StandardForm = ({
                         icon: currentLink.icon,
                         page_id: pageSettings["id"],
                         folder_id: folderID,
-                        type: "email",
+                        description: descValue,
+                        type: iconType,
                     };
                     break;
                 case "phone":
@@ -161,7 +188,8 @@ const StandardForm = ({
                         icon: currentLink.icon,
                         page_id: pageSettings["id"],
                         folder_id: folderID,
-                        type: "phone",
+                        description: descValue,
+                        type: iconType,
                     };
                     break;
                 case "offer":
@@ -172,10 +200,20 @@ const StandardForm = ({
                         page_id: pageSettings["id"],
                         course_id: currentLink.course_id,
                         folder_id: folderID,
-                        type: "offer",
+                        description: descValue,
+                        type: iconType,
                     };
                     break;
                 default:
+                    packets = {
+                        name: currentLink.name,
+                        url: URL,
+                        icon: currentLink.icon,
+                        page_id: pageSettings["id"],
+                        folder_id: folderID,
+                        description: descValue,
+                        type: iconType,
+                    };
                     break;
             }
 
@@ -194,6 +232,7 @@ const StandardForm = ({
                                     editID: editID,
                                     currentLink: currentLink,
                                     url: URL,
+                                    type: iconType,
                                     iconPath: currentLink.icon
                                 }
                             })
@@ -205,6 +244,7 @@ const StandardForm = ({
                                     editID: editID,
                                     currentLink: currentLink,
                                     url: URL,
+                                    type: iconType,
                                     iconPath: currentLink.icon
                                 }
                             })
@@ -219,10 +259,11 @@ const StandardForm = ({
                                 url: URL,
                                 email: currentLink.email,
                                 phone: currentLink.phone,
-                                type: currentLink.type,
+                                type: iconType,
                                 icon: currentLink.icon,
                                 course_id: currentLink.course_id,
                                 position: data.position,
+                                description: currentLink.description,
                                 active_status: true
                             }
 
@@ -244,8 +285,7 @@ const StandardForm = ({
                                     active_status: folderActive,
                                 };
 
-                                updateLinkStatus(packets, folderID,
-                                    url);
+                                updateLinkStatus(packets, folderID, url);
                             }
 
                             dispatch({
@@ -268,6 +308,7 @@ const StandardForm = ({
                                     editID: editID,
                                     currentLink: currentLink,
                                     url: URL,
+                                    type: iconType,
                                     iconPath: currentLink.icon
                                 }
                             })
@@ -281,18 +322,18 @@ const StandardForm = ({
                                 url: URL,
                                 email: currentLink.email,
                                 phone: currentLink.phone,
-                                type: currentLink.type,
+                                type: iconType,
                                 icon: currentLink.icon,
                                 course_id: currentLink.course_id,
                                 position: data.position,
+                                description: currentLink.description,
                                 active_status: true
                             }
 
                             dispatch({
                                 type: LINKS_ACTIONS.SET_LINKS,
                                 payload: {
-                                    links: newLinks.concat(
-                                        newLinkObject)
+                                    links: newLinks.concat(newLinkObject)
                                 }
                             })
                         }
@@ -451,6 +492,15 @@ const StandardForm = ({
                         />
                     }
                 </div>
+
+                <IconDescription
+                    currentLink={currentLink}
+                    setCurrentLink={setCurrentLink}
+                    descChecked={descChecked}
+                    setDescChecked={setDescChecked}
+                    showTiny={showTiny}
+                    setShowTiny={setShowTiny}
+                />
 
                 <div className="button_row w-full mt-4">
                     <button className="button green" type="submit">

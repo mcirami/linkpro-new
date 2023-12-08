@@ -1,10 +1,11 @@
 import React from 'react';
 import {MdKeyboardArrowUp} from 'react-icons/md';
 
-const AccordionLink = ({type, accordionValue, setAccordionValue, linkText, subStatus}) => {
+const AccordionLink = ({type, accordionValue, setAccordionValue, linkText, subStatus, setShowTiny}) => {
 
     const handleClick = (e) => {
         e.preventDefault();
+        setShowTiny(false);
         setAccordionValue(type);
     }
 

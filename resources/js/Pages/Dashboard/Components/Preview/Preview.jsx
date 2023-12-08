@@ -5,16 +5,19 @@ import React, {
 } from 'react';
 import {PageContext, UserLinksContext} from '../../Dashboard.jsx';
 import {IoIosCloseCircleOutline} from 'react-icons/io';
-import AccordionLinks from '../../../../Components/LinkComponents/AccordionLinks.jsx';
+import AccordionLinks from '@/Components/LinkComponents/AccordionLinks.jsx';
 import {checkIcon} from '@/Services/UserService.jsx';
 import Header from './Header';
 import ProfileImage from './ProfileImage';
 import ProfileText from './ProfileText';
-import Folder from '../../../../Components/LinkComponents/Folder.jsx';
-import FormIcon from '../../../../Components/LinkComponents/FormIcon.jsx';
-import SubscribeForm from '../../../../Components/LinkComponents/SubscribeForm.jsx';
-import StoreProducts from '../../../../Components/LinkComponents/StoreProducts.jsx';
+import Folder from '@/Components/LinkComponents/Folder.jsx';
+import SubscribeForm from '@/Components/LinkComponents/SubscribeForm.jsx';
+import StoreProducts from '@/Components/LinkComponents/StoreProducts.jsx';
 import {UseLoadPreviewHeight, UseResizePreviewHeight} from '@/Services/PreviewHooks.jsx';
+import AdvancedIcon
+    from './AdvancedIcon.jsx';
+import IconDescription
+    from './IconDescription.jsx';
 
 const Preview = ({
                      nodesRef,
@@ -70,9 +73,10 @@ const Preview = ({
         setShowPreview(false);
     }
 
-    const accordionLinks = value !== null ? userLinks[value].links : null;
-    const mailchimpListId = value !== null ? userLinks[value].mailchimp_list_id : null;
-    const storeProducts = value !== null ? userLinks[value].shopify_products : null;
+    const accordionLinks = value.index ? userLinks[value.index].links : null;
+    const mailchimpListId = value.index ? userLinks[value.index].mailchimp_list_id : null;
+    const storeProducts = value.index ? userLinks[value.index].shopify_products : null;
+    const description = value.index ? userLinks[value.index].description : null;
 
     return (
 
@@ -129,7 +133,7 @@ const Preview = ({
                                 }
 
                                 let colClasses = "";
-                                if (type === "folder" || type === "mailchimp" || type === "shopify") {
+                                if (type === "folder" || type === "mailchimp" || type === "shopify" || type === "advanced") {
                                     colClasses = "icon_col folder";
                                 } else {
                                     colClasses = "icon_col";
@@ -184,75 +188,78 @@ const Preview = ({
                                                             }
                                                         </div>
                                                     )
+                                                case "mailchimp":
+                                                case "shopify":
+                                                case "advanced":
+                                                    return (
+                                                        <AdvancedIcon
+                                                            colClasses={colClasses}
+                                                            displayIcon={displayIcon}
+                                                            name={name}
+                                                            active_status={active_status}
+                                                            dataRow={dataRow}
+                                                            mainIndex={index}
+                                                            setRow={setRow}
+                                                            value={value}
+                                                            setValue={setValue}
+                                                            url={url}
+                                                            index={index}
+                                                            setClickType={setClickType}
+                                                            clickType={clickType}
+                                                            type={type}
+                                                        />
+                                                    )
                                             }
                                         })()}
 
-                                        { (type === "mailchimp" || type === "shopify") &&
-
-                                            <FormIcon
-                                                colClasses={colClasses}
-                                                displayIcon={displayIcon}
-                                                name={name}
-                                                active_status={active_status}
-                                                dataRow={dataRow}
-                                                mainIndex={index}
-                                                setRow={setRow}
-                                                value={value}
-                                                setValue={setValue}
-                                                index={index}
-                                                setClickType={setClickType}
-                                                clickType={clickType}
-                                                type={type}
-                                            />
-                                        }
-
                                         {subStatus && ( (index + 1) % 4 === 0 || index + 1 === iconCount) ?
+                                            (() => {
+                                                switch (clickType) {
+                                                    case "mailchimp":
+                                                        return (
+                                                            <SubscribeForm
+                                                                dataRow={dataRow}
+                                                                row={row}
+                                                                mailchimpListId={mailchimpListId}
+                                                            />
+                                                        )
+                                                    case "shopify":
+                                                        return (
+                                                            <StoreProducts
+                                                                dataRow={dataRow}
+                                                                row={row}
+                                                                storeProducts={storeProducts}
+                                                            />
+                                                        )
+                                                    case "advanced":
+                                                        return (
+                                                            <IconDescription
+                                                                dataRow={dataRow}
+                                                                row={row}
+                                                                description={description}
+                                                                url={value.url}
+                                                            />
+                                                        )
+                                                    case "folder":
+                                                        return (
+                                                            <div className={`my_row folder ${dataRow == row ? "open" : ""}`}>
+                                                                <div className="icons_wrap inner">
 
-                                                <SubscribeForm
-                                                    dataRow={dataRow}
-                                                    row={row}
-                                                    mailchimpListId={mailchimpListId}
-                                                    clickType={clickType}
-                                                />
+                                                                    {accordionLinks?.map((innerLinkFull, index) => {
+                                                                        return (
+                                                                            <AccordionLinks key={index} icons={innerLinkFull}/>
+                                                                        )
+                                                                    })
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                }
+                                            })()
                                             :
                                             ""
                                         }
 
-                                        {subStatus && ( (index + 1) % 4 === 0 || index + 1 === iconCount) ?
-
-                                            <StoreProducts
-                                                dataRow={dataRow}
-                                                row={row}
-                                                clickType={clickType}
-                                                storeProducts={storeProducts}
-                                            />
-                                            :
-                                            ""
-                                        }
-
-                                        {subStatus && ((index + 1) % 4 === 0 || index + 1 === iconCount) ?
-                                                <div className={`my_row folder ${dataRow == row && clickType === "folder" ? "open" : ""}`}>
-                                                    <div className="icons_wrap inner">
-                                                        {dataRow == row ?
-                                                            accordionLinks?.map((
-                                                                innerLinkFull,
-                                                                index) => {
-                                                                return (
-                                                                    <AccordionLinks
-                                                                        key={index}
-                                                                        icons={innerLinkFull}
-                                                                        subStatus={subStatus}
-                                                                    />
-                                                                )
-                                                            })
-                                                            :
-                                                            ""
-                                                        }
-                                                    </div>
-                                                </div>
-                                            :
-                                            ""
-                                        }
                                     </React.Fragment>
                                 )
                             })}

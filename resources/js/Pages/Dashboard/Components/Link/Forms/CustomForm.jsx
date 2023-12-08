@@ -35,6 +35,8 @@ import ReactCrop from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 import CropTools from '@/Utils/CropTools';
+import IconDescription from './IconDescription.jsx';
+import {getTextValue} from '@/Services/IconRequests.jsx';
 
 const CustomForm = ({
                         accordionValue,
@@ -46,6 +48,8 @@ const CustomForm = ({
                         setEditID,
                         folderID,
                         setShowLoader,
+                        showTiny,
+                        setShowTiny,
 }) => {
 
     const [customIconArray, setCustomIconArray] = useState([]);
@@ -69,7 +73,7 @@ const CustomForm = ({
     const [crop, setCrop] = useState({ unit: '%', width: 30 });
     const [customIcon, setCustomIcon] = useState(null);
 
-    const [charactersLeft, setCharactersLeft] = useState();
+    const [charactersLeft, setCharactersLeft] = useState(11);
 
     const [currentLink, setCurrentLink] = useState (
         userLinks.find(function(e) {
@@ -86,9 +90,17 @@ const CustomForm = ({
             mailchimp_list_id: null,
             shopify_products: null,
             shopify_id: null,
+            description: null,
             type: null,
         }
     );
+
+    const [descChecked, setDescChecked] = useState(
+        Boolean(
+            currentLink.description &&
+            currentLink.description !== "" &&
+            currentLink.type === "advanced"
+        ));
 
     useDebounceEffect(
         async () => {
@@ -113,12 +125,15 @@ const CustomForm = ({
     )
 
     useEffect(() => {
+        if(setShowTiny) {
+            setShowTiny(true);
+        }
+    },[])
+
+    useEffect(() => {
         if(currentLink.name) {
             setCharactersLeft(11 - currentLink.name.length);
-        } else {
-            setCharactersLeft(11);
         }
-
     },[charactersLeft])
 
     useEffect(() => {
@@ -167,6 +182,15 @@ const CustomForm = ({
 
                 URL = data["url"];
                 let packets;
+                let descValue = null;
+                let iconType = inputType;
+
+                if (currentLink.description && currentLink.description !== "") {
+                    if(descChecked) {
+                        iconType = "advanced";
+                    }
+                    descValue = getTextValue(currentLink.description);
+                }
 
                 switch (inputType) {
                     case "url":
@@ -176,7 +200,8 @@ const CustomForm = ({
                             icon: currentLink.icon,
                             page_id: pageSettings["id"],
                             folder_id: folderID,
-                            type: currentLink.type,
+                            description: descValue,
+                            type: iconType,
                         };
                         break;
                     case "email":
@@ -186,7 +211,8 @@ const CustomForm = ({
                             icon: currentLink.icon,
                             page_id: pageSettings["id"],
                             folder_id: folderID,
-                            type: currentLink.type,
+                            description: descValue,
+                            type: iconType,
                         };
                         break;
                     case "phone":
@@ -196,10 +222,20 @@ const CustomForm = ({
                             icon: currentLink.icon,
                             page_id: pageSettings["id"],
                             folder_id: folderID,
-                            type: currentLink.type,
+                            description: descValue,
+                            type: iconType,
                         };
                         break;
                     default:
+                        packets = {
+                            name: currentLink.name,
+                            url: URL,
+                            icon: currentLink.icon,
+                            page_id: pageSettings["id"],
+                            folder_id: folderID,
+                            description: descValue,
+                            type: iconType,
+                        };
                         break;
                 }
 
@@ -218,6 +254,7 @@ const CustomForm = ({
                                         editID: editID,
                                         currentLink: currentLink,
                                         url: URL,
+                                        type: iconType,
                                         iconPath: currentLink.icon
                                     }
                                 })
@@ -229,6 +266,7 @@ const CustomForm = ({
                                         editID: editID,
                                         currentLink: currentLink,
                                         url: URL,
+                                        type: iconType,
                                         iconPath: currentLink.icon
                                     }
                                 })
@@ -243,7 +281,7 @@ const CustomForm = ({
                                     url: URL,
                                     email: currentLink.email,
                                     phone: currentLink.phone,
-                                    type: currentLink.type,
+                                    type: iconType,
                                     mailchimp_list_id: currentLink.mailchimp_list_id,
                                     shopify_products: currentLink.shopify_products,
                                     shopify_id: currentLink.shopify_id,
@@ -293,6 +331,7 @@ const CustomForm = ({
                                         editID: editID,
                                         currentLink: currentLink,
                                         url: URL,
+                                        type: iconType,
                                         iconPath: currentLink.icon
                                     }
                                 })
@@ -306,7 +345,7 @@ const CustomForm = ({
                                     url: URL,
                                     email: currentLink.email,
                                     phone: currentLink.phone,
-                                    type: currentLink.type,
+                                    type: iconType,
                                     mailchimp_list_id: currentLink.mailchimp_list_id,
                                     shopify_products: currentLink.shopify_products,
                                     shopify_id: currentLink.shopify_id,
@@ -364,6 +403,15 @@ const CustomForm = ({
                 }
 
                 let packets;
+                let descValue = null;
+                let iconType = inputType;
+
+                if (currentLink.description && currentLink.description !== "") {
+                    if(descChecked) {
+                        iconType = "advanced";
+                    }
+                    descValue = getTextValue(currentLink.description);
+                }
 
                 switch (inputType) {
                     case "url":
@@ -374,7 +422,7 @@ const CustomForm = ({
                             page_id: pageSettings["id"],
                             ext: response.extension,
                             folder_id: folderID,
-                            type: currentLink.type,
+                            type: iconType,
                         };
                         break;
                     case "email":
@@ -385,7 +433,7 @@ const CustomForm = ({
                             page_id: pageSettings["id"],
                             ext: response.extension,
                             folder_id: folderID,
-                            type: currentLink.type,
+                            type: iconType,
                         };
                         break;
                     case "phone":
@@ -396,10 +444,19 @@ const CustomForm = ({
                             page_id: pageSettings["id"],
                             ext: response.extension,
                             folder_id: folderID,
-                            type: currentLink.type,
+                            type: iconType,
                         };
                         break;
                     default:
+                        packets = {
+                            name: currentLink.name,
+                            url: URL,
+                            icon: response.key,
+                            page_id: pageSettings["id"],
+                            ext: response.extension,
+                            folder_id: folderID,
+                            type: iconType,
+                        };
                         break;
                 }
 
@@ -421,6 +478,7 @@ const CustomForm = ({
                                         editID: editID,
                                         currentLink: currentLink,
                                         url: URL,
+                                        type: iconType,
                                         iconPath: iconPath
                                     }})
 
@@ -431,6 +489,7 @@ const CustomForm = ({
                                         editID: editID,
                                         currentLink: currentLink,
                                         url: URL,
+                                        type: iconType,
                                         iconPath: iconPath
                                     }})
 
@@ -447,7 +506,7 @@ const CustomForm = ({
                                     mailchimp_list_id: currentLink.mailchimp_list_id,
                                     shopify_products: currentLink.shopify_products,
                                     shopify_id: currentLink.shopify_id,
-                                    type: currentLink.type,
+                                    type: iconType,
                                     icon: iconPath,
                                     position: data.position,
                                     active_status: true
@@ -488,6 +547,7 @@ const CustomForm = ({
                                         editID: editID,
                                         currentLink: currentLink,
                                         url: URL,
+                                        type: iconType,
                                         iconPath: iconPath
                                     }})
 
@@ -500,7 +560,7 @@ const CustomForm = ({
                                     url: URL,
                                     email: currentLink.email,
                                     phone: currentLink.phone,
-                                    type: currentLink.type,
+                                    type: iconType,
                                     icon: iconPath,
                                     position: data.position,
                                     active_status: true
@@ -555,7 +615,7 @@ const CustomForm = ({
             ...currentLink,
             name: value
         }))
-    });
+    },[]);
 
     return (
         <form onSubmit={handleSubmit} className="link_form">
@@ -670,6 +730,15 @@ const CustomForm = ({
                     setCurrentLink={setCurrentLink}
                 />
             </div>
+
+            <IconDescription
+                currentLink={currentLink}
+                setCurrentLink={setCurrentLink}
+                descChecked={descChecked}
+                setDescChecked={setDescChecked}
+                showTiny={showTiny}
+                setShowTiny={setShowTiny}
+            />
 
             <div className="my_row button_row mt-4">
                 <button className="button green" type="submit">

@@ -24,10 +24,16 @@ const Folder = ({
 
         if (clickedDiv.classList.contains('open')) {
             setRow(null);
-            setValue(null);
+            setValue({
+                index: null,
+                url: null
+            });
         } else {
             setRow(clickedDiv.firstChild.dataset.row);
-            setValue(index);
+            setValue((prev) => ({
+                ...prev,
+                index: index
+            }));
             setClickType("folder");
 
             setTimeout(function(){
@@ -44,7 +50,7 @@ const Folder = ({
 
     return (
 
-        <div className={ ` ${colClasses} ${mainIndex == value && clickType === "folder" ? " open" : "" } `}>
+        <div className={ ` ${colClasses} ${mainIndex == value.index && clickType === "folder" ? " open" : "" } `}>
             <a className="inner_icon_wrap" href="#" data-row={ dataRow } onClick={(e) => {folderClick(e, mainIndex)} }>
                 <img className="bg_image" src={Vapor.asset('images/blank-folder-square.jpg')} alt=""/>
                 <div className="folder_icons preview">

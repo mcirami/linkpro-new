@@ -1,4 +1,6 @@
 import axios from 'axios';
+import htmlToDraft from 'html-to-draftjs';
+import {ContentState, convertToRaw} from 'draft-js';
 
 /**
  * Submit a request to get aff offer icons
@@ -31,4 +33,14 @@ export const getIcons = (url) => {
             success : false,
         }
     });
+}
+
+export const getTextValue = (description) => {
+    const blocksFromHTML = htmlToDraft(description);
+
+    const { contentBlocks, entityMap } = blocksFromHTML;
+
+    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+
+    return convertToRaw(contentState);
 }

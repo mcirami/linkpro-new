@@ -116,10 +116,11 @@ export function reducer(userLinks, action) {
                         url: action.payload.url,
                         email: action.payload.currentLink.email,
                         phone: action.payload.currentLink.phone,
-                        type: action.payload.currentLink.type,
+                        type: action.payload.type,
                         mailchimp_list_id: action.payload.currentLink.mailchimp_list_id,
                         shopify_products: action.payload.currentLink.shopify_products,
                         shopify_id: action.payload.currentLink.shopify_id,
+                        description: action.payload.currentLink.description,
                         icon: action.payload.iconPath
                     }
                 }
@@ -142,10 +143,11 @@ export function reducer(userLinks, action) {
                                 url: action.payload.url,
                                 email: action.payload.currentLink.email,
                                 phone: action.payload.currentLink.phone,
-                                type: action.payload.currentLink.type,
+                                type: action.payload.type,
                                 mailchimp_list_id: action.payload.currentLink.mailchimp_list_id,
                                 shopify_products: action.payload.currentLink.shopify_products,
                                 shopify_id: action.payload.currentLink.shopify_id,
+                                description: action.payload.currentLink.description,
                                 icon: action.payload.iconPath
                             }
                         }
@@ -201,7 +203,7 @@ export const ORIGINAL_LINKS_ACTIONS = {
     UPDATE_LINKS_POSITIONS: 'update-links-positions',
 }
 
-export function origLinksReducer(originalArray, action) {
+/*export function origLinksReducer(originalArray, action) {
 
     switch (action.type) {
 
@@ -378,7 +380,7 @@ export function origLinksReducer(originalArray, action) {
 
             return originalArray;
     }
-}
+}*/
 
 export const FOLDER_LINKS_ACTIONS = {
     SET_FOLDER_LINKS: 'set-folder-links',
@@ -422,7 +424,8 @@ export function folderLinksReducer(folderLinks, action) {
                         mailchimp_list_id: action.payload.currentLink.mailchimp_list_id,
                         shopify_products: action.payload.currentLink.shopify_products,
                         shopify_id: action.payload.currentLink.shopify_id,
-                        type: action.payload.currentLink.type,
+                        type: action.payload.type,
+                        description: action.payload.currentLink.description,
                         icon: action.payload.iconPath
                     }
                 }
@@ -436,7 +439,7 @@ export function folderLinksReducer(folderLinks, action) {
     }
 }
 
-export const ORIG_FOLDER_LINKS_ACTIONS = {
+/*export const ORIG_FOLDER_LINKS_ACTIONS = {
     SET_ORIG_FOLDER_LINKS: 'set-orig-folder-links',
     UPDATE_ORIG_FOLDER_LINKS_STATUS: 'update-orig-folder-links-status',
     UPDATE_FOLDER_LINKS: 'update-folder-links',
@@ -490,4 +493,4 @@ export function origFolderLinksReducer(origFolderLinks, action) {
 
             return origFolderLinks;
     }
-}
+}*/

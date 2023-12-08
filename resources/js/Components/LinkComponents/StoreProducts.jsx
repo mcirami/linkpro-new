@@ -10,11 +10,9 @@ const StoreProducts = ({
     return (
         <>
             {storeProducts &&
-                <div className={`my_row form ${dataRow == row && clickType === "shopify" ?
-                    "open" :
-                    ""}`}>
+                <div className={`my_row folder ${dataRow == row ? "open" : ""}`}>
                     {dataRow == row &&
-                        <div className="form_wrap">
+                        <div className="folder_content">
                             <div className="products_grid folder">
                                 {storeProducts.map((product) => {
 

@@ -98,6 +98,8 @@ function Dashboard({
     const pageHeaderRef = useRef();
     const leftColWrap = useRef();
 
+    const [showTiny, setShowTiny] = useState(false);
+
     const subStatus = useMemo(
         () => {
             return checkSubStatus(userSub)
@@ -110,7 +112,10 @@ function Dashboard({
     });
 
     const [row, setRow] = useState(null);
-    const [value, setValue] = useState(null);
+    const [value, setValue] = useState({
+        index: null,
+        url: null
+    });
 
     const [showPreviewButton, setShowPreviewButton] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
@@ -470,11 +475,11 @@ function Dashboard({
                                                             <div className={"my_row tab_content_wrap"}>
                                                                 <div className={`accordion_row my_row`}>
                                                                     <AccordionLink
-                                                                        subStatus={subStatus}
                                                                         accordionValue={accordionValue}
                                                                         setAccordionValue={setAccordionValue}
                                                                         linkText="Standard Icon"
                                                                         type="standard"
+                                                                        setShowTiny={setShowTiny}
                                                                     />
                                                                     {accordionValue === "standard" &&
                                                                         <div className={`inner_wrap ${accordionValue ===
@@ -492,6 +497,8 @@ function Dashboard({
                                                                                 setShowUpgradePopup={setShowUpgradePopup}
                                                                                 setOptionText={setOptionText}
                                                                                 folderID={editFolderID}
+                                                                                showTiny={showTiny}
+                                                                                setShowTiny={setShowTiny}
                                                                             />
 
                                                                         </div>
@@ -505,6 +512,7 @@ function Dashboard({
                                                                         setAccordionValue={setAccordionValue}
                                                                         linkText="Affiliate Offers"
                                                                         type="offer"
+                                                                        setShowTiny={setShowTiny}
                                                                     />
                                                                     {accordionValue === "offer" &&
                                                                         <div className={`inner_wrap ${accordionValue} ${accordionValue ===
@@ -524,6 +532,8 @@ function Dashboard({
                                                                                 folderID={editFolderID}
                                                                                 affiliateStatus={affiliateStatus}
                                                                                 setAffiliateStatus={setAffiliateStatus}
+                                                                                showTiny={showTiny}
+                                                                                setShowTiny={setShowTiny}
                                                                             />
 
                                                                         </div>
@@ -538,6 +548,7 @@ function Dashboard({
                                                                         setAccordionValue={setAccordionValue}
                                                                         linkText="Custom Icon"
                                                                         type="custom"
+                                                                        setShowTiny={setShowTiny}
                                                                     />
                                                                     {accordionValue === "custom" &&
                                                                         <div className={`inner_wrap ${accordionValue ===
@@ -553,6 +564,8 @@ function Dashboard({
                                                                                 setEditID={setEditID}
                                                                                 setShowLoader={setShowLoader}
                                                                                 folderID={editFolderID}
+                                                                                showTiny={showTiny}
+                                                                                setShowTiny={setShowTiny}
                                                                             />
 
                                                                         </div>
@@ -568,6 +581,7 @@ function Dashboard({
                                                                             setAccordionValue={setAccordionValue}
                                                                             linkText="Integrations"
                                                                             type="integration"
+                                                                            setShowTiny={setShowTiny}
                                                                         />
                                                                         {accordionValue ===
                                                                             "integration" &&
