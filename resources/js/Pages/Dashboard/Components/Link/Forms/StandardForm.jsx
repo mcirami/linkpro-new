@@ -85,7 +85,7 @@ const StandardForm = ({
         if(setShowTiny) {
             setShowTiny(true);
         }
-    },[])
+    },[accordionValue])
 
     useEffect(() => {
         if(currentLink.name) {
@@ -364,7 +364,7 @@ const StandardForm = ({
 
         acceptTerms().then((data) => {
 
-            if (data.success) {
+            if (data.success && setAffiliateStatus) {
                 setAffiliateStatus("approved");
                 setShowTerms(false);
             }

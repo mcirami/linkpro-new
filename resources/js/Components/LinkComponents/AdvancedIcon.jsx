@@ -6,15 +6,15 @@ const AdvancedIcon = ({
                           name,
                           active_status,
                           dataRow,
+                          mainIndex,
                           setRow,
                           value,
                           setValue,
                           url,
-                          mainIndex,
                           index,
-                          clickType,
                           setClickType,
-                          type,
+                          clickType,
+                          type
                       }) => {
 
     const handleClick = (e) => {

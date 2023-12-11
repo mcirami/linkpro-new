@@ -512,46 +512,6 @@
         -moz-border-radius-bottomleft: 0 !important;
     }
 
-    h1 {
-        font-size: 1.75rem;
-    }
-
-    h2 {
-        font-size: 1.5rem;
-
-        &.title {
-            text-transform: uppercase;
-            font-size: 1.7rem;
-            text-align: center;
-            margin: 20px 0;
-            padding: 0 20px;
-        }
-    }
-
-    h3 {
-        font-size: 1.3rem;
-    }
-
-    h4 {
-        font-size: 1.2rem;
-    }
-
-    h5 {
-        font-size: 1rem;
-    }
-
-    h6 {
-        font-size: .9rem;
-    }
-
-    p {
-        font-size: 1rem;
-
-        @include query(smallMobile) {
-            font-size: .8rem;
-        }
-    }
-
     .header {
         position: relative;
 

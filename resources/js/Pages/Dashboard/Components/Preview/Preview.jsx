@@ -14,10 +14,8 @@ import Folder from '@/Components/LinkComponents/Folder.jsx';
 import SubscribeForm from '@/Components/LinkComponents/SubscribeForm.jsx';
 import StoreProducts from '@/Components/LinkComponents/StoreProducts.jsx';
 import {UseLoadPreviewHeight, UseResizePreviewHeight} from '@/Services/PreviewHooks.jsx';
-import AdvancedIcon
-    from './AdvancedIcon.jsx';
-import IconDescription
-    from './IconDescription.jsx';
+import AdvancedIcon from '@/Components/LinkComponents/AdvancedIcon.jsx';
+import IconDescription from '@/Components/LinkComponents/IconDescription.jsx';
 
 const Preview = ({
                      nodesRef,
