@@ -181,7 +181,7 @@ const AffiliateStats = ({
 
     return (
 
-        <div className="stats_wrap my_row">
+        <div className={`stats_wrap my_row ${tab}`}>
             <Filters
                 handleDateChange={handleDateChange}
                 startDate={statsDate.startDate}

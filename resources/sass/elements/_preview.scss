@@ -364,7 +364,7 @@
 
         @media screen and (max-width: 550px) {
             min-height: 515px;
-            max-width: 225px;
+            max-width: 230px;
             padding: 7px 0 0 0;
         }
 
@@ -586,5 +586,12 @@
         .icon {
             color: $white;
         }
+    }
+}
+
+#edit_course .links_wrap.preview .inner_content {
+    @media screen and (max-width: 550px) {
+        min-height: 690px;
+        max-width: 302px;
     }
 }

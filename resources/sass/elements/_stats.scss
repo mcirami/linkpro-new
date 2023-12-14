@@ -44,7 +44,19 @@
         }
 
         .refresh_button {
-            position: absolute;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            justify-content: center;
+            -webkit-justify-content: center;
+            align-items: center;
+            -webkit-align-items: center;
             padding: 5px;
             width: 50px;
             height: 50px;
@@ -126,6 +138,42 @@
         border-bottom-right-radius: 10px;
         -webkit-border-bottom-right-radius: 10px;
         -moz-border-radius-bottomright: 10px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+
+        &.affiliate {
+            .my_row.filter {
+                grid-template-columns: 4fr 5fr 5fr;
+
+                @include query(mobile) {
+                    -ms-flex-wrap: wrap;
+                    flex-wrap: wrap;
+                    grid-template-columns: 1fr;
+                    order: 1;
+                    margin-bottom: 10px;
+                    border-bottom: 1px solid $borderGray;
+                }
+
+                &.filter_by {
+                    @include query(mobile){
+                        order: 2;
+                    }
+                }
+            }
+
+            .table_wrap {
+                @include query(mobile){
+                    order: 3;
+                }
+            }
+        }
 
         .my_row.filter {
             display: -webkit-box;
@@ -150,10 +198,6 @@
                 grid-template-columns: 1fr;
             }
 
-            &.affiliate_tab {
-                grid-template-columns: 4fr 5fr 5fr;
-            }
-
             &.filter_by {
                 display: flex;
 
@@ -163,10 +207,6 @@
                     @include query(mobile) {
                         width: 100%;
                     }
-                }
-
-                .refresh_button {
-                    position: relative;
                 }
             }
 
@@ -189,6 +229,12 @@
                     width: 30px;
                     height: 30px;
                     color: $blue;
+                }
+
+                .refresh_button svg {
+                    position: relative;
+                    right: auto;
+                    top: auto;
                 }
             }
 

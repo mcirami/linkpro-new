@@ -93,7 +93,7 @@ class LinkService {
                 'page_id'           => $request->page_id,
                 'position'          => $position,
                 'folder_id'         => $request->folder_id,
-                'description'       => $request->description ? : null,
+                'description'       => $request->description ? json_encode($request->description) : null,
                 'type'              => $request->type
             ]);
 
@@ -110,6 +110,7 @@ class LinkService {
             } else {
                 $position = max($highestPagePos, $highestFolderPos) + 1;
             }
+
 
             if ($request->shopify_products) {
                 $productIDs = [];
@@ -135,7 +136,7 @@ class LinkService {
                 'icon'              => $iconPath,
                 'page_id'           => $request->page_id,
                 'position'          => $position,
-                'description'       => $request->description ? : null,
+                'description'       => $request->description ? json_encode($request->description) : null,
                 'type'              => $request->type
             ]);
         }
@@ -153,7 +154,7 @@ class LinkService {
      *
      * @return string|null
      */
-    public function updateLink($request, $link) {
+    public function updateLink($request, $link): ?string {
 
         if (str_contains($request->icon, 'tmp/') ) {
             $iconPath = $this->saveCustomIcon($request);

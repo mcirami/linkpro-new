@@ -1373,7 +1373,11 @@ form .bottom_row a {
 #contact_form {
 
     p.form_text {
-        font-size: 18px;
+        font-size: 1.1rem;
+
+        @include query(mobile) {
+            font-size: .9rem;
+        }
     }
 
     .success_message {
