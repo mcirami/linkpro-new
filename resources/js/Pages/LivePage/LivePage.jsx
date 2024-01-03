@@ -127,6 +127,7 @@ function LivePage({links, page, subscribed}) {
                                                                     clickType={clickType}
                                                                     setClickType={setClickType}
                                                                     subStatus={subscribed}
+                                                                    type="live"
                                                                 />
                                                                 :
                                                                 subscribed &&
@@ -223,6 +224,7 @@ function LivePage({links, page, subscribed}) {
                                                                                     <AccordionLinks
                                                                                         key={index}
                                                                                         icons={innerLinkFull}
+                                                                                        subStatus={subscribed}
                                                                                     />
                                                                                 )
                                                                             })

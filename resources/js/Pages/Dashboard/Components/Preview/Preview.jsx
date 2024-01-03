@@ -155,6 +155,7 @@ const Preview = ({
                                                             clickType={clickType}
                                                             setClickType={setClickType}
                                                             subStatus={subStatus}
+                                                            type="preview"
                                                         />
                                                         :
                                                         subStatus &&

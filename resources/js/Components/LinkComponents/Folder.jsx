@@ -14,7 +14,8 @@ const Folder = ({
                     name,
                     clickType,
                     setClickType,
-                    subStatus
+                    subStatus,
+                    type
 }) => {
 
     const folderClick = (e, index) => {
@@ -60,6 +61,7 @@ const Folder = ({
                                 key={index}
                                 icons={innerLinkIcons}
                                 subStatus={subStatus}
+                                type={type}
                             />
                         )
                     })}
