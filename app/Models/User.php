@@ -123,8 +123,7 @@ class User extends \TCG\Voyager\Models\User
 
     /** Other Functions **/
 
-    public function getRedirectRoute()
-    {
+    public function getRedirectRoute(): \Symfony\Component\HttpFoundation\Response|\Illuminate\Http\RedirectResponse {
         $loginURL = url()->previous();
         $roles = $this->getRoleNames();
         $previousURL = Session::get( 'url.intended' );

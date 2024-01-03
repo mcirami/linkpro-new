@@ -5,9 +5,12 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import {Head, Link, router, useForm, usePage} from '@inertiajs/react';
 
 export default function Login({ status, canResetPassword, course = null }) {
+
+    const { auth } = usePage().props
+
     const { data, setData, post, processing, errors, reset } = useForm({
         identity: '',
         password: '',
@@ -24,7 +27,6 @@ export default function Login({ status, canResetPassword, course = null }) {
         e.preventDefault();
 
         let parameter = course ? "?course=" + course.id : "";
-
         post(route('login') + parameter);
     };
 

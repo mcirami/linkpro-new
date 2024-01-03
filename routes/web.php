@@ -46,7 +46,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('home');
 
 Route::middleware('auth')->group(function () {
 
@@ -218,8 +218,12 @@ Route::post('/braintree/webhooks/sub-went-active', [WebhookController::class, 's
 
 Route::get('/get-icons', [IconController::class, 'getIcons']);
 
-Route::view('/terms-and-conditions', 'utility.terms')->name('terms');
-Route::view('/privacy-policy', 'utility.privacy')->name('privacy');
+Route::get('/terms-and-conditions', function () {
+    return Inertia::render('Utilities/Terms');
+})->name('terms');
+Route::get('/privacy-policy', function() {
+    return Inertia::render('Utilities/Privacy');
+})->name('privacy');
 
 Route::get('/how-it-works', function () {
     return Inertia::render('HowItWorks/Index');

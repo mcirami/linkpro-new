@@ -25,7 +25,6 @@ class AuthenticatedSessionController extends Controller
         ])->with(['course' => $course]);
     }
 
-
     /**
      * @param LoginRequest $request
      *
@@ -33,6 +32,7 @@ class AuthenticatedSessionController extends Controller
      * @throws ValidationException
      */
     public function store(LoginRequest $request): mixed {
+
         $request->authenticate();
 
         $request->session()->regenerate();
@@ -40,7 +40,7 @@ class AuthenticatedSessionController extends Controller
         return auth()->user()->getRedirectRoute();
     }
 
-    public function customLoginPost(LoginRequest $request) {
+    public function customLoginPost(LoginRequest $request): void {
 
         $credentials = $request->except(['_token']);
         $login = request()->input('identity');
@@ -57,8 +57,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request)
-    {
+    public function destroy(Request $request): \Illuminate\Http\JsonResponse {
         $courseSlug = isset($_GET['course']) && $_GET['course'] !== "" ? $_GET['course'] : null;
 
         Auth::guard('web')->logout();

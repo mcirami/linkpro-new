@@ -59,7 +59,7 @@ class HandleInertiaRequests extends Middleware
                     ],
                     'courseData'    => $course,
                     'defaultPage'   => $defaultPage
-                ],
+                ]
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

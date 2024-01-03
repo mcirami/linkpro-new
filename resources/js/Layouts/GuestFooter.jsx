@@ -11,7 +11,7 @@ const GuestFooter = () => {
                 <li><Link className="text-sm" href={route('contact')}>Contact Us</Link></li>
             </ul>
 
-            <p><small><a href={route('terms')}>Terms And Conditions</a> | <a href={route('privacy')}>Privacy Policy</a></small></p>
+            <p><small><Link href={route('terms')}>Terms And Conditions</Link> | <Link href={route('privacy')}>Privacy Policy</Link></small></p>
             <small>&copy; Copyright LinkPro LLC | All Rights Reserved </small>
         </footer>
 
