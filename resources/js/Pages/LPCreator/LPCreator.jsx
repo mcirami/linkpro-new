@@ -10,7 +10,7 @@ import ImageComponent from './Components/ImageComponent';
 import {reducer} from './Reducer';
 import EventBus from '../../Utils/Bus';
 import {isEmpty} from 'lodash';
-import PreviewButton from '../Dashboard/Components/Preview/PreviewButton';
+import PreviewButton from '../../Components/PreviewButton.jsx';
 import {previewButtonRequest} from '../../Services/PageRequests';
 import PublishButton from './Components/PublishButton';
 import Section from './Components/Section';

@@ -1,6 +1,6 @@
 'use strict'
 
-window.addEventListener("load", function(){
+$(document).ready(function () {
 
     $(window).on('resize', function() {
 

@@ -15,7 +15,7 @@ import PageNav from './Components/Page/PageNav';
 import PageTitle from './Components/Page/PageTitle';
 import PageBio from './Components/Page/PageBio';
 import AddLink from './Components/Link/AddLink';
-import PreviewButton from './Components/Preview/PreviewButton';
+import PreviewButton from '../../Components/PreviewButton.jsx';
 import { UpgradePopup } from '@/Utils/Popups/UpgradePopup';
 import { ConfirmPopup } from '@/Utils/Popups/ConfirmPopup';
 import { Loader } from '@/Utils/Loader.jsx';

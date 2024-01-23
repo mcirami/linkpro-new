@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {SketchPicker} from 'react-color';
 import {RiCloseCircleFill} from 'react-icons/ri';
 import {
@@ -6,6 +6,7 @@ import {
     updateSectionData,
 } from '@/Services/CourseRequests.jsx';
 import {LP_ACTIONS} from '../Reducer';
+import {VscTriangleDown} from 'react-icons/vsc';
 
 
 const ColorPicker = ({
@@ -69,6 +70,33 @@ const ColorPicker = ({
         }
 
     },[])
+
+    useEffect(() => {
+
+        function handleScroll() {
+            setShowPicker(false);
+        }
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        }
+    })
+
+    useEffect(() => {
+
+        function handleResize() {
+            setShowPicker(false);
+        }
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    })
+
 
     const handleOnChange = (color) => {
         setSketchPickerColor(color);
@@ -187,16 +215,35 @@ const ColorPicker = ({
 
     }
 
+    const pickerRef = useRef();
+    const linkRef = useRef();
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        setShowPicker(!showPicker);
+
+        if(!showPicker) {
+            const pickerBox = pickerRef.current;
+            const windowWidth = window.innerWidth
+
+            const rect = e.target.getBoundingClientRect();
+            const left = ((rect.right + rect.left) / 2) - 340 ;
+            const top = rect.top - 442;
+
+            pickerBox.style.position = "fixed";
+            pickerBox.style.left = `${left}px`;
+            pickerBox.style.top = `${top}px`;
+        }
+
+    }
+
     return (
         <article className="my_row page_settings border_wrap">
             <h4>{label}</h4>
             <div className="icon_wrap">
-                <a
+                <a ref={linkRef}
                    href="#"
-                   onClick={(e) => {
-                       e.preventDefault();
-                       setShowPicker(!showPicker);
-                   }}
+                   onClick={(e) => { handleClick(e)}}
                 >
                     <span className="color_wrap">
                         <span className="color_box"
@@ -205,24 +252,33 @@ const ColorPicker = ({
                     </span>
                     Edit
                 </a>
-                {showPicker &&
-                    <div className="picker_wrapper">
-                        <div className="close_icon icon_wrap">
-                            <a href="#" onClick={(e) => {handleClose(e)} }>
-                                <RiCloseCircleFill />
-                            </a>
+                <div ref={pickerRef} className="picker_container">
+                    {showPicker &&
+                        <div className="picker_wrapper">
+                            <div className="close_icon icon_wrap">
+                                <a href="#" onClick={(e) => {
+                                    handleClose(e)
+                                }}>
+                                    <RiCloseCircleFill/>
+                                </a>
+                            </div>
+                            <SketchPicker
+                                onChange={(color) => {
+                                    handleOnChange(color.rgb);
+                                }}
+                                color={sketchPickerColor}
+                                width={300}
+                            />
+                            <a className="button blue" href="#"
+                               onClick={(e) => {
+                                   handleSave(e)
+                               }}>Save</a>
+                            <div className="picker_triangle">
+                                <VscTriangleDown/>
+                            </div>
                         </div>
-                        <SketchPicker
-                            onChange={(color) => {
-                                handleOnChange(color.rgb);
-                            }}
-                            color={sketchPickerColor}
-                            width={300}
-                        />
-                        <a className="button blue" href="#"
-                           onClick={(e) => { handleSave(e)}}>Save</a>
-                    </div>
-                }
+                    }
+                </div>
             </div>
         </article>
     );

@@ -12,9 +12,9 @@ import ImageComponent from './Components/ImageComponent';
 import {offerDataReducer, reducer} from './Reducer';
 import EventBus from '@/Utils/Bus';
 import {isEmpty} from 'lodash';
-import PreviewButton from '../Dashboard/Components/Preview/PreviewButton';
-import {previewButtonRequest} from '@/Services/PageRequests';
+import PreviewButton from '../../Components/PreviewButton.jsx';
 import SwitchOptions from './Components/SwitchOptions';
+import {previewButtonRequest} from '@/Services/PageRequests';
 import PublishButton from './Components/PublishButton';
 import Section from './Components/Section';
 import DropdownComponent from './Components/DropdownComponent';
@@ -326,11 +326,11 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         <>
                                                             <div className="url_wrap mb-4">
                                                                 <p>Landing Page:</p>
-                                                                <a target="_blank" href={landerUrl}>{landerUrl}</a>
+                                                                <a target="_blank" href={landerUrl}>View Course Landing Page</a>
                                                             </div>
                                                             <div className="url_wrap">
                                                                 <p>Live Page:</p>
-                                                                <a target="_blank" href={liveUrl}>{liveUrl}</a>
+                                                                <a target="_blank" href={liveUrl}>View Live Course Page</a>
                                                             </div>
                                                         </>
                                                         :
@@ -394,11 +394,11 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                     collisionDetection={closestCenter}
                                                     onDragEnd={handleDragEnd}
                                                 >
-                                                    <section className="sections_wrap my_row mb-5">
+                                                    <section className="sections_wrap my_row mb-4">
 
                                                         <SortableContext
                                                             items={sections}
-                                                            strategy={verticalListSortingStrategy}
+                                                            strategy={verticalListSortingStrategy} d
                                                         >
                                                             {sections.map((section, index) => {
 
@@ -430,7 +430,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
 
                                             }
 
-                                            <div className="link_row my-5">
+                                            <div className="link_row">
                                                 <AddSectionLink
                                                     sections={sections}
                                                     setSections={setSections}

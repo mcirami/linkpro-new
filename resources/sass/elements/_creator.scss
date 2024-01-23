@@ -155,6 +155,10 @@
                     font-size: 1.2em;
                     color: $black;
                     margin: 0;
+
+                    @include query(mobile) {
+                        font-size: 1em;
+                    }
                 }
 
                 .icon_wrap {
@@ -259,17 +263,31 @@
                     }
                 }
 
+                .picker_container {
+                    z-index: 999;
+                    display: flex;
+                }
+
                 .picker_wrapper {
                     @include boxShadow;
-                    position: absolute;
-                    bottom: 0;
-                    left: 100%;
-                    z-index: 999;
                     border-radius: 8px;
                     -webkit-border-radius: 8px;
                     -moz-border-radius: 8px;
                     padding: 10px;
                     background: $white;
+
+                    .picker_triangle {
+                        position: absolute;
+                        right: 0;
+                        bottom: -24px;
+                        z-index: 999;
+
+                        svg {
+                            width: 40px;
+                            height: 40px;
+                            color: $white;
+                        }
+                    }
 
                     .sketch-picker {
                         box-shadow: none !important;
@@ -326,10 +344,25 @@
                 .slider_wrap {
                     width: 100%;
                     max-width: 165px;
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-orient: horizontal;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: row;
+                    flex-direction: row;
+                    -ms-flex-wrap: nowrap;
+                    flex-wrap: nowrap;
+                    align-items: center;
+                    -webkit-align-items: center;
 
                     .css-1houf2i-MuiSlider-root {
                         width: 95%;
                         height: 5px;
+                    }
+
+                    @include query(smallMobile) {
+                        max-width: 140px;
                     }
                 }
 
