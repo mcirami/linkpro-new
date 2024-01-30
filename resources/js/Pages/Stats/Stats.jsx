@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 
 import PageStats from './Components/PageStats';
 import LinkStats from './Components/LinkStats';
@@ -41,6 +41,8 @@ function Stats() {
     const [affiliateDropdownValue, setAffiliateDropdownValue] = useState(1);
     const [filterByValue, setFilterByValue] = useState("offer");
 
+    const windowSize = useRef([window.innerWidth, window.innerHeight]);
+
     const handleClick = e => {
         e.preventDefault();
         setTab(e.target.dataset.tab);
@@ -60,71 +62,141 @@ function Stats() {
                         <div id="stats" className="my_row">
                             <div className="tabs_wrap">
                                 <div className="my_row tab_nav">
-                                    <a href="#" className={`tab_link ${tab === "page" ? "active" : "" }` } data-tab="page" onClick={(e) => { handleClick(e) } }>
-                                        Page Stats
-                                    </a>
-                                    <a href="#" className={`tab_link ${tab === "icon" ? "active" : "" }` } data-tab="icon" onClick={(e) => { handleClick(e) } }>
-                                        Icon Stats
-                                    </a>
-                                    <a href="#" className={`tab_link ${tab === "folder" ? "active" : "" }` } data-tab="folder" onClick={(e) => { handleClick(e) } }>
-                                        Folder Stats
-                                    </a>
-                                    <a href="#" className={`tab_link ${tab === "affiliate" ? "active" : "" }` } data-tab="affiliate" onClick={(e) => { handleClick(e) } }>
-                                        Affiliate Stats
-                                    </a>
+                                    <div className="tab">
+                                        <a href="#" className={`tab_link ${tab === "page" ? "active" : "" }` } data-tab="page" onClick={(e) => { handleClick(e) } }>
+                                            Page Stats
+                                        </a>
+                                        { windowSize.current[0] < 551 && tab === "page" ?
+                                            <PageStats
+                                                pageStats={pageStats}
+                                                setPageStats={setPageStats}
+                                                pageStatsDate={pageStatsDate}
+                                                setPageStatsDate={setPageStatsDate}
+                                                pageDropdownValue={pageDropdownValue}
+                                                setPageDropdownValue={setPageDropdownValue}
+                                                tab={tab}
+                                            />
+                                            :
+                                            ""
+                                        }
+                                    </div>
+                                    <div className="tab">
+                                        <a href="#" className={`tab_link ${tab === "icon" ? "active" : "" }` } data-tab="icon" onClick={(e) => { handleClick(e) } }>
+                                            Icon Stats
+                                        </a>
+                                        {tab ==="icon" && windowSize.current[0] < 551 ?
+                                            <LinkStats
+                                                linkStats={linkStats}
+                                                setLinkStats={setLinkStats}
+                                                deletedStats={deletedStats}
+                                                setDeletedStats={setDeletedStats}
+                                                linkStatsDate={linkStatsDate}
+                                                setLinkStatsDate={setLinkStatsDate}
+                                                linkDropdownValue={linkDropdownValue}
+                                                setLinkDropdownValue={setLinkDropdownValue}
+                                                tab={tab}
+                                            />
+                                            :
+                                            ""
+                                        }
+                                    </div>
+                                    <div className="tab">
+                                        <a href="#" className={`tab_link ${tab === "folder" ? "active" : "" }` } data-tab="folder" onClick={(e) => { handleClick(e) } }>
+                                            Folder Stats
+                                        </a>
+                                        {tab === "folder" && windowSize.current[0] < 551 ?
+                                            <FolderStats
+                                                folderStats={folderStats}
+                                                setFolderStats={setFolderStats}
+                                                folderStatsDate={folderStatsDate}
+                                                setFolderStatsDate={setFolderStatsDate}
+                                                folderDropdownValue={folderDropdownValue}
+                                                setFolderDropdownValue={setFolderDropdownValue}
+                                                tab={tab}
+                                            />
+                                            :
+                                            ""
+                                        }
+                                    </div>
+                                    <div className="tab">
+                                        <a href="#" className={`tab_link ${tab === "affiliate" ? "active" : "" }` } data-tab="affiliate" onClick={(e) => { handleClick(e) } }>
+                                            Affiliate Stats
+                                        </a>
+                                        {tab === "affiliate" && windowSize.current[0] < 551 ?
+                                            <AffiliateStats
+                                                affiliateStats={affiliateStats}
+                                                setAffiliateStats={setAffiliateStats}
+                                                totals={affiliateTotals}
+                                                setTotals={setAffiliateTotals}
+                                                statsDate={affiliateStatsDate}
+                                                setStatsDate={setAffiliateStatsDate}
+                                                dropdownValue={affiliateDropdownValue}
+                                                setDropdownValue={setAffiliateDropdownValue}
+                                                filterByValue={filterByValue}
+                                                setFilterByValue={setFilterByValue}
+                                                tab={tab}
+                                            />
+                                            :
+                                            ""
+                                        }
+                                    </div>
                                 </div>
 
-                                {tab === "page" &&
-                                    <PageStats
-                                        pageStats={pageStats}
-                                        setPageStats={setPageStats}
-                                        pageStatsDate={pageStatsDate}
-                                        setPageStatsDate={setPageStatsDate}
-                                        pageDropdownValue={pageDropdownValue}
-                                        setPageDropdownValue={setPageDropdownValue}
-                                        tab={tab}
-                                    />
-                                }
-                                {tab ==="icon" &&
-                                    <LinkStats
-                                        linkStats={linkStats}
-                                        setLinkStats={setLinkStats}
-                                        deletedStats={deletedStats}
-                                        setDeletedStats={setDeletedStats}
-                                        linkStatsDate={linkStatsDate}
-                                        setLinkStatsDate={setLinkStatsDate}
-                                        linkDropdownValue={linkDropdownValue}
-                                        setLinkDropdownValue={setLinkDropdownValue}
-                                        tab={tab}
-                                    />
-                                }
+                                { windowSize.current[0] > 550 &&
+                                    <>
+                                        {tab === "page" &&
+                                            <PageStats
+                                                pageStats={pageStats}
+                                                setPageStats={setPageStats}
+                                                pageStatsDate={pageStatsDate}
+                                                setPageStatsDate={setPageStatsDate}
+                                                pageDropdownValue={pageDropdownValue}
+                                                setPageDropdownValue={setPageDropdownValue}
+                                                tab={tab}
+                                            />
+                                        }
+                                        {tab ==="icon" &&
+                                            <LinkStats
+                                                linkStats={linkStats}
+                                                setLinkStats={setLinkStats}
+                                                deletedStats={deletedStats}
+                                                setDeletedStats={setDeletedStats}
+                                                linkStatsDate={linkStatsDate}
+                                                setLinkStatsDate={setLinkStatsDate}
+                                                linkDropdownValue={linkDropdownValue}
+                                                setLinkDropdownValue={setLinkDropdownValue}
+                                                tab={tab}
+                                            />
+                                        }
 
-                                {tab === "folder" &&
-                                    <FolderStats
-                                        folderStats={folderStats}
-                                        setFolderStats={setFolderStats}
-                                        folderStatsDate={folderStatsDate}
-                                        setFolderStatsDate={setFolderStatsDate}
-                                        folderDropdownValue={folderDropdownValue}
-                                        setFolderDropdownValue={setFolderDropdownValue}
-                                        tab={tab}
-                                    />
-                                }
+                                        {tab === "folder" &&
+                                            <FolderStats
+                                                folderStats={folderStats}
+                                                setFolderStats={setFolderStats}
+                                                folderStatsDate={folderStatsDate}
+                                                setFolderStatsDate={setFolderStatsDate}
+                                                folderDropdownValue={folderDropdownValue}
+                                                setFolderDropdownValue={setFolderDropdownValue}
+                                                tab={tab}
+                                            />
+                                        }
 
-                                {tab === "affiliate" &&
-                                    <AffiliateStats
-                                        affiliateStats={affiliateStats}
-                                        setAffiliateStats={setAffiliateStats}
-                                        totals={affiliateTotals}
-                                        setTotals={setAffiliateTotals}
-                                        statsDate={affiliateStatsDate}
-                                        setStatsDate={setAffiliateStatsDate}
-                                        dropdownValue={affiliateDropdownValue}
-                                        setDropdownValue={setAffiliateDropdownValue}
-                                        filterByValue={filterByValue}
-                                        setFilterByValue={setFilterByValue}
-                                        tab={tab}
-                                    />
+                                        {tab === "affiliate" &&
+                                            <AffiliateStats
+                                                affiliateStats={affiliateStats}
+                                                setAffiliateStats={setAffiliateStats}
+                                                totals={affiliateTotals}
+                                                setTotals={setAffiliateTotals}
+                                                statsDate={affiliateStatsDate}
+                                                setStatsDate={setAffiliateStatsDate}
+                                                dropdownValue={affiliateDropdownValue}
+                                                setDropdownValue={setAffiliateDropdownValue}
+                                                filterByValue={filterByValue}
+                                                setFilterByValue={setFilterByValue}
+                                                tab={tab}
+                                            />
+                                        }
+                                    </>
                                 }
                             </div>
                         </div>

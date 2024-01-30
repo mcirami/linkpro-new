@@ -91,9 +91,7 @@
             }
 
             .section_row {
-                box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-                -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-                -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+                @include boxShadowThin;
                 position: relative;
                 margin-bottom: 20px;
                 border-radius: 8px;
