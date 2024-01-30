@@ -55,6 +55,7 @@ select {
     background-color: transparent;
     position: relative;
     z-index: 2;
+    color: $grayBlue;
 
     &:focus {
         border: 1px solid;

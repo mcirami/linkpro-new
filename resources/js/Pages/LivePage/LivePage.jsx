@@ -253,7 +253,7 @@ function LivePage({links, page, subscribed}) {
                 <div className="image_wrap">
                     <a href={ route('register') }>
                         <p>Powered By</p>
-                        <img src={ Vapor.asset('/images/logo.png') } alt="Link Pro" />
+                        <img src={ Vapor.asset('images/logo.png') } alt="Link Pro" />
                     </a>
                 </div>
             </div>

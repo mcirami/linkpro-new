@@ -2,9 +2,6 @@
 
     .breadcrumb_links {
         width: 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
         color: $blue;
         display: -webkit-box;
         display: -ms-flexbox;
@@ -40,7 +37,10 @@
             align-items: center;
             -webkit-align-items: center;
             min-height: unset;
-            padding: 20px;
+
+            li {
+                margin-bottom: 0;
+            }
 
             a {
                 display: -webkit-box;

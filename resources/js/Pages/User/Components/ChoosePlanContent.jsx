@@ -72,7 +72,7 @@ const ChoosePlanContent = ({
                     :
                     <>
                         <div className="icon_wrap">
-                            <img src={ Vapor.asset('/images/icon-change-plans.png') } alt="" />
+                            <img src={ Vapor.asset('images/icon-change-plans.png') } alt="" />
                         </div>
                         <h2>Change Your Plan</h2>
                         <div className="my_row three_columns two_columns popup mt-2">

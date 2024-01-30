@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import PageStats from './Components/PageStats';
 import LinkStats from './Components/LinkStats';
@@ -41,12 +41,30 @@ function Stats() {
     const [affiliateDropdownValue, setAffiliateDropdownValue] = useState(1);
     const [filterByValue, setFilterByValue] = useState("offer");
 
-    const windowSize = useRef([window.innerWidth, window.innerHeight]);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     const handleClick = e => {
         e.preventDefault();
         setTab(e.target.dataset.tab);
     }
+
+    useEffect(() => {
+        setWindowWidth(window.innerWidth);
+    }, []);
+
+    useEffect(() => {
+
+        function windowSize() {
+            setWindowWidth(window.innerWidth);
+        }
+
+        window.addEventListener('resize', windowSize);
+
+        return () => {
+            window.removeEventListener('resize', windowSize);
+        }
+
+    }, [windowWidth]);
 
     return (
 
@@ -62,11 +80,11 @@ function Stats() {
                         <div id="stats" className="my_row">
                             <div className="tabs_wrap">
                                 <div className="my_row tab_nav">
-                                    <div className="tab">
-                                        <a href="#" className={`tab_link ${tab === "page" ? "active" : "" }` } data-tab="page" onClick={(e) => { handleClick(e) } }>
+                                    <div className={`tab ${tab === "page" ? "active" : "" }` }>
+                                        <a href="#" className="tab_link" data-tab="page" onClick={(e) => { handleClick(e) } }>
                                             Page Stats
                                         </a>
-                                        { windowSize.current[0] < 551 && tab === "page" ?
+                                        { windowWidth < 551 && tab === "page" ?
                                             <PageStats
                                                 pageStats={pageStats}
                                                 setPageStats={setPageStats}
@@ -80,11 +98,11 @@ function Stats() {
                                             ""
                                         }
                                     </div>
-                                    <div className="tab">
-                                        <a href="#" className={`tab_link ${tab === "icon" ? "active" : "" }` } data-tab="icon" onClick={(e) => { handleClick(e) } }>
+                                    <div className={`tab ${tab === "icon" ? "active" : "" }` }>
+                                        <a href="#" className="tab_link" data-tab="icon" onClick={(e) => { handleClick(e) } }>
                                             Icon Stats
                                         </a>
-                                        {tab ==="icon" && windowSize.current[0] < 551 ?
+                                        {tab ==="icon" && windowWidth < 551 ?
                                             <LinkStats
                                                 linkStats={linkStats}
                                                 setLinkStats={setLinkStats}
@@ -100,11 +118,11 @@ function Stats() {
                                             ""
                                         }
                                     </div>
-                                    <div className="tab">
-                                        <a href="#" className={`tab_link ${tab === "folder" ? "active" : "" }` } data-tab="folder" onClick={(e) => { handleClick(e) } }>
+                                    <div className={`tab ${tab === "folder" ? "active" : "" }` }>
+                                        <a href="#" className="tab_link" data-tab="folder" onClick={(e) => { handleClick(e) } }>
                                             Folder Stats
                                         </a>
-                                        {tab === "folder" && windowSize.current[0] < 551 ?
+                                        {tab === "folder" && windowWidth < 551 ?
                                             <FolderStats
                                                 folderStats={folderStats}
                                                 setFolderStats={setFolderStats}
@@ -118,11 +136,11 @@ function Stats() {
                                             ""
                                         }
                                     </div>
-                                    <div className="tab">
-                                        <a href="#" className={`tab_link ${tab === "affiliate" ? "active" : "" }` } data-tab="affiliate" onClick={(e) => { handleClick(e) } }>
+                                    <div className={`tab ${tab === "affiliate" ? "active" : "" }` } >
+                                        <a href="#" className="tab_link" data-tab="affiliate" onClick={(e) => { handleClick(e) } }>
                                             Affiliate Stats
                                         </a>
-                                        {tab === "affiliate" && windowSize.current[0] < 551 ?
+                                        {tab === "affiliate" && windowWidth < 551 ?
                                             <AffiliateStats
                                                 affiliateStats={affiliateStats}
                                                 setAffiliateStats={setAffiliateStats}
@@ -142,7 +160,7 @@ function Stats() {
                                     </div>
                                 </div>
 
-                                { windowSize.current[0] > 550 &&
+                                { windowWidth > 550 &&
                                     <>
                                         {tab === "page" &&
                                             <PageStats
