@@ -55,12 +55,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/register/create-page', [PageController::class, 'showCreatePage'])->name('create.page');
     Route::get('/email-test', [MailController::class, 'sendEmail']);
 
-    Route::post('/subscribe/create', [SubscriptionController::class, 'store'])->name('subscribe.post');
-    Route::put('/subscribe/cancel', [SubscriptionController::class, 'cancel'])->name('subscribe.cancel');
-    Route::post('/subscribe/resume', [SubscriptionController::class, 'resume'])->name('subscribe.resume');
-    Route::post('/subscribe/check-code', [SubscriptionController::class, 'checkCode'])->name('check.code');
-    Route::post('/subscribe/change-plan', [SubscriptionController::class, 'changePlan'])->name('subscribe.change.plan');
-
     Route::put('/update-account', [UserController::class, 'updateAccountInfo'])->name('user.update.info');
     Route::get('/get-user-pages', [UserController::class, 'getAllUserPages'])->name('user.get.pages');
     Route::post('/update-card', [UserController::class, 'updateCard'])->name('user.update.card');
@@ -169,7 +163,17 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], funct
     });
 
     Route::get('/plans', [SubscriptionController::class, 'showPlans'])->name('plans.get');
-    Route::get('/subscribe', [SubscriptionController::class, 'purchase'])->name('subscribe.get');
+
+
+    Route::post('/subscribe/create', [SubscriptionController::class, 'store'])->name('subscribe.post');
+    Route::put('/subscribe/cancel', [SubscriptionController::class, 'cancel'])->name('subscribe.cancel');
+    Route::post('/subscribe/resume', [SubscriptionController::class, 'resume'])->name('subscribe.resume');
+    Route::post('/subscribe/check-code', [SubscriptionController::class, 'checkCode'])->name('check.code');
+    Route::post('/subscribe/change-plan', [SubscriptionController::class, 'changePlan'])->name('subscribe.change.plan');
+
+    Route::controller(SubscriptionController::class)->group(function() {
+        Route::get('/subscribe', [SubscriptionController::class, 'showPurchasePage'])->name('subscribe.get');
+    });
 
     Route::post('/stats/link', [StatsController::class, 'getLinkStats']);
     Route::post('/stats/page', [StatsController::class, 'getPageStats']);

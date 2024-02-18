@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Services\SubscriptionService;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\SubscriptionTrait;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Stripe\Exception\ApiErrorException;
+use Stripe\StripeClient;
 
 class SubscriptionController extends Controller
 {
@@ -16,11 +22,12 @@ class SubscriptionController extends Controller
     /**
      * @param SubscriptionService $subscriptionService
      *
-     * @return \Inertia\Response
+     * @return Application|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
+     * @throws ApiErrorException
      */
-    public function purchase(SubscriptionService $subscriptionService): \Inertia\Response {
+    public function showPurchasePage(SubscriptionService $subscriptionService): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application {
 
-        $data = $subscriptionService->showPurchasePage();
+        /*$data = $subscriptionService->showPurchasePage();
 
         return Inertia::render('Subscription/Purchase')->with([
             'plan' => $data['plan'],
@@ -28,7 +35,25 @@ class SubscriptionController extends Controller
             'price' => $data["price"],
             'existing' => $data["existing"],
             'bypass' => $data['bypass']
+        ]);*/
+
+        $stripe = new StripeClient(env('STRIPE_SECRET'));
+        $plan = $_GET["plan"] ?? null;
+        $lineItems = $this->getPlanDetails($plan);
+
+        $checkout_session = $stripe->checkout->sessions->create([
+            'success_url'   => 'https://up-hare-rightly.ngrok-free.app/subscription-success',
+            'cancel_url'    => 'https://up-hare-rightly.ngrok-free.app/cancel',
+            'line_items'    => [
+                [
+                    'price' => $lineItems['ApiId'],
+                    'quantity'  => 1
+                ]
+            ],
+            'mode'      => 'subscription',
         ]);
+
+        return redirect()->away("https://google.com");
     }
 
     /**

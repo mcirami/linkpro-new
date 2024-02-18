@@ -51,15 +51,22 @@ trait SubscriptionTrait {
 
     public function getPlanDetails($plan) {
 
+        $data = [];
         if ($plan == 'pro') {
-            $price = '4.99';
+            $data = [
+                'price'  => '4.99',
+                'ApiId'   => 'price_1JS1p5GIBktjIJUPjG5ksGFb'
+            ];
         }
 
         if ($plan == 'premier') {
-            $price = '19.99';
+            $data = [
+                'price'  => '19.99',
+                'ApiId'   => 'price_1JS1qkGIBktjIJUPVSjN20LH',
+            ];
         }
 
-        return $price;
+        return $data;
     }
 
     public function saveErrors($result) {

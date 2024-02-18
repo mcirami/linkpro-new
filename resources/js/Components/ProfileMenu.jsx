@@ -7,13 +7,13 @@ const ProfileMenu = () => {
     const { auth } = usePage().props;
 
     const userRoles = auth.user.roles;
-
+    
     return (
         <div className="nav_links_wrap">
             {/*Right Side Of Navbar*/}
             <ul className="ml-auto">
                 {!isEmpty(userRoles) ?
-                     ( (userRoles.includes('admin') || userRoles.includes('lp.user')) && isEmpty(auth.user.subscription) ) ||
+                     ( (userRoles.includes('admin') || userRoles.includes('lp.user')) && !auth.user.subscription.name ) ||
                     (auth.user.subscription.name && auth.user.subscription.name !== "premier" && !auth.user.subscription.ends_at) ||
                     (auth.user.subscription.ends_at && auth.user.subscription.ends_at < Date(Date.now()))  ?
                     <li className="upgrade_link">
