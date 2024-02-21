@@ -6,13 +6,12 @@ export const checkSubStatus = (userSub) => {
 
     if (userSub) {
 
-        const {braintree_status, ends_at, braintree_id} = {...userSub};
-        if (braintree_id === "bypass") {
+        const {status, ends_at, sub_id} = {...userSub};
+        if (sub_id === "bypass") {
             return true;
         } else {
 
-            if ( (braintree_status === 'active' || braintree_status ===
-                'pending')) {
+            if ( (status === 'active' || status === 'pending')) {
                 return true;
             }
 

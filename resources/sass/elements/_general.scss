@@ -759,3 +759,39 @@ a.delete {
     }
 
 }
+
+.card.status_message {
+    max-width: 700px;
+
+    svg {
+        margin: 0 auto 20px;
+        background: none;
+        width: 5em;
+        height: 5em;
+        padding: 0;
+    }
+
+    .success_icon svg {
+        color: $green;
+    }
+    .cancel_icon svg {
+        color: $red;
+    }
+
+    h3 {
+        font-size: 1.4rem;
+    }
+
+    h4 {
+        font-size: 1.2rem;
+    }
+
+    a {
+        color: $blue;
+
+        &:hover {
+            color: $hoverBlue;
+        }
+    }
+
+}

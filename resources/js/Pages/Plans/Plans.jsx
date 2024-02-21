@@ -8,8 +8,8 @@ function Plans({path}) {
 
     const { auth } = usePage().props;
     const subscriptionName = auth.user.subscription.name;
-    const braintreeStatus = auth.user.subscription.braintree_status;
-    const braintreeID = auth.user.subscription.braintree_id;
+    const status = auth.user.subscription.status;
+    const subId = auth.user.subscription.sub_id;
 
     const [showLoader, setShowLoader] = useState({
         show: false,
@@ -80,9 +80,9 @@ function Plans({path}) {
                                 :
 
                                 <div className={`my_row  ${
-                                    (subscriptionName === "premier") && (braintreeStatus === "active" ||
-                                        braintreeStatus === "pending") ? "two_columns" : "three_columns"}`}>
-                                    { (!subscriptionName || (subscriptionName !== "premier") ) || (braintreeStatus !== "active" && braintreeStatus !== "pending") ?
+                                    (subscriptionName === "premier") && (status === "active" ||
+                                        status === "pending") ? "two_columns" : "three_columns"}`}>
+                                    { (!subscriptionName || (subscriptionName !== "premier") ) || (status !== "active" && status !== "pending") ?
                                         <div className="column pro">
                                             <h2 className="text-uppercase">Pro</h2>
                                             <ul>
@@ -117,11 +117,11 @@ function Plans({path}) {
                                             <div className="button_row">
 
                                                 { (subscriptionName === "pro") &&
-                                                (braintreeStatus === "active" ||
-                                                    braintreeStatus === "pending") ?
+                                                (status === "active" ||
+                                                    status === "pending") ?
                                                     <span className='button disabled'>Current</span>
                                                     :
-                                                    braintreeStatus === "active" ?
+                                                    status === "active" ?
                                                         <button className='button blue open_popup' data-type="downgrade" data-level="pro">
                                                             Downgrade My Plan
                                                         </button>
@@ -163,12 +163,12 @@ function Plans({path}) {
                                         <div className="button_row">
                                             {
                                                 (subscriptionName === "premier") &&
-                                                (braintreeStatus === "active" || braintreeStatus === "pending") ?
+                                                (status === "active" || status === "pending") ?
                                                     <span className='button disabled'>Current</span>
                                                 :
                                                     subscriptionName &&
-                                                    (braintreeStatus === "active" || braintreeStatus === "pending") &&
-                                                    braintreeID !== "bypass" ?
+                                                    (status === "active" || status === "pending") &&
+                                                    subId !== "bypass" ?
                                                     <button className="open_popup button black_gradient"
                                                             onClick={(e) => handleOnClick(e, "upgrade", "premier")}
                                                     >

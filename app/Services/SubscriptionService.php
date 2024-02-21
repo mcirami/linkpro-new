@@ -18,7 +18,7 @@ class SubscriptionService {
 
     use SubscriptionTrait, UserTrait;
 
-    private $user;
+    public $user;
 
     /**
      * @param $user
@@ -35,7 +35,7 @@ class SubscriptionService {
      *
      * @return array
      */
-    public function showPurchasePage() {
+    /*public function showPurchasePage() {
 
         $activeSubs = $this->getUserSubscriptions($this->user);
         $bypass = null;
@@ -74,7 +74,7 @@ class SubscriptionService {
         ];
 
         return $data;
-    }
+    }*/
 
     /**
      * create new user Braintree customer and subscription
@@ -82,17 +82,38 @@ class SubscriptionService {
      *
      * @param $request
      *
-     * @return array
      */
-    public function newSubscription($request) {
+    public function newSubscription($data) {
 
         $code     = null;
-        $userCode = $request->discountCode;
-        $planID   = $request->planId;
+        //$userCode = $request->discountCode;
 
+        $this->user->subscriptions()->create( [
+            'name'      => $data['planId'],
+            'sub_id'    => $data['subId'],
+            'status'    => $data['status'] == "complete" ? "active" : $data['status']
+        ] );
+
+        $this->user->update([
+            'billing_id'    => $data['customerId'],
+            'pm_last_four'  => $data['last4'],
+            'pm_type'       => $data['paymentType']
+        ]);
+
+        /*if ($this->user->email_subscription) {
+
+            $userData = ( [
+                'plan'    => ucfirst($data['planId']),
+                'userID'  => $this->user->id,
+            ] );
+
+            $this->user->notify( new NotifyAboutUpgrade( $userData ) );
+        }*/
+
+/*
         if ( $userCode ) {
 
-            $code = $this->checkPromoCode($planID, $userCode);
+            $code = $this->checkPromoCode($planId, $userCode);
 
             if (!$code) {
 
@@ -108,9 +129,9 @@ class SubscriptionService {
                     "bypass" => true,
                 ];
             }
-        }
+        }*/
 
-        $gateway = $this->createGateway();
+        /*$gateway = $this->createGateway();
 
         $nonce = $request->payment_method_nonce;
 
@@ -197,7 +218,7 @@ class SubscriptionService {
             ];
         }
 
-        return $data;
+        return $data;*/
 
     }
 

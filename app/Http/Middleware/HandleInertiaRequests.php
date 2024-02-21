@@ -52,10 +52,10 @@ class HandleInertiaRequests extends Middleware
                     'permissions'   => $user ? $user->getAllPermissions()->pluck('name') : null,
                     'roles'         => $user ? $user->getRoleNames() : null,
                     'subscription'  => [
-                        'name'              => $subscription ? $subscription->name : null,
-                        'ends_at'           => $subscription ? $subscription->ends_at : null,
-                        'braintree_status'  => $subscription ? $subscription->braintree_status : null,
-                        'braintree_id'      => $subscription ? $subscription->braintree_id : null,
+                        'name'      => $subscription ? $subscription->name : null,
+                        'ends_at'   => $subscription ? $subscription->ends_at : null,
+                        'status'    => $subscription ? $subscription->status : null,
+                        'sub_id'    => $subscription ? $subscription->sub_id : null,
                     ],
                     'courseData'    => $course,
                     'defaultPage'   => $defaultPage

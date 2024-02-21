@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\SubscriptionTrait;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Inertia\Response;
 use Stripe\Exception\ApiErrorException;
 use Stripe\StripeClient;
 
@@ -22,10 +23,10 @@ class SubscriptionController extends Controller
     /**
      * @param SubscriptionService $subscriptionService
      *
-     * @return Application|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
+     * @return \Symfony\Component\HttpFoundation\Response
      * @throws ApiErrorException
      */
-    public function showPurchasePage(SubscriptionService $subscriptionService): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application {
+    public function showPurchasePage(SubscriptionService $subscriptionService): \Symfony\Component\HttpFoundation\Response {
 
         /*$data = $subscriptionService->showPurchasePage();
 
@@ -40,46 +41,76 @@ class SubscriptionController extends Controller
         $stripe = new StripeClient(env('STRIPE_SECRET'));
         $plan = $_GET["plan"] ?? null;
         $lineItems = $this->getPlanDetails($plan);
+        $user = Auth::user();
+        $domain = request()->schemeAndHttpHost();
 
         $checkout_session = $stripe->checkout->sessions->create([
-            'success_url'   => 'https://up-hare-rightly.ngrok-free.app/subscription-success',
-            'cancel_url'    => 'https://up-hare-rightly.ngrok-free.app/cancel',
+            'success_url'   => $domain . '/subscribe/success?session_id={CHECKOUT_SESSION_ID}&plan='. $plan,
+            'cancel_url'    => $domain . '/subscribe/cancel-checkout',
             'line_items'    => [
                 [
-                    'price' => $lineItems['ApiId'],
+                    'price'     => $lineItems['ApiId'],
                     'quantity'  => 1
                 ]
             ],
             'mode'      => 'subscription',
+            'customer_email' => $user->email,
         ]);
 
-        return redirect()->away("https://google.com");
+        return Inertia::location($checkout_session->url);
     }
 
     /**
      * @param Request $request
      * @param SubscriptionService $subscriptionService
      *
-     * @return mixed
+     * @return Response
      */
-    public function store(Request $request, SubscriptionService $subscriptionService): mixed {
+    public function subscribeSuccess(Request $request, SubscriptionService $subscriptionService): \Inertia\Response {
 
+        $stripe = new StripeClient(env('STRIPE_SECRET'));
+        $customer = "";
+        try {
+            $plan           = $_GET["plan"] ?? null;
+            $sessionId      = $stripe->checkout->sessions->retrieve($_GET['session_id']);
+            $customer       = $stripe->customers->retrieve($sessionId->customer);
+            $paymentMethods = $stripe->customers->allPaymentMethods($customer->id, ['limit' => 1]);
 
-        $data = $subscriptionService->newSubscription($request);
+            $paymentType    = $paymentMethods->data[0]->type;
+            $last4          = null;
+            if($paymentMethods->data[0]->type == "card") {
+                $last4 = $paymentMethods->data[0]->card->last4;
+            }
 
-        $user = Auth::user();
-        //$page = $user->pages()->where('user_id', $user["id"])->where('default', true)->first();
+            $data = [
+                'planId'        => $plan,
+                'subId'         => $sessionId->subscription,
+                'status'        => $sessionId->status,
+                'customerId'    => $customer->id,
+                'paymentType'   => $paymentType,
+                'last4'         => $last4
+            ];
 
+            $subscriptionService->newSubscription($data);
+
+            http_response_code(200);
+
+        } catch ( ApiErrorException $e ) {
+            http_response_code(500);
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+
+        return Inertia::render('Subscription/Success')->with([ 'name' => $customer->name ]);
+
+        /*
         $newData = null;
         if(array_key_exists("bypass", $data) && $data["bypass"]) {
             $newData = $subscriptionService->createManualSubscription($request->discountCode);
-        }
+        }*/
+    }
 
-        $success = $newData ? $newData['success'] : $data['success'];
-        $message = $newData ? $newData['message'] : $data['message'];
-        //$url = '/dashboard/pages/' . $page->id;
-
-        return response()->json(['success' => $success, 'message' => $message, 'url' => "/dashboard"]);
+    public function cancelCheckout(): Response {
+        return Inertia::render('Subscription/CancelCheckout');
     }
 
     /**

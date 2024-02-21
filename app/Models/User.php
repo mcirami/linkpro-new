@@ -20,23 +20,15 @@ class User extends \TCG\Voyager\Models\User
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are not mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
-    protected $fillable = [
-        'username',
-        'email',
-        'password',
-        'pm_last_four',
-        'pm_type',
-        'braintree_id',
-        'email_subscription',
-        'mailchimp_server',
-        'mailchimp_token',
-        'mailchimp_lists',
-        'role_id',
-        'avatar'
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+        'email_verified_at'
     ];
 
     /**

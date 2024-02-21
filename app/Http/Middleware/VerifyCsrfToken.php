@@ -12,6 +12,9 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        'stripe.com/*',
+        'stripe/*',
+        'checkout.stripe.com/*',
+        'https://checkout.stripe.com/*'
     ];
 }

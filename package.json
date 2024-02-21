@@ -50,7 +50,7 @@
         "bootstrap": "^5.1.0",
         "eslint-plugin-react-hooks": "^4.6.0",
         "jquery": "^3.6",
-        "laravel-vapor": "^0.6.0",
+        "laravel-vapor": "^0.7.0",
         "laravel-vite-plugin": "^0.8.0",
         "lodash": "^4.17.19",
         "postcss": "^8.4.18",

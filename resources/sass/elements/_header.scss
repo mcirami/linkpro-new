@@ -245,6 +245,9 @@
             margin-top: 38px;
 
             li {
+                border-radius: 6px;
+                -webkit-border-radius: 6px;
+                -moz-border-radius: 6px;
 
                 a {
                     color: $blue;

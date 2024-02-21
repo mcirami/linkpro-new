@@ -10,18 +10,14 @@ class Subscription extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are not mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'user_id',
-        'name',
-        'braintree_id',
-        'braintree_status',
-        'trial_ends_at',
-        'ends_at',
-        'downgraded',
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at'
     ];
 
     public function user() {

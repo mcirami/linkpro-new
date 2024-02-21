@@ -33,7 +33,7 @@ Take full advantage of your new features!
 @else
 You’ve taken a serious step to get the most out of LinkPro!
 <br>
-With a Premier account you will have:
+With a Premier account you will now have:
 <ul class="premier">
 <li>
 <div class="image_wrap">
@@ -47,15 +47,8 @@ Up to 5 Unique Links
 </div>
 Unlimited and customizable icon images and text on each link
 </li>
-<li>
-<div class="image_wrap">
-<img src="{{ asset('images/check-mark-black.png') }}" alt="">
-</div>
-Password Protected option for each link!
-</li>
 </ul>
 <br>
-Use the password protected link feature to run promotion, give special users access to coupons locked behind pass codes, and so much more! The sky is the limit! Use your imagination to get the most out of this super cool feature!
 @endif
 @component('mail::button', ['url' => config('app.url') . "/login" ])
     Login Now

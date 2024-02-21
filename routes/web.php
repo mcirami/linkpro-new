@@ -163,16 +163,15 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], funct
     });
 
     Route::get('/plans', [SubscriptionController::class, 'showPlans'])->name('plans.get');
-
-
-    Route::post('/subscribe/create', [SubscriptionController::class, 'store'])->name('subscribe.post');
-    Route::put('/subscribe/cancel', [SubscriptionController::class, 'cancel'])->name('subscribe.cancel');
-    Route::post('/subscribe/resume', [SubscriptionController::class, 'resume'])->name('subscribe.resume');
-    Route::post('/subscribe/check-code', [SubscriptionController::class, 'checkCode'])->name('check.code');
-    Route::post('/subscribe/change-plan', [SubscriptionController::class, 'changePlan'])->name('subscribe.change.plan');
-
-    Route::controller(SubscriptionController::class)->group(function() {
-        Route::get('/subscribe', [SubscriptionController::class, 'showPurchasePage'])->name('subscribe.get');
+    //Route::post('/subscribe/create', [SubscriptionController::class, 'store'])->name('subscribe.post');
+    Route::group(['prefix' => 'subscribe'], function() {
+        Route::put( '/cancel', [ SubscriptionController::class, 'cancel' ] )->name( 'subscribe.cancel' );
+        Route::post( '/resume', [ SubscriptionController::class, 'resume' ] )->name( 'subscribe.resume' );
+        Route::post( '/check-code', [ SubscriptionController::class, 'checkCode' ] )->name( 'check.code' );
+        Route::post( '/change-plan', [ SubscriptionController::class, 'changePlan' ] )->name( 'subscribe.change.plan' );
+        Route::get('/', [SubscriptionController::class, 'showPurchasePage'])->name('subscribe.get');
+        Route::get( '/success', [ SubscriptionController::class, 'subscribeSuccess' ] )->name( 'subscribe.success' );
+        Route::get( '/cancel-checkout', [ SubscriptionController::class, 'cancelCheckout' ] )->name( 'cancel.checkout' );
     });
 
     Route::post('/stats/link', [StatsController::class, 'getLinkStats']);
