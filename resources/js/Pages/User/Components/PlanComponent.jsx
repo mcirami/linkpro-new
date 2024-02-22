@@ -42,7 +42,7 @@ const PlanComponent = ({
                 setSubscription((prev) => ({
                     ...prev,
                     ends_date: null,
-                    braintree_status: "active"
+                    status: "active"
                 }));
             }
 
@@ -58,17 +58,17 @@ const PlanComponent = ({
         <>
             <h2 className="text-uppercase">Plan Type</h2>
             <h4>Your Current Plan is</h4>
-            { (subscription && subscription.braintree_status === "active") || (subscription && subscription.braintree_status === "pending") ?
+            { (subscription && subscription.status === "active") || (subscription && subscription.status === "pending") ?
 
                 <>
                     <div className="plan_name">
                         <p className="text-capitalize">{subscription.name}</p>
                         <img src={ Vapor.asset('images/plan-type-bg.png')} alt="" />
                     </div>
-                    {userInfo.braintree_id !== "bypass" &&
+                    {userInfo.sub_id !== "bypass" &&
                         <a href="#"
                            className="cancel_link"
-                           data-plan={subscription.braintree_id}
+                           data-plan={subscription.sub_id}
                            onClick={(e) => setShowSection(["cancel"])}
                         >Cancel Subscription</a>
                     }
@@ -94,8 +94,8 @@ const PlanComponent = ({
                         <img src={ Vapor.asset('images/plan-type-bg.png') } alt="" />
                     </div>
             }
-            { (subscription && subscription.braintree_status === "active") || (subscription && subscription.braintree_status === "pending") ?
-                userInfo.braintree_id !== "bypass" &&
+            { (subscription && subscription.status === "active") || (subscription && subscription.status === "pending") ?
+                userInfo.sub_id !== "bypass" &&
                 <a href="#" className='button blue' onClick={(e) => {
                     e.preventDefault();
                     setShowSection((prev) => [

@@ -62,7 +62,7 @@ trait SubscriptionTrait {
         if ($plan == 'premier') {
             $data = [
                 'price'  => '19.99',
-                'ApiId'   => 'price_1JS1qkGIBktjIJUPVSjN20LH',
+                'ApiId'   => 'price_1OmhVwGIBktjIJUP744WAsfh',
             ];
         }
 

@@ -4,7 +4,7 @@ import {router} from '@inertiajs/react';
 
 const ConfirmChange = ({confirmChange, setConfirmChange, setError, setShowLoader}) => {
 
-    const {type, level} = confirmChange;
+    const {type, plan, subId} = confirmChange;
 
 
     const handleSubmit = useCallback((e) => {
@@ -17,7 +17,8 @@ const ConfirmChange = ({confirmChange, setConfirmChange, setError, setShowLoader
         })
 
         const packets = {
-            level: level
+            plan: plan,
+            subId: subId
         }
 
         changePlan(packets).then((response) => {
@@ -31,7 +32,8 @@ const ConfirmChange = ({confirmChange, setConfirmChange, setError, setShowLoader
 
                 setConfirmChange({
                     show: false,
-                    level: ""
+                    plan: "",
+                    subId: ""
                 })
             }
 

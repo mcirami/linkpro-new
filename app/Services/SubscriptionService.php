@@ -100,7 +100,7 @@ class SubscriptionService {
             'pm_type'       => $data['paymentType']
         ]);
 
-        /*if ($this->user->email_subscription) {
+        if ($this->user->email_subscription) {
 
             $userData = ( [
                 'plan'    => ucfirst($data['planId']),
@@ -108,7 +108,7 @@ class SubscriptionService {
             ] );
 
             $this->user->notify( new NotifyAboutUpgrade( $userData ) );
-        }*/
+        }
 
 /*
         if ( $userCode ) {
@@ -230,11 +230,15 @@ class SubscriptionService {
      *
      * @return array
      */
-    public function updateSubscription($request) {
+    public function updateSubscription($plan, $defaultPage = null) {
 
         $activeSubs = $this->getUserSubscriptions($this->user);
+        $data = [
+            "success" => false,
+            "message" => ""
+        ];
 
-        if ($activeSubs->braintree_id == "bypass") {
+/*        if ($activeSubs->braintree_id == "bypass") {
 
             $activeSubs->update( [ 'name' => "premier" ] );
 
@@ -254,36 +258,34 @@ class SubscriptionService {
                 'planId' => $planId
             ] );
 
-            if ( $result->success ) {
-                $activeSubs->update( [ 'name' => $planId ] );
+            if ( $result->success ) {*/
+                $activeSubs->update( [ 'name' => $plan ] );
 
                 $userPages = $this->getUserPages( $this->user );
 
                 if ( count( $userPages ) > 1) {
                     foreach ( $userPages as $userPage ) {
 
-                        if($planId == "premier") {
+                        if($plan == "premier") {
                             if ( $userPage->disabled ) {
                                 $userPage->disabled = false;
                                 $userPage->save();
                             }
                         }
 
-                        if ($planId == "pro") {
-                            if ( $userPage->is_protected ) {
+                        if ($plan == "pro" && $defaultPage) {
+                            /*if ( $userPage->is_protected ) {
                                 $userPage->is_protected = 0;
                                 $userPage->password     = null;
-                            }
+                            }*/
 
-                            if ( $request->defaultPage ) {
-                                if ( $request->defaultPage == $userPage->id ) {
-                                    $userPage->default  = true;
-                                    $userPage->disabled = false;
-                                    $this->user->update( [ 'username' => $userPage->name ] );
-                                } else {
-                                    $userPage->default  = false;
-                                    $userPage->disabled = true;
-                                }
+                            if ( $defaultPage == $userPage->id ) {
+                                $userPage->default  = true;
+                                $userPage->disabled = false;
+                                $this->user->update( [ 'username' => $userPage->name ] );
+                            } else {
+                                $userPage->default  = false;
+                                $userPage->disabled = true;
                             }
 
                             $userPage->save();
@@ -291,11 +293,11 @@ class SubscriptionService {
                     }
                 }
 
-                if($planId == "premier") {
+                if($plan == "premier") {
                     if ( $this->user->email_subscription ) {
 
                         $userData = ( [
-                            'plan'   => ucfirst( $planId ),
+                            'plan'   => ucfirst( $plan ),
                             'userID' => $this->user->id,
                         ] );
 
@@ -308,14 +310,14 @@ class SubscriptionService {
                     ];
                 }
 
-                if ($planId == "pro") {
+                if ($plan == "pro") {
                     $data = [
                         "success" => true,
                         "message" => "Your plan has been downgraded to the Pro level"
                     ];
                 }
 
-            } else {
+            /*} else {
                 $this->saveErrors($result);
 
                 $data = [
@@ -323,7 +325,7 @@ class SubscriptionService {
                     "message" => 'An error occurred with the message: ' . $result->message
                 ];
             }
-        }
+        }*/
 
         return $data;
     }

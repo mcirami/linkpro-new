@@ -26,6 +26,7 @@ const User = ({
     const [showSection, setShowSection] = useState([]);
     const [subscription, setSubscription] = useState(subscriptionInfo);
 
+    console.log(userInfo);
     const [showLoader, setShowLoader] = useState({
         show: false,
         icon: "",
@@ -76,10 +77,10 @@ const User = ({
 
                                 :
                                 <div className={`w-full inline-block ${ (permissions.includes("view subscription details") &&
-                                (!subscription || subscription.braintree_id === "bypass" || subscription.braintree_status === "canceled" ) ) || (!permissions.includes("view subscription details") && permissions.includes('view courses')) ? "two_columns" : ""}`}>
+                                (!subscription || subscription.sub_id === "bypass" || subscription.status === "canceled" ) ) || (!permissions.includes("view subscription details") && permissions.includes('view courses')) ? "two_columns" : ""}`}>
                                     <div className="card-body w-full inline-block">
                                         <div className=
-                                                 {`my_row ${permissions.includes("view subscription details") && (subscription && subscription.braintree_id !== "bypass") ? "three_columns " : ""} ${ (!subscription || subscription.braintree_id === "bypass") ? "two_columns" : ""}`}>
+                                                 {`my_row ${permissions.includes("view subscription details") && (subscription && subscription.sub_id !== "bypass") ? "three_columns " : ""} ${ (!subscription || subscription.sub_id === "bypass") ? "two_columns" : ""}`}>
                                             <div className={`column update_info ${!permissions.includes('view subscription details') ? "!w-full" : ""}`}>
                                                 <UserForm
                                                     userInfo={userInfo}
@@ -100,12 +101,13 @@ const User = ({
                                                     />
                                                 </div>
                                             }
-                                            { (subscription && subscription.braintree_id !== "bypass" && subscription.braintree_status !== "canceled") &&
-                                                <div className="column">
+                                            { (subscription && subscription.sub_id !== "bypass" && subscription.status !== "canceled") &&
+                                                <div className="column payment">
                                                     <PaymentComponent
                                                         paymentMethod={payment_method}
                                                         authToken={token}
                                                         setShowSection={setShowSection}
+                                                        userInfo={userInfo}
                                                     />
                                                 </div>
 

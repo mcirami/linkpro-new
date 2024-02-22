@@ -25,17 +25,20 @@ function Plans({path}) {
     const [confirmChange, setConfirmChange] = useState({
         show: false,
         type: "",
-        level: ""
+        plan: "",
+        subId: ""
     });
 
-    const handleOnClick = useCallback((e, type, level) => {
+    const handleOnClick = useCallback((e, type, plan) => {
         e.preventDefault();
 
         setConfirmChange({
             show: true,
             type: type,
-            level: level
+            plan: plan,
+            subId: e.target.dataset.sub
         })
+
     })
 
     return (
@@ -122,7 +125,7 @@ function Plans({path}) {
                                                     <span className='button disabled'>Current</span>
                                                     :
                                                     status === "active" ?
-                                                        <button className='button blue open_popup' data-type="downgrade" data-level="pro">
+                                                        <button className='button blue open_popup' data-type="downgrade" data-plan="pro">
                                                             Downgrade My Plan
                                                         </button>
                                                     :
@@ -170,6 +173,7 @@ function Plans({path}) {
                                                     (status === "active" || status === "pending") &&
                                                     subId !== "bypass" ?
                                                     <button className="open_popup button black_gradient"
+                                                            data-sub={subId}
                                                             onClick={(e) => handleOnClick(e, "upgrade", "premier")}
                                                     >
                                                         Go Premier

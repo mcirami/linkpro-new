@@ -21,22 +21,11 @@ class SubscriptionController extends Controller
     use SubscriptionTrait;
 
     /**
-     * @param SubscriptionService $subscriptionService
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws ApiErrorException
      */
-    public function showPurchasePage(SubscriptionService $subscriptionService): \Symfony\Component\HttpFoundation\Response {
-
-        /*$data = $subscriptionService->showPurchasePage();
-
-        return Inertia::render('Subscription/Purchase')->with([
-            'plan' => $data['plan'],
-            'token' => $data['token'],
-            'price' => $data["price"],
-            'existing' => $data["existing"],
-            'bypass' => $data['bypass']
-        ]);*/
+    public function showPurchasePage(): \Symfony\Component\HttpFoundation\Response {
 
         $stripe = new StripeClient(env('STRIPE_SECRET'));
         $plan = $_GET["plan"] ?? null;
@@ -53,8 +42,8 @@ class SubscriptionController extends Controller
                     'quantity'  => 1
                 ]
             ],
-            'mode'      => 'subscription',
-            'customer_email' => $user->email,
+            'mode'                      => 'subscription',
+            'customer_email'            => $user->email,
         ]);
 
         return Inertia::location($checkout_session->url);
@@ -117,32 +106,50 @@ class SubscriptionController extends Controller
      * @param Request $request
      * @param SubscriptionService $subscriptionService
      *
-     * @return mixed
+     * @return JsonResponse
      */
-    public function changePlan(Request $request, SubscriptionService $subscriptionService): mixed {
+    public function changePlan(Request $request, SubscriptionService $subscriptionService): JsonResponse {
 
-        $path = $request->session()->get('_previous');
+        $stripe = new StripeClient(env('STRIPE_SECRET'));
+        $plan = $request->plan;
+        $price = $this->getPlanDetails($plan);
 
-        $data = $subscriptionService->updateSubscription($request);
+        try {
+            $stripe->subscriptions->update(
+                $request->subId,
+                [ 'price' => $price['ApiId'] ]
+            );
+
+        } catch ( ApiErrorException $e ) {
+            http_response_code(500);
+            //$this->saveErrors($e);
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+
+        $data = $subscriptionService->updateSubscription( $plan );
+
+        $path = $request->session()->get( '_previous' );
+
         $url = null;
 
-        if( ( str_contains($path["url"], '/subscribe') || str_contains($path["url"], '/plans') ) && $data["success"] == true ) {
+        if ( ( str_contains( $path["url"], '/subscribe' ) || str_contains( $path["url"], '/plans' ) ) ) {
             $user = Auth::user();
-            $page = $user->pages()->where('user_id', $user["id"])->where('default', true)->first();
-            $url = '/dashboard/pages/' . $page->id;
+            $page = $user->pages()->where( 'user_id', $user["id"] )->where( 'default', true )->first();
+            $url  = '/dashboard/pages/' . $page->id;
             //return Inertia::location($url)->with(['message' => $data["message"]]);
         }
 
         return response()->json(['success' => $data["success"], 'message' => $data["message"], 'url' => $url]);
+
     }
 
     /**
      * @param Request $request
      * @param SubscriptionService $subscriptionService
      *
-     *
+     * @return Response
      */
-    public function showPlans(Request $request, SubscriptionService $subscriptionService) {
+    public function showPlans(Request $request, SubscriptionService $subscriptionService): Response {
 
         $path = $request->session()->get('_previous');
 

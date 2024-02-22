@@ -81,11 +81,11 @@ export const changePlan = (packets) => {
             const success = response.data.success;
             const url = response.data.url;
 
-            if (success) {
+            /*if (success) {
                 EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
             } else {
                 EventBus.dispatch("error", { message: returnMessage });
-            }
+            }*/
 
             return {
                 success : success,

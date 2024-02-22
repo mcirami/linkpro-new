@@ -10,7 +10,7 @@ const PaymentMethodsComponent = ({
                                      setShowLoader
 }) => {
 
-    const [braintreeInstance, setBraintreeInstance] = useState(null);
+    //const [braintreeInstance, setBraintreeInstance] = useState(null);
     const loadRef = useRef(true);
     const dropInRef = useRef(null);
 
@@ -28,7 +28,7 @@ const PaymentMethodsComponent = ({
                 amount = '19.99'
             }
 
-            braintree.dropin.create({
+            /*braintree.dropin.create({
                 authorization: client_token,
                 selector: '#bt-dropin-update',
                 paypal: {
@@ -68,7 +68,7 @@ const PaymentMethodsComponent = ({
 
                 setBraintreeInstance(instance);
 
-            });
+            });*/
         }
     },[])
 
@@ -82,7 +82,7 @@ const PaymentMethodsComponent = ({
             icon: ""
         })
 
-        braintreeInstance.requestPaymentMethod(function (err, payload) {
+        /*braintreeInstance.requestPaymentMethod(function (err, payload) {
             if (err) {
                 console.log('Request Payment Method Error', err);
                 return;
@@ -110,7 +110,7 @@ const PaymentMethodsComponent = ({
                     icon: ""
                 })
             })
-        });
+        });*/
     }
 
     return (
