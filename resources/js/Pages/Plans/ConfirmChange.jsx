@@ -22,6 +22,7 @@ const ConfirmChange = ({confirmChange, setConfirmChange, setError, setShowLoader
         }
 
         changePlan(packets).then((response) => {
+            console.log("response: ", response);
             if (response.success) {
                 router.get(response.url, {message: response.message})
             } else {
@@ -65,6 +66,9 @@ const ConfirmChange = ({confirmChange, setConfirmChange, setError, setShowLoader
                 <h2>Confirm</h2>
                 <div className="text_wrap">
                     <p className="confirm_text">Are you sure you want to <span id="text_type">{type}</span> your plan?</p>
+                    {type !== "cancel" &&
+                        <p>Your default payment method will automatically be used. </p>
+                    }
                     <form className="button_row" action="" method="post" id="popup_form" onSubmit={(e) => handleSubmit(e)}>
                         <input className="level" name="level" type="hidden" value="" />
                         <input className="plan" name="plan" type="hidden" value="" />

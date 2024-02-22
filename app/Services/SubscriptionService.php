@@ -233,10 +233,6 @@ class SubscriptionService {
     public function updateSubscription($plan, $defaultPage = null) {
 
         $activeSubs = $this->getUserSubscriptions($this->user);
-        $data = [
-            "success" => false,
-            "message" => ""
-        ];
 
 /*        if ($activeSubs->braintree_id == "bypass") {
 

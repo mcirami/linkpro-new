@@ -69,18 +69,17 @@ trait SubscriptionTrait {
         return $data;
     }
 
-    public function saveErrors($result) {
+    public function saveErrors($error) {
         //$errorString = "";
 
-        foreach ($result->errors->deepAll() as $error) {
+       /* foreach ($result->errors->deepAll() as $error) {*/
             //$errorString .= 'Error: ' . $error->code . ": " . $error->message . "\n";
             DB::table('transaction_errors')->insert([
-                'code'          => $error->code,
-                'message'       => $error->message,
-                'attribute'     => $error->attribute,
-                'created_at'    => Carbon::now()
+                'code'          => $error->getCode(),
+                'message'       => $error->getMessage(),
+                'attribute'     => $error->getStripeCode(),
             ]);
-        }
+        /*}*/
     }
 
    /* public function addReferralSubID($user, $subscriptionID, $planID) {

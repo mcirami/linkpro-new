@@ -108,7 +108,8 @@ export const changePlan = (packets) => {
         }
 
         return {
-            success : false
+            success : false,
+            message : error.response
         }
     });
 }

@@ -110,33 +110,41 @@ class SubscriptionController extends Controller
      */
     public function changePlan(Request $request, SubscriptionService $subscriptionService): JsonResponse {
 
+        $user = Auth::user();
         $stripe = new StripeClient(env('STRIPE_SECRET'));
         $plan = $request->plan;
         $price = $this->getPlanDetails($plan);
-
-        try {
-            $stripe->subscriptions->update(
-                $request->subId,
-                [ 'price' => $price['ApiId'] ]
-            );
-
-        } catch ( ApiErrorException $e ) {
-            http_response_code(500);
-            //$this->saveErrors($e);
-            echo json_encode(['error' => $e->getMessage()]);
-        }
-
-        $data = $subscriptionService->updateSubscription( $plan );
-
-        $path = $request->session()->get( '_previous' );
-
         $url = null;
 
-        if ( ( str_contains( $path["url"], '/subscribe' ) || str_contains( $path["url"], '/plans' ) ) ) {
-            $user = Auth::user();
-            $page = $user->pages()->where( 'user_id', $user["id"] )->where( 'default', true )->first();
-            $url  = '/dashboard/pages/' . $page->id;
-            //return Inertia::location($url)->with(['message' => $data["message"]]);
+        try {
+
+            $subscriptions = $stripe->subscriptions->all(['customer' => $user->billing_id]);
+
+            $stripe->subscriptions->update(
+                $request->subId,
+                ['items'    => [[
+                    'id'    => $subscriptions->data[0]->items->data[0]->id,
+                    'price' => $price['ApiId'],
+                ]]],
+            );
+
+            $data = $subscriptionService->updateSubscription( $plan );
+            $path = $request->session()->get( '_previous' );
+            if ( ( str_contains( $path["url"], '/subscribe' ) || str_contains( $path["url"], '/plans' ) ) ) {
+                $user = Auth::user();
+                $page = $user->pages()->where( 'user_id', $user["id"] )->where( 'default', true )->first();
+                $url  = '/dashboard/pages/' . $page->id;
+                //return Inertia::location($url)->with(['message' => $data["message"]]);
+            }
+
+        } catch ( ApiErrorException $e ) {
+            //http_response_code(500);
+            $this->saveErrors($e);
+            $data = [
+                "success"   => false,
+                "message"   => $e->getMessage()
+            ];
+            //echo json_encode(['error' => $e->getMessage()]);
         }
 
         return response()->json(['success' => $data["success"], 'message' => $data["message"], 'url' => $url]);
