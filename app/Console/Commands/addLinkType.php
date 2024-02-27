@@ -42,8 +42,16 @@ class addLinkType extends Command
         $links = Link::get();
 
         foreach ($links as $link) {
-            if ($link->mailchimp_list_id != null) {
+            if ($link->mailchimp_list_id) {
                 $link->update(["type" => "mailchimp"]);
+            } else if ($link->course_id) {
+                $link->update(["type" => "offer"]);
+            } else if ($link->shopify_id) {
+                $link->update(["type" => "shopify"]);
+            } else if ($link->email) {
+                $link->update(["type" => "email"]);
+            } else if ($link->description) {
+                $link->update(["type" => "advanced"]);
             } else {
                 $link->update(["type" => "standard"]);
             }
