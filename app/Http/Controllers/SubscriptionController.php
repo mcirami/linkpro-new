@@ -3,19 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Services\SubscriptionService;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\SubscriptionTrait;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 use Stripe\Exception\ApiErrorException;
-use Stripe\StripeClient;
-
 class SubscriptionController extends Controller
 {
     use SubscriptionTrait;
@@ -27,7 +21,7 @@ class SubscriptionController extends Controller
      */
     public function showPurchasePage(): \Symfony\Component\HttpFoundation\Response {
 
-        $stripe = new StripeClient(env('STRIPE_SECRET'));
+        $stripe = $this->createGateway();
         $plan = $_GET["plan"] ?? null;
         $lineItems = $this->getPlanDetails($plan);
         $user = Auth::user();
@@ -57,7 +51,7 @@ class SubscriptionController extends Controller
      */
     public function subscribeSuccess(Request $request, SubscriptionService $subscriptionService): \Inertia\Response {
 
-        $stripe = new StripeClient(env('STRIPE_SECRET'));
+        $stripe = $this->createGateway();
         $customer = "";
         try {
             $plan           = $_GET["plan"] ?? null;
@@ -111,8 +105,9 @@ class SubscriptionController extends Controller
     public function changePlan(Request $request, SubscriptionService $subscriptionService): JsonResponse {
 
         $user = Auth::user();
-        $stripe = new StripeClient(env('STRIPE_SECRET'));
+        $stripe = $this->createGateway();
         $plan = $request->plan;
+        $defaultPage = $request->defaultPage ?? null;
         $price = $this->getPlanDetails($plan);
         $url = null;
 
@@ -128,7 +123,7 @@ class SubscriptionController extends Controller
                 ]]],
             );
 
-            $data = $subscriptionService->updateSubscription( $plan );
+            $data = $subscriptionService->updateSubscription( $plan, $defaultPage );
             $path = $request->session()->get( '_previous' );
             if ( ( str_contains( $path["url"], '/subscribe' ) || str_contains( $path["url"], '/plans' ) ) ) {
                 $user = Auth::user();
@@ -191,7 +186,7 @@ class SubscriptionController extends Controller
 
         $data = $subscriptionService->resumeSubscription($request);
 
-        if (array_key_exists('bypass', $data) && $data["bypass"]) {
+        /*if (array_key_exists('bypass', $data) && $data["bypass"]) {
 
             $newData = $subscriptionService->updateSubscriptionManually($request->discountCode);
 
@@ -202,7 +197,7 @@ class SubscriptionController extends Controller
                 $url = '/dashboard/pages/' . $page->id;
                 return Inertia::location($url)->with(['message' => $newData["message"]]);
             }
-        }
+        }*/
 
         return response()->json([
             'success' => $data["success"],

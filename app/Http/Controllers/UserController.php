@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -47,8 +48,6 @@ class UserController extends Controller
             'user'                  => $data['user'],
             'subscriptionInfo'      => $data["subscription"],
             'payment_method'        => $data["payment_method"],
-            'token'                 => $data['token'],
-            'payment_method_token'  => $data['payment_method_token']
         ]);
     }
 

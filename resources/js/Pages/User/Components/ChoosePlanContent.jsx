@@ -40,7 +40,8 @@ const ChoosePlanContent = ({
         })
 
         const packets = {
-            level: subscriptionLevel
+            plan: subscriptionLevel,
+            subId: subscription.sub_id
         }
 
         changePlan(packets).then((response) => {
@@ -51,9 +52,16 @@ const ChoosePlanContent = ({
                     name: subscriptionLevel
                 }))
             }
-        })
-    }
 
+            setShowLoader({
+                show: false,
+                position: "",
+                icon: ""
+            })
+        })
+
+
+    }
 
     return (
         <div id="popup_choose_level" className="inline-block relative w-full">

@@ -22,7 +22,7 @@ const ConfirmPlanChange = ({
         if(showSection.includes("cancel")) {
 
             const packets = {
-                plan: subscription.braintree_id
+                subId: subscription.sub_id
             }
 
             cancelSubscription(packets).then((response) => {
@@ -30,7 +30,7 @@ const ConfirmPlanChange = ({
                     setShowSection([])
                     setSubscription(prev => ({
                         ...prev,
-                        braintree_status: "canceled",
+                        status: "canceled",
                         ends_at: response.ends_at
                     }))
                 }
@@ -47,7 +47,8 @@ const ConfirmPlanChange = ({
 
             const packets = {
                 defaultPage: defaultPage,
-                level: "pro"
+                plan: "pro",
+                subId: subscription.sub_id,
             }
 
             changePlan(packets).then((response) => {

@@ -6,22 +6,23 @@ const PlanComponent = ({
                            subscription,
                            setSubscription,
                            userInfo,
-                           payment_method_token,
                            setShowSection,
                            setShowLoader
 }) => {
 
     const [currentDateTime, setCurrentDateTime] = useState("");
+    const [subEnd, setSubEnd]   = useState("");
 
     useEffect(() => {
         const today = new Date();
-        const date = today.getFullYear() + '-' +
-            (today.getMonth() + 1) + '-' + today.getDate() + " " +
-            ("0" + today.getHours()).slice(-2) + ":" +
-            ("0" + today.getMinutes()).slice(-2) + ":" +
-            ("0" + today.getSeconds()).slice(-2);
-        setCurrentDateTime(date);
+        setCurrentDateTime(today.setHours(0,0,0));
     }, []);
+
+    useEffect(() => {
+        const date = new Date(subscription.ends_at);
+        setSubEnd(date.setHours(23,59,59))
+
+    }, [])
 
     const handleResumeClick = (e) => {
         e.preventDefault();
@@ -33,15 +34,15 @@ const PlanComponent = ({
         })
 
         const packets = {
-            payment_method_token: payment_method_token,
-            planId: subscription.name
+            subId: subscription.sub_id,
+            plan: subscription.name
         }
 
         resumeSubscription(packets).then((response) => {
             if(response.success) {
                 setSubscription((prev) => ({
                     ...prev,
-                    ends_date: null,
+                    ends_at: null,
                     status: "active"
                 }));
             }
@@ -74,7 +75,7 @@ const PlanComponent = ({
                     }
                 </>
                 :
-                subscription && subscription.ends_at > currentDateTime ?
+                subscription && (subEnd > currentDateTime) ?
                     <>
                         <div className="plan_name">
                             <p className="text-capitalize">{subscription.name}</p>
@@ -106,7 +107,7 @@ const PlanComponent = ({
                     Change My Plan
                 </a>
                 :
-                subscription && subscription.ends_at > currentDateTime ?
+                subscription && subEnd > currentDateTime ?
                     <form action="" method="">
                         <a href="#"
                            className='button blue'

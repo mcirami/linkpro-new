@@ -5,27 +5,18 @@ use App\Models\Referral;
 use Braintree\Gateway;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Stripe\StripeClient;
 
 trait SubscriptionTrait {
 
+
     /**
-     *
-     * Create new Braintree Gateway for Subscriptions
-     *
-     * @return Gateway
-     *
+     * @return StripeClient
      */
+    public function createGateway(): StripeClient {
 
-    public function createGateway() {
+        return new StripeClient(env('STRIPE_SECRET'));
 
-        $gateway = new Gateway([
-            'environment' => config('services.braintree.environment'),
-            'merchantId' => config('services.braintree.merchantId'),
-            'publicKey' => config('services.braintree.publicKey'),
-            'privateKey' => config('services.braintree.privateKey')
-        ]);
-
-        return $gateway;
     }
 
     public function checkPromoCode($planID, $userCode) {

@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Head, Link, router, usePage} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import ConfirmChange from './ConfirmChange.jsx';
@@ -28,6 +28,20 @@ function Plans({path}) {
         plan: "",
         subId: ""
     });
+
+    const [currentDateTime, setCurrentDateTime] = useState("");
+    const [subEnd, setSubEnd]   = useState("");
+
+    useEffect(() => {
+        const today = new Date();
+        setCurrentDateTime(today.setHours(0,0,0));
+    }, []);
+
+    useEffect(() => {
+        const date = new Date(auth.user.subscription.ends_at);
+        setSubEnd(date.setHours(23,59,59))
+
+    }, [])
 
     const handleOnClick = useCallback((e, type, plan) => {
         e.preventDefault();
@@ -84,8 +98,8 @@ function Plans({path}) {
 
                                 <div className={`my_row  ${
                                     (subscriptionName === "premier") && (status === "active" ||
-                                        status === "pending") ? "two_columns" : "three_columns"}`}>
-                                    { (!subscriptionName || (subscriptionName !== "premier") ) || (status !== "active" && status !== "pending") ?
+                                        status === "canceled") ? "two_columns" : "three_columns"}`}>
+                                    { (!subscriptionName || (subscriptionName !== "premier") ) || (status !== "active" && status !== "canceled") ?
                                         <div className="column pro">
                                             <h2 className="text-uppercase">Pro</h2>
                                             <ul>
@@ -120,8 +134,7 @@ function Plans({path}) {
                                             <div className="button_row">
 
                                                 { (subscriptionName === "pro") &&
-                                                (status === "active" ||
-                                                    status === "pending") ?
+                                                (status === "active" || (status === "canceled" && currentDateTime < subEnd)) ?
                                                     <span className='button disabled'>Current</span>
                                                     :
                                                     status === "active" ?
@@ -166,11 +179,11 @@ function Plans({path}) {
                                         <div className="button_row">
                                             {
                                                 (subscriptionName === "premier") &&
-                                                (status === "active" || status === "pending") ?
+                                                (status === "active" || (status === "canceled" && currentDateTime < subEnd)) ?
                                                     <span className='button disabled'>Current</span>
                                                 :
                                                     subscriptionName &&
-                                                    (status === "active" || status === "pending") &&
+                                                    (status === "active" || (status === "canceled" && currentDateTime < subEnd)) &&
                                                     subId !== "bypass" ?
                                                     <button className="open_popup button black_gradient"
                                                             data-sub={subId}

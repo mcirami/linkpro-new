@@ -33,15 +33,13 @@ class UserService {
 
     public function getUserInfo() {
 
-        $customerID = $this->user->braintree_id;
         $subscription = $this->getUserSubscriptions($this->user) ? : null;
         $paymentMethod = $this->user->pm_type ? : null;
-        $paymentMethodToken = null;
 
-        if($customerID == "bypass") {
+        /*if($customerID == "bypass") {
             $token = null;
         } else {
-           $gateway = $this->createGateway();
+           $stripe = $this->createGateway();
 
             if ( $customerID ) {
                 $token = $gateway->ClientToken()->generate( [
@@ -62,17 +60,13 @@ class UserService {
             } else {
                 $token = $gateway->ClientToken()->generate();
             }
-        }
+        }*/
 
-        $data = [
+        return [
             'user'                  => $this->user,
             'subscription'          => $subscription,
             'payment_method'        => $paymentMethod,
-            'token'                 => $token,
-            'payment_method_token'  => $paymentMethodToken
         ];
-
-        return $data;
     }
 
     /*

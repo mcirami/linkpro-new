@@ -13,6 +13,7 @@ use App\Http\Traits\SubscriptionTrait;
 use App\Http\Traits\UserTrait;
 use Braintree\Exception;
 use Illuminate\Support\Facades\DB;
+use Stripe\Exception\ApiErrorException;
 
 class SubscriptionService {
 
@@ -336,94 +337,47 @@ class SubscriptionService {
      */
     public function cancelSubscription($request) {
 
-        $plan = $request->plan;
-        $gateway = $this->createGateway();
+        $subId = $request->subId;
+        $stripe = $this->createGateway();
 
         try {
 
-            $sub = $gateway->subscription()->find($plan);
+            $sub = $stripe->subscriptions->cancel($subId);
 
-            $update = null;
+            $endDate = $sub->current_period_end;
+            $billingEndDate = Carbon::createFromTimestamp($endDate);
+            $endDateDB = $billingEndDate->endOfDay();
+            $endDateMail = $billingEndDate->format( 'F j, Y' );
 
-            if ($sub->currentBillingCycle != 0) {
-                $update = $gateway->subscription()->update( $plan, [
-                    'numberOfBillingCycles' => $sub->currentBillingCycle,
+            $subscription = $this->getUserSubscriptions($this->user);
+            $subscription->status = strtolower($sub->status);
+            $subscription->ends_at = $endDateDB;
+            $subscription->save();
+
+            if ($this->user->email_subscription) {
+
+                $userData = ( [
+                    'end_date' => $endDateMail,
+                    'userID'   => $this->user->id,
                 ] );
+
+                $this->user->notify( new NotifyAboutCancelation( $userData ) );
             }
-
-            if ( $update == null || $update->success) {
-
-                $result = $gateway->subscription()->cancel($plan);
-
-                if ($result->success) {
-
-                    if ($result->subscription->billingPeriodEndDate) {
-                        $billingEndDate = Carbon::create($result->subscription->billingPeriodEndDate);
-                        $endDateDB = $billingEndDate->endOfDay();
-                        $endDateMail = $result->subscription->billingPeriodEndDate->format( 'F j, Y' );
-                    } else {
-                        $nextBillingDate = Carbon::create($result->subscription->nextBillingDate->sub(new \DateInterval('P1D')));
-                        $time = $nextBillingDate->endOfDay();
-                        $endDateDB = $time->format('Y-m-d H:i:s');
-                        $endDateMail = $time->format( 'F j, Y' );
-                    }
-
-                    $subscription = $this->getUserSubscriptions($this->user);
-                    $subscription->braintree_status = strtolower($result->subscription->status);
-                    $subscription->ends_at = $endDateDB;
-                    $subscription->save();
-
-                    if ($this->user->email_subscription) {
-
-                        $userData = ( [
-                            'end_date' => $endDateMail,
-                            'userID'   => $this->user->id,
-                        ] );
-
-                        $this->user->notify( new NotifyAboutCancelation( $userData ) );
-                    }
-
-                    $data = [
-                        "success"   => true,
-                        "message"   => "Your Subscription Has Been Cancelled",
-                        "ends_at"  => $endDateMail
-                    ];
-
-                } else {
-                    $errorString = "";
-
-                    $this->saveErrors($result);
-
-                    $data = [
-                        "success" => false,
-                        "message" => 'An error occurred with the message: '. $result->message
-                    ];
-                }
-            } else {
-
-                $this->saveErrors($update);
-
-                $data = [
-                    "success" => false,
-                    "message" => 'An error occurred with the message: '. $update->message
-                ];
-            }
-
-        } catch (Exception $e) {
-
-            $errorString = explode('not found', $e );
-
-            DB::table('transaction_errors')->insert([
-                'code'          => 'find plan error',
-                'message'       => $errorString[0],
-                'attribute'     => 'find plan error',
-                'created_at'    => Carbon::now()
-            ]);
 
             $data = [
-                "success" => false,
-                "message" => 'An error occurred with the message: '. $errorString[0]
+                "success"   => true,
+                "message"   => "Your Subscription Has Been Cancelled",
+                "ends_at"  => $endDateMail
             ];
+
+        } catch ( ApiErrorException $e ) {
+            //http_response_code(500);
+            $this->saveErrors($e);
+            $data = [
+                "success"   => false,
+                "message"   => $e->getMessage()
+            ];
+            //echo json_encode(['error' => $e->getMessage()]);
         }
 
         return $data;
@@ -442,14 +396,40 @@ class SubscriptionService {
     public function resumeSubscription($request) {
 
         $activeSubs = $this->getUserSubscriptions($this->user);
-        $planID   = $request->planId;
-        $timestamp = NULL;
-        $expired = false;
-        $userCode = $request->discountCode;
+        $lineItems = $this->getPlanDetails($request->plan);
+        $customerNumber = $this->user->billing_id;
+        $startDate = Carbon::parse($activeSubs->ends_at);
 
-        $gateway = $this->createGateway();
+        $stripe = $this->createGateway();
 
-        if ($activeSubs->ends_at > Carbon::now()) {
+        try {
+            $response = $stripe->subscriptions->create([
+                'customer'                      => $customerNumber,
+                'items'                         => [['price' => $lineItems['ApiId'] ]],
+                'billing_cycle_anchor_config'   => ['day_of_month' => $startDate->day]
+            ]);
+
+            $activeSubs->update([
+                'status'    => $response->status,
+                'ends_at'   => NULL,
+            ]);
+
+            $data = [
+                "success" => true,
+                "message" => "Your subscription has been resumed"
+            ];
+
+        } catch ( ApiErrorException $e ) {
+            //http_response_code(500);
+            $this->saveErrors($e);
+            $data = [
+                "success"   => false,
+                "message"   => $e->getMessage()
+            ];
+            //echo json_encode(['error' => $e->getMessage()]);
+        }
+
+        /*if ($activeSubs->ends_at > Carbon::now()) {
             $token = $request->payment_method_token;
             $timestamp = strtotime($activeSubs->ends_at);
             $timestamp += 60*60*24;
@@ -545,7 +525,7 @@ class SubscriptionService {
                 "success" => false,
                 "message" => 'An error occurred with the message: ' . $result->message
             ];
-        }
+        }*/
 
         return $data;
 
