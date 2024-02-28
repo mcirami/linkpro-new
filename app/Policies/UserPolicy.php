@@ -4,18 +4,19 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
     use HandlesAuthorization;
 
+
     /**
-     * Determine whether the user can upload files.
+     * @param User $user
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return Response|bool
      */
-    public function uploadFiles(User $user) {
+    public function uploadFiles(User $user): \Illuminate\Auth\Access\Response|bool {
         return true;
     }
 
