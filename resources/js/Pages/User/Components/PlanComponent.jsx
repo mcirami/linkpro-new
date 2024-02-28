@@ -19,8 +19,10 @@ const PlanComponent = ({
     }, []);
 
     useEffect(() => {
-        const date = new Date(subscription.ends_at);
-        setSubEnd(date.setHours(23,59,59))
+        if (subscription && subscription.ends_at) {
+            const date = new Date(subscription.ends_at);
+            setSubEnd(date.setHours(23, 59, 59))
+        }
 
     }, [])
 

@@ -292,10 +292,10 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         type="extPreview"
                                                         cropArray={{
                                                             unit: "%",
-                                                            width: 60,
-                                                            height: 30,
                                                             x: 25,
                                                             y: 25,
+                                                            width: 50,
+                                                            height: 50,
                                                         }}
                                                     />
                                                     <div className="picker_wrap">

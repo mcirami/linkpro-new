@@ -41,7 +41,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
     const [crop, setCrop] = useState(cropArray);
     const [scale, setScale] = useState(1)
     const [rotate, setRotate] = useState(0)
-    const [aspect, setAspect] = useState(cropArray['aspect'] || 16 / 9)
+    const [aspect, setAspect] = useState(cropArray['aspect'] || "")
 
     useDebounceEffect(
         async () => {
@@ -77,7 +77,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
         if (!files.length) {
             return;
         }
-        setCrop(undefined)
+        //setCrop(undefined)
         setDisableButton(false);
         document.querySelector("." + CSS.escape(elementName) + "_form .bottom_section").classList.remove("hidden");
         if (window.innerWidth < 993) {
@@ -110,7 +110,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
         image.then((value) => {
             fileUpload(value);
         }).catch((error) => {
-            console.error(error);
+            console.error("imageError: ", error);
             setDisableButton(false);
         });
     };
@@ -125,11 +125,6 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
             image,
             {
                 visibility: "public-read",
-            },
-            {
-                progress: (progress) => {
-                    this.uploadProgress = Math.round(progress * 100);
-                },
             }
         ).then((response) => {
 
@@ -201,7 +196,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
             }
 
         }).catch((error) => {
-            console.error(error);
+            console.error("ERROR CATCH: ", error);
             setDisableButton(false);
         });
     };
