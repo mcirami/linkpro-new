@@ -106,11 +106,12 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
     const handleSubmit = (e) => {
         e.preventDefault();
         setDisableButton(true);
+        console.log(previewCanvasRef?.current[elementName]);
         const image = getFileToUpload(previewCanvasRef?.current[elementName])
         image.then((value) => {
             fileUpload(value);
         }).catch((error) => {
-            console.error("imageError: ", error);
+            console.error("image error: ", error);
             setDisableButton(false);
         });
     };
@@ -121,13 +122,12 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
             icon: 'upload',
             position: 'fixed'
         });
-        window.Vapor.store(
+        Vapor.store(
             image,
             {
                 visibility: "public-read",
             }
         ).then((response) => {
-
             const packets = {
                 [`${elementName}`]: response.key,
                 ext: response.extension,
@@ -196,7 +196,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
             }
 
         }).catch((error) => {
-            console.error("ERROR CATCH: ", error);
+            console.error("vapor error: ", error);
             setDisableButton(false);
         });
     };
