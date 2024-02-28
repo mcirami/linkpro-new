@@ -38,6 +38,7 @@ class SubscriptionController extends Controller
             ],
             'mode'                      => 'subscription',
             'customer_email'            => $user->email,
+            'allow_promotion_codes'     => true,
         ]);
 
         return Inertia::location($checkout_session->url);
@@ -59,7 +60,6 @@ class SubscriptionController extends Controller
             $customer       = $stripe->customers->retrieve($sessionId->customer);
             $paymentMethods = $stripe->customers->allPaymentMethods($customer->id, ['limit' => 1]);
 
-            $paymentType    = $paymentMethods->data[0]->type;
             $last4          = null;
             if($paymentMethods->data[0]->type == "card") {
                 $last4 = $paymentMethods->data[0]->card->last4;
@@ -70,8 +70,9 @@ class SubscriptionController extends Controller
                 'subId'         => $sessionId->subscription,
                 'status'        => $sessionId->status,
                 'customerId'    => $customer->id,
-                'paymentType'   => $paymentType,
-                'last4'         => $last4
+                'paymentType'   => $paymentMethods->data[0]->type,
+                'last4'         => $last4,
+                'pmId'          => $paymentMethods->data[0]["id"]
             ];
 
             $subscriptionService->newSubscription($data);
@@ -79,8 +80,9 @@ class SubscriptionController extends Controller
             http_response_code(200);
 
         } catch ( ApiErrorException $e ) {
+            $this->saveErrors($e);
             http_response_code(500);
-            echo json_encode(['error' => $e->getMessage()]);
+            //echo json_encode(['error' => $e->getMessage()]);
         }
 
         return Inertia::render('Subscription/Success')->with([ 'name' => $customer->name ]);
@@ -211,7 +213,7 @@ class SubscriptionController extends Controller
      *
      * @return JsonResponse
      */
-    public function checkCode(Request $request, SubscriptionService $subscriptionService): \Illuminate\Http\JsonResponse {
+    /*public function checkCode(Request $request, SubscriptionService $subscriptionService): \Illuminate\Http\JsonResponse {
 
         $planID = $request->planId;
         $code = $request->code;
@@ -222,5 +224,5 @@ class SubscriptionController extends Controller
 
         return response()->json(['success' => $data["success"],'message' => $data["message"]]);
 
-    }
+    }*/
 }

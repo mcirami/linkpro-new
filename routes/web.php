@@ -167,7 +167,7 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], funct
     Route::group(['prefix' => 'subscribe'], function() {
         Route::put( '/cancel', [ SubscriptionController::class, 'cancel' ] )->name( 'subscribe.cancel' );
         Route::post( '/resume', [ SubscriptionController::class, 'resume' ] )->name( 'subscribe.resume' );
-        Route::post( '/check-code', [ SubscriptionController::class, 'checkCode' ] )->name( 'check.code' );
+        //Route::post( '/check-code', [ SubscriptionController::class, 'checkCode' ] )->name( 'check.code' );
         Route::post( '/change-plan', [ SubscriptionController::class, 'changePlan' ] )->name( 'subscribe.change.plan' );
         Route::get('/', [SubscriptionController::class, 'showPurchasePage'])->name('subscribe.get');
         Route::get( '/success', [ SubscriptionController::class, 'subscribeSuccess' ] )->name( 'subscribe.success' );

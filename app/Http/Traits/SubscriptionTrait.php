@@ -19,7 +19,7 @@ trait SubscriptionTrait {
 
     }
 
-    public function checkPromoCode($planID, $userCode) {
+    /*public function checkPromoCode($planID, $userCode) {
 
         if ( $planID == "premier" && strtolower( $userCode ) == "6freepremier" ) {
             $match = "6FreePremier";
@@ -38,7 +38,7 @@ trait SubscriptionTrait {
         }
 
         return $match;
-    }
+    }*/
 
     public function getPlanDetails($plan) {
 

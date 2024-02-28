@@ -98,7 +98,8 @@ class SubscriptionService {
         $this->user->update([
             'billing_id'    => $data['customerId'],
             'pm_last_four'  => $data['last4'],
-            'pm_type'       => $data['paymentType']
+            'pm_type'       => $data['paymentType'],
+            'pm_id'         => $data['pmId']
         ]);
 
         if ($this->user->email_subscription) {
@@ -406,7 +407,8 @@ class SubscriptionService {
             $response = $stripe->subscriptions->create([
                 'customer'                      => $customerNumber,
                 'items'                         => [['price' => $lineItems['ApiId'] ]],
-                'billing_cycle_anchor_config'   => ['day_of_month' => $startDate->day]
+                'billing_cycle_anchor_config'   => ['day_of_month' => $startDate->day],
+                'default_payment_method'        => $this->user->pm_id
             ]);
 
             $activeSubs->update([
@@ -540,12 +542,12 @@ class SubscriptionService {
         }
 
         $this->user->subscriptions()->create( [
-            'name'             => $subName,
-            'braintree_id'     => "bypass",
-            'braintree_status' => "active",
+            'name'              => $subName,
+            'sub_id'        => "bypass",
+            'status'            => "active",
         ] );
 
-        $this->user->update(["braintree_id" => "bypass"]);
+        $this->user->update(["billing_id" => "bypass"]);
 
         if ($this->user->email_subscription) {
 
@@ -574,13 +576,13 @@ class SubscriptionService {
 
         $activeSubs = $this->getUserSubscriptions($this->user);
         $activeSubs->update( [
-            'name'             => $subName,
-            'braintree_id'     => "bypass",
-            'braintree_status' => "active",
-            'ends_at'          => null
+            'name'          => $subName,
+            'sub_id'        => "bypass",
+            'status'        => "active",
+            'ends_at'       => null
         ] );
 
-        $this->user->update(["braintree_id" => "bypass"]);
+        $this->user->update(["billing_id" => "bypass"]);
 
         if ($this->user->email_subscription) {
 
@@ -599,7 +601,7 @@ class SubscriptionService {
 
     }
 
-    public function getCodeReturnMessage($match, $planID, $code) {
+    /*public function getCodeReturnMessage($match, $planID, $code) {
 
 
         if ($match) {
@@ -634,5 +636,5 @@ class SubscriptionService {
             "success" => $success,
             "message" => $message
         ];
-    }
+    }*/
 }
