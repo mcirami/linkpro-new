@@ -193,6 +193,8 @@ Route::group(['middleware' => ['course.user:course']], function() {
     Route::get('/{user:username}/course-page/{course:slug}', [CourseController::class, 'showCourseLander'])->name('live.course.lander');
     Route::get('/{user:username}/course/{course:slug}/checkout', [PurchaseController::class, 'show'])->name('course.checkout');
     Route::get('/pre-register-link-pro', [PageController::class, 'showPreRegister'])->name('pre.register');
+    Route::get( '/purchase/cancel-checkout', [ PurchaseController::class, 'cancelCheckout' ] )->name( 'cancel.course.checkout' );
+    Route::get( '/purchase/success', [ PurchaseController::class, 'success' ] )->name( 'course.purchase.success' );
 });
 
 Route::get('/{course:slug?}/login', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -209,7 +211,7 @@ Route::post('/reset-password-submit', [NewPasswordController::class, 'store'])->
 Route::get('/{user:username}/{landing_page:slug}', [LandingPageController::class, 'show'])->name('live.landing.page');
 
 Route::post('/course-register', [CourseRegisterController::class, 'customRegistration'])->name('course.register');
-Route::post('/checkout/purchase', [PurchaseController::class, 'store'])->name('course.purchase');
+//Route::post('/checkout/purchase', [PurchaseController::class, 'store'])->name('course.purchase');
 
 Route::post('/mailchimp/subscribe', [MailchimpController::class, 'subscribeToList'])->name('mailchimp.subscribe');
 

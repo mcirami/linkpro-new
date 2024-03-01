@@ -6,40 +6,26 @@ use App\Services\SubscriptionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Traits\SubscriptionTrait;
+use App\Http\Traits\BillingTrait;
 use Inertia\Inertia;
 use Inertia\Response;
 use Stripe\Exception\ApiErrorException;
+
 class SubscriptionController extends Controller
 {
-    use SubscriptionTrait;
+    use BillingTrait;
+
 
     /**
+     * @param Request $request
+     * @param SubscriptionService $subscriptionService
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws ApiErrorException
      */
-    public function showPurchasePage(): \Symfony\Component\HttpFoundation\Response {
+    public function showPurchasePage(Request $request, SubscriptionService $subscriptionService): \Symfony\Component\HttpFoundation\Response {
 
-        $stripe = $this->createGateway();
-        $plan = $_GET["plan"] ?? null;
-        $lineItems = $this->getPlanDetails($plan);
-        $user = Auth::user();
-        $domain = request()->schemeAndHttpHost();
-
-        $checkout_session = $stripe->checkout->sessions->create([
-            'success_url'   => $domain . '/subscribe/success?session_id={CHECKOUT_SESSION_ID}&plan='. $plan,
-            'cancel_url'    => $domain . '/subscribe/cancel-checkout',
-            'line_items'    => [
-                [
-                    'price'     => $lineItems['ApiId'],
-                    'quantity'  => 1
-                ]
-            ],
-            'mode'                      => 'subscription',
-            'customer_email'            => $user->email,
-            'allow_promotion_codes'     => true,
-        ]);
+        $checkout_session = $subscriptionService->getPurchasePage($request);
 
         return Inertia::location($checkout_session->url);
     }
@@ -52,50 +38,15 @@ class SubscriptionController extends Controller
      */
     public function subscribeSuccess(Request $request, SubscriptionService $subscriptionService): \Inertia\Response {
 
-        $stripe = $this->createGateway();
-        $customer = "";
-        try {
-            $plan           = $_GET["plan"] ?? null;
-            $sessionId      = $stripe->checkout->sessions->retrieve($_GET['session_id']);
-            $customer       = $stripe->customers->retrieve($sessionId->customer);
-            $paymentMethods = $stripe->customers->allPaymentMethods($customer->id, ['limit' => 1]);
+        $data = $subscriptionService->getSuccessPage($request);
 
-            $last4          = null;
-            if($paymentMethods->data[0]->type == "card") {
-                $last4 = $paymentMethods->data[0]->card->last4;
-            }
+        $subscriptionService->newSubscription($data);
 
-            $data = [
-                'planId'        => $plan,
-                'subId'         => $sessionId->subscription,
-                'status'        => $sessionId->status,
-                'customerId'    => $customer->id,
-                'paymentType'   => $paymentMethods->data[0]->type,
-                'last4'         => $last4,
-                'pmId'          => $paymentMethods->data[0]["id"]
-            ];
-
-            $subscriptionService->newSubscription($data);
-
-            http_response_code(200);
-
-        } catch ( ApiErrorException $e ) {
-            $this->saveErrors($e);
-            http_response_code(500);
-            //echo json_encode(['error' => $e->getMessage()]);
-        }
-
-        return Inertia::render('Subscription/Success')->with([ 'name' => $customer->name ]);
-
-        /*
-        $newData = null;
-        if(array_key_exists("bypass", $data) && $data["bypass"]) {
-            $newData = $subscriptionService->createManualSubscription($request->discountCode);
-        }*/
+        return Inertia::render('Checkout/Success')->with(['type' => 'subscription', 'name' => $data['customerName'] ]);
     }
 
     public function cancelCheckout(): Response {
-        return Inertia::render('Subscription/CancelCheckout');
+        return Inertia::render('Checkout/CancelCheckout')->with(['type' => 'subscription']);
     }
 
     /**
@@ -106,42 +57,19 @@ class SubscriptionController extends Controller
      */
     public function changePlan(Request $request, SubscriptionService $subscriptionService): JsonResponse {
 
+        $plan = $request->get('plan');
         $user = Auth::user();
-        $stripe = $this->createGateway();
-        $plan = $request->plan;
         $defaultPage = $request->defaultPage ?? null;
-        $price = $this->getPlanDetails($plan);
         $url = null;
 
-        try {
+        $subscriptionService->updateGateway($user, $request);
 
-            $subscriptions = $stripe->subscriptions->all(['customer' => $user->billing_id]);
+        $data = $subscriptionService->updateSubscription( $plan, $defaultPage );
 
-            $stripe->subscriptions->update(
-                $request->subId,
-                ['items'    => [[
-                    'id'    => $subscriptions->data[0]->items->data[0]->id,
-                    'price' => $price['ApiId'],
-                ]]],
-            );
-
-            $data = $subscriptionService->updateSubscription( $plan, $defaultPage );
-            $path = $request->session()->get( '_previous' );
-            if ( ( str_contains( $path["url"], '/subscribe' ) || str_contains( $path["url"], '/plans' ) ) ) {
-                $user = Auth::user();
-                $page = $user->pages()->where( 'user_id', $user["id"] )->where( 'default', true )->first();
-                $url  = '/dashboard/pages/' . $page->id;
-                //return Inertia::location($url)->with(['message' => $data["message"]]);
-            }
-
-        } catch ( ApiErrorException $e ) {
-            //http_response_code(500);
-            $this->saveErrors($e);
-            $data = [
-                "success"   => false,
-                "message"   => $e->getMessage()
-            ];
-            //echo json_encode(['error' => $e->getMessage()]);
+        $path = $request->session()->get( '_previous' );
+        if ( ( str_contains( $path["url"], '/subscribe' ) || str_contains( $path["url"], '/plans' ) ) ) {
+            $page = $user->pages()->where( 'user_id', $user["id"] )->where( 'default', true )->first();
+            $url  = '/dashboard/pages/' . $page->id;
         }
 
         return response()->json(['success' => $data["success"], 'message' => $data["message"], 'url' => $url]);
@@ -165,11 +93,13 @@ class SubscriptionController extends Controller
      * @param Request $request
      * @param SubscriptionService $subscriptionService
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function cancel(Request $request, SubscriptionService $subscriptionService): \Illuminate\Http\JsonResponse {
+    public function cancel(Request $request, SubscriptionService $subscriptionService): JsonResponse {
 
-        $data = $subscriptionService->cancelSubscription($request);
+        $gatewayData = $subscriptionService->cancelGateway($request);
+
+        $data = $subscriptionService->cancelSubscription($gatewayData);
 
         return response()->json([
             'success' => $data["success"],
@@ -182,47 +112,17 @@ class SubscriptionController extends Controller
      * @param Request $request
      * @param SubscriptionService $subscriptionService
      *
-     * @return mixed
+     * @return JsonResponse
      */
-    public function resume(Request $request, SubscriptionService $subscriptionService) {
+    public function resume(Request $request, SubscriptionService $subscriptionService): JsonResponse {
 
-        $data = $subscriptionService->resumeSubscription($request);
+        $response = $subscriptionService->resumeGateway($request);
 
-        /*if (array_key_exists('bypass', $data) && $data["bypass"]) {
-
-            $newData = $subscriptionService->updateSubscriptionManually($request->discountCode);
-
-            $user = Auth::user();
-            $page = $user->pages()->where('user_id', $user["id"])->where('default', true)->first();
-
-            if($newData["success"]) {
-                $url = '/dashboard/pages/' . $page->id;
-                return Inertia::location($url)->with(['message' => $newData["message"]]);
-            }
-        }*/
+        $data = $subscriptionService->resumeSubscription($response['status'], $response['sub']);
 
         return response()->json([
             'success' => $data["success"],
             'message' => $data["message"],
         ]);
     }
-
-    /**
-     * @param Request $request
-     * @param SubscriptionService $subscriptionService
-     *
-     * @return JsonResponse
-     */
-    /*public function checkCode(Request $request, SubscriptionService $subscriptionService): \Illuminate\Http\JsonResponse {
-
-        $planID = $request->planId;
-        $code = $request->code;
-
-        $match = $this->checkPromoCode($planID, $code);
-
-        $data = $subscriptionService->getCodeReturnMessage($match, $planID, $code);
-
-        return response()->json(['success' => $data["success"],'message' => $data["message"]]);
-
-    }*/
 }

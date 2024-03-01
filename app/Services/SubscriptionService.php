@@ -3,27 +3,22 @@
 
 namespace App\Services;
 
-use App\Http\Controllers\Controller;
 use App\Notifications\NotifyAboutCancelation;
 use App\Notifications\NotifyAboutResumeSub;
 use App\Notifications\NotifyAboutUpgrade;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Traits\SubscriptionTrait;
+use App\Http\Traits\BillingTrait;
 use App\Http\Traits\UserTrait;
-use Braintree\Exception;
-use Illuminate\Support\Facades\DB;
+use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 
 class SubscriptionService {
 
-    use SubscriptionTrait, UserTrait;
+    use BillingTrait, UserTrait;
 
-    public $user;
+    private $user;
 
-    /**
-     * @param $user
-     */
     public function __construct() {
         $this->user = Auth::user();
 
@@ -31,68 +26,89 @@ class SubscriptionService {
     }
 
     /**
+     * @param $request
      *
-     * Get subscription information to purchase and generate client token
+     * @return Session
+     * @throws ApiErrorException
+     */
+    public function getPurchasePage($request): \Stripe\Checkout\Session {
+
+        $domain     = config('app.url');
+        $stripe     = $this->createGateway();
+        $plan       = $request->get('plan') ?? null;
+        $lineItems  = $this->getPlanDetails($plan);
+        $email      = $this->user->email;
+        $customerId = $this->user->billing_id;
+
+        // check if user already has a billing id and be sure it's from stripe ie. starts with 'cus'
+        if ($customerId && str_contains($customerId, 'cus')) {
+            $customerData = ['customer' => $customerId];
+        } else {
+            $customerData = [
+                'customer_email' => $email
+            ];
+        }
+
+        $session = "";
+
+        try {
+            $session = $stripe->checkout->sessions->create( [
+                'success_url'           => $domain . '/subscribe/success?session_id={CHECKOUT_SESSION_ID}&plan=' . $plan,
+                'cancel_url'            => $domain . '/subscribe/cancel-checkout',
+                'line_items'            => [
+                    [
+                        'price'    => $lineItems['ApiId'],
+                        'quantity' => 1
+                    ]
+                ],
+                'mode'                  => 'subscription',
+                'allow_promotion_codes' => true,
+                $customerData
+            ] );
+        } catch ( ApiErrorException $e ) {
+            $this->saveErrors($e);
+            http_response_code(500);
+            //echo json_encode(['error' => $e->getMessage()]);
+        }
+
+        return $session;
+    }
+
+    /**
+     * @param $request
      *
      * @return array
      */
-    /*public function showPurchasePage() {
+    public function getSuccessPage($request): array {
 
-        $activeSubs = $this->getUserSubscriptions($this->user);
-        $bypass = null;
+        $plan           = $request->get('plan') ?? null;
+        $billing        = $this->getCustomerBillingInfo($request);
 
-        if (empty($activeSubs)) {
-            $existing = null;
-        } elseif ($activeSubs->braintree_id == "bypass") {
-            $existing = null;
-            $bypass = true;
-        } else {
-            $existing = true;
-        }
-
-        $gateway = $this->createGateway();
-
-        $customerID = $this->user->braintree_id;
-
-        if ($customerID && $customerID != "bypass") {
-            $token = $gateway->ClientToken()->generate([
-                'customerId' => $customerID
-            ]);
-        } else {
-            $token = $gateway->ClientToken()->generate();
-        }
-
-        $plan = isset($_GET["plan"]) ? $_GET["plan"] : null;
-
-        $price = $this->getPlanDetails($plan);
-
-        $data = [
-            'plan' => $plan,
-            'token' => $token,
-            'price' => $price,
-            'existing' => $existing,
-            'bypass' => $bypass
+        return [
+            'planId'        => $plan,
+            'subId'         => $billing['subId'],
+            'status'        => $billing['status'],
+            'customerId'    => $billing['id'] ?: null,
+            'customerName'  => $billing['name'] ?: null,
+            'paymentType'   => $billing['pmType'],
+            'last4'         => $billing['last4'],
+            'pmId'          => $billing['pmId'],
         ];
-
-        return $data;
-    }*/
+    }
 
     /**
-     * create new user Braintree customer and subscription
+     * create new user subscription and update user billing info
      *
      *
-     * @param $request
+     * @param $data
      *
      */
-    public function newSubscription($data) {
-
-        $code     = null;
-        //$userCode = $request->discountCode;
+    public function newSubscription($data): void {
 
         $this->user->subscriptions()->create( [
             'name'      => $data['planId'],
             'sub_id'    => $data['subId'],
-            'status'    => $data['status'] == "complete" ? "active" : $data['status']
+            'status'    => $data['status']
         ] );
 
         $this->user->update([
@@ -112,218 +128,137 @@ class SubscriptionService {
             $this->user->notify( new NotifyAboutUpgrade( $userData ) );
         }
 
-/*
-        if ( $userCode ) {
+    }
 
-            $code = $this->checkPromoCode($planId, $userCode);
+    /**
+     * @param $user
+     * @param $request
+     *
+     * @return void
+     */
+    public function updateGateway($user, $request): void {
 
-            if (!$code) {
+        $price = $this->getPlanDetails($request->get('plan'));
+        $stripe = $this->createGateway();
+        try {
 
-                return [
-                    "success" => false,
-                    "message" => "Promo Code is Not Valid"
-                ];
+            $subscriptions = $stripe->subscriptions->all(['customer' => $user->billing_id]);
 
-            } elseif ($code == "bypass") {
+            $stripe->subscriptions->update(
+                $request->get('subId'),
+                ['items'    => [[
+                    'id'    => $subscriptions->data[0]->items->data[0]->id,
+                    'price' => $price['ApiId'],
+                ]]],
+            );
 
-                return [
-                    "success" => false,
-                    "bypass" => true,
-                ];
-            }
-        }*/
-
-        /*$gateway = $this->createGateway();
-
-        $nonce = $request->payment_method_nonce;
-
-        $customer = $gateway->customer()->create( [
-            'email'              => $this->user->email,
-            'paymentMethodNonce' => $nonce
-        ] );
-
-        if ( $customer->success ) {
-
-            if ( $code ) {
-                $result = $gateway->subscription()->create( [
-                    'paymentMethodToken' => $customer->customer->paymentMethods[0]->token,
-                    'planId'             => $planID,
-                    'discounts'          => [
-                        'add' => [
-                            [
-                                'inheritedFromId' => $code,
-                            ]
-                        ]
-                    ]
-                ] );
-            } else {
-                $result = $gateway->subscription()->create( [
-                    'paymentMethodToken' => $customer->customer->paymentMethods[0]->token,
-                    'planId'             => $planID,
-                ] );
-            }
-
-            if ( $result->success ) {
-
-                $this->user->subscriptions()->create( [
-                    'name'             => $result->subscription->planId,
-                    'braintree_id'     => $result->subscription->id,
-                    'braintree_status' => strtolower( $result->subscription->status ),
-                ] );
-
-                //$this->addReferralSubID($this->user, $subscription->id, $result->subscription->planId);
-
-                $paymentMethod = strtolower( get_class( $customer->customer->paymentMethods[0] ) );
-                //$paymentMethod = $result->subscription->transactions[0]->paymentInstrumentType;
-
-                if (str_contains($paymentMethod, "credit") ) {
-                    //$paymentMethod = $customer->customer->paymentMethods[0]->cardType;
-                    $this->user->pm_last_four = $customer->customer->paymentMethods[0]->last4;
-                } else {
-                    $this->user->pm_last_four = null;
-                }
-
-                $this->user->pm_type      = $paymentMethod;
-                $this->user->braintree_id = $customer->customer->id;
-                $this->user->save();
-
-                if ($this->user->email_subscription) {
-
-                    $userData = ( [
-                        'plan'    => ucfirst($request->level),
-                        'userID'  => $this->user->id,
-                    ] );
-
-                    $this->user->notify( new NotifyAboutUpgrade( $userData ) );
-                }
-
-                $data = [
-                    "success" => true,
-                    "message" => "Your plan has been changed to the " . ucfirst($planID) . " level"
-                ];
-
-            } else {
-                $this->saveErrors($result);
-
-                $data = [
-                    "success" => false,
-                    "message" => 'An error occurred with the message: ' . $result->message
-                ];
-            }
-
-        } else {
-            $this->saveErrors($customer);
-
-            $data = [
-                "success" => false,
-                "message" => 'An error occurred with the message: ' . $customer->message
-            ];
+        } catch ( ApiErrorException $e ) {
+            http_response_code(500);
+            $this->saveErrors($e);
+            //echo json_encode(['error' => $e->getMessage()]);
         }
-
-        return $data;*/
-
     }
 
     /**
      *
      * Update user subscription level
      *
-     * @param $request
+     * @param $plan
+     * @param null $defaultPage
      *
      * @return array
      */
-    public function updateSubscription($plan, $defaultPage = null) {
+    public function updateSubscription($plan, $defaultPage = null): array {
 
         $activeSubs = $this->getUserSubscriptions($this->user);
 
-/*        if ($activeSubs->braintree_id == "bypass") {
+        $activeSubs->update( [ 'name' => $plan ] );
 
-            $activeSubs->update( [ 'name' => "premier" ] );
+        $userPages = $this->getUserPages( $this->user );
+
+        $data = [];
+        if ( count( $userPages ) > 1) {
+            foreach ( $userPages as $userPage ) {
+
+                if($plan == "premier") {
+                    if ( $userPage->disabled ) {
+                        $userPage->disabled = false;
+                        $userPage->save();
+                    }
+                }
+
+                if ($plan == "pro" && $defaultPage) {
+                    /*if ( $userPage->is_protected ) {
+                        $userPage->is_protected = 0;
+                        $userPage->password     = null;
+                    }*/
+
+                    if ( $defaultPage == $userPage->id ) {
+                        $userPage->default  = true;
+                        $userPage->disabled = false;
+                        $this->user->update( [ 'username' => $userPage->name ] );
+                    } else {
+                        $userPage->default  = false;
+                        $userPage->disabled = true;
+                    }
+
+                    $userPage->save();
+                }
+            }
+        }
+
+        if($plan == "premier") {
+            if ( $this->user->email_subscription ) {
+
+                $userData = ( [
+                    'plan'   => ucfirst( $plan ),
+                    'userID' => $this->user->id,
+                ] );
+
+                $this->user->notify( new NotifyAboutUpgrade( $userData ) );
+            }
 
             $data = [
                 "success" => true,
                 "message" => "Your plan has been upgraded to the Premier level"
             ];
+        }
 
-        } else {
-            $gateway = $this->createGateway();
+        if ($plan == "pro") {
+            $data = [
+                "success" => true,
+                "message" => "Your plan has been downgraded to the Pro level"
+            ];
+        }
 
-            $planId = $request->level;
-            $price = $this->getPlanDetails($planId);
+        return $data;
+    }
 
-            $result = $gateway->subscription()->update( $activeSubs->braintree_id, [
-                'price'  => $price,
-                'planId' => $planId
-            ] );
+    /**
+     * @param $request
+     *
+     * @return array
+     */
+    public function cancelGateway($request): array {
 
-            if ( $result->success ) {*/
-                $activeSubs->update( [ 'name' => $plan ] );
+        $subId = $request->subId;
+        $stripe = $this->createGateway();
 
-                $userPages = $this->getUserPages( $this->user );
+        $data = [];
+        try {
 
-                if ( count( $userPages ) > 1) {
-                    foreach ( $userPages as $userPage ) {
+            $sub = $stripe->subscriptions->cancel($subId);
 
-                        if($plan == "premier") {
-                            if ( $userPage->disabled ) {
-                                $userPage->disabled = false;
-                                $userPage->save();
-                            }
-                        }
+            $data = [
+                'status'    => $sub->status,
+                'endDate'   => $sub->current_period_end
+            ];
 
-                        if ($plan == "pro" && $defaultPage) {
-                            /*if ( $userPage->is_protected ) {
-                                $userPage->is_protected = 0;
-                                $userPage->password     = null;
-                            }*/
-
-                            if ( $defaultPage == $userPage->id ) {
-                                $userPage->default  = true;
-                                $userPage->disabled = false;
-                                $this->user->update( [ 'username' => $userPage->name ] );
-                            } else {
-                                $userPage->default  = false;
-                                $userPage->disabled = true;
-                            }
-
-                            $userPage->save();
-                        }
-                    }
-                }
-
-                if($plan == "premier") {
-                    if ( $this->user->email_subscription ) {
-
-                        $userData = ( [
-                            'plan'   => ucfirst( $plan ),
-                            'userID' => $this->user->id,
-                        ] );
-
-                        $this->user->notify( new NotifyAboutUpgrade( $userData ) );
-                    }
-
-                    $data = [
-                        "success" => true,
-                        "message" => "Your plan has been upgraded to the Premier level"
-                    ];
-                }
-
-                if ($plan == "pro") {
-                    $data = [
-                        "success" => true,
-                        "message" => "Your plan has been downgraded to the Pro level"
-                    ];
-                }
-
-            /*} else {
-                $this->saveErrors($result);
-
-                $data = [
-                    "success" => false,
-                    "message" => 'An error occurred with the message: ' . $result->message
-                ];
-            }
-        }*/
+        } catch ( ApiErrorException $e ) {
+            http_response_code(500);
+            $this->saveErrors($e);
+            //echo json_encode(['error' => $e->getMessage()]);
+        }
 
         return $data;
     }
@@ -336,73 +271,48 @@ class SubscriptionService {
      *
      * @return array
      */
-    public function cancelSubscription($request) {
+    public function cancelSubscription($gatewayData): array {
 
-        $subId = $request->subId;
-        $stripe = $this->createGateway();
+        $billingEndDate = Carbon::createFromTimestamp($gatewayData["endDate"]);
+        $endDateDB = $billingEndDate->endOfDay();
+        $endDateMail = $billingEndDate->format( 'F j, Y' );
 
-        try {
+        $subscription = $this->getUserSubscriptions($this->user);
+        $subscription->status = strtolower($gatewayData['status']);
+        $subscription->ends_at = $endDateDB;
+        $subscription->save();
 
-            $sub = $stripe->subscriptions->cancel($subId);
+        if ($this->user->email_subscription) {
 
-            $endDate = $sub->current_period_end;
-            $billingEndDate = Carbon::createFromTimestamp($endDate);
-            $endDateDB = $billingEndDate->endOfDay();
-            $endDateMail = $billingEndDate->format( 'F j, Y' );
+            $userData = ( [
+                'end_date' => $endDateMail,
+                'userID'   => $this->user->id,
+            ] );
 
-            $subscription = $this->getUserSubscriptions($this->user);
-            $subscription->status = strtolower($sub->status);
-            $subscription->ends_at = $endDateDB;
-            $subscription->save();
-
-            if ($this->user->email_subscription) {
-
-                $userData = ( [
-                    'end_date' => $endDateMail,
-                    'userID'   => $this->user->id,
-                ] );
-
-                $this->user->notify( new NotifyAboutCancelation( $userData ) );
-            }
-
-            $data = [
-                "success"   => true,
-                "message"   => "Your Subscription Has Been Cancelled",
-                "ends_at"  => $endDateMail
-            ];
-
-        } catch ( ApiErrorException $e ) {
-            //http_response_code(500);
-            $this->saveErrors($e);
-            $data = [
-                "success"   => false,
-                "message"   => $e->getMessage()
-            ];
-            //echo json_encode(['error' => $e->getMessage()]);
+            $this->user->notify( new NotifyAboutCancelation( $userData ) );
         }
 
-        return $data;
-
+        return [
+            "success"   => true,
+            "message"   => "Your Subscription Has Been Cancelled",
+            "ends_at"  => $endDateMail
+        ];
     }
 
     /**
-     *
-     * Resume subscription by creating new subscription and setting start date to previous subscription end date
-     * If previous subscription has expired then create new subscription without end date
-     *
      * @param $request
      *
      * @return array
      */
-    public function resumeSubscription($request) {
-
-        $activeSubs = $this->getUserSubscriptions($this->user);
-        $lineItems = $this->getPlanDetails($request->plan);
-        $customerNumber = $this->user->billing_id;
-        $startDate = Carbon::parse($activeSubs->ends_at);
+    public function resumeGateway($request): array {
 
         $stripe = $this->createGateway();
+        $customerNumber = $this->user->billing_id;
+        $activeSubs = $this->getUserSubscriptions($this->user);
+        $startDate = Carbon::parse($activeSubs->ends_at);
+        $lineItems = $this->getPlanDetails($request->get('plan'));
 
+        $response = "";
         try {
             $response = $stripe->subscriptions->create([
                 'customer'                      => $customerNumber,
@@ -411,126 +321,53 @@ class SubscriptionService {
                 'default_payment_method'        => $this->user->pm_id
             ]);
 
-            $activeSubs->update([
-                'status'    => $response->status,
-                'ends_at'   => NULL,
-            ]);
-
-            $data = [
-                "success" => true,
-                "message" => "Your subscription has been resumed"
-            ];
 
         } catch ( ApiErrorException $e ) {
-            //http_response_code(500);
+            http_response_code(500);
             $this->saveErrors($e);
-            $data = [
-                "success"   => false,
-                "message"   => $e->getMessage()
-            ];
             //echo json_encode(['error' => $e->getMessage()]);
         }
 
-        /*if ($activeSubs->ends_at > Carbon::now()) {
-            $token = $request->payment_method_token;
-            $timestamp = strtotime($activeSubs->ends_at);
-            $timestamp += 60*60*24;
-            $billingDate = date('Y-m-d H:i:s', $timestamp);
+        return [
+            'status'    => $response->status,
+            'sub'       => $activeSubs
+        ];
+    }
 
-            $result = $gateway->subscription()->create( [
-                'paymentMethodToken' => $token,
-                'planId'             => $planID,
-                'firstBillingDate'  => $billingDate,
+    /**
+     *
+     * Resume subscription by creating new subscription and setting start date to previous subscription end date
+     * If previous subscription has expired then create new subscription without end date
+     *
+     * @param $status
+     *
+     * @return array
+     */
+    public function resumeSubscription($status, $sub): array {
+
+        $timestamp = strtotime($sub->ends_at);
+        $timestamp += 60*60*24;
+        $sub->update([
+            'status'    => $status,
+            'ends_at'   => NULL,
+        ]);
+
+        if ($this->user->email_subscription) {
+
+            $userData = ( [
+                'userID'        => $this->user->id,
+                'username'      => $this->user->username,
+                'link'          => $this->getDefaultUserPage($this->user)[0],
+                'billingDate'   =>  $timestamp ? date('F j, Y', $timestamp) : null,
             ] );
-        } else {
 
-            $nonce = $request->payment_method_nonce ?: null;
-
-            if ( $userCode ) {
-
-                $code = $this->checkPromoCode($planID, $userCode);
-
-                if ($code && $code != "bypass" ) {
-
-                    $result = $gateway->subscription()->create( [
-                        'paymentMethodNonce' => $nonce,
-                        'planId'             => $planID,
-                        'discounts'          => [
-                            'add' => [
-                                [
-                                    'inheritedFromId' => $code,
-                                ]
-                            ]
-                        ]
-                    ] );
-
-                } elseif ($code && $code == "bypass") {
-
-                    return [
-                        "success" => false,
-                        "bypass" => true,
-                    ];
-
-                } else {
-
-                    $data = [
-                        "success" => false,
-                        "message" => "Sorry, discount code does not match"
-                    ];
-
-                    return $data;
-
-                }
-            } else {
-                $result = $gateway->subscription()->create( [
-                    'paymentMethodNonce' => $nonce,
-                    'planId'             => $planID,
-                ] );
-            }
-
-            $expired = true;
+            $this->user->notify( new NotifyAboutResumeSub( $userData ) );
         }
 
-        if ( $result->success ) {
-
-            $activeSubs->name             = $result->subscription->planId;
-            $activeSubs->braintree_id     = $result->subscription->id;
-            $activeSubs->braintree_status = strtolower( $result->subscription->status );
-            $activeSubs->ends_at          = NULL;
-            $activeSubs->save();
-
-            if ($this->user->email_subscription) {
-
-                $userData = ( [
-                    'userID'  => $this->user->id,
-                    'username' => $this->user->username,
-                    'link' => $this->getDefaultUserPage($this->user)[0],
-                    'billingDate' =>  $timestamp ? date('F j, Y', $timestamp) : null,
-                ] );
-
-                $this->user->notify( new NotifyAboutResumeSub( $userData ) );
-            }
-
-            if ($expired && $planID == 'premier') {
-                $this->enableUsersPages($this->user);
-            }
-
-            $data = [
-                "success" => true,
-                "message" => "Your subscription has been resumed"
-            ];
-
-        } else {
-            $this->saveErrors($result);
-
-            $data = [
-                "success" => false,
-                "message" => 'An error occurred with the message: ' . $result->message
-            ];
-        }*/
-
-        return $data;
-
+        return [
+            "success" => true,
+            "message" => "Your subscription has been resumed"
+        ];
     }
 
     public function createManualSubscription($code) {
@@ -600,41 +437,4 @@ class SubscriptionService {
         ];
 
     }
-
-    /*public function getCodeReturnMessage($match, $planID, $code) {
-
-
-        if ($match) {
-            if ( $planID == "premier" && strtolower( $code ) == "6freepremier" ) {
-                $message = "Congrats! Your 6 Month Premier Promo Code is activated!";
-            } elseif ( $planID == "premier" && strtolower( $code ) == "1freepremier" ) {
-                $message = "Congrats! Your 1 Month Premier Promo Code is activated!";
-            } elseif($planID == "premier" && strtolower( $code ) == "freepremier") {
-                $message = "Congrats! Your Lifetime Premier Promo Code is activated!";
-            } elseif ( $planID == "pro" && strtolower( $code ) == "6freepro" ) {
-                $message = "Congrats! Your 6 Month Pro Promo Code is activated!";
-            } elseif ( $planID == "pro" && strtolower( $code ) == "1freepro" ) {
-                $message = "Congrats! Your 1 Month Pro Promo Code is activated!";
-            } elseif ( $planID == "pro" && strtolower( $code ) == "freepro" ) {
-                $message = "Congrats! Your Lifetime Pro Promo Code is activated!";
-            }
-
-            $success = true;
-
-        } else {
-            if ( $planID == "premier" && (strtolower( $code ) == "6freepro" || strtolower( $code ) == "1freepro" || strtolower( $code ) == "freepro" )) {
-                $message = "Sorry, your Promo Code is invalid. All promo codes entered MUST match the membership type.";
-            } elseif ($planID == "pro" && (strtolower( $code ) == "6freepremier" || strtolower( $code ) == "1freepremier" || strtolower( $code ) == "freepremier" )) {
-                $message = "Sorry, your Promo Code is invalid. All promo codes entered MUST match the membership type.";
-            } else {
-                $message = "Sorry, your Promo Code is invalid.";
-            }
-            $success = false;
-        }
-
-        return [
-            "success" => $success,
-            "message" => $message
-        ];
-    }*/
 }

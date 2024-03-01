@@ -5,13 +5,13 @@ namespace App\Listeners;
 use App\Events\PurchasedItem;
 use App\Models\Purchase;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Http\Traits\SubscriptionTrait;
+use App\Http\Traits\BillingTrait;
 use Illuminate\Support\Facades\Log;
 
 class UpdateTransactionStatus implements ShouldQueue
 {
 
-    use SubscriptionTrait;
+    use BillingTrait;
 
     /**
      * The time (seconds) before the job should be processed.

@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Services\WebhookService;
 use Illuminate\Support\Facades\Log;
-use App\Http\Traits\SubscriptionTrait;
+use App\Http\Traits\BillingTrait;
 
 class WebhookController extends Controller
 {
 
-    use SubscriptionTrait;
+    use BillingTrait;
 
     /**
      * @param WebhookService $webhookService

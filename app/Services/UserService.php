@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
-use App\Http\Traits\SubscriptionTrait;
+use App\Http\Traits\BillingTrait;
 use App\Http\Traits\UserTrait;
 
 class UserService {
 
-    use SubscriptionTrait, UserTrait;
+    use BillingTrait, UserTrait;
 
     private $user;
 

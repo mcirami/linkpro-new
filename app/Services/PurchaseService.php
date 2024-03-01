@@ -3,112 +3,117 @@
 namespace App\Services;
 
 use App\Events\PurchasedItem;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
-use App\Http\Traits\SubscriptionTrait;
+use App\Http\Traits\BillingTrait;
+use Stripe\Exception\ApiErrorException;
 
 class PurchaseService {
 
-    use SubscriptionTrait;
+    use BillingTrait;
 
     private $gateway;
 
-    /**
-     * @param $gateway
-     */
     public function __construct() {
         $this->gateway = $this->createGateway();
 
         return $this->gateway;
     }
 
-    public function getToken() {
-        return $this->gateway->ClientToken()->generate();
+    /**
+     * @throws ApiErrorException
+     */
+    public function showCheckoutPage($course, $request): \Stripe\Checkout\Session {
+
+        $authUser = Auth::user();
+        $offer = $course->Offer()->first();
+        $domain = config('app.url');
+        $customerId = $authUser->billing_id;
+
+        if ($customerId && str_contains($customerId, 'cus')) {
+            $customerData = ['customer' => $customerId];
+        } else {
+            $customerData = [
+                'customer_creation' => 'always',
+                'customer_email'=> $authUser->email
+            ];
+        }
+
+        $logo = $course->logo ?: 'https://lp-production-images.s3.us-east-2.amazonaws.com/logo.png';
+        $affRef = $request->get('a') ? $request->get('a') : "none";
+        $clickId = $request->get('cid') ? $request->get('cid') : "internal";
+        $price = bcmul($offer->price, 100);
+
+        return $this->gateway->checkout->sessions->create([
+                    'success_url'   => $domain . '/purchase/success?session_id={CHECKOUT_SESSION_ID}&offer=' . $offer->id . '&price=' . $price . '&affRef=' . $affRef . '&cid=' . $clickId,
+                    'cancel_url'    => $domain . '/purchase/cancel-checkout',
+                    'line_items'    => [
+                        [
+                            'price_data' => [
+                                'currency'      => 'usd',
+                                'unit_amount'   => $price,
+                                'product_data'  => [
+                                    'name'          => $course->title,
+                                    'description'   => 'One time payment of $' . $offer->price . ' will get you access to all videos in this course.',
+                                    'images'        => [$logo]
+                                ]
+                            ],
+                            'quantity'      => 1,
+                        ]
+                    ],
+                    'mode'                      => 'payment',
+                    'payment_method_types'      => [],
+                    'invoice_creation'          => ['enabled' => true],
+                    'allow_promotion_codes'     => true,
+                    $customerData
+            ]);
     }
 
-    public function purchase($offer, $request) {
+    /**
+     * @param $offer
+     * @param $request
+     *
+     * @return array
+     */
+    public function savePurchase($offer, $request): array {
 
-        $nonce = $request->payment_method_nonce;
-
-        $user = $request->user ? User::findOrFail($request->user) : Auth::user();
-
+        $user = Auth::user();
         $roles = $user->getRoleNames();
         if (!$roles->contains("course.user")) {
             $user->assignRole('course.user');
         }
 
-        $email = $user->email;
+        $billing = $this->getCustomerBillingInfo($request);
 
-        $customer = $this->gateway->customer()->create( [
-            'email'              => $email,
-            'paymentMethodNonce' => $nonce
+        $price  = (float) number_format( ( $request->price / 100 ), 2, '.', ' ' );
+        $course = $offer->Course()->first();
+
+        if ( $request->cid && $request->cid != "" ) {
+            $clickId = $request->cid;
+        } else {
+            $clickId = Cookie::get( 'lpcid_' . $request->affRef . '_' . $offer->id );
+        }
+
+        $purchase = $course->Purchases()->create( [
+            'user_id'         => $user->id,
+            'offer_click_id'  => $clickId,
+            'customer_id'     => $billing['id'],
+            'transaction_id'  => $billing['invoice'],
+            'purchase_amount' => $price,
+            'pm_last_four'    => $billing['last4'],
+            'pm_type'         => $billing['pmType'],
+            'status'          => $billing['status'],
         ] );
 
-        if ( $customer->success ) {
+        $data = [
+            "success"      => true,
+            "message"      => "Congrats! You Have Purchased The " . str_replace( '-', " ", $course->slug ) . " Course",
+            "courseSlug"   => $course->slug,
+            'courseTitle'  => $course->title,
+            "customerName" => $billing['name']
+        ];
 
-            $result = $this->gateway->transaction()->sale([
-                'amount' => $offer->price,
-                'paymentMethodToken' => $customer->customer->paymentMethods[0]->token,
-                'options' => [
-                    'submitForSettlement' => True
-                ]
-            ]);
-
-            if ($result->success) {
-
-                $course = $offer->Course()->first();
-                $paymentMethod = strtolower( get_class( $customer->customer->paymentMethods[0] ) );
-
-                if (str_contains($paymentMethod, "credit") ) {
-                    //$paymentMethod = $customer->customer->paymentMethods[0]->cardType;
-                    $last4 = $customer->customer->paymentMethods[0]->last4;
-                } else {
-                    $last4 = null;
-                }
-
-                if ($request->clickId && $request->clickId != "") {
-                    $clickId = $request->clickId;
-                } else {
-                    $clickId = Cookie::get('lpcid_'.$request->affRef. '_'.$offer->id);
-                }
-
-                $purchase = $course->Purchases()->create([
-                    'user_id'           => $user->id,
-                    'offer_click_id'    => $clickId,
-                    'customer_id'       => $customer->customer->id,
-                    'transaction_id'    => $result->transaction->id,
-                    'purchase_amount'   => $offer->price,
-                    'pm_last_four'      => $last4,
-                    'pm_type'           => $paymentMethod,
-                    'status'            => $result->transaction->status
-                ]);
-
-                $data = [
-                    "success"           => true,
-                    "message"           => "Congrats! You Have Purchased The " . str_replace('-', " ", $course->slug) .  " Course",
-                    "course_slug"       => $course->slug,
-                ];
-
-                PurchasedItem::dispatch($purchase);
-
-            } else {
-
-                $this->saveErrors($result);
-
-                $data = [
-                    "success" => false,
-                    "message" => 'An error occurred with the message: '. $result->message
-                ];
-            }
-        } else {
-            $this->saveErrors($customer);
-
-            $data = [
-                "success" => false,
-                "message" => 'An error occurred with the message: ' . $customer->message
-            ];
-        }
+        PurchasedItem::dispatch( $purchase );
 
         return $data;
     }

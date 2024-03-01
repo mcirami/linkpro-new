@@ -2,25 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\PurchasedItem;
 use App\Models\Course;
 use App\Models\Offer;
-use App\Models\Purchase;
 use App\Models\User;
-use App\Notifications\CoursePurchasedNotification;
 use App\Services\PurchaseService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Traits\SubscriptionTrait;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use App\Http\Traits\BillingTrait;
 use Inertia\Inertia;
 use Inertia\Response;
+use Stripe\Exception\ApiErrorException;
 
 
 class PurchaseController extends Controller
 {
-    use SubscriptionTrait;
+    use BillingTrait;
 
     /**
      * @param Request $request
@@ -28,46 +23,42 @@ class PurchaseController extends Controller
      * @param Course $course
      * @param PurchaseService $purchaseService
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws ApiErrorException
      */
-    public function show(Request $request, User $user, Course $course, PurchaseService $purchaseService): Response {
+    public function show(Request $request, User $user, Course $course, PurchaseService $purchaseService): \Symfony\Component\HttpFoundation\Response {
 
-        //Session::put('creator', $user->username);
-        $token = $purchaseService->getToken();
-        $offer = $course->Offer()->first();
-        $affRef = $request->get('a') ? $request->get('a') : "none";
-        $clickId = $request->get('cid') ? $request->get('cid') : "internal";
+        $checkout_session = $purchaseService->showCheckoutPage($course, $request);
 
-        return Inertia::render('Checkout/Checkout')->with([
-            'token'             => $token,
-            'offer'             => $offer,
-            'course'            => $course,
-            'creator'           => $user->username,
-            'affRef'            => $affRef,
-            'clickId'           => $clickId
-        ]);
+        return Inertia::location($checkout_session->url);
     }
 
     /**
      * @param Request $request
      * @param PurchaseService $purchaseService
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function store(Request $request, PurchaseService $purchaseService): JsonResponse {
+    public function success(Request $request, PurchaseService $purchaseService): Response {
 
-        $offer = Offer::findOrFail($request->offer);
+        $offer = Offer::findOrFail($request->get('offer'));
+        $data = $purchaseService->savePurchase($offer, $request);
 
-        $data = $purchaseService->purchase($offer, $request);
-        $url = null;
-
+        $url = "";
         if ($data["success"]) {
-
             $username = $offer->user()->pluck('username')->first();
-            $url = config('app.url') . "/" . $username . "/course/" . $data["course_slug"];
+            $url = config('app.url') . "/" . $username . "/course/" . $data["courseSlug"];
         }
 
-        return response()->json(['success' => $data["success"], 'message' => $data["message"], 'url' => $url]);
+        return Inertia::render('Checkout/Success')->with([
+            'type'          => 'purchase',
+            'name'          => $data["customerName"],
+            'url'           => $url,
+            'courseTitle'   => $data['courseTitle']
+        ]);
+    }
 
+    public function cancelCheckout(): Response {
+        return Inertia::render('Checkout/CancelCheckout')->with(['type' => 'purchase']);
     }
 }
