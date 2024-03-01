@@ -45,28 +45,27 @@ class PurchaseService {
         $price = bcmul($offer->price, 100);
 
         return $this->gateway->checkout->sessions->create([
-                    'success_url'   => $domain . '/purchase/success?session_id={CHECKOUT_SESSION_ID}&offer=' . $offer->id . '&price=' . $price . '&affRef=' . $affRef . '&cid=' . $clickId,
-                    'cancel_url'    => $domain . '/purchase/cancel-checkout',
-                    'line_items'    => [
-                        [
-                            'price_data' => [
-                                'currency'      => 'usd',
-                                'unit_amount'   => $price,
-                                'product_data'  => [
-                                    'name'          => $course->title,
-                                    'description'   => 'One time payment of $' . $offer->price . ' will get you access to all videos in this course.',
-                                    'images'        => [$logo]
-                                ]
-                            ],
-                            'quantity'      => 1,
+            'success_url'   => $domain . '/purchase/success?session_id={CHECKOUT_SESSION_ID}&offer=' . $offer->id . '&price=' . $price . '&affRef=' . $affRef . '&cid=' . $clickId,
+            'cancel_url'    => $domain . '/purchase/cancel-checkout',
+            'line_items'    =>
+                [[
+                    'price_data' => [
+                        'currency'      => 'usd',
+                        'unit_amount'   => $price,
+                        'product_data'  => [
+                            'name'          => $course->title,
+                            'description'   => 'One time payment of $' . $offer->price . ' will get you access to all videos in this course.',
+                            'images'        => [$logo]
                         ]
                     ],
-                    'mode'                      => 'payment',
-                    'payment_method_types'      => [],
-                    'invoice_creation'          => ['enabled' => true],
-                    'allow_promotion_codes'     => true,
-                    $customerData
-            ]);
+                    'quantity'      => 1,
+                ]],
+            'mode'                      => 'payment',
+            'payment_method_types'      => [],
+            'invoice_creation'          => ['enabled' => true],
+            'allow_promotion_codes'     => true,
+            $customerData
+        ]);
     }
 
     /**

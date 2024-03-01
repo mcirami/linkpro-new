@@ -63,6 +63,7 @@ class SubscriptionService {
                 ],
                 'mode'                  => 'subscription',
                 'allow_promotion_codes' => true,
+                'payment_method_types'  => [],
                 $customerData
             ] );
         } catch ( ApiErrorException $e ) {

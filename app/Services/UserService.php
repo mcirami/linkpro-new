@@ -36,32 +36,6 @@ class UserService {
         $subscription = $this->getUserSubscriptions($this->user) ? : null;
         $paymentMethod = $this->user->pm_type ? : null;
 
-        /*if($customerID == "bypass") {
-            $token = null;
-        } else {
-           $stripe = $this->createGateway();
-
-            if ( $customerID ) {
-                $token = $gateway->ClientToken()->generate( [
-                    'customerId' => $customerID
-                ] );
-
-                if ( $subscription->ends_at && $subscription->ends_at > Carbon::now() ) {
-
-                    $customer = $gateway->customer()->find( $customerID );
-
-                    foreach ( $customer->paymentMethods as $payment_method ) {
-                        if ( $payment_method->default ) {
-                            $paymentMethodToken = $payment_method->token;
-                        }
-                    }
-                }
-
-            } else {
-                $token = $gateway->ClientToken()->generate();
-            }
-        }*/
-
         return [
             'user'                  => $this->user,
             'subscription'          => $subscription,
@@ -89,7 +63,7 @@ class UserService {
         $this->user->save();
     }
 
-    public function updateCard($request) {
+    /*public function updateCard($request) {
 
         $customerID = $this->user->braintree_id;
 
@@ -100,24 +74,6 @@ class UserService {
         if ($customer) {
 
             $token = $customer->paymentMethods[0]->token;
-
-            /*$result = $gateway->customer()->update(
-                $customerID,
-                [
-                    'paymentMethodNonce' => $request->payment_method_nonce,
-                    'creditCard' => [
-                        'options' => [
-                            'updateExistingToken'   => $token,
-                        ],
-                        'billingAddress' => [
-                            'postalCode' => $request->postalCode,
-                            'options' => [
-                                'updateExisting' => true
-                            ]
-                        ]
-                    ]
-                ]
-            );*/
 
             $result = $gateway->paymentMethod()->update($token, [
                 'paymentMethodNonce' => $request->payment_method_nonce,
@@ -147,7 +103,6 @@ class UserService {
                     'success'    => 'false',
                     'message'   => 'An error occurred with the fucking message: '. $result->message,
                 ];
-                //return back()->withErrors('An error occurred with the message: '. $errorString);
             }
 
         } else {
@@ -159,9 +114,9 @@ class UserService {
             return response()->json(['success' => false, 'error' => 'An error occurred with the message: '. $customer->message]);
             //return back()->withErrors('An error occurred with the message: '. $customer->message);
         }
-    }
+    }*/
 
-    public function updatePaymentMethod($request) {
+    /*public function updatePaymentMethod($request) {
 
         $customerID = $this->user->braintree_id;
 
@@ -211,7 +166,6 @@ class UserService {
                     'success'    => 'false',
                     'message'   => 'An error occurred with the fucking message: '. $result->message,
                 ];
-                //return back()->withErrors('An error occurred with the message: '. $result->message);
             }
 
         } else {
@@ -220,10 +174,9 @@ class UserService {
                 echo($error->code . ": " . $error->message . "\n");
             }
             return response()->json(['success' => false, 'error' => 'An error occurred with the message: '. $updateResult->message]);
-            //return back()->withErrors('An error occurred with the message: '. $updateResult->message);
         }
 
-    }
+    }*/
 
     public function handleEmailSubscription($user) {
 

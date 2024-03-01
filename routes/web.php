@@ -57,8 +57,8 @@ Route::middleware('auth')->group(function () {
 
     Route::put('/update-account', [UserController::class, 'updateAccountInfo'])->name('user.update.info');
     Route::get('/get-user-pages', [UserController::class, 'getAllUserPages'])->name('user.get.pages');
-    Route::post('/update-card', [UserController::class, 'updateCard'])->name('user.update.card');
-    Route::post('/update-payment-method', [UserController::class, 'updateMethod'])->name('user.update.payment');
+    //Route::post('/update-card', [UserController::class, 'updateCard'])->name('user.update.card');
+    //Route::post('/update-payment-method', [UserController::class, 'updateMethod'])->name('user.update.payment');
 
     Route::post('/folder/new', [FolderController::class, 'store'])->name('add.folder');
 

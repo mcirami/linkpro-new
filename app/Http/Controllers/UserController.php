@@ -70,7 +70,7 @@ class UserController extends Controller
      *
      *
      */
-    public function updateCard(Request $request, UserService $userService) {
+    /*public function updateCard(Request $request, UserService $userService) {
 
         $data = $userService->updateCard($request);
 
@@ -78,7 +78,7 @@ class UserController extends Controller
         //return redirect()->back()->with(['success' => 'Credit Card Updated']);
         //return Inertia::render('User/User', ['success' => true, 'message' => "Credit Card Updated", 'pmLastFour' => $pmLastFour]);
         return response()->json(['success' => $data['success'], 'message' => $data["message"]]);
-    }
+    }*/
 
     /**
      * @param Request $request
@@ -86,13 +86,13 @@ class UserController extends Controller
      *
      *
      */
-    public function updateMethod(Request $request, UserService $userService) {
+    /*public function updateMethod(Request $request, UserService $userService) {
 
         $data = $userService->updatePaymentMethod($request);
 
         return response()->json(['success' => $data['success'], 'message' => $data["message"]]);
         //return redirect()->back()->with(['success' => 'Payment Method Updated']);
-    }
+    }*/
 
     /**
      * @param User $user

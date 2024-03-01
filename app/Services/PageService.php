@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Storage;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 use App\Http\Traits\UserTrait;
 use App\Http\Traits\LinkTrait;
-use function PHPUnit\Framework\isEmpty;
 
 class PageService {
 

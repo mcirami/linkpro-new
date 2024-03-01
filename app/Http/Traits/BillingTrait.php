@@ -5,7 +5,6 @@ use App\Models\Referral;
 use Illuminate\Support\Facades\DB;
 use Stripe\Exception\ApiErrorException;
 use Stripe\StripeClient;
-use function PHPUnit\Framework\isEmpty;
 
 trait BillingTrait {
 
@@ -59,14 +58,13 @@ trait BillingTrait {
 
             $last4  = null;
             $pmType = null;
-            if ( ! isEmpty( $paymentMethods->data ) && $paymentMethods->data[0]->type == "card" ) {
-                $last4 = $paymentMethods->data[0]->card->last4;
-            } elseif ( ! isEmpty( $paymentMethods->data ) ) {
-                $pmType = $paymentMethods->data[0]->type;
-            }
-
             $pmId = null;
-            if ( ! isEmpty( $paymentMethods->data ) ) {
+            if ( !empty($paymentMethods->data) ) {
+                if( $paymentMethods->data[0]->type == "card" ) {
+                    $last4 = $paymentMethods->data[0]->card->last4;
+                }
+
+                $pmType = $paymentMethods->data[0]->type;
                 $pmId = $paymentMethods->data[0]["id"];
             }
 
@@ -77,7 +75,7 @@ trait BillingTrait {
                 'pmType'    => $pmType,
                 'pmId'      => $pmId,
                 'invoice'   => $sessionId->invoice,
-                'status'    => $sessionId->status,
+                'status'    => $sessionId->status == "complete" ? "active" : $sessionId->status,
                 'subId'     => $sessionId->subscription
             ];
 

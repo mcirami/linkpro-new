@@ -6,7 +6,6 @@ import UserForm from '@/Pages/User/Components/UserForm.jsx';
 import SetFlash from '@/Utils/SetFlash.jsx';
 import ChoosePlanContent from '@/Pages/User/Components/ChoosePlanContent.jsx';
 import PlanComponent from '@/Pages/User/Components/PlanComponent.jsx';
-import PaymentMethodsComponent from '@/Pages/User/Components/PaymentMethodsComponent.jsx';
 import BreadCrumbs from '@/Pages/User/Components/BreadCrumbs.jsx';
 import {isEmpty} from 'lodash';
 import {Loader} from '@/Utils/Loader.jsx';
@@ -63,18 +62,8 @@ const User = ({
                             />
 
                         :
-                        showSection.includes("methods") ?
-
-                            <PaymentMethodsComponent
-                                token={token}
-                                subscription={subscription}
-                                setShowSection={setShowSection}
-                                setShowLoader={setShowLoader}
-                            />
-
-                            :
                             <div className={`w-full inline-block ${ (permissions.includes("view subscription details") &&
-                            (!subscription || subscription.sub_id === "bypass") ) || (!permissions.includes("view subscription details") && permissions.includes('view courses')) ? "two_columns" : ""}`}>
+                                (!subscription || subscription.sub_id === "bypass") ) || (!permissions.includes("view subscription details") && permissions.includes('view courses')) ? "two_columns" : ""}`}>
                                 <div className="card-body w-full inline-block">
                                     <div className=
                                              {`my_row ${permissions.includes("view subscription details") && (subscription && subscription.sub_id !== "bypass") ? "three_columns " : ""} ${ (!subscription || subscription.sub_id === "bypass") ? "two_columns" : ""}`}>
@@ -100,9 +89,6 @@ const User = ({
                                         { (subscription && subscription.sub_id !== "bypass") &&
                                             <div className="column payment">
                                                 <PaymentComponent
-                                                    paymentMethod={payment_method}
-                                                    authToken={token}
-                                                    setShowSection={setShowSection}
                                                     userInfo={userInfo}
                                                 />
                                             </div>
