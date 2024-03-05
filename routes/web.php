@@ -57,8 +57,6 @@ Route::middleware('auth')->group(function () {
 
     Route::put('/update-account', [UserController::class, 'updateAccountInfo'])->name('user.update.info');
     Route::get('/get-user-pages', [UserController::class, 'getAllUserPages'])->name('user.get.pages');
-    //Route::post('/update-card', [UserController::class, 'updateCard'])->name('user.update.card');
-    //Route::post('/update-payment-method', [UserController::class, 'updateMethod'])->name('user.update.payment');
 
     Route::post('/folder/new', [FolderController::class, 'store'])->name('add.folder');
 
@@ -163,11 +161,9 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], funct
     });
 
     Route::get('/plans', [SubscriptionController::class, 'showPlans'])->name('plans.get');
-    //Route::post('/subscribe/create', [SubscriptionController::class, 'store'])->name('subscribe.post');
     Route::group(['prefix' => 'subscribe'], function() {
         Route::put( '/cancel', [ SubscriptionController::class, 'cancel' ] )->name( 'subscribe.cancel' );
         Route::post( '/resume', [ SubscriptionController::class, 'resume' ] )->name( 'subscribe.resume' );
-        //Route::post( '/check-code', [ SubscriptionController::class, 'checkCode' ] )->name( 'check.code' );
         Route::post( '/change-plan', [ SubscriptionController::class, 'changePlan' ] )->name( 'subscribe.change.plan' );
         Route::get('/', [SubscriptionController::class, 'showPurchasePage'])->name('subscribe.get');
         Route::get( '/success', [ SubscriptionController::class, 'subscribeSuccess' ] )->name( 'subscribe.success' );
@@ -211,8 +207,6 @@ Route::post('/reset-password-submit', [NewPasswordController::class, 'store'])->
 Route::get('/{user:username}/{landing_page:slug}', [LandingPageController::class, 'show'])->name('live.landing.page');
 Route::get('/{user:username}/course/{course:slug}/register', [CourseRegisterController::class, 'show'])->name('course.register.show');
 Route::post('/course-register', [CourseRegisterController::class, 'store'])->name('course.register.store');
-
-//Route::post('/checkout/purchase', [PurchaseController::class, 'store'])->name('course.purchase');
 
 Route::post('/mailchimp/subscribe', [MailchimpController::class, 'subscribeToList'])->name('mailchimp.subscribe');
 

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import InputAnimations from '@/Utils/InputAnimations.jsx';
-import {useForm} from '@inertiajs/react';
+import {router, useForm} from '@inertiajs/react';
 import InputError from '@/Components/InputError.jsx';
 
 const LoginModal = ({setShowLogin}) => {
@@ -12,8 +12,16 @@ const LoginModal = ({setShowLogin}) => {
 
     const [active, setActive] = useState("");
 
+    const [redirectUrl, setRedirectUrl] = useState("");
+
     useEffect(() => {
         setActive("active");
+    },[])
+
+    useEffect(() => {
+
+        const location = window.location.href;
+        setRedirectUrl(location.replace('register', 'checkout'));
     },[])
 
     const handleClose = (e) => {
@@ -29,7 +37,7 @@ const LoginModal = ({setShowLogin}) => {
 
         post(('/custom-login'), {
             preserveScroll: true,
-            onSuccess: () => window.location.reload(),
+            onSuccess: () => router.visit(redirectUrl),
         });
     }
 

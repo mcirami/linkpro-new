@@ -256,21 +256,14 @@ export const registerUser = (packets) => {
 
     return axios.post('/course-register', packets).then(
         (response) => {
-            const success = response.data.success;
-            const user = response.data.user;
+            const url = response.data.url;
             const errors = response.data.errors;
 
-            if (success) {
-                return {
-                    success : true,
-                    user : user
-                }
-            } else {
-                return {
-                    success: false,
-                    errors: errors
-                }
+            return {
+                success : true,
+                url: url
             }
+
         },
 
     ).catch(error => {

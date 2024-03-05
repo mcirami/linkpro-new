@@ -19,9 +19,17 @@ class RedirectIfAuthenticated
     {
         $guards = empty($guards) ? [null] : $guards;
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return to_route('dashboard');
+        $user = Auth::user();
+        if($user) {
+            $roles = $user->getRoleNames();
+            if ( $roles->contains( 'course.user' ) && ! $roles->contains( 'lp.user' ) ) {
+                return to_route( 'all.courses' );
+            }
+        }
+
+        foreach ( $guards as $guard ) {
+            if ( Auth::guard( $guard )->check() ) {
+                return to_route( 'dashboard' );
             }
         }
 

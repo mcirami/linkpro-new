@@ -46,7 +46,9 @@ export default function Login({ status, canResetPassword, course = null }) {
                             <>
                                 <p className="text-center">to Access</p>
                                 <div className="course_heading" style={{ background: course.header_color }}>
-                                    <img className="mx-auto" src={ course.logo } alt={ course.title} />
+                                    {course.logo &&
+                                        <img className="mx-auto" src={ course.logo } alt={ course.title} />
+                                    }
                                     <h3 style={{ color: course.header_text_color }}>{course.title}</h3>
                                 </div>
                             </>

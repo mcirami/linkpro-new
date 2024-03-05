@@ -4,19 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
-use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
-use Inertia\Response;
 use App\Http\Traits\UserTrait;
+use Inertia\Response;
 
 class UserController extends Controller
 {
@@ -27,7 +24,7 @@ class UserController extends Controller
      *
      * @return Application|Factory|View
      */
-    public function show(User $user) {
+    public function show(User $user): View|Factory|Application {
         $user->load('links');
 
         return view('users.show', [
@@ -38,9 +35,9 @@ class UserController extends Controller
     /**
      * @param UserService $userService
      *
-     * @return \Inertia\Response
+     * @return Response
      */
-    public function edit(UserService $userService): \Inertia\Response {
+    public function edit(UserService $userService): Response {
 
         $data = $userService->getUserInfo();
 
@@ -54,45 +51,11 @@ class UserController extends Controller
     /**
      * @param UpdateUserRequest $request
      * @param UserService $userService
-     * @param User $user
-     *
-     *
      */
-    public function updateAccountInfo(UpdateUserRequest $request, UserService $userService) {
+    public function updateAccountInfo(UpdateUserRequest $request, UserService $userService): void {
 
         $userService->updateUserInfo($request);
     }
-
-
-    /**
-     * @param Request $request
-     * @param UserService $userService
-     *
-     *
-     */
-    /*public function updateCard(Request $request, UserService $userService) {
-
-        $data = $userService->updateCard($request);
-
-        //return response()->json(['success' => true, 'message' => "Credit Card Updated", 'pmLastFour' => $pmLastFour]);
-        //return redirect()->back()->with(['success' => 'Credit Card Updated']);
-        //return Inertia::render('User/User', ['success' => true, 'message' => "Credit Card Updated", 'pmLastFour' => $pmLastFour]);
-        return response()->json(['success' => $data['success'], 'message' => $data["message"]]);
-    }*/
-
-    /**
-     * @param Request $request
-     * @param UserService $userService
-     *
-     *
-     */
-    /*public function updateMethod(Request $request, UserService $userService) {
-
-        $data = $userService->updatePaymentMethod($request);
-
-        return response()->json(['success' => $data['success'], 'message' => $data["message"]]);
-        //return redirect()->back()->with(['success' => 'Payment Method Updated']);
-    }*/
 
     /**
      * @param User $user
@@ -100,7 +63,7 @@ class UserController extends Controller
      *
      * @return Application|Factory|View
      */
-    public function emailSubscription(User $user, UserService $userService) {
+    public function emailSubscription(User $user, UserService $userService): View|Factory|Application {
 
         $data = $userService->handleEmailSubscription($user);
 
@@ -114,7 +77,10 @@ class UserController extends Controller
         );
     }
 
-    public function getAllUserPages() {
+    /**
+     * @return JsonResponse
+     */
+    public function getAllUserPages(): \Illuminate\Http\JsonResponse {
         $user = Auth::user();
 
         $pages = $this->getUserPages($user);

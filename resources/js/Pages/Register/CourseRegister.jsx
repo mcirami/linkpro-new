@@ -2,10 +2,9 @@ import React, {useState} from 'react';
 import {registerUser} from '@/Services/UserService.jsx';
 import InputAnimations from '@/Utils/InputAnimations.jsx';
 import SetFlash from '@/Utils/SetFlash.jsx';
-import {isEmpty} from 'lodash';
 import {Loader} from '@/Utils/Loader.jsx';
 import LoginModal from '@/Pages/Checkout/Components/LoginModal.jsx';
-import {Head} from '@inertiajs/react';
+import {Head, router} from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout';
 
 const CourseRegister = ({course, clickInfo, creator}) => {
@@ -25,7 +24,6 @@ const CourseRegister = ({course, clickInfo, creator}) => {
 
     const [showLogin, setShowLogin] = useState(false);
     const [formErrors, setFormErrors] = useState({});
-    const [showRegisterForm, setShowRegisterForm] = useState(true);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -49,7 +47,10 @@ const CourseRegister = ({course, clickInfo, creator}) => {
 
         registerUser(packets).then((response) => {
 
-            console.log(response);
+            if(response.success) {
+                router.visit(response.url);
+            }
+
             if (response.errors?.username) {
                 setFormErrors((prev) => ({
                     ...prev,

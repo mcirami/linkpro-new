@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Link;
 use App\Models\Folder;
-use App\Services\TrackingServices;
-use Illuminate\Http\Request;
-use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
+use Illuminate\Http\JsonResponse;
 
 class TrackingController extends Controller
 {
@@ -14,9 +12,9 @@ class TrackingController extends Controller
     /**
      * @param Link $link
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function storeLinkVisit(Link $link) {
+    public function storeLinkVisit(Link $link): JsonResponse {
 
         $link->linkVisits()->create([
             'page_id' => $link->page_id
@@ -25,7 +23,12 @@ class TrackingController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function storeFolderClick(Folder $folder) {
+    /**
+     * @param Folder $folder
+     *
+     * @return JsonResponse
+     */
+    public function storeFolderClick(Folder $folder): JsonResponse {
 
         $folder->folderClicks()->create([
             'page_id' => $folder->page_id

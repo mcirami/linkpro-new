@@ -69,7 +69,6 @@ class SubscriptionService {
         } catch ( ApiErrorException $e ) {
             $this->saveErrors($e);
             http_response_code(500);
-            //echo json_encode(['error' => $e->getMessage()]);
         }
 
         return $session;
@@ -156,7 +155,6 @@ class SubscriptionService {
         } catch ( ApiErrorException $e ) {
             http_response_code(500);
             $this->saveErrors($e);
-            //echo json_encode(['error' => $e->getMessage()]);
         }
     }
 
@@ -258,7 +256,6 @@ class SubscriptionService {
         } catch ( ApiErrorException $e ) {
             http_response_code(500);
             $this->saveErrors($e);
-            //echo json_encode(['error' => $e->getMessage()]);
         }
 
         return $data;
@@ -326,7 +323,6 @@ class SubscriptionService {
         } catch ( ApiErrorException $e ) {
             http_response_code(500);
             $this->saveErrors($e);
-            //echo json_encode(['error' => $e->getMessage()]);
         }
 
         return [
@@ -341,6 +337,7 @@ class SubscriptionService {
      * If previous subscription has expired then create new subscription without end date
      *
      * @param $status
+     * @param $sub
      *
      * @return array
      */
@@ -371,7 +368,7 @@ class SubscriptionService {
         ];
     }
 
-    public function createManualSubscription($code) {
+    /*public function createManualSubscription($code) {
 
         if (strtolower( $code ) == "freepremier") {
             $subName = "premier";
@@ -437,5 +434,5 @@ class SubscriptionService {
             "message" => "Your account has been upgraded!"
         ];
 
-    }
+    }*/
 }

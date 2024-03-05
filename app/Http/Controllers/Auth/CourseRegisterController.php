@@ -73,18 +73,19 @@ class CourseRegisterController extends Controller
 
             $user->notify( new WelcomeCourseNotification( $userData ) );
 
-            // /{user:username}/course/{course:slug}/checkout
-
             $checkoutUrl = config( 'app.url' ) . '/' . $user->username . '/course/' . $course->slug . '/checkout?a=' . $request->get( 'a' ) . '&cid=' . $request->get( 'cid' );
 
-            return Inertia::location( $checkoutUrl );
-            //return response()->json(['success' => true, 'user' => $user->id]);
+            return response()->json( [
+                'success'   => $response['success'],
+                'url'       => $checkoutUrl
+            ] );
+            //return Inertia::location( $checkoutUrl );
+        } else {
+            return response()->json( [
+                'success' => $response['success'],
+                'errors'  => $response['errors']
+            ] );
         }
-
-        return response()->json( [
-            'success' => $response['success'],
-            'errors'  => $response['errors']
-        ] );
     }
 
 }
