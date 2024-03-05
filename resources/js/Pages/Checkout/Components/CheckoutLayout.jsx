@@ -35,62 +35,62 @@ const CheckoutLayout = ({
     const [braintreeInstance, setBraintreeInstance] = useState(null);
     const [formErrors, setFormErrors] = useState({});
     const [showRegisterForm, setShowRegisterForm] = useState(true);
+    /*
+        const loadRef = useRef(true);
 
-    const loadRef = useRef(true);
+        useEffect(() => {
 
-    useEffect(() => {
+            const firstRender = loadRef.current;
 
-        const firstRender = loadRef.current;
-
-        if (firstRender) {
-            loadRef.current = false;
-            braintree.dropin.create({
-                authorization: token,
-                selector: '#bt-dropin',
-                paypal: {
-                    flow: 'vault'
-                },
-                googlePay: {
-                    googlePayVersion: 2,
-                    merchantId: '0764-6991-5982',
-                    transactionInfo: {
-                        totalPriceStatus: 'FINAL',
-                        totalPrice: offer.price,
-                        currencyCode: 'USD'
+            if (firstRender) {
+                loadRef.current = false;
+                braintree.dropin.create({
+                    authorization: token,
+                    selector: '#bt-dropin',
+                    paypal: {
+                        flow: 'vault'
                     },
-                },
-                venmo: {
-                    allowDesktop: true,
-                    paymentMethodUsage: 'multi_use',
-                },
-                applePay: {
-                    displayName: 'LinkPro',
-                    paymentRequest: {
-                        total: {
-                            label: 'LinkPro',
-                            amount: offer.price
+                    googlePay: {
+                        googlePayVersion: 2,
+                        merchantId: '0764-6991-5982',
+                        transactionInfo: {
+                            totalPriceStatus: 'FINAL',
+                            totalPrice: offer.price,
+                            currencyCode: 'USD'
                         },
-                        // We recommend collecting billing address information, at minimum
-                        // billing postal code, and passing that billing postal code with all
-                        // Apple Pay transactions as a best practice.
-                        requiredBillingContactFields: ["postalAddress"]
+                    },
+                    venmo: {
+                        allowDesktop: true,
+                        paymentMethodUsage: 'multi_use',
+                    },
+                    applePay: {
+                        displayName: 'LinkPro',
+                        paymentRequest: {
+                            total: {
+                                label: 'LinkPro',
+                                amount: offer.price
+                            },
+                            // We recommend collecting billing address information, at minimum
+                            // billing postal code, and passing that billing postal code with all
+                            // Apple Pay transactions as a best practice.
+                            requiredBillingContactFields: ["postalAddress"]
+                        }
                     }
-                }
-            }, function(createErr, instance) {
+                }, function(createErr, instance) {
 
-                if (createErr) {
-                    console.log('Create Error', createErr);
-                    return;
-                }
+                    if (createErr) {
+                        console.log('Create Error', createErr);
+                        return;
+                    }
 
-                setBraintreeInstance(instance);
+                    setBraintreeInstance(instance);
 
-            });
-        } else {
-            console.log('Not a first Render');
-        }
+                });
+            } else {
+                console.log('Not a first Render');
+            }
 
-    },[])
+        },[])*/
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -100,7 +100,7 @@ const CheckoutLayout = ({
             icon: ""
         })
         setFormErrors({});
-        if (!auth.user.userInfo) {
+       /* if (!auth.user.userInfo) {*/
 
             const packets = {
                 username: registerData.username,
@@ -147,14 +147,14 @@ const CheckoutLayout = ({
                     })
                 }
             });
-        } else {
+        /*} else {
             readyForPurchase();
-        }
+        }*/
     }
 
     const readyForPurchase = (user = null) => {
 
-        braintreeInstance.requestPaymentMethod(
+        /*braintreeInstance.requestPaymentMethod(
             function(err, payload) {
                 if (err) {
                     console.log('Request Payment Method Error', err);
@@ -191,7 +191,7 @@ const CheckoutLayout = ({
                         })
                     }
                 })
-            });
+            });*/
     }
 
     return (
@@ -316,13 +316,13 @@ const CheckoutLayout = ({
                                         </p>
                                     </section>
                                 }
-                                <section className="w-full">
+                                {/*<section className="w-full">
                                     <div className="drop_in_wrap">
                                         <div className="bt-drop-in-wrapper">
                                             <div id="bt-dropin"></div>
                                         </div>
                                     </div>
-                                </section>
+                                </section>*/}
                             </div>
                             <div className="button_wrap my_row">
                                 <a

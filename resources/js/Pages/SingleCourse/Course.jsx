@@ -159,6 +159,7 @@ function Course({
                                                             clickId={clickId}
                                                             creator={creator}
                                                             page={page}
+                                                            userAuth={!isEmpty(auth.user.userInfo)}
                                                         />
                                                     </React.Fragment>
                                                 )

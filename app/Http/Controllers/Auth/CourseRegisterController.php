@@ -7,12 +7,15 @@ use App\Models\Course;
 use App\Models\User;
 //use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Notifications\WelcomeCourseNotification;
+use App\Services\CourseRegisterService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class CourseRegisterController extends Controller
 {
@@ -27,100 +30,61 @@ class CourseRegisterController extends Controller
     |
     */
 
-    //use RegistersUsers;
-
     /**
-     * Where to redirect users after registration.
+     * @param User $user
+     * @param Course $course
      *
-     * @var string
+     * @return Response
+     *
      */
-    //protected $redirectTo = RouteServiceProvider::HOME;
+    public function show(Request $request, User $user, Course $course): Response {
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    /*public function __construct()
-    {
-        $this->middleware('guest');
-    }*/
+        $clickInfo = $request->all();
+
+        return Inertia::render( 'Register/CourseRegister' )->with( [ 'course' => $course, 'clickInfo' => $clickInfo, 'creator' => $user->username] );
+    }
 
 
     /**
      * @param Request $request
+     * @param CourseRegisterService $courseRegisterService
      *
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function customRegistration(Request $request)
-    {
+    public function store(Request $request, CourseRegisterService $courseRegisterService): \Symfony\Component\HttpFoundation\Response {
 
-        $validator = Validator::make($request->all(),[
-            'username' => ['required', 'string', 'max:255', 'unique:users'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ],
-            [
-                'username.required'     => 'Please provide your username',
-                'username.unique'       => 'Sorry, username is already taken',
-                'email.required'        => 'Please provide a valid Email address',
-                'email.unique'          => 'Sorry, Email is already registered',
-                'password.required'     => 'Password is required',
-                'password.min'          => 'Password Length Should Be More Than 8 Characters'
-            ]
-        );
+        $response = $courseRegisterService->verify($request);
 
-        if($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ]);
+        if ($response['success']) {
+            $data = $request->all();
+            $user = $courseRegisterService->create( $data );
+
+            $user->assignRole( 'course.user' );
+            Auth::login( $user );
+
+            $course = Course::where( 'id', $data['course_id'] )->select( 'title', 'slug', 'logo', 'header_color',
+                'header_text_color' )->first();
+
+            $userData = [
+                'username' => $user->username,
+                'creator'  => $data['course_creator'],
+                'course'   => $course
+            ];
+
+            $user->notify( new WelcomeCourseNotification( $userData ) );
+
+            // /{user:username}/course/{course:slug}/checkout
+
+            $checkoutUrl = config( 'app.url' ) . '/' . $user->username . '/course/' . $course->slug . '/checkout?a=' . $request->get( 'a' ) . '&cid=' . $request->get( 'cid' );
+
+            return Inertia::location( $checkoutUrl );
+            //return response()->json(['success' => true, 'user' => $user->id]);
         }
 
-        $data = $request->all();
-        $user = $this->create($data);
-        $user->assignRole('course.user');
-
-        Auth::login($user);
-
-        $course = Course::where('id', $data['course_id'])->select('title', 'slug', 'logo', 'header_color', 'header_text_color')->first();
-
-        $userData = [
-            'username'  => $user->username,
-            'creator'   => $data['course_creator'],
-            'course'    => $course
-        ];
-
-        $user->notify(new WelcomeCourseNotification($userData));
-
-        return response()->json(['success' => true, 'user' => $user->id]);
+        return response()->json( [
+            'success' => $response['success'],
+            'errors'  => $response['errors']
+        ] );
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
-    protected function create(array $data)
-    {
-        $user = User::create([
-            'username' => $data['username'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-
-        return $user;
-    }
-
-    /**
-     * The user has been registered.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
-     * @return mixed
-     */
-   /* protected function registered(Request $request, $user)
-    {
-        return redirect()->route('/courses');
-    }*/
 }

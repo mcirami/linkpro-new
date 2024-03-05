@@ -976,7 +976,7 @@ form .bottom_row a {
         }
     }
 
-    #payment-form {
+    /*#payment-form {
         margin-top: 0;
         transition: .5s all ease-in-out;
         -webkit-transition: .5s all ease-in-out;
@@ -1006,7 +1006,7 @@ form .bottom_row a {
                 position: relative;
             }
         }
-    }
+    }*/
 
     h3 {
         margin-bottom: 40px;
@@ -1060,7 +1060,7 @@ form .bottom_row a {
         }
     }
 
-    .braintree-options-list {
+    /*.braintree-options-list {
         padding-bottom: 0;
     }
 
@@ -1080,7 +1080,7 @@ form .bottom_row a {
     .braintree-sheet {
         @include boxShadow;
         border: none;
-    }
+    }*/
 
     &.course_purchase {
 
@@ -1151,6 +1151,16 @@ form .bottom_row a {
                 display: block;
             }
         }
+    }
+}
+
+.form_page.course_register {
+    a:not(.button) {
+        color: $blue;
+    }
+
+    h3 {
+        font-size: 1.4em;
     }
 }
 

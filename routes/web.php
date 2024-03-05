@@ -209,8 +209,9 @@ Route::post('/send-reset-password-email', [PasswordResetLinkController::class, '
 Route::post('/reset-password-submit', [NewPasswordController::class, 'store'])->name('password.store');
 
 Route::get('/{user:username}/{landing_page:slug}', [LandingPageController::class, 'show'])->name('live.landing.page');
+Route::get('/{user:username}/course/{course:slug}/register', [CourseRegisterController::class, 'show'])->name('course.register.show');
+Route::post('/course-register', [CourseRegisterController::class, 'store'])->name('course.register.store');
 
-Route::post('/course-register', [CourseRegisterController::class, 'customRegistration'])->name('course.register');
 //Route::post('/checkout/purchase', [PurchaseController::class, 'store'])->name('course.purchase');
 
 Route::post('/mailchimp/subscribe', [MailchimpController::class, 'subscribeToList'])->name('mailchimp.subscribe');

@@ -13,7 +13,8 @@ const ColumnComponent = ({
                              affRef,
                              clickId,
                              creator,
-                             page
+                             page,
+                             userAuth
 }) => {
 
     const {
@@ -38,7 +39,8 @@ const ColumnComponent = ({
     if (affRef && clickId) {
         additionalVars = "?a=" + affRef + "&cid=" + clickId;
     }
-    const buttonUrl = window.location.protocol + "//" + window.location.host + "/" + creator + "/course/" + slug + "/checkout" + additionalVars;
+    const buttonSlug = !userAuth ? "/register" : "/checkout"
+    const buttonUrl = window.location.protocol + "//" + window.location.host + "/" + creator + "/course/" + slug + buttonSlug + additionalVars;
 
     const [imagePlaceholder, setImagePlaceholder] = useState(null);
     const [mobileVideo, setMobileVideo] = useState(null);

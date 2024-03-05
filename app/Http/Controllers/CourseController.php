@@ -23,7 +23,13 @@ class CourseController extends Controller
 {
     use PermissionTrait;
 
-    public function show(User $user, Course $course) {
+    /**
+     * @param User $user
+     * @param Course $course
+     *
+     * @return \Inertia\Response
+     */
+    public function show(User $user, Course $course): \Inertia\Response {
 
         $offer = $course->Offer()->first();
 
@@ -42,7 +48,15 @@ class CourseController extends Controller
         ] );
     }
 
-    public function showCourseLander(Request $request, User $user, Course $course, TrackingServices $trackingServices) {
+    /**
+     * @param Request $request
+     * @param User $user
+     * @param Course $course
+     * @param TrackingServices $trackingServices
+     *
+     * @return \Inertia\Response
+     */
+    public function showCourseLander(Request $request, User $user, Course $course, TrackingServices $trackingServices): \Inertia\Response {
 
         $offer = $course->Offer()->first();
 
@@ -88,7 +102,13 @@ class CourseController extends Controller
         return Inertia::render('CreatorCenter/CreatorCenter')->with(['offers' => $offers, 'landingPage' => $landingPageData]);
     }
 
-    public function edit(Course $course, CourseService $courseService) {
+    /**
+     * @param Course $course
+     * @param CourseService $courseService
+     *
+     * @return \Inertia\Response
+     */
+    public function edit(Course $course, CourseService $courseService): \Inertia\Response {
         $user = Auth::user();
 
         if ($course->user_id != $user["id"]) {
@@ -123,7 +143,14 @@ class CourseController extends Controller
         return Inertia::location('/creator-center/course/' . $course->id);
     }
 
-    public function saveCourseData(Request $request, Course $course, CourseService $courseService) {
+    /**
+     * @param Request $request
+     * @param Course $course
+     * @param CourseService $courseService
+     *
+     * @return JsonResponse
+     */
+    public function saveCourseData(Request $request, Course $course, CourseService $courseService): JsonResponse {
         $userID = Auth::id();
 
         if ($course->user_id != $userID) {
@@ -166,7 +193,14 @@ class CourseController extends Controller
         return response()->json(['section' => $section]);
     }
 
-    public function updateSectionData(Request $request, CourseSection $courseSection, CourseService $service) {
+    /**
+     * @param Request $request
+     * @param CourseSection $courseSection
+     * @param CourseService $service
+     *
+     * @return JsonResponse
+     */
+    public function updateSectionData(Request $request, CourseSection $courseSection, CourseService $service): JsonResponse {
         $userID = Auth::id();
 
         if ($courseSection->user_id != $userID) {
@@ -179,11 +213,13 @@ class CourseController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param CourseSection $courseSection
+     * @param CourseService $courseService
      *
-     * @return JsonResponse|never
+     * @return JsonResponse
      */
-    public function deleteSection(Request $request, CourseSection $courseSection, CourseService $courseService) {
+    public function deleteSection(Request $request, CourseSection $courseSection, CourseService $courseService): JsonResponse {
         $userID = Auth::id();
 
         if ($courseSection->user_id != $userID) {
@@ -198,9 +234,9 @@ class CourseController extends Controller
     /**
      * @param CourseService $courseService
      *
-     * @return mixed
+     * @return \Inertia\Response
      */
-    public function showAllCourses(CourseService $courseService): mixed {
+    public function showAllCourses(CourseService $courseService): \Inertia\Response {
 
         $authUserID = Auth::id();
 
@@ -213,14 +249,23 @@ class CourseController extends Controller
         ]);
     }
 
-    public function getCourseCategories() {
+    /**
+     * @return JsonResponse
+     */
+    public function getCourseCategories(): JsonResponse {
 
         $categories = Category::with('children')->whereNull('parent_id')->get();
 
         return response()->json(['categories' => $categories]);
     }
 
-    public function updateSectionsPositions(Request $request, CourseService $courseService) {
+    /**
+     * @param Request $request
+     * @param CourseService $courseService
+     *
+     * @return JsonResponse
+     */
+    public function updateSectionsPositions(Request $request, CourseService $courseService): JsonResponse {
 
         $courseService->updateAllSectionsPositions($request->all());
 
