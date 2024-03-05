@@ -213,8 +213,7 @@ Route::post('/mailchimp/subscribe', [MailchimpController::class, 'subscribeToLis
 Route::get('/contact', [ContactMailController::class, 'index'])->name('contact');
 Route::post('/contact/send', [ContactMailController::class, 'contactSendMail'])->name('contact.send');
 
-Route::post('/braintree/webhooks/charged-successfully', [WebhookController::class, 'chargedSuccessfully']);
-Route::post('/braintree/webhooks/sub-went-active', [WebhookController::class, 'subWentActive']);
+Route::post('/stripe-webhook', [WebhookController::class, 'receiveWebhookResponse']);
 
 Route::get('/get-icons', [IconController::class, 'getIcons']);
 

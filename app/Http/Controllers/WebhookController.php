@@ -11,49 +11,38 @@ class WebhookController extends Controller
 
     use BillingTrait;
 
-    /**
-     * @param WebhookService $webhookService
-     *
-     * @return void
-     * @throws \Braintree\Exception\InvalidSignature
-     */
-    public function chargedSuccessfully(WebhookService $webhookService) {
+    public function receiveWebhookResponse() {
 
-        $gateway = $this->createGateway();
-
-        /**for testing **/
-        //$webhookService->webhookTest($gateway, 'SUBSCRIPTION_CHARGED_SUCCESSFULLY');
-
-        if (
-            isset($_POST["bt_signature"]) &&
-            isset($_POST["bt_payload"])
-        ) {
-            $notification = $gateway->webhookNotification()->parse(
-                $_POST["bt_signature"],
-                $_POST["bt_payload"]
+        $stripe = $this->createGateway();
+        $endpointSecret = 'whsec_f1fa432dd86ab3b8112399a82dfac58c8bf5c323a96e5a5ed2d1af6713ef7ddb';
+        $payload = @file_get_contents('php://input');
+        $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+        $event = null;
+        $response = null;
+        try {
+            $event = \Stripe\Webhook::constructEvent(
+                $payload, $sig_header, $endpointSecret
             );
-
-            $webhookService->charged($notification);
+        } catch(\UnexpectedValueException $e) {
+            // Invalid payload
+            http_response_code(400);
+            exit();
+        } catch(\Stripe\Exception\SignatureVerificationException $e) {
+            // Invalid signature
+            http_response_code(400);
+            exit();
         }
-    }
 
-    public function subWentActive(WebhookService $webhookService) {
-
-        $gateway = $this->createGateway();
-
-        /**for testing **/
-        //$webhookService->webhookTest($gateway, 'SUBSCRIPTION_WENT_ACTIVE');
-
-        if (
-            isset($_POST["bt_signature"]) &&
-            isset($_POST["bt_payload"])
-        ) {
-            $notification = $gateway->webhookNotification()->parse(
-                $_POST["bt_signature"],
-                $_POST["bt_payload"]
-            );
-
-            $webhookService->wentActive($notification);
+        switch($event->type) {
+            case 'customer.subscription.updated':
+                $response = $event->data->object;
+                break;
+            default:
+                $response = 'Received unknown event type ' . $event->type;
+                break;
         }
+
+        Log::channel( 'webhooks' )->info( " --- object --- " . $response );
+
     }
 }
