@@ -34,7 +34,7 @@ class LinkController extends Controller
      *
      * @return JsonResponse
      */
-    public function store(AddLinkRequest $request, LinkService $linkService) {
+    public function store(AddLinkRequest $request, LinkService $linkService): JsonResponse {
 
         $data = $linkService->addLink($request);
 
