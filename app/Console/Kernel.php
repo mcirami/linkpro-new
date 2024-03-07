@@ -52,9 +52,9 @@ class Kernel extends ConsoleKernel
                  ->timezone('America/New_York')
                  ->weeklyOn(7, '3:00');
 
-        $schedule->command('update:downgradeExpiredSubs')
+        /*$schedule->command('update:downgradeExpiredSubs')
                  ->timezone('America/New_York')
-                 ->dailyAt('2:00');
+                 ->dailyAt('2:00');*/
     }
 
     /**

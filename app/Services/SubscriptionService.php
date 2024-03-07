@@ -19,9 +19,8 @@ class SubscriptionService {
 
     private $user;
 
-    public function __construct() {
-        $this->user = Auth::user();
-
+    public function __construct($user = null) {
+        $this->user = $user ?: Auth::user();
         return $this->user;
     }
 
@@ -171,7 +170,10 @@ class SubscriptionService {
 
         $activeSubs = $this->getUserSubscriptions($this->user);
 
-        $activeSubs->update( [ 'name' => $plan ] );
+        $activeSubs->update( [
+            'name'          => $plan,
+            'downgraded'    => $plan == "pro"
+        ] );
 
         $userPages = $this->getUserPages( $this->user );
 
@@ -186,17 +188,19 @@ class SubscriptionService {
                     }
                 }
 
-                if ($plan == "pro" && $defaultPage) {
+                if ($plan == "pro") {
                     /*if ( $userPage->is_protected ) {
                         $userPage->is_protected = 0;
                         $userPage->password     = null;
                     }*/
 
-                    if ( $defaultPage == $userPage->id ) {
+                    if ( $defaultPage && $defaultPage == $userPage->id ) {
                         $userPage->default  = true;
                         $userPage->disabled = false;
                         $this->user->update( [ 'username' => $userPage->name ] );
-                    } else {
+                    } else if (!$defaultPage && !$userPage->default) {
+                        $userPage->disabled = true;
+                    } else if ($defaultPage) {
                         $userPage->default  = false;
                         $userPage->disabled = true;
                     }

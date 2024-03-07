@@ -3,12 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Jobs\JobDowngradeExpiredSubs;
-use App\Models\Folder;
 use App\Models\Subscription;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class DowngradeExpiredSubs extends Command
 {

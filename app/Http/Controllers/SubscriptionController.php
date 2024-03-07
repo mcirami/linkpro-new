@@ -64,7 +64,7 @@ class SubscriptionController extends Controller
 
         $subscriptionService->updateGateway($user, $request);
 
-        $data = $subscriptionService->updateSubscription( $plan, $defaultPage );
+        $data = $subscriptionService->updateSubscription( $plan, null, $defaultPage );
 
         $path = $request->session()->get( '_previous' );
         if ( ( str_contains( $path["url"], '/subscribe' ) || str_contains( $path["url"], '/plans' ) ) ) {
