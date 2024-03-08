@@ -23,9 +23,11 @@ class WebhookService {
         $productName = $this->getProductName($productId);
         $subscription = Subscription::where('sub_id', $subId )->first();
 
-        $user = User::findOrFail($subscription->user_id);
-        $subscriptionService = new SubscriptionService($user);
-        $subscriptionService->updateSubscription($productName);
+        if($subscription) {
+            $user                = User::findOrFail( $subscription->user_id );
+            $subscriptionService = new SubscriptionService( $user );
+            $subscriptionService->updateSubscription( $productName );
+        }
     }
 
     /**

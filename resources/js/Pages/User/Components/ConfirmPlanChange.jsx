@@ -69,6 +69,7 @@ const ConfirmPlanChange = ({
         }
     }
 
+    console.log(defaultPage);
     return (
         <div id="confirm_change_plan_details" className={`change_plan_message`}>
             <div className="icon_wrap check">
@@ -95,9 +96,9 @@ const ConfirmPlanChange = ({
                         <p>You currently have {pages.length} links.</p>
                         <label htmlFor="defaultPage">Select which link you would like to stay active:</label>
                         <select name="defaultPage" onChange={(e) => setDefaultPage(e.target.value)}>
-                            {pages.map(page => {
+                            {pages.map((page, index) => {
                                 return (
-                                    <option value={page.id}>{page.name}</option>
+                                    <option key={index} value={page.id}>{page.name}</option>
                                 )
                             })}
                         </select>

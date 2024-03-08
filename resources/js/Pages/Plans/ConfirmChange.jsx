@@ -22,7 +22,6 @@ const ConfirmChange = ({confirmChange, setConfirmChange, setError, setShowLoader
         }
 
         changePlan(packets).then((response) => {
-            console.log("response: ", response);
             if (response.success) {
                 router.get(response.url, {message: response.message})
             } else {

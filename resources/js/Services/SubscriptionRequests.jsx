@@ -77,7 +77,7 @@ export const changePlan = (packets) => {
 
     return axios.post('/subscribe/change-plan', packets).then(
         (response) => {
-            const returnMessage = response.data.message;
+            const returnMessage = JSON.stringify(response.data.message);
             const success = response.data.success;
             const url = response.data.url;
 
