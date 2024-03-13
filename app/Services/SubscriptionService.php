@@ -39,6 +39,16 @@ class SubscriptionService {
         $email      = $this->user->email;
         $customerId = $this->user->billing_id;
 
+        /*
+         * $stripe     = $this->createGateway();
+            $allProducts = $stripe->products->all();
+            $product = array_filter($allProducts->data, function($product) {
+            return str_contains(strtolower($product->name), 'pro plan');
+        });
+
+        dd($product[key($product)]['default_price']);
+         */
+
         // check if user already has a billing id and be sure it's from stripe ie. starts with 'cus'
         if ($customerId && str_contains($customerId, 'cus')) {
             $customerData = ['customer' => $customerId];

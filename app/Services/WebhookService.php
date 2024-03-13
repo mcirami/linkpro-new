@@ -7,6 +7,7 @@ use App\Models\Subscription;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Http\Traits\BillingTrait;
+use Illuminate\Support\Facades\DB;
 use Stripe\Exception\ApiErrorException;
 
 class WebhookService {
@@ -136,6 +137,52 @@ class WebhookService {
             'sub_id'        => null,
             'downgraded'    => $productName == "pro"
         ]);
+    }
+
+    public function addPlan($object) {
+
+        $name = strtolower(explode(" ", $object->name)[0]);
+
+        DB::table('plans')->insert([
+            'name'          => $name,
+            'product_id'    => $object->id,
+            'price'         => null,
+            'price_id'      => $object->default_price,
+            'description'   => $object->description,
+            'created_at'    => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
+
+        $this->updatePlan($object);
+    }
+
+    public function updatePlan($object) {
+
+        $stripe = $this->createGateway();
+        try {
+            $product            = $stripe->products->retrieve( $object->id );
+            $unconvertedPrice   = $stripe->prices->retrieve($product->default_price);
+            $price              = ($unconvertedPrice->unit_amount / 10) / 10;
+            $name               = strtolower(explode(" ", $product->name)[0]);
+
+            DB::table('plans')->where('product_id', '=', $object->id)->update([
+                'name'          => $name,
+                'price'         => $price,
+                'price_id'      => $product->default_price,
+                'description'   => $object->description,
+                'updated_at'    => Carbon::now()->format('Y-m-d H:i:s')
+            ]);
+
+        } catch ( ApiErrorException $e ) {
+            http_response_code(500);
+            $this->saveErrors($e);
+        }
+
+
+
+    }
+    public function deletePlan($object) {
+        DB::table('plans')->where('product_id', '=', $object->id)->delete();
     }
 
     /**

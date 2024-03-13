@@ -214,6 +214,7 @@ Route::get('/contact', [ContactMailController::class, 'index'])->name('contact')
 Route::post('/contact/send', [ContactMailController::class, 'contactSendMail'])->name('contact.send');
 
 Route::post('/stripe-webhook', [WebhookController::class, 'receiveWebhookResponse'])->name('stripe.webhook');
+Route::post('/stripe-products-webhook', [WebhookController::class, 'receiveProductWebhookResponse'])->name('stripe.products.webhook');
 
 Route::get('/get-icons', [IconController::class, 'getIcons']);
 

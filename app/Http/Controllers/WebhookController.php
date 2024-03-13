@@ -14,25 +14,7 @@ class WebhookController extends Controller
 
     public function receiveWebhookResponse(WebhookService $webhook_service): void {
 
-        $stripe = $this->createGateway();
-        $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
-        $payload = @file_get_contents('php://input');
-        $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
-        $event = null;
-        $response = null;
-        try {
-            $event = Webhook::constructEvent(
-                $payload, $sig_header, $endpointSecret
-            );
-        } catch(\UnexpectedValueException $e) {
-            // Invalid payload
-            http_response_code(400);
-            exit();
-        } catch(\Stripe\Exception\SignatureVerificationException $e) {
-            // Invalid signature
-            http_response_code(400);
-            exit();
-        }
+        $event = $this->getStripeWebhookInstance('customer');
 
         switch($event->type) {
             case 'customer.subscription.updated':
@@ -68,7 +50,60 @@ class WebhookController extends Controller
         if ($response) {
             Log::channel( 'webhooks' )->info( " --- object --- " . $response );
         }
+    }
 
+    public function receiveProductWebhookResponse(WebhookService $webhook_service) {
 
+        $event = $this->getStripeWebhookInstance('product');
+        $response = null;
+        switch($event->type) {
+            case 'product.created':
+                $webhook_service->addPlan($event->data->object);
+                $response = "product.created: " . $event->data->object;
+                break;
+            case 'product.deleted':
+                $webhook_service->deletePlan($event->data->object);
+                $response = "product.deleted: " . $event->data->object;
+                break;
+            case 'product.updated':
+                $webhook_service->updatePlan($event->data->object);
+                $response = "product.updated: " . $event->data->object;
+                break;
+            default:
+                $response = 'Received unknown event type ' . $event->type . '---object---' . $event->data->object;
+                break;
+        }
+        http_response_code(200);
+        if ($response) {
+            Log::channel( 'webhooks' )->info( " --- object --- " . $response );
+        }
+    }
+
+    private function getStripeWebhookInstance($type) {
+
+        //$stripe = $this->createGateway();
+        if ($type == "customer") {
+            $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
+        }else {
+            $endpointSecret = 'whsec_QieUxyYm1QuNqX0l0inykyGcmWtufoGH';
+        }
+
+        $payload = @file_get_contents('php://input');
+        $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+
+        $response = null;
+        try {
+            return Webhook::constructEvent(
+                $payload, $sig_header, $endpointSecret
+            );
+        } catch(\UnexpectedValueException $e) {
+            // Invalid payload
+            http_response_code(400);
+            exit();
+        } catch(\Stripe\Exception\SignatureVerificationException $e) {
+            // Invalid signature
+            http_response_code(400);
+            exit();
+        }
     }
 }

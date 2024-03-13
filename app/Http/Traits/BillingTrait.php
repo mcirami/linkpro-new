@@ -51,21 +51,24 @@ trait BillingTrait {
     public function getCustomerBillingInfo($request): array {
 
         try {
-            $stripe         = $this->createGateway();
-            $sessionId      = $stripe->checkout->sessions->retrieve( $request->session_id );
-            $customer       = $stripe->customers->retrieve( $sessionId->customer );
-            $paymentMethods = $stripe->customers->allPaymentMethods( $customer->id, [ 'limit' => 1 ] );
+            $stripe     = $this->createGateway();
+            $session    = $stripe->checkout->sessions->retrieve(
+                $request->session_id,
+                ['expand' => ['customer', 'payment_intent.payment_method']]
+            );
+            $customer      = $session->customer;//$stripe->customers->retrieve( $session->customer );
+            $paymentMethod = $session->payment_intent->payment_method;//$stripe->customers->allPaymentMethods( $customer->id, [ 'limit' => 1 ] );
 
             $last4  = null;
             $pmType = null;
             $pmId = null;
-            if ( !empty($paymentMethods->data) ) {
-                if( $paymentMethods->data[0]->type == "card" ) {
-                    $last4 = $paymentMethods->data[0]->card->last4;
+            if ( !empty($paymentMethod) ) {
+                if( $paymentMethod->type == "card" ) {
+                    $last4 = $paymentMethod->card->last4;
                 }
 
-                $pmType = $paymentMethods->data[0]->type;
-                $pmId = $paymentMethods->data[0]["id"];
+                $pmType = $paymentMethod->type;
+                $pmId = $paymentMethod->id;
             }
 
             $data = [
@@ -74,9 +77,9 @@ trait BillingTrait {
                 'last4'     => $last4,
                 'pmType'    => $pmType,
                 'pmId'      => $pmId,
-                'invoice'   => $sessionId->invoice,
-                'status'    => $sessionId->status == "complete" ? "active" : $sessionId->status,
-                'subId'     => $sessionId->subscription
+                'invoice'   => $session->invoice,
+                'status'    => $session->status == "complete" ? "active" : $session->status,
+                'subId'     => $session->subscription
             ];
 
         } catch ( ApiErrorException $e ) {
