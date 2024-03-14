@@ -60,7 +60,7 @@ class SubscriptionController extends Controller
         $plan = $request->get('plan');
         $user = Auth::user();
         $defaultPage = $request->get('defaultPage') ? $request->get('defaultPage') : null;
-        $url = null;
+        $url = '/dashboard';
 
         $subscriptionService->updateGateway($user, $request);
 
@@ -72,7 +72,7 @@ class SubscriptionController extends Controller
             $url  = '/dashboard/pages/' . $page->id;
         }
 
-        return response()->json(['success' => $data["success"], 'message' => $data["message"], 'url' => $url]);
+        return response()->json(['success' => $data["success"], 'message' => $data["message"], 'url' => $url, 'path' => $path]);
 
     }
 
@@ -116,9 +116,9 @@ class SubscriptionController extends Controller
      */
     public function resume(Request $request, SubscriptionService $subscriptionService): JsonResponse {
 
-        $response = $subscriptionService->resumeGateway($request);
+        $data = $subscriptionService->resumeGateway($request);
 
-        $data = $subscriptionService->resumeSubscription($response['status'], $response['sub']);
+        $data = $subscriptionService->resumeSubscription($data);
 
         return response()->json([
             'success' => $data["success"],

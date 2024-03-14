@@ -34,7 +34,7 @@ const PaymentComponent = ({userInfo}) => {
                     }
                 </div>
             }
-            <a target="_blank" href={`https://checkout.link.pro/p/login/test_5kA01g0fq5mJ6Nq4gg?prefilled_email=` + email}
+            <a target="_blank" href={`https://checkout.link.pro/p/login/test_3cs6pE5zK02p6Nq145?prefilled_email=` + email}
                className="button blue text-uppercase mt-auto"
             >
                 Change Payment Method

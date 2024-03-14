@@ -19,6 +19,9 @@ class SubscriptionService {
 
     private $user;
 
+    /**
+     * @param $user
+     */
     public function __construct($user = null) {
         $this->user = $user ?: Auth::user();
         return $this->user;
@@ -32,22 +35,12 @@ class SubscriptionService {
      */
     public function getPurchasePage($request): \Stripe\Checkout\Session {
 
-        $domain     = config('app.url');
         $stripe     = $this->createGateway();
-        $plan       = $request->get('plan') ?? null;
-        $lineItems  = $this->getPlanDetails($plan);
+        $domain     = config('app.url');
+        $planName   = $request->get('plan') ?? null;
+        $lineItems  = $this->getPlanDetails($planName);
         $email      = $this->user->email;
         $customerId = $this->user->billing_id;
-
-        /*
-         * $stripe     = $this->createGateway();
-            $allProducts = $stripe->products->all();
-            $product = array_filter($allProducts->data, function($product) {
-            return str_contains(strtolower($product->name), 'pro plan');
-        });
-
-        dd($product[key($product)]['default_price']);
-         */
 
         // check if user already has a billing id and be sure it's from stripe ie. starts with 'cus'
         if ($customerId && str_contains($customerId, 'cus')) {
@@ -62,7 +55,7 @@ class SubscriptionService {
 
         try {
             $session = $stripe->checkout->sessions->create( [
-                'success_url'           => $domain . '/subscribe/success?session_id={CHECKOUT_SESSION_ID}&plan=' . $plan,
+                'success_url'           => $domain . '/subscribe/success?session_id={CHECKOUT_SESSION_ID}&plan=' . $planName,
                 'cancel_url'            => $domain . '/subscribe/cancel-checkout',
                 'line_items'            => [
                     [
@@ -108,7 +101,6 @@ class SubscriptionService {
     /**
      * create new user subscription and update user billing info
      *
-     *
      * @param $data
      *
      */
@@ -151,12 +143,12 @@ class SubscriptionService {
         $stripe = $this->createGateway();
         try {
 
-            $subscriptions = $stripe->subscriptions->all(['customer' => $user->billing_id]);
+            //$subscriptions = $stripe->subscriptions->all(['customer' => $user->billing_id]);
 
             $stripe->subscriptions->update(
                 $request->get('subId'),
                 ['items'    => [[
-                    'id'    => $subscriptions->data[0]->items->data[0]->id,
+                    //'id'    => $subscriptions->data[0]->items->data[0]->id,
                     'price' => $price['ApiId'],
                 ]]],
             );
@@ -341,7 +333,8 @@ class SubscriptionService {
 
         return [
             'status'    => $response->status,
-            'sub'       => $activeSubs
+            'sub'       => $activeSubs,
+            'sub_id'    => $response->id
         ];
     }
 
@@ -350,18 +343,18 @@ class SubscriptionService {
      * Resume subscription by creating new subscription and setting start date to previous subscription end date
      * If previous subscription has expired then create new subscription without end date
      *
-     * @param $status
-     * @param $sub
+     * @param $data array
      *
      * @return array
      */
-    public function resumeSubscription($status, $sub): array {
-
+    public function resumeSubscription( array $data): array {
+        $sub = $data['sub'];
         $timestamp = strtotime($sub->ends_at);
         $timestamp += 60*60*24;
         $sub->update([
-            'status'    => $status,
+            'status'    => $data['status'],
             'ends_at'   => NULL,
+            'sub_id'    => $data['sub_id']
         ]);
 
         if ($this->user->email_subscription) {
@@ -370,7 +363,7 @@ class SubscriptionService {
                 'userID'        => $this->user->id,
                 'username'      => $this->user->username,
                 'link'          => $this->getDefaultUserPage($this->user)[0],
-                'billingDate'   =>  $timestamp ? date('F j, Y', $timestamp) : null,
+                'billingDate'   => $timestamp ? date('F j, Y', $timestamp) : null,
             ] );
 
             $this->user->notify( new NotifyAboutResumeSub( $userData ) );

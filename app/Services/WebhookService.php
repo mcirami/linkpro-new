@@ -54,42 +54,62 @@ class WebhookService {
      * @param $customer
      *
      * @return void
+     *
+     * TODO: SEPARATE GATEWAY FUNCTIONS
      */
     public function checkDefaultPaymentMethod($customer): void {
 
         $stripe = $this->createGateway();
-        $defaultPm = null;
+        $defaultPmId = null;
         try {
-            $stripeCustomer = $stripe->customers->retrieve($customer);
-            $defaultPm = $stripeCustomer->invoice_settings->default_payment_method;
+            $stripeCustomer = $stripe->customers->retrieve(
+                $customer,
+                ['expand' => ['customer', 'payment_intent.payment_method']]
+            );
+            $defaultPmId = $stripeCustomer->invoice_settings->default_payment_method;
         } catch ( ApiErrorException $e ) {
             http_response_code(500);
             $this->saveErrors($e);
         }
-        if ($defaultPm) {
-            $user = User::where('billing_id', '=', $customer)->first();
-            if($user) {
-                $customerPm = null;
-                try {
-                    $customerPm = $stripe->customers->retrievePaymentMethod(
-                        $customer,
-                        $defaultPm
-                    );
-                } catch ( ApiErrorException $e ) {
-                    http_response_code(500);
-                    $this->saveErrors($e);
-                }
-                if($customerPm) {
-                    $pmType = $customerPm->type;
-                    $last4  = $pmType == "card" ? $customerPm->card->last4 : null;
+        if ($defaultPmId) {
+            $this->updateDefaultPaymentMethod($defaultPmId, $customer);
+        }
+    }
 
-                    if ( ( $user->pm_id && $user->pm_id != $defaultPm ) || ! $user->pm_id ) {
-                        $user->update( [
-                            'pm_id'        => $defaultPm,
-                            'pm_last_four' => $last4,
-                            'pm_type'      => $pmType
-                        ] );
-                    }
+    /**
+     * @param $defaultPmId
+     * @param $customer
+     *
+     * @return void
+     *
+     * TODO: SEPARATE GATEWAY FUNCTIONS
+     *
+     */
+    public function updateDefaultPaymentMethod($defaultPmId, $customer): void {
+
+        $stripe = $this->createGateway();
+        $user = User::where('billing_id', '=', $customer)->first();
+        if($user) {
+            $customerPm = null;
+            try {
+                $customerPm = $stripe->customers->retrievePaymentMethod(
+                    $customer,
+                    $defaultPmId
+                );
+            } catch ( ApiErrorException $e ) {
+                http_response_code(500);
+                $this->saveErrors($e);
+            }
+            if($customerPm) {
+                $pmType = $customerPm->type;
+                $last4  = $pmType == "card" ? $customerPm->card->last4 : null;
+
+                if ( ( $user->pm_id && $user->pm_id != $defaultPmId ) || ! $user->pm_id ) {
+                    $user->update( [
+                        'pm_id'        => $defaultPmId,
+                        'pm_last_four' => $last4,
+                        'pm_type'      => $pmType
+                    ] );
                 }
             }
         }
@@ -100,6 +120,8 @@ class WebhookService {
      * @param $productId
      *
      * @return void
+     *
+     * TODO: MAKE PRODUCT NAME DYNAMIC
      */
     public function handleSubscriptionEnded($subId, $productId): void {
         $productName = $this->getProductName($productId);
@@ -156,7 +178,15 @@ class WebhookService {
         $this->updatePlan($object);
     }
 
-    public function updatePlan($object) {
+
+    /**
+     * @param $object
+     *
+     * @return void
+     *
+     * TODO: SEPARATE GATEWAY FUNCTIONS
+     */
+    public function updatePlan($object): void {
 
         $stripe = $this->createGateway();
         try {
@@ -192,18 +222,6 @@ class WebhookService {
      */
     private function getProductName($productId): ?string {
 
-        $productName = null;
-        switch($productId) {
-            case 'prod_K6EHjP7cweNNcM':
-                $productName = "pro";
-                break;
-            case 'prod_PbvMZt4HkzDqx6':
-                $productName = "premier";
-                break;
-            default:
-                break;
-        }
-
-        return $productName;
+        return DB::table('plans')->where('product_id', '=', $productId)->pluck('name')->first();
     }
 }

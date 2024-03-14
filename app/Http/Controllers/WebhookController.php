@@ -12,6 +12,11 @@ class WebhookController extends Controller
 
     use BillingTrait;
 
+    /**
+     * @param WebhookService $webhook_service
+     *
+     * @return void
+     */
     public function receiveWebhookResponse(WebhookService $webhook_service): void {
 
         $event = $this->getStripeWebhookInstance('customer');
@@ -37,6 +42,14 @@ class WebhookController extends Controller
 
                 $response = "customer.subscription.deleted: " . $event->data->object;
                 break;
+            case 'customer.updated':
+                $customer           =  $event->data->object->id;
+                $defaultPaymentId   =  $event->data->object->invoice_settings->default_payment_method;
+                if ($defaultPaymentId) {
+                    $webhook_service->updateDefaultPaymentMethod($defaultPaymentId, $customer);
+                }
+                $response = "customer.updated: " . $event->data->object;
+                break;
             case 'payment_method.attached':
                 $customer =  $event->data->object->customer;
                 $webhook_service->checkDefaultPaymentMethod($customer);
@@ -52,7 +65,12 @@ class WebhookController extends Controller
         }
     }
 
-    public function receiveProductWebhookResponse(WebhookService $webhook_service) {
+    /**
+     * @param WebhookService $webhook_service
+     *
+     * @return void
+     */
+    public function receiveProductWebhookResponse(WebhookService $webhook_service): void {
 
         $event = $this->getStripeWebhookInstance('product');
         $response = null;
@@ -85,7 +103,7 @@ class WebhookController extends Controller
         if ($type == "customer") {
             $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
         }else {
-            $endpointSecret = 'whsec_QieUxyYm1QuNqX0l0inykyGcmWtufoGH';
+            $endpointSecret = env('STRIPE_PRODUCT_WEBHOOK_SECRET');
         }
 
         $payload = @file_get_contents('php://input');

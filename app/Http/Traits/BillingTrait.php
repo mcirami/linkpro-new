@@ -19,28 +19,17 @@ trait BillingTrait {
     }
 
     /**
-     * @param $plan
+     * @param $planName
      *
      * @return array|string[]
      */
-    public function getPlanDetails($plan): array {
+    public function getPlanDetails($planName): array {
 
-        $data = [];
-        if ($plan == 'pro') {
-            $data = [
-                'price'  => '4.99',
-                'ApiId'   => 'price_1JS1p5GIBktjIJUPjG5ksGFb'
-            ];
-        }
+        $priceId = DB::table('plans')->where('name', '=', $planName)->pluck('price_id')->first();
 
-        if ($plan == 'premier') {
-            $data = [
-                'price'  => '19.99',
-                'ApiId'   => 'price_1OmhVwGIBktjIJUP744WAsfh',
-            ];
-        }
-
-        return $data;
+        return [
+            'ApiId'  => $priceId
+        ];
     }
 
     /**
@@ -54,10 +43,10 @@ trait BillingTrait {
             $stripe     = $this->createGateway();
             $session    = $stripe->checkout->sessions->retrieve(
                 $request->session_id,
-                ['expand' => ['customer', 'payment_intent.payment_method']]
+                ['expand' => ['customer']]
             );
-            $customer      = $session->customer;//$stripe->customers->retrieve( $session->customer );
-            $paymentMethod = $session->payment_intent->payment_method;//$stripe->customers->allPaymentMethods( $customer->id, [ 'limit' => 1 ] );
+            $customer      = $session->customer;
+            $paymentMethod = $stripe->customers->allPaymentMethods( $customer->id, [ 'limit' => 1 ] );
 
             $last4  = null;
             $pmType = null;
@@ -100,6 +89,8 @@ trait BillingTrait {
      * @param $error
      *
      * @return void
+     *
+     * TODO: check handling errors with stripe
      */
     public function saveErrors($error): void {
         DB::table('transaction_errors')->insert([
@@ -108,35 +99,4 @@ trait BillingTrait {
             'attribute'     => $error->getStripeCode(),
         ]);
     }
-
-   /* public function addReferralSubID($user, $subscriptionID, $planID) {
-
-        $referral = Referral::where('referral_id', $user->id)->first();
-
-        if ($referral != null) {
-
-            $user_id = $referral->user_id;
-            $referral_id = $user->id;
-
-            Referral::create([
-                'user_id' => $user_id,
-                'referral_id' => $referral_id,
-                'subscription_id' => $subscriptionID,
-                'plan_id' => $planID
-            ]);
-        }
-    }*/
-
-   /* public function updateReferral($planID, $userID) {
-
-        $referral = Referral::where('referral_id', $userID)->orderBy('updated_at', 'DESC')->first();
-
-        if ($referral != null) {
-
-            $referral->update([
-                'plan_id' => $planID
-            ]);
-
-        }
-    }*/
 }

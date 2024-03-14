@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {cancelSubscription, changePlan} from '@/Services/SubscriptionRequests.jsx';
 
 const ConfirmPlanChange = ({
@@ -10,7 +10,19 @@ const ConfirmPlanChange = ({
                                setShowLoader
 }) => {
 
-    const [defaultPage, setDefaultPage] = useState(null);
+    const [defaultPage, setDefaultPage] = useState("");
+
+    useEffect(() => {
+
+        const page = pages.filter((page) => {
+            if(page.default) {
+                return page;
+            }
+        })
+
+        setDefaultPage(page[0].id);
+
+    },[])
     const handleClick = (e) => {
 
         setShowLoader({
@@ -69,7 +81,6 @@ const ConfirmPlanChange = ({
         }
     }
 
-    console.log(defaultPage);
     return (
         <div id="confirm_change_plan_details" className={`change_plan_message`}>
             <div className="icon_wrap check">
@@ -95,7 +106,7 @@ const ConfirmPlanChange = ({
                     <>
                         <p>You currently have {pages.length} links.</p>
                         <label htmlFor="defaultPage">Select which link you would like to stay active:</label>
-                        <select name="defaultPage" onChange={(e) => setDefaultPage(e.target.value)}>
+                        <select name="defaultPage" onChange={(e) => setDefaultPage(e.target.value)} value={defaultPage}>
                             {pages.map((page, index) => {
                                 return (
                                     <option key={index} value={page.id}>{page.name}</option>
