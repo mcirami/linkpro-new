@@ -166,8 +166,12 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], funct
         Route::post( '/resume', [ SubscriptionController::class, 'resume' ] )->name( 'subscribe.resume' );
         Route::post( '/change-plan', [ SubscriptionController::class, 'changePlan' ] )->name( 'subscribe.change.plan' );
         Route::get('/', [SubscriptionController::class, 'showPurchasePage'])->name('subscribe.get');
-        Route::get( '/success', [ SubscriptionController::class, 'subscribeSuccess' ] )->name( 'subscribe.success' );
+        Route::get( '/stripe-success', [ SubscriptionController::class, 'stripeSubscribeSuccess' ] )->name( 'stripe.subscribe.success' );
         Route::get( '/cancel-checkout', [ SubscriptionController::class, 'cancelCheckout' ] )->name( 'cancel.checkout' );
+        Route::post( '/paypal-success', [ SubscriptionController::class, 'payPalSubscribeSuccess' ] )->name( 'paypal.subscribe.success' );
+        Route::get('/success',[ SubscriptionController::class, 'showSuccessPage' ] )->name( 'show.subscribe.success' );
+        //Route::get( '/paypal-cancel', [ SubscriptionController::class, 'payPalCancel' ] )->name( 'paypal.cancel' );
+
     });
 
     Route::post('/stats/link', [StatsController::class, 'getLinkStats']);

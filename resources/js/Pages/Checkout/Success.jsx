@@ -1,9 +1,22 @@
-import React from 'react';
-import {Head, Link} from '@inertiajs/react';
+import React, {useEffect, useState} from 'react';
+import {Head, Link, router} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { IoCheckmarkCircle } from "react-icons/io5";
 
-const Success = ({name, type, url = null, courseTitle = null}) => {
+const Success = ({name = null, type, url = null, courseTitle = null}) => {
+
+    const [purchaseType, setPurchaseType] = useState(type);
+
+    useEffect(() => {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const paramPurchaseType = urlParams?.get('type');
+        if(paramPurchaseType) {
+            setPurchaseType(paramPurchaseType);
+        }
+
+    }, []);
+
     return (
         <AuthenticatedLayout>
             <Head title="Subscription Purchased"/>
@@ -14,9 +27,9 @@ const Success = ({name, type, url = null, courseTitle = null}) => {
                         <div className="success_icon">
                             <IoCheckmarkCircle />
                         </div>
-                        {type === "subscription" ?
+                        {purchaseType === "subscription" ?
                             <>
-                                <h3 className="mb-3">Thank you for purchasing a subscription {name}!</h3>
+                                <h3 className="mb-3">Thank you for purchasing a subscription{name ? " " + name : ""}!</h3>
                                 <h4 className="mb-4">You’ve taken a serious step to get the most out of LinkPro!</h4>
                                 <p className="mb-2">You will be receiving an email confirming your subscription shortly.</p>
                                 <p><a href={route('dashboard')}>Click Here</a> to go to your Dashboard and get on your way to becoming a social icon!

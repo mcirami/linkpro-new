@@ -55,7 +55,7 @@ class SubscriptionService {
 
         try {
             $session = $stripe->checkout->sessions->create( [
-                'success_url'           => $domain . '/subscribe/success?session_id={CHECKOUT_SESSION_ID}&plan=' . $planName,
+                'success_url'           => $domain . '/subscribe/stripe-success?session_id={CHECKOUT_SESSION_ID}&plan=' . $planName,
                 'cancel_url'            => $domain . '/subscribe/cancel-checkout',
                 'line_items'            => [
                     [
@@ -81,7 +81,7 @@ class SubscriptionService {
      *
      * @return array
      */
-    public function getSuccessPage($request): array {
+    public function getStripeSuccessPage($request): array {
 
         $plan           = $request->get('plan') ?? null;
         $billing        = $this->getCustomerBillingInfo($request);
@@ -104,7 +104,7 @@ class SubscriptionService {
      * @param $data
      *
      */
-    public function newSubscription($data): void {
+    public function newStripeSubscription($data): void {
 
         $this->user->subscriptions()->create( [
             'name'      => $data['planId'],
@@ -373,6 +373,36 @@ class SubscriptionService {
             "success" => true,
             "message" => "Your subscription has been resumed"
         ];
+    }
+
+    /**
+     * create new user subscription and update user billing info from PayPal Data
+     *
+     * @param $data
+     *
+     */
+    public function newPayPalSubscription($data): void {
+
+        $this->user->subscriptions()->create( [
+            'name'      => $data['planId'],
+            'sub_id'    => $data['subId'],
+            'status'    => "active"
+        ] );
+
+        $this->user->update([
+            'pm_type'       => $data['paymentType'],
+        ]);
+
+        if ($this->user->email_subscription) {
+
+            $userData = ( [
+                'plan'    => ucfirst($data['planId']),
+                'userID'  => $this->user->id,
+            ] );
+
+            $this->user->notify( new NotifyAboutUpgrade( $userData ) );
+        }
+
     }
 
     /*public function createManualSubscription($code) {

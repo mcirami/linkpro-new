@@ -795,3 +795,55 @@ a.delete {
     }
 
 }
+
+ul.breadcrumb_list {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    align-items: center;
+    -webkit-align-items: center;
+    min-height: unset;
+    color: $blue;
+
+    svg {
+        font-size: 1.5rem;
+    }
+
+    li {
+        margin-bottom: 0;
+    }
+
+    a {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;justify-content: flex-start;
+        -webkit-justify-content: flex-start;
+        align-items: center;
+        -webkit-align-items: center;
+        color: $blue;
+
+        &:hover {
+            color: $hoverBlue;
+        }
+
+        svg {
+            margin-right: 0;
+        }
+    }
+
+}

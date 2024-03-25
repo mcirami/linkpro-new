@@ -10,7 +10,7 @@ use App\Http\Traits\BillingTrait;
 use Inertia\Inertia;
 use Inertia\Response;
 use Stripe\Exception\ApiErrorException;
-
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 class SubscriptionController extends Controller
 {
     use BillingTrait;
@@ -34,15 +34,15 @@ class SubscriptionController extends Controller
      * @param Request $request
      * @param SubscriptionService $subscriptionService
      *
-     * @return Response
+     * @return void
      */
-    public function subscribeSuccess(Request $request, SubscriptionService $subscriptionService): \Inertia\Response {
+    public function stripeSubscribeSuccess(Request $request, SubscriptionService $subscriptionService): void {
 
-        $data = $subscriptionService->getSuccessPage($request);
+        $data = $subscriptionService->getStripeSuccessPage($request);
 
-        $subscriptionService->newSubscription($data);
+        $subscriptionService->newStripeSubscription($data);
 
-        return Inertia::render('Checkout/Success')->with(['type' => 'subscription', 'name' => $data['customerName'] ]);
+        $this->showSuccessPage(null, 'subscription', $data['customerName']);
     }
 
     public function cancelCheckout(): Response {
@@ -124,5 +124,41 @@ class SubscriptionController extends Controller
             'success' => $data["success"],
             'message' => $data["message"],
         ]);
+    }
+
+    /**
+     * @param Request|null $request
+     * @param $type
+     * @param $name
+     *
+     * @return Response
+     */
+    public function showSuccessPage(Request $request = null, $type = null, $name = null): Response {
+
+        if(isset($request->type)) {
+            $type = $request->type;
+        }
+
+        return Inertia::render('Checkout/Success')->with(['type' => $type, 'name' => $name ]);
+    }
+
+    public function payPalSubscribeSuccess(Request $request, SubscriptionService $subscriptionService) {
+        /*
+         * 'order_id' : data.orderID,
+            'sub_id' : data.subscriptionID,
+            'payment_type' : data.paymentSource
+         *
+         * */
+
+        $subscriptionService->newPayPalSubscription($request);
+
+        return response()->json([
+            'success' => true,
+        ]);
+
+    }
+
+    public function payPalCancel(Request $request) {
+        dd($request);
     }
 }

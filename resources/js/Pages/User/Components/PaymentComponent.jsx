@@ -32,6 +32,9 @@ const PaymentComponent = ({userInfo}) => {
                     {pm_type && pm_type.includes('link') &&
                         <img src={Vapor.asset('/images/link-by-stripe.png')} alt="" />
                     }
+                    {pm_type && pm_type.includes('paypal') &&
+                        <img src={Vapor.asset('/images/paypal.png')} alt=""/>
+                    }
                 </div>
             }
             <a target="_blank" href={`https://checkout.link.pro/p/login/test_3cs6pE5zK02p6Nq145?prefilled_email=` + email}

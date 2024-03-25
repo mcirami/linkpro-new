@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
-import {Head, usePage} from '@inertiajs/react';
+import {Head, router, usePage} from '@inertiajs/react';
 import PaymentComponent from '@/Pages/User/Components/PaymentComponent.jsx';
 import UserForm from '@/Pages/User/Components/UserForm.jsx';
 import SetFlash from '@/Utils/SetFlash.jsx';

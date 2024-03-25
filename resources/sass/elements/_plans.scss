@@ -64,7 +64,7 @@
             font-size: 1.3rem;
         }
 
-        ul {
+        ul:not(.breadcrumb_list) {
             list-style: none;
             padding-left: 0;
             margin: 0 auto;
