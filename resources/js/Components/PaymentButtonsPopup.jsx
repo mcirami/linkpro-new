@@ -9,7 +9,7 @@ export const PaymentButtonsPopup = ({showPaymentButtonPopup, setShowPaymentButto
 
     const [message, setMessage] = useState(null);
     const initialOptions = {
-        clientId : "ARmNiRPSPQB9KIcuJ6MHMY4OyWSGDcWm3qPFIzab5AOCG682Xvnw_PCwoF9IRiQsVgHMyKI_bATXkTGz",
+        clientId : "",
         intent: "subscription",
         components: "buttons",
         vault: "true",
