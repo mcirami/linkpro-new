@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Services\SubscriptionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\BillingTrait;
 use Inertia\Inertia;
 use Inertia\Response;
 use Stripe\Exception\ApiErrorException;
-use Srmklive\PayPal\Services\PayPal as PayPalClient;
+
 class SubscriptionController extends Controller
 {
     use BillingTrait;
@@ -58,11 +59,14 @@ class SubscriptionController extends Controller
     public function changePlan(Request $request, SubscriptionService $subscriptionService): JsonResponse {
 
         $plan = $request->get('plan');
+        $pmType = $request->get('pmType') ?: null;
         $user = Auth::user();
-        $defaultPage = $request->get('defaultPage') ? $request->get('defaultPage') : null;
+        $defaultPage = $request->get('defaultPage') ?: null;
         $url = '/dashboard';
 
-        $subscriptionService->updateGateway($user, $request);
+        if ($pmType && $pmType!= 'paypal') {
+            $subscriptionService->updateGateway( $request );
+        }
 
         $data = $subscriptionService->updateSubscription( $plan, $defaultPage );
 
@@ -72,7 +76,7 @@ class SubscriptionController extends Controller
             $url  = '/dashboard/pages/' . $page->id;
         }
 
-        return response()->json(['success' => $data["success"], 'message' => $data["message"], 'url' => $url, 'path' => $path]);
+        return response()->json(['success' => $data["success"], 'message' => $data["message"], 'url' => $url]);
 
     }
 
@@ -85,8 +89,9 @@ class SubscriptionController extends Controller
     public function showPlans(Request $request, SubscriptionService $subscriptionService): Response {
 
         $path = $request->session()->get('_previous');
+        $env = App::environment();
 
-        return Inertia::render('Plans/Plans')->with([ 'path' => $path["url"] ]);
+        return Inertia::render('Plans/Plans')->with([ 'path' => $path["url"], 'env' => $env ]);
     }
 
     /**
@@ -142,13 +147,20 @@ class SubscriptionController extends Controller
         return Inertia::render('Checkout/Success')->with(['type' => $type, 'name' => $name ]);
     }
 
-    public function payPalSubscribeSuccess(Request $request, SubscriptionService $subscriptionService) {
-        /*
-         * 'order_id' : data.orderID,
-            'sub_id' : data.subscriptionID,
-            'payment_type' : data.paymentSource
-         *
-         * */
+    public function getPayPalClient() {
+        $payPalClient = App::environment(['local', 'staging']) ? config('paypal.sandbox.client_id') : config('paypal.live.client_id');
+        return response()->json([
+            'payPalClient' => $payPalClient,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param SubscriptionService $subscriptionService
+     *
+     * @return JsonResponse
+     */
+    public function payPalSubscribeSuccess(Request $request, SubscriptionService $subscriptionService): JsonResponse {
 
         $subscriptionService->newPayPalSubscription($request);
 
@@ -156,9 +168,5 @@ class SubscriptionController extends Controller
             'success' => true,
         ]);
 
-    }
-
-    public function payPalCancel(Request $request) {
-        dd($request);
     }
 }

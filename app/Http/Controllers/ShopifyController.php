@@ -44,10 +44,9 @@ class ShopifyController extends Controller
             $domain = $shopifyUser->getNickname();
 
             $shopify = new Shopify(
-                //env('SHOPIFY_API_KEY'),
                 $accessToken,
                 $domain,
-                env('SHOPIFY_API_VERSION')
+                config('services.shopify.api_version')
             );
 
             $products = $shopify->getProducts()->toArray();

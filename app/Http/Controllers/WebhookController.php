@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\WebhookService;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use App\Http\Traits\BillingTrait;
 use Stripe\Webhook;
@@ -101,9 +102,14 @@ class WebhookController extends Controller
 
         //$stripe = $this->createGateway();
         if ($type == "customer") {
-            $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
-        }else {
-            $endpointSecret = env('STRIPE_PRODUCT_WEBHOOK_SECRET');
+            $endpointSecret = App::environment('local', 'staging') ?
+                config('services.stripe.test_webhook_secret') :
+                config('services.stripe.webhook_secret');
+
+        } else {
+            $endpointSecret = App::environment('local', 'staging') ?
+                config('services.stripe.test_product_webhook_secret') :
+                config('services.stripe.product_webhook_secret');
         }
 
         $payload = @file_get_contents('php://input');

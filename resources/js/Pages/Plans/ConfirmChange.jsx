@@ -1,11 +1,15 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {changePlan} from '@/Services/SubscriptionRequests.jsx';
 import {router} from '@inertiajs/react';
 
-const ConfirmChange = ({confirmChange, setConfirmChange, setError, setShowLoader}) => {
+const ConfirmChange = ({
+                           confirmChange,
+                           setConfirmChange,
+                           setError,
+                           setShowLoader
+}) => {
 
-    const {type, plan, subId} = confirmChange;
-
+    const {type, plan, subId, pmType} = confirmChange;
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
@@ -18,7 +22,8 @@ const ConfirmChange = ({confirmChange, setConfirmChange, setError, setShowLoader
 
         const packets = {
             plan: plan,
-            subId: subId
+            subId: subId,
+            pmType: pmType
         }
 
         changePlan(packets).then((response) => {
@@ -44,7 +49,9 @@ const ConfirmChange = ({confirmChange, setConfirmChange, setError, setShowLoader
                 icon: ""
             })
         })
-    });
+
+
+    }, []);
 
     const handleClose = useCallback((e) => {
         e.preventDefault();
@@ -53,7 +60,7 @@ const ConfirmChange = ({confirmChange, setConfirmChange, setError, setShowLoader
             show: false,
             level: ""
         })
-    })
+    }, [])
 
     return (
         <div id="confirm_popup">
@@ -65,7 +72,7 @@ const ConfirmChange = ({confirmChange, setConfirmChange, setError, setShowLoader
                 </div>
                 <h2>Confirm</h2>
                 <div className="text_wrap">
-                    <p className="confirm_text">Are you sure you want to <span id="text_type">{type}</span> your plan?</p>
+                    <p className="confirm_text">Are you sure you want to <span id="text_type">change</span> your plan?</p>
                     {type !== "cancel" &&
                         <p>Your default payment method will automatically be used. </p>
                     }

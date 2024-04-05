@@ -5,7 +5,6 @@ import '../sass/app.scss'
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { StrictMode } from 'react';
 
 import 'laravel-vapor';

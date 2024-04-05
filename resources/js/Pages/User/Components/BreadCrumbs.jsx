@@ -18,14 +18,13 @@ const BreadCrumbs = ({
                     </a>
                 </li>
             }
-            { ((showSection.includes("cancel") || showSection.includes("changePlan") ) &&
-                    showSection.includes("plans") )
-                &&
+            { ((showSection.includes("cancel") || showSection.includes("changePlan") || showSection.includes("changePayPalPlan") ) &&
+                    showSection.includes("plans") ) &&
                 <li>
                     <a className="back" href="#" onClick={(e) => {
                         e.preventDefault();
                         setShowSection(showSection.filter((section) => {
-                            return section !== "cancel" && section !== "changePlan"
+                            return section !== "cancel" && section !== "changePlan" && section !== "changePayPalPlan"
                         }))
                     }}>
                         <BiChevronLeft />PLANS

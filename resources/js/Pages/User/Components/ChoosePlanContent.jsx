@@ -2,16 +2,26 @@ import React, {useEffect, useState} from 'react';
 import {getUserPages} from '@/Services/UserService.jsx';
 import ConfirmPlanChange from '@/Pages/User/Components/ConfirmPlanChange.jsx';
 import {changePlan} from '@/Services/SubscriptionRequests.jsx';
+import {PaymentButtonsPopup} from '@/Components/PaymentButtonsPopup.jsx';
 
 const ChoosePlanContent = ({
                                showSection,
                                setShowSection,
                                subscription,
                                setSubscription,
-                               setShowLoader
+                               setShowLoader,
+                               pmType,
+                               env
 }) => {
 
     const [pages, setPages] = useState({});
+
+    const [showPaymentButtonPopup, setShowPaymentButtonPopup] = useState({
+        show: false,
+        type: "",
+        plan: "",
+        pmType: ""
+    });
 
     useEffect(() => {
 
@@ -39,28 +49,40 @@ const ChoosePlanContent = ({
             icon: ""
         })
 
-        const packets = {
-            plan: subscriptionLevel,
-            subId: subscription.sub_id
-        }
-
-        changePlan(packets).then((response) => {
-            if(response.success) {
-                setShowSection([]);
-                setSubscription(prev => ({
-                    ...prev,
-                    name: subscriptionLevel
-                }))
+        if(pmType === "paypal") {
+            setShowSection((prev) => ([
+                ...prev,
+                "changePayPalPlan"
+            ]))
+            setShowPaymentButtonPopup({
+                show: false,
+                type: "changePlan",
+                plan: subscriptionLevel,
+                pmType: pmType,
+                page: "user"
+            })
+        } else {
+            const packets = {
+                plan: subscriptionLevel,
+                subId: subscription.sub_id
             }
 
-            setShowLoader({
-                show: false,
-                position: "",
-                icon: ""
+            changePlan(packets).then((response) => {
+                if(response.success) {
+                    setShowSection([]);
+                    setSubscription(prev => ({
+                        ...prev,
+                        name: subscriptionLevel
+                    }))
+                }
             })
+        }
+
+        setShowLoader({
+            show: false,
+            position: "",
+            icon: ""
         })
-
-
     }
 
     return (
@@ -75,8 +97,17 @@ const ChoosePlanContent = ({
                         setShowSection={setShowSection}
                         setSubscription={setSubscription}
                         setShowLoader={setShowLoader}
-
+                        pmType={pmType}
+                        env={env}
                     />
+                    :
+                    showSection.includes("changePayPalPlan") ?
+                        <PaymentButtonsPopup
+                            showPaymentButtonPopup={showPaymentButtonPopup}
+                            setShowPaymentButtonPopup={setShowPaymentButtonPopup}
+                            env={env}
+                            subId={subscription.sub_id}
+                        />
                     :
                     <>
                         <div className="icon_wrap">

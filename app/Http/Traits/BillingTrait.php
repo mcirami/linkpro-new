@@ -2,9 +2,11 @@
 
 namespace App\Http\Traits;
 use App\Models\Referral;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Stripe\Exception\ApiErrorException;
 use Stripe\StripeClient;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 trait BillingTrait {
 
@@ -14,7 +16,11 @@ trait BillingTrait {
      */
     public function createGateway(): StripeClient {
 
-        return new StripeClient(env('STRIPE_SECRET'));
+        if (App::environment('local', 'staging')) {
+            return new StripeClient(config('services.stripe.sandbox_secret'));
+        } else {
+            return new StripeClient(config('services.stripe.secret'));
+        }
 
     }
 
@@ -83,6 +89,13 @@ trait BillingTrait {
 
         return $data;
 
+    }
+
+    public function getAccessToken() {
+        $provider = new PayPalClient;
+        $tokenArray = $provider->getAccessToken();
+
+        return $tokenArray['access_token'];
     }
 
     /**

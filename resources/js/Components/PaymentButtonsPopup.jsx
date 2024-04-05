@@ -2,20 +2,43 @@ import React, {useEffect, useState} from 'react';
 import {Link, router} from '@inertiajs/react';
 import {BiChevronLeft} from 'react-icons/bi';
 import {PayPalButtons, usePayPalScriptReducer, PayPalScriptProvider} from "@paypal/react-paypal-js";
-import {saveSubscription} from '@/Services/PayPalRequests.jsx';
+import {
+    saveSubscription,
+    getPlanId,
+    updatePlan,
+    getClientId
+} from '@/Services/PayPalRequests.jsx';
 
-export const PaymentButtonsPopup = ({showPaymentButtonPopup, setShowPaymentButtonPopup}) => {
-    //const PayPalClientId = process.env.PAYPAL_SANDBOX_CLIENT_ID;
+export const PaymentButtonsPopup = ({
+                                        showPaymentButtonPopup,
+                                        setShowPaymentButtonPopup,
+                                        env,
+                                        subId,
+                                        defaultPage = null
+                                    }) => {
 
     const [message, setMessage] = useState(null);
-    const initialOptions = {
-        clientId : "ARmNiRPSPQB9KIcuJ6MHMY4OyWSGDcWm3qPFIzab5AOCG682Xvnw_PCwoF9IRiQsVgHMyKI_bATXkTGz",
-        intent: "subscription",
-        components: "buttons",
-        vault: "true",
-        "disable-funding": "paylater,card",
-        "data-sdk-integration-source":"integrationbuilder_sc",
-    };
+    const [isLoading, setIsLoading] = useState(true);
+    const [initialOptions, setInitialOptions] = useState({});
+
+    useEffect(() => {
+        getClientId().then((response) => {
+            if(response.success) {
+
+                setInitialOptions({
+                    clientId : response.client,
+                    intent: "subscription",
+                    components: "buttons",
+                    vault: "true",
+                    "disable-funding": "paylater,card",
+                    "data-sdk-integration-source":"integrationbuilder_sc",
+                })
+
+                setIsLoading(false);
+            }
+        })
+
+    }, []);
 
     const ButtonWrapper = ({type}) => {
         const [{ options }, dispatch] = usePayPalScriptReducer();
@@ -36,23 +59,45 @@ export const PaymentButtonsPopup = ({showPaymentButtonPopup, setShowPaymentButto
                 layout: "vertical",
                 height: 45,
                 disableMaxWidth: true,
-                label: "checkout"
+                label: "paypal"
             }}
-            createSubscription={(data, actions) => createSubscription(data, actions)}
+            createSubscription={(data, actions) =>
+                showPaymentButtonPopup.type === "purchase" ?
+                    createSubscription(data, actions) :
+                    changePayPalPlan(data,actions)}
             onApprove={(data, actions) => onApprove(data, actions)}
         />);
     }
 
     const createSubscription = (data, actions) => {
 
-        //TODO: Dynamic plan ID
+        const planId = getPlanId(showPaymentButtonPopup.plan, env)
+
         return actions.subscription.create({
-            plan_id: "P-8TP42972M2139103JMX624OI",
-            userAction: "SUBSCRIBE_NOW"
+            plan_id: planId,
+            "application_context": {
+                userAction: "SUBSCRIBE_NOW"
+            }
         }).catch(error => {
             console.error(error);
             setMessage(`Could not initiate PayPal Subscription...`);
         })
+    }
+
+    /*
+    * change plan only for PayPal Gateway.
+    * **/
+    const changePayPalPlan = (data, actions) => {
+        const planId = getPlanId(showPaymentButtonPopup.plan, env)
+
+        return actions.subscription.revise(
+            subId,
+            {
+                plan_id: planId
+            }).catch(error => {
+                console.error(error);
+                setMessage(`Could not initiate PayPal Subscription...`);
+            })
     }
 
     const onApprove = (data, actions) => {
@@ -65,24 +110,52 @@ export const PaymentButtonsPopup = ({showPaymentButtonPopup, setShowPaymentButto
         *
         * */
 
-        const packets = {
-            'order_id' : data.orderID,
-            'subId' : data.subscriptionID,
-            'paymentType' : data.paymentSource,
-            'planId' : showPaymentButtonPopup.plan
+        if (showPaymentButtonPopup.pmType === "paypal" && showPaymentButtonPopup.type === "changePlan") {
+            const packets = {
+                plan: showPaymentButtonPopup.plan,
+                subId: subId,
+                pmType: showPaymentButtonPopup.pmType,
+                defaultPage: defaultPage
+            }
+            updatePlan(packets).then((response) => {
+                if(response.success) {
+                    router.get(response.url, {message: response.message})
+                }
+            })
+        } else {
+            const subscriptionId = data.subscriptionID;
+            actions.subscription.get({
+                id:  subscriptionId,
+            }).then((details) => {
+
+                const userName = details.subscriber.name.given_name;
+                const packets = {
+                    'order_id'      : data.orderID,
+                    'subId'         : subscriptionId,
+                    'paymentType'   : data.paymentSource,
+                    'planId'        : showPaymentButtonPopup.plan,
+                    'userEmail'     : details.subscriber.email_address,
+                }
+
+                saveSubscription(packets).then((response) => {
+
+                    if(response.success) {
+                        router.visit(route('show.subscribe.success'), {
+                            method: 'get',
+                            data: {
+                                type: "subscription",
+                                name: userName
+                            }
+                        })
+                    }
+                });
+
+            }).catch(error => {
+                console.error(error);
+                setMessage(`Could not initiate PayPal Subscription...`);
+            })
         }
 
-        saveSubscription(packets).then((response) => {
-
-            if(response.success) {
-                router.visit(route('show.subscribe.success'), {
-                    method: 'get',
-                    data: {
-                        type: "subscription"
-                    }
-                })
-            }
-        });
 
         /*actions.subscription.activate(data.subscriptionID).then(() => {
             const redirectURL = route('dashboard');
@@ -92,37 +165,47 @@ export const PaymentButtonsPopup = ({showPaymentButtonPopup, setShowPaymentButto
     }
 
     return (
+
+        !isLoading &&
         <>
-            <div className="breadcrumb_links">
-                <ul className="breadcrumb_list">
-                    <li>
-                        <a className="back" href="#" onClick={(e) => {
-                            e.preventDefault();
-                            setShowPaymentButtonPopup({
-                                show: false,
-                                plan: ""
-                            });
-                        }}>
-                            <BiChevronLeft/>BACK TO PLANS
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            {!showPaymentButtonPopup.page &&
+                <div className="breadcrumb_links">
+                    <ul className="breadcrumb_list">
+                        <li>
+                            <a className="back" href="#" onClick={(e) => {
+                                e.preventDefault();
+                                setShowPaymentButtonPopup({
+                                    show: false,
+                                    plan: ""
+                                });
+                            }}>
+                                <BiChevronLeft/>BACK TO PLANS
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            }
             <div className="buttons_wrap mt-5">
+                {showPaymentButtonPopup.type === "changePlan" &&
+                    <h4 className="mb-3">In order to change your plan, you will need to log into the PayPal account you are using for your subscription.</h4>
+                }
                 <PayPalScriptProvider options={initialOptions}>
-                    <ButtonWrapper type="subscription" />
+                    <ButtonWrapper type="subscription"/>
                 </PayPalScriptProvider>
                 {message &&
                     <p>{message}</p>
                 }
 
-                <div className="button_row mt-3">
-                    <Link className='button black_gradient' href={'/subscribe?plan=' + showPaymentButtonPopup.plan}>
-                        Checkout With Card
-                    </Link>
-                    <p>(Credit Card, GooglePay, ApplePay, CashApp)</p>
-                </div>
+                {showPaymentButtonPopup.type !== "changePlan" &&
+                    <div className="button_row mt-3">
+                        <Link className='button black_gradient' href={'/subscribe?plan=' + showPaymentButtonPopup.plan}>
+                            Checkout With Card
+                        </Link>
+                        <p>(Credit Card, GooglePay, ApplePay, CashApp)</p>
+                    </div>
+                }
             </div>
         </>
+
     );
 };

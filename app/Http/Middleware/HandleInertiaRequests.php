@@ -38,10 +38,20 @@ class HandleInertiaRequests extends Middleware
         $subscription = null;
         $defaultPage = null;
         $course = $request->route('course');
+        $subData = null;
 
         if($user) {
             $subscription = $user->subscriptions()->first();
             $defaultPage = $request->user()->pages()->where('default', '=', 1)->pluck('id')->first();
+
+            if($subscription) {
+                $subData = [
+                    'name'      => $subscription->name,
+                    'ends_at'   => $subscription->ends_at,
+                    'status'    => $subscription->status,
+                    'sub_id'    => $subscription->sub_id,
+                ];
+            }
         }
 
         return [
@@ -51,12 +61,7 @@ class HandleInertiaRequests extends Middleware
                     'userInfo'      => $user,
                     'permissions'   => $user ? $user->getAllPermissions()->pluck('name') : null,
                     'roles'         => $user ? $user->getRoleNames() : null,
-                    'subscription'  => [
-                        'name'      => $subscription ? $subscription->name : null,
-                        'ends_at'   => $subscription ? $subscription->ends_at : null,
-                        'status'    => $subscription ? $subscription->status : null,
-                        'sub_id'    => $subscription ? $subscription->sub_id : null,
-                    ],
+                    'subscription'  => $subData,
                     'courseData'    => $course,
                     'defaultPage'   => $defaultPage
                 ]

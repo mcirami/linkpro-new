@@ -132,31 +132,12 @@ class SubscriptionService {
     }
 
     /**
-     * @param $user
      * @param $request
      *
      * @return void
      */
-    public function updateGateway($user, $request): void {
-
-        $price = $this->getPlanDetails($request->get('plan'));
-        $stripe = $this->createGateway();
-        try {
-
-            //$subscriptions = $stripe->subscriptions->all(['customer' => $user->billing_id]);
-
-            $stripe->subscriptions->update(
-                $request->get('subId'),
-                ['items'    => [[
-                    //'id'    => $subscriptions->data[0]->items->data[0]->id,
-                    'price' => $price['ApiId'],
-                ]]],
-            );
-
-        } catch ( ApiErrorException $e ) {
-            http_response_code(500);
-            $this->saveErrors($e);
-        }
+    public function updateGateway($request): void {
+        $this->updateStripeInfo($request);
     }
 
     /**
@@ -271,7 +252,7 @@ class SubscriptionService {
      *
      * Cancel subscription and update user access to content
      *
-     * @param $request
+     * @param $gatewayData
      *
      * @return array
      */
@@ -339,6 +320,33 @@ class SubscriptionService {
     }
 
     /**
+     * @param $request
+     *
+     * @return void
+     */
+    private function updateStripeInfo($request): void {
+
+        $price = $this->getPlanDetails($request->get('plan'));
+        $stripe = $this->createGateway();
+        try {
+
+            //$subscriptions = $stripe->subscriptions->all(['customer' => $user->billing_id]);
+
+            $stripe->subscriptions->update(
+                $request->get('subId'),
+                ['items'    => [[
+                    //'id'    => $subscriptions->data[0]->items->data[0]->id,
+                    'price' => $price['ApiId'],
+                ]]],
+            );
+
+        } catch ( ApiErrorException $e ) {
+            http_response_code(500);
+            $this->saveErrors($e);
+        }
+    }
+
+    /**
      *
      * Resume subscription by creating new subscription and setting start date to previous subscription end date
      * If previous subscription has expired then create new subscription without end date
@@ -391,6 +399,7 @@ class SubscriptionService {
 
         $this->user->update([
             'pm_type'       => $data['paymentType'],
+            'billing_id'    => $data['userEmail']
         ]);
 
         if ($this->user->email_subscription) {

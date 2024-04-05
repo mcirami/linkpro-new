@@ -15,10 +15,10 @@ return [
     */
 
     'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
-        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
-        'scheme' => 'https',
+        'domain'    => env('MAILGUN_DOMAIN'),
+        'secret'    => env('MAILGUN_SECRET'),
+        'endpoint'  => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        'scheme'    => 'https',
     ],
 
     'postmark' => [
@@ -26,25 +26,29 @@ return [
     ],
 
     'ses' => [
-        'key' => env('AWS_ACCESS_KEY_ID'),
-        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
-    ],
-    'braintree' => [
-        'environment' => env('BRAINTREE_ENV', 'sandbox'),
-        'merchantId' => env('BRAINTREE_MERCHANT_ID'),
-        'publicKey' => env('BRAINTREE_PUBLIC_KEY'),
-        'privateKey' => env('BRAINTREE_PRIVATE_KEY')
+        'key'       => env('AWS_ACCESS_KEY_ID'),
+        'secret'    => env('AWS_SECRET_ACCESS_KEY'),
+        'region'    => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'mailchimp' => [
-        'client_id' => env('MAILCHIMP_CLIENT_ID'),
+        'client_id'     => env('MAILCHIMP_CLIENT_ID'),
         'client_secret' => env('MAILCHIMP_CLIENT_SECRET'),
-        'redirect' => env('MAILCHIMP_REDIRECT_URI')
+        'redirect'      => env('MAILCHIMP_REDIRECT_URI')
     ],
     'shopify' => [
-        'client_id' => env('SHOPIFY_CLIENT_ID'),
+        'client_id'     => env('SHOPIFY_CLIENT_ID'),
         'client_secret' => env('SHOPIFY_CLIENT_SECRET'),
-        'redirect' => env('SHOPIFY_REDIRECT_URI'),
-        'scopes' => env('SHOPIFY_APP_SCOPES')
+        'redirect'      => env('SHOPIFY_REDIRECT_URI'),
+        'scopes'        => env('SHOPIFY_APP_SCOPES')
+    ],
+    'stripe' => [
+        'key'            => env('STRIPE_KEY'),
+        'secret'         => env('STRIPE_SECRET'),
+        'sandbox_key'    => env('STRIPE_SANDBOX_KEY'),
+        'sandbox_secret' => env('STRIPE_SANDBOX_SECRET'),
+        'webhook_secret'                => env('STRIPE_WEBHOOK_SECRET'),
+        'product_webhook_secret'        => env('STRIPE_PRODUCT_WEBHOOK_SECRET'),
+        'test_webhook_secret'           => env('STRIPE_TEST_WEBHOOK_SECRET'),
+        'test_product_webhook_secret'   => env('STRIPE_TEST_PRODUCT_WEBHOOK_SECRET')
     ]
 ];

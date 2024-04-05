@@ -1,15 +1,16 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Head, Link, router, usePage} from '@inertiajs/react';
+import {Head, Link, usePage} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import ConfirmChange from './ConfirmChange.jsx';
 import {Loader} from '@/Utils/Loader.jsx';
 import {PaymentButtonsPopup} from '@/components/PaymentButtonsPopup.jsx';
-function Plans({path}) {
+function Plans({path, env}) {
 
     const { auth } = usePage().props;
-    const subscriptionName = auth.user.subscription.name;
-    const status = auth.user.subscription.status;
-    const subId = auth.user.subscription.sub_id;
+    const subscriptionName = auth.user.subscription ? auth.user.subscription.name : null;
+    const status = auth.user.subscription ? auth.user.subscription.status : null;
+    const subId = auth.user.subscription ? auth.user.subscription.sub_id : null;
+    const pmType = auth.user.userInfo.pm_type;
 
     const [showLoader, setShowLoader] = useState({
         show: false,
@@ -31,6 +32,7 @@ function Plans({path}) {
 
     const [showPaymentButtonPopup, setShowPaymentButtonPopup] = useState({
         show: false,
+        type: "",
         plan: "",
     });
 
@@ -43,26 +45,38 @@ function Plans({path}) {
     }, []);
 
     useEffect(() => {
-        const date = new Date(auth.user.subscription.ends_at);
-        setSubEnd(date.setHours(23,59,59))
+        if(auth.user.subscription) {
+            const date = new Date(auth.user.subscription.ends_at);
+            setSubEnd(date.setHours(23, 59, 59))
+        }
     }, [])
 
-    const handleOnClick = useCallback((e, type, plan) => {
+    const handleUpgradeClick = useCallback((e, type, plan) => {
         e.preventDefault();
 
-        setConfirmChange({
-            show: true,
-            type: type,
-            plan: plan,
-            subId: e.target.dataset.sub
-        })
-
+        if (pmType === "paypal") {
+            setShowPaymentButtonPopup({
+                show: true,
+                type: type,
+                plan: plan,
+                pmType: pmType
+            })
+        } else {
+            setConfirmChange({
+                show: true,
+                type: type,
+                plan: plan,
+                subId: e.target.dataset.sub,
+                pmType: pmType,
+            })
+        }
     },[])
 
-    const handleButtonClick = useCallback((e, planName) => {
+    const handlePurchaseClick = useCallback((e, type, planName) => {
         e.preventDefault();
         setShowPaymentButtonPopup({
             show: true,
+            type: type,
             plan: planName
         })
     },[]);
@@ -72,13 +86,14 @@ function Plans({path}) {
             <Head title="Subscription Plans"/>
             <div className="container">
                 <div className="my_row form_page plans text-center">
-                    <div className={`card inline-block relative ${confirmChange.show || showPaymentButtonPopup.show ?
-                    'active' : ""} `}>
+                    <div className={`card inline-block relative ${confirmChange.show || showPaymentButtonPopup.show ? 'active' : ""} `}>
                     {showPaymentButtonPopup.show ?
 
                             <PaymentButtonsPopup
                                 showPaymentButtonPopup={showPaymentButtonPopup}
                                 setShowPaymentButtonPopup={setShowPaymentButtonPopup}
+                                env={env}
+                                subId={subId}
                             />
 
                         :
@@ -118,8 +133,7 @@ function Plans({path}) {
                                     :
 
                                     <div className={`my_row  ${
-                                        (subscriptionName === 'premier') &&
-                                        (status === 'active' ||
+                                        (subscriptionName === 'premier') && (status === 'active' ||
                                             status === 'canceled') ?
                                             'two_columns' :
                                             'three_columns'}`}>
@@ -163,23 +177,16 @@ function Plans({path}) {
                                                 </div>
                                                 <div className="button_row">
 
-                                                    {(subscriptionName ===
-                                                        'pro') &&
-                                                    (status === 'active' ||
-                                                        (status ===
-                                                            'canceled' &&
-                                                            currentDateTime <
-                                                            subEnd)) ?
+                                                    {(subscriptionName === 'pro') &&
+                                                    (status === 'active' || (status === 'canceled' && currentDateTime < subEnd)) ?
                                                         <span className="button disabled">Current</span>
                                                         :
-                                                        status ===
-                                                        'active' ?
+                                                        status === 'active' ?
                                                             <button className="button blue open_popup" data-type="downgrade" data-plan="pro">
                                                                 Downgrade My Plan
                                                             </button>
                                                             :
-                                                            <a className="button blue_gradient" href="#" onClick={(e) => handleButtonClick(
-                                                                e, 'pro')}>
+                                                            <a className="button blue_gradient" href="#" onClick={(e) => handlePurchaseClick(e, 'purchase', 'pro')}>
                                                                 Get Pro
                                                             </a>
                                                     }
@@ -227,24 +234,19 @@ function Plans({path}) {
                                                         <span className="button disabled">Current</span>
                                                         :
                                                         subscriptionName &&
-                                                        (status ===
-                                                            'active' ||
-                                                            (status ===
-                                                                'canceled' &&
-                                                                currentDateTime <
-                                                                subEnd)) &&
-                                                        subId !== 'bypass' ?
+                                                        (status === 'active' ||
+                                                            (status === 'canceled' && currentDateTime < subEnd)) ?
                                                             <button className="open_popup button black_gradient"
                                                                     data-sub={subId}
-                                                                    onClick={(e) => handleOnClick(
+                                                                    onClick={(e) => handleUpgradeClick(
                                                                         e,
-                                                                        'upgrade',
+                                                                        'changePlan',
                                                                         'premier')}
                                                             >
                                                                 Go Premier
                                                             </button>
                                                             :
-                                                            <a className="button black_gradient" href="#" onClick={(e) => handleButtonClick(e, "premier")}>
+                                                            <a className="button black_gradient" href="#" onClick={(e) => handlePurchaseClick(e,"purchase","premier")}>
                                                                 Go Premier
                                                             </a>
                                                 }

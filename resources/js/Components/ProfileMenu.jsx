@@ -17,8 +17,10 @@ const ProfileMenu = () => {
     }, []);
 
     useEffect(() => {
-        const date = new Date(auth.user.subscription.ends_at);
-        setSubEnd(date.setHours(23,59,59))
+        if(auth.user.subscription) {
+            const date = new Date(auth.user.subscription.ends_at);
+            setSubEnd(date.setHours(23, 59, 59))
+        }
 
     }, [])
 
@@ -27,7 +29,7 @@ const ProfileMenu = () => {
             {/*Right Side Of Navbar*/}
             <ul className="ml-auto">
                 {!isEmpty(userRoles) ?
-                     ( (userRoles.includes('admin') || userRoles.includes('lp.user')) && !auth.user.subscription.name ) ||
+                     ( (userRoles.includes('admin') || userRoles.includes('lp.user')) && !auth.user.subscription ) ||
                     (auth.user.subscription.name && auth.user.subscription.name !== "premier" && !auth.user.subscription.ends_at) ||
                     (auth.user.subscription.ends_at && subEnd < currentDateTime)  ?
                     <li className="upgrade_link">

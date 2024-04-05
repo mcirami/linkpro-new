@@ -61,7 +61,7 @@ const PlanComponent = ({
         <>
             <h2 className="text-uppercase">Plan Type</h2>
             <h4>Your Current Plan is</h4>
-            { (subscription && subscription.status === "active") || (subscription && subscription.status === "pending") ?
+            { (subscription && subscription.status === "active") ?
 
                 <>
                     <div className="plan_name">
@@ -97,8 +97,7 @@ const PlanComponent = ({
                         <img src={ Vapor.asset('images/plan-type-bg.png') } alt="" />
                     </div>
             }
-            { (subscription && subscription.status === "active") || (subscription && subscription.status === "pending") ?
-                userInfo.sub_id !== "bypass" &&
+            { (subscription && subscription.status === "active") ?
                 <a href="#" className='button blue' onClick={(e) => {
                     e.preventDefault();
                     setShowSection((prev) => [

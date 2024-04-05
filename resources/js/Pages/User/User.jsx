@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
-import {Head, router, usePage} from '@inertiajs/react';
+import {Head, usePage} from '@inertiajs/react';
 import PaymentComponent from '@/Pages/User/Components/PaymentComponent.jsx';
 import UserForm from '@/Pages/User/Components/UserForm.jsx';
 import SetFlash from '@/Utils/SetFlash.jsx';
@@ -10,18 +10,14 @@ import BreadCrumbs from '@/Pages/User/Components/BreadCrumbs.jsx';
 import {isEmpty} from 'lodash';
 import {Loader} from '@/Utils/Loader.jsx';
 
-const User = ({
-                  subscriptionInfo,
-                  payment_method,
-                  token
-}) => {
+const User = ({env}) => {
 
     const { auth } = usePage().props;
     const permissions = auth.user.permissions;
     const [userInfo, setUserInfo] = useState(auth.user.userInfo);
 
     const [showSection, setShowSection] = useState([]);
-    const [subscription, setSubscription] = useState(subscriptionInfo);
+    const [subscription, setSubscription] = useState(auth.user.subscription);
 
     const [showLoader, setShowLoader] = useState({
         show: false,
@@ -37,7 +33,7 @@ const User = ({
             <div className="container">
                 <div className={`user_account my_row text-center form_page plans ${permissions.includes('view subscription details') ? "mt-4" : "" }`}>
                     <h2 className="page_title">Update Account Settings</h2>
-                    <div className={`card inline-block relative`}>
+                    <div className={`card inline-block relative ${showSection.includes("changePlan") || showSection.includes("changePayPalPlan") && 'active'}`}>
 
                         {showLoader.show &&
                             <Loader
@@ -59,6 +55,8 @@ const User = ({
                                 subscription={subscription}
                                 setSubscription={setSubscription}
                                 setShowLoader={setShowLoader}
+                                pmType={userInfo.pm_type}
+                                env={env}
                             />
 
                         :

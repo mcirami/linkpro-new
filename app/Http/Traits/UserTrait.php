@@ -20,7 +20,12 @@ trait UserTrait {
         return $user->pages()->where('default', true)->pluck('name');
     }
 
-    public function enableUsersPages($user) {
+    /**
+     * @param $user
+     *
+     * @return void
+     */
+    public function enableUsersPages($user): void {
         $pages = $user->pages()->get();
 
         foreach ($pages as $page) {
@@ -31,7 +36,12 @@ trait UserTrait {
         }
     }
 
-    public function checkUserSubscription($user) {
+    /**
+     * @param $user
+     *
+     * @return bool
+     */
+    public function checkUserSubscription($user): bool {
 
         $userSub = $this->getUserSubscriptions($user);
 
