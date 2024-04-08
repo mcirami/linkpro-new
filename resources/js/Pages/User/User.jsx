@@ -9,6 +9,7 @@ import PlanComponent from '@/Pages/User/Components/PlanComponent.jsx';
 import BreadCrumbs from '@/Pages/User/Components/BreadCrumbs.jsx';
 import {isEmpty} from 'lodash';
 import {Loader} from '@/Utils/Loader.jsx';
+import PayPalCancel from '@/Pages/User/Components/PayPalCancel.jsx';
 
 const User = ({env}) => {
 
@@ -47,7 +48,7 @@ const User = ({env}) => {
                                 setShowSection={setShowSection}
                             />
                         }
-                        {showSection.includes("plans") || showSection.includes("cancel") ?
+                        {showSection.includes("plans") || (showSection.includes("cancel") && userInfo.pm_type !== "paypal") ?
 
                             <ChoosePlanContent
                                 showSection={showSection}
@@ -60,6 +61,11 @@ const User = ({env}) => {
                             />
 
                         :
+                            showSection.includes("cancel") ?
+                                <PayPalCancel
+                                    subName={subscription.name}
+                                />
+                                :
                             <div className={`w-full inline-block ${ (permissions.includes("view subscription details") &&
                                 (!subscription || subscription.sub_id === "bypass") ) || (!permissions.includes("view subscription details") && permissions.includes('view courses')) ? "two_columns" : ""}`}>
                                 <div className="card-body w-full inline-block">

@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {resumeSubscription} from '@/Services/SubscriptionRequests.jsx';
 import {Link} from '@inertiajs/react';
+import {
+    GetCurrentTime,
+    GetHumanReadableTime,
+} from '@/Services/TimeRequests.jsx';
 
 const PlanComponent = ({
                            subscription,
@@ -14,14 +18,12 @@ const PlanComponent = ({
     const [subEnd, setSubEnd]   = useState("");
 
     useEffect(() => {
-        const today = new Date();
-        setCurrentDateTime(today.setHours(0,0,0));
+        setCurrentDateTime(GetCurrentTime);
     }, []);
 
     useEffect(() => {
         if (subscription && subscription.ends_at) {
-            const date = new Date(subscription.ends_at);
-            setSubEnd(date.setHours(23, 59, 59))
+            setSubEnd(GetHumanReadableTime(subscription.ends_at))
         }
 
     }, [])

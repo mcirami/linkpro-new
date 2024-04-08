@@ -110,7 +110,7 @@ export const PaymentButtonsPopup = ({
         *
         * */
 
-        if (showPaymentButtonPopup.pmType === "paypal" && showPaymentButtonPopup.type === "changePlan") {
+        if (showPaymentButtonPopup.type === "changePlan") {
             const packets = {
                 plan: showPaymentButtonPopup.plan,
                 subId: subId,
@@ -164,6 +164,7 @@ export const PaymentButtonsPopup = ({
 
     }
 
+    console.log("showPaymentButtonPopup: ", showPaymentButtonPopup);
     return (
 
         !isLoading &&

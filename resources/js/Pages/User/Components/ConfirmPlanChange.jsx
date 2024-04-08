@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {cancelSubscription, changePlan} from '@/Services/SubscriptionRequests.jsx';
 import {PaymentButtonsPopup} from '@/Components/PaymentButtonsPopup.jsx';
+import {getUserPages} from '@/Services/UserService.jsx';
 
 const ConfirmPlanChange = ({
-                               pages,
                                showSection,
                                setShowSection,
                                subscription,
@@ -20,16 +20,27 @@ const ConfirmPlanChange = ({
         plan: "",
         pmType: ""
     });
+    const [pages, setPages] = useState({});
+
+    useEffect(() => {
+        getUserPages().then((response) => {
+            if (response.success) {
+                const pages = response.pages;
+                setPages(pages);
+                const page = pages.filter((page) => {
+                    if(page.default) {
+                        return page;
+                    }
+                })
+
+                setDefaultPage(page[0].id);
+            }
+        })
+    },[])
 
     useEffect(() => {
 
-        const page = pages.filter((page) => {
-            if(page.default) {
-                return page;
-            }
-        })
 
-        setDefaultPage(page[0].id);
 
     },[])
     const handleClick = (e) => {
@@ -41,9 +52,14 @@ const ConfirmPlanChange = ({
         })
 
         if(pmType === "paypal") {
+            setShowSection((prev) => ([
+                ...prev,
+                "changePayPalPlan"
+            ]))
+            const changeType = showSection.includes("cancel") ? "cancel" : "changePlan";
             setShowPaymentButtonPopup({
                 show: true,
-                type: "changePlan",
+                type: changeType,
                 plan: "pro",
                 pmType: pmType,
                 page: 'user'
@@ -66,9 +82,7 @@ const ConfirmPlanChange = ({
                         }))
                     }
                 })
-            }
-
-            if (showSection.includes("changePlan")) {
+            } else if (showSection.includes("changePlan")) {
 
                 const packets = {
                     defaultPage: defaultPage,
@@ -151,7 +165,7 @@ const ConfirmPlanChange = ({
                                href="#"
                                onClick={(e) => {
                                    setShowSection(showSection.filter((section) => {
-                                       return section !== "changePlan" && section !== "cancel"
+                                       return section !== "changePlan" && section !== "cancel" && section !== "changePayPalPlan"
                                    }))
                                }}
                             >No</a>
