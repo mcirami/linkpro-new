@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Link, usePage} from '@inertiajs/react';
 import {isEmpty} from 'lodash';
+import {
+    GetCurrentTime,
+    GetHumanReadableTime,
+} from '@/Services/TimeRequests.jsx';
 
 const ProfileMenu = () => {
 
@@ -12,14 +16,12 @@ const ProfileMenu = () => {
     const [subEnd, setSubEnd]   = useState("");
 
     useEffect(() => {
-        const today = new Date();
-        setCurrentDateTime(today.setHours(0,0,0));
+        setCurrentDateTime(GetCurrentTime);
     }, []);
 
     useEffect(() => {
         if(auth.user.subscription) {
-            const date = new Date(auth.user.subscription.ends_at);
-            setSubEnd(date.setHours(23, 59, 59))
+            setSubEnd(GetHumanReadableTime(auth.user.subscription.ends_at))
         }
 
     }, [])

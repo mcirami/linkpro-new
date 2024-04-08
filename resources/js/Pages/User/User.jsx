@@ -33,7 +33,7 @@ const User = ({env}) => {
             <div className="container">
                 <div className={`user_account my_row text-center form_page plans ${permissions.includes('view subscription details') ? "mt-4" : "" }`}>
                     <h2 className="page_title">Update Account Settings</h2>
-                    <div className={`card inline-block relative ${showSection.includes("changePlan") || showSection.includes("changePayPalPlan") && 'active'}`}>
+                    <div className={`card inline-block relative ${(showSection.includes("changePlan") || showSection.includes("changePayPalPlan")) && 'active'}`}>
 
                         {showLoader.show &&
                             <Loader

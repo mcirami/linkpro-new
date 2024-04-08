@@ -4,6 +4,12 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import ConfirmChange from './ConfirmChange.jsx';
 import {Loader} from '@/Utils/Loader.jsx';
 import {PaymentButtonsPopup} from '@/components/PaymentButtonsPopup.jsx';
+import ProPlan from '@/Components/PlanComponents/ProPlan.jsx';
+import PremierPlan from '@/Components/PlanComponents/PremierPlan.jsx';
+import {
+    GetCurrentTime,
+    GetHumanReadableTime,
+} from '@/Services/TimeRequests.jsx';
 function Plans({path, env}) {
 
     const { auth } = usePage().props;
@@ -40,33 +46,35 @@ function Plans({path, env}) {
     const [subEnd, setSubEnd]   = useState("");
 
     useEffect(() => {
-        const today = new Date();
-        setCurrentDateTime(today.setHours(0,0,0));
+        setCurrentDateTime(GetCurrentTime);
     }, []);
 
     useEffect(() => {
         if(auth.user.subscription) {
-            const date = new Date(auth.user.subscription.ends_at);
-            setSubEnd(date.setHours(23, 59, 59))
+            setSubEnd(GetHumanReadableTime(auth.user.subscription.ends_at))
         }
     }, [])
 
-    const handleUpgradeClick = useCallback((e, type, plan) => {
+    const isCurrentPremier = (subscriptionName === 'premier') &&
+        (status === 'active' || (status === 'canceled' && currentDateTime < subEnd))
+
+
+    const handleUpgradeClick = useCallback((e, plan) => {
         e.preventDefault();
 
         if (pmType === "paypal") {
             setShowPaymentButtonPopup({
                 show: true,
-                type: type,
+                type: "changePlan",
                 plan: plan,
                 pmType: pmType
             })
         } else {
             setConfirmChange({
                 show: true,
-                type: type,
+                type: "changePlan",
                 plan: plan,
-                subId: e.target.dataset.sub,
+                subId: subId,
                 pmType: pmType,
             })
         }
@@ -142,116 +150,20 @@ function Plans({path, env}) {
                                                 'premier')) ||
                                         (status !== 'active' && status !==
                                             'canceled') ?
-                                            <div className="column pro">
-                                                <h2 className="text-uppercase">Pro</h2>
-                                                <ul>
-                                                    <li>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-lg" viewBox="0 0 16 16">
-                                                            <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
-                                                        </svg>
-                                                        <p>Free Features PLUS</p>
-                                                    </li>
-                                                    <li>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-lg" viewBox="0 0 16 16">
-                                                            <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
-                                                        </svg>
-                                                        <p>Unlimited Icons</p>
-                                                    </li>
-                                                    <li>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-lg" viewBox="0 0 16 16">
-                                                            <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
-                                                        </svg>
-                                                        <p>Group Icons In Folders</p>
-                                                    </li>
-                                                    <li>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-lg" viewBox="0 0 16 16">
-                                                            <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
-                                                        </svg>
-                                                        <p>Custom Icons</p>
-                                                    </li>
-                                                </ul>
-                                                <div className="pricing">
-                                                    <h3>
-                                                        <sup>$</sup>4.99<span>/ mo</span>
-                                                    </h3>
-                                                </div>
-                                                <div className="button_row">
-
-                                                    {(subscriptionName === 'pro') &&
-                                                    (status === 'active' || (status === 'canceled' && currentDateTime < subEnd)) ?
-                                                        <span className="button disabled">Current</span>
-                                                        :
-                                                        status === 'active' ?
-                                                            <button className="button blue open_popup" data-type="downgrade" data-plan="pro">
-                                                                Downgrade My Plan
-                                                            </button>
-                                                            :
-                                                            <a className="button blue_gradient" href="#" onClick={(e) => handlePurchaseClick(e, 'purchase', 'pro')}>
-                                                                Get Pro
-                                                            </a>
-                                                    }
-                                                </div>
-                                            </div>
+                                            <ProPlan
+                                                clickMethod={handlePurchaseClick}
+                                                type="purchase"
+                                                isCurrent={(subscriptionName === 'pro') &&
+                                                    (status === 'active' || (status === 'canceled' && currentDateTime < subEnd))}
+                                            />
                                             :
                                             ''
                                         }
-                                        <div className="column premier">
-                                            <h2 className="text-uppercase">Premier</h2>
-                                            <ul>
-                                                <li>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-lg" viewBox="0 0 16 16">
-                                                        <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
-                                                    </svg>
-                                                    <p>Pro Features PLUS</p>
-                                                </li>
-                                                <li>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-lg" viewBox="0 0 16 16">
-                                                        <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
-                                                    </svg>
-                                                    <p>Up to 5 Unique Links</p>
-                                                </li>
-                                                <li>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-lg" viewBox="0 0 16 16">
-                                                        <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
-                                                    </svg>
-                                                    <p>Password Protected Links</p>
-                                                </li>
-                                            </ul>
-                                            <div className="pricing">
-                                                <h3>
-                                                    <sup>$</sup>19.99<span>/ mo</span>
-                                                </h3>
-                                            </div>
-                                            <div className="button_row">
-                                                {
-                                                    (subscriptionName ===
-                                                        'premier') &&
-                                                    (status === 'active' ||
-                                                        (status ===
-                                                            'canceled' &&
-                                                            currentDateTime <
-                                                            subEnd)) ?
-                                                        <span className="button disabled">Current</span>
-                                                        :
-                                                        subscriptionName &&
-                                                        (status === 'active' ||
-                                                            (status === 'canceled' && currentDateTime < subEnd)) ?
-                                                            <button className="open_popup button black_gradient"
-                                                                    data-sub={subId}
-                                                                    onClick={(e) => handleUpgradeClick(
-                                                                        e,
-                                                                        'changePlan',
-                                                                        'premier')}
-                                                            >
-                                                                Go Premier
-                                                            </button>
-                                                            :
-                                                            <a className="button black_gradient" href="#" onClick={(e) => handlePurchaseClick(e,"purchase","premier")}>
-                                                                Go Premier
-                                                            </a>
-                                                }
-                                            </div>
-                                        </div>
+                                        <PremierPlan
+                                            clickMethod={subscriptionName && !isCurrentPremier ? handleUpgradeClick : handlePurchaseClick}
+                                            type={subscriptionName && !isCurrentPremier ? "changePlan" : "purchase"}
+                                            isCurrent={isCurrentPremier}
+                                        />
                                         <div className="column custom">
                                             <h2 className="text-uppercase">Custom</h2>
                                             <ul>
