@@ -19,9 +19,7 @@ const LoginModal = ({setShowLogin}) => {
     },[])
 
     useEffect(() => {
-
-        const location = window.location.href;
-        setRedirectUrl(location.replace('register', 'checkout'));
+        setRedirectUrl(window.location.href.replace('course', 'course-page').replace("register", "") + '&section=checkout');
     },[])
 
     const handleClose = (e) => {

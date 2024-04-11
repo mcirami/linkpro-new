@@ -31,11 +31,11 @@ class CourseRegisterController extends Controller
     */
 
     /**
+     * @param Request $request
      * @param User $user
      * @param Course $course
      *
      * @return Response
-     *
      */
     public function show(Request $request, User $user, Course $course): Response {
 
@@ -72,8 +72,7 @@ class CourseRegisterController extends Controller
             ];
 
             $user->notify( new WelcomeCourseNotification( $userData ) );
-
-            $checkoutUrl = config( 'app.url' ) . '/' . $user->username . '/course/' . $course->slug . '/checkout?a=' . $request->get( 'a' ) . '&cid=' . $request->get( 'cid' );
+            $checkoutUrl = config( 'app.url' ) . '/' . $user->username . '/course-page/' . $course->slug . '?a=' . $request->get( 'a' ) . '&cid=' . $request->get( 'cid' ) . '&section=checkout';
 
             return response()->json( [
                 'success'   => $response['success'],

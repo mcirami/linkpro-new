@@ -50,7 +50,7 @@ const PurchasePaymentButtons = ({showPaymentButtons}) => {
                 layout: "vertical",
                 height: 45,
                 disableMaxWidth: true,
-                label: "paypal"
+                label: "checkout"
             }}
             createOrder={(data, actions) => createOrder(data, actions)}
             onApprove={(data, actions) => onApprove(data, actions)}
@@ -99,18 +99,24 @@ const PurchasePaymentButtons = ({showPaymentButtons}) => {
 
     return (
         !isLoading &&
-        <>
+        <div className="payment_buttons">
+            <div className="icon_wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-credit-card-2-front-fill" viewBox="0 0 16 16">
+                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-2zm0 3a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+                </svg>
+            </div>
+            <h3 className="text-center mb-4 text-2xl">Choose Your Payment Method Below</h3>
             <PayPalScriptProvider options={initialOptions}>
                 <ButtonWrapper type="subscription"/>
             </PayPalScriptProvider>
 
             <div className="button_row mt-3 w-full">
-                <Link className='button black_gradient !w-full' href={showPaymentButtons.url}>
+                <Link className="button black_gradient !w-full" href={showPaymentButtons.url}>
                     Checkout With Card
                 </Link>
-                <p>(Credit Card, GooglePay, ApplePay, CashApp)</p>
+                <p className="text-center text-sm mt-1">(Credit Card, GooglePay, ApplePay, CashApp)</p>
             </div>
-        </>
+        </div>
     );
 };
 

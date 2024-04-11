@@ -26,14 +26,23 @@ function Course({
 
 }) {
 
-    const {id, intro_video, intro_text, intro_background_color, title} = course;
+    const {id, slug, intro_video, intro_text, intro_background_color, title} = course;
     const [indexValue, setIndexValue] = useState(null);
 
     const [introText, setIntroText] = useState(intro_text);
 
+    const userAuth = !isEmpty(auth.user.userInfo);
+
+    let additionalVars = "";
+    if (affRef && clickId) {
+        additionalVars = "?a=" + affRef + "&cid=" + clickId;
+    }
+    const buttonSlug = !userAuth ? "/register" : "/checkout"
+    const buttonUrl = window.location.protocol + "//" + window.location.host + "/" + creator + "/course/" + slug + buttonSlug + additionalVars;
+
     const [showPaymentButtons, setShowPaymentButtons] = useState({
         show: false,
-        url: "",
+        url: buttonUrl,
         price: offerPrice,
         affRef: affRef,
         clickId: clickId,
@@ -46,6 +55,7 @@ function Course({
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const message = urlParams?.get('message');
+        const section = urlParams?.get('section');
 
         if(message) {
             EventBus.dispatch("success", { message: message });
@@ -54,6 +64,13 @@ function Course({
             //localStorage.clear();
 
             return () => EventBus.remove("success");
+        }
+
+        if (section === "checkout") {
+            setShowPaymentButtons((prev) => ({
+                ...prev,
+                show: true,
+            }));
         }
 
     },[])
@@ -174,12 +191,10 @@ function Course({
                                                                 index={index}
                                                                 course={course}
                                                                 hasCourseAccess={hasCourseAccess}
-                                                                affRef={affRef}
-                                                                clickId={clickId}
-                                                                creator={creator}
                                                                 page={page}
-                                                                userAuth={!isEmpty(auth.user.userInfo)}
+                                                                userAuth={userAuth}
                                                                 setShowPaymentButtons={setShowPaymentButtons}
+                                                                buttonUrl={buttonUrl}
                                                             />
                                                         </React.Fragment>
                                                     )

@@ -167,7 +167,7 @@ export const SubscriptionPaymentButtons = ({
     return (
 
         !isLoading &&
-        <>
+        <div className="payment_buttons">
             {!showPaymentButtons.page &&
                 <div className="breadcrumb_links">
                     <ul className="breadcrumb_list">
@@ -186,8 +186,23 @@ export const SubscriptionPaymentButtons = ({
                 </div>
             }
             <div className="buttons_wrap mt-5">
-                {showPaymentButtons.type === "changePlan" &&
-                    <h4 className="mb-3">In order to change your plan, you will need to log into the PayPal account you are using for your subscription.</h4>
+                {showPaymentButtons.type === 'changePlan' ?
+                    <>
+                        <div className="icon_wrap">
+                            <img src={Vapor.asset(
+                                'images/icon-change-plans.png')} alt=""/>
+                        </div>
+                        <h4 className="mb-3">In order to change your plan, you will need to log into the PayPal account you are using for your subscription.</h4>
+                    </>
+                    :
+                    <>
+                        <div className="icon_wrap blue_icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-credit-card-2-front-fill" viewBox="0 0 16 16">
+                                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-2zm0 3a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+                            </svg>
+                        </div>
+                        <h3 className="text-center mb-4 text-2xl">Choose Your Payment Method Below</h3>
+                    </>
                 }
                 <PayPalScriptProvider options={initialOptions}>
                     <ButtonWrapper type="subscription"/>
@@ -198,14 +213,15 @@ export const SubscriptionPaymentButtons = ({
 
                 {showPaymentButtons.type !== "changePlan" &&
                     <div className="button_row mt-3">
-                        <Link className='button black_gradient' href={'/subscribe?plan=' + showPaymentButtons.plan}>
+                        <Link className='button black_gradient' href={'/subscribe?plan=' +
+                            showPaymentButtons.plan}>
                             Checkout With Card
                         </Link>
-                        <p>(Credit Card, GooglePay, ApplePay, CashApp)</p>
+                        <p className="text-center text-sm mt-1">(Credit Card, GooglePay, ApplePay, CashApp)</p>
                     </div>
                 }
             </div>
-        </>
+        </div>
 
     );
 };

@@ -10,12 +10,10 @@ const ColumnComponent = ({
                              index,
                              course,
                              hasCourseAccess,
-                             affRef,
-                             clickId,
-                             creator,
                              page,
                              userAuth,
-                             setShowPaymentButtons
+                             setShowPaymentButtons,
+                             buttonUrl
 }) => {
 
     const {
@@ -34,14 +32,7 @@ const ColumnComponent = ({
         lock_video,
     } = section;
 
-    const {slug, header_color, header_text_color} = course;
-
-    let additionalVars = "";
-    if (affRef && clickId) {
-        additionalVars = "?a=" + affRef + "&cid=" + clickId;
-    }
-    const buttonSlug = !userAuth ? "/register" : "/checkout"
-    const buttonUrl = window.location.protocol + "//" + window.location.host + "/" + creator + "/course/" + slug + buttonSlug + additionalVars;
+    const {header_color, header_text_color} = course;
 
     const [imagePlaceholder, setImagePlaceholder] = useState(null);
     const [mobileVideo, setMobileVideo] = useState(null);
@@ -130,18 +121,17 @@ const ColumnComponent = ({
         setShowPaymentButtons((prev) => ({
             ...prev,
             show: true,
-            url: buttonUrl
         }));
     },[])
 
     const Button = () => {
         return (
             <div className={`button_wrap ${button_position ? button_position : "above"}`}>
-                <a href="#"
+                <a href={!userAuth ? buttonUrl : "#"}
                    target="_blank"
                    className="button"
                    style={buttonStyle}
-                   onClick={handleButtonClick}
+                   onClick={!userAuth ? "" : handleButtonClick}
                 >{button_text || "Get Course"}</a>
             </div>
         )
@@ -179,12 +169,11 @@ const ColumnComponent = ({
                             <img className="locked" src={imagePlaceholder} alt=""/>
                             <div className="text-center locked_content" style={{ color: 'rgb(255,255,255)' }}>
                                 <BiLock />
-                                <p>Unlock this video<br/>
-                                    by purchasing this course</p>
+                                <p>Unlock this video<br/>by purchasing this course</p>
                                 <a className="button"
-                                   href="#"
+                                   href={!userAuth ? buttonUrl : "#"}
                                    style={{ background: header_color, color: header_text_color }}
-                                   onClick={handleButtonClick}
+                                   onClick={!userAuth ? "" : handleButtonClick}
                                 >
                                     Purchase Now
                                 </a>

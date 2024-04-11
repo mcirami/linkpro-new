@@ -492,3 +492,14 @@
         max-width: 600px;
     }
 }
+
+.payment_buttons .icon_wrap {
+    width: 100%;
+    text-align: center;
+
+    svg, img {
+        margin: 0 auto;
+        width: 75px;
+        height: 75px;
+    }
+}
