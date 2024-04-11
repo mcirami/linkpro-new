@@ -72,6 +72,7 @@ class CourseController extends Controller
 
         return Inertia::render( 'SingleCourse/Course' )->with( [
             'course'            => $course,
+            'offerPrice'        => $offer->price,
             'creator'           => $user->username,
             'sections'          => $sections,
             'hasCourseAccess'   => $hasCourseAccess,

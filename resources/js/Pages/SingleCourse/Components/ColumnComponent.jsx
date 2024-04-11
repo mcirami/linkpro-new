@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {BiLock} from 'react-icons/bi';
 import {FaCirclePlay} from 'react-icons/fa6';
 
@@ -14,7 +14,8 @@ const ColumnComponent = ({
                              clickId,
                              creator,
                              page,
-                             userAuth
+                             userAuth,
+                             setShowPaymentButtons
 }) => {
 
     const {
@@ -124,13 +125,23 @@ const ColumnComponent = ({
         }
     }
 
+    const handleButtonClick = useCallback((e) => {
+        e.preventDefault();
+        setShowPaymentButtons((prev) => ({
+            ...prev,
+            show: true,
+            url: buttonUrl
+        }));
+    },[])
+
     const Button = () => {
         return (
             <div className={`button_wrap ${button_position ? button_position : "above"}`}>
-                <a href={buttonUrl}
+                <a href="#"
                    target="_blank"
                    className="button"
                    style={buttonStyle}
+                   onClick={handleButtonClick}
                 >{button_text || "Get Course"}</a>
             </div>
         )
@@ -170,7 +181,11 @@ const ColumnComponent = ({
                                 <BiLock />
                                 <p>Unlock this video<br/>
                                     by purchasing this course</p>
-                                <a className="button" href={buttonUrl} style={{ background: header_color, color: header_text_color }}>
+                                <a className="button"
+                                   href="#"
+                                   style={{ background: header_color, color: header_text_color }}
+                                   onClick={handleButtonClick}
+                                >
                                     Purchase Now
                                 </a>
                             </div>

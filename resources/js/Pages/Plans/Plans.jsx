@@ -3,7 +3,7 @@ import {Head, Link, usePage} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import ConfirmChange from './ConfirmChange.jsx';
 import {Loader} from '@/Utils/Loader.jsx';
-import {PaymentButtonsPopup} from '@/components/PaymentButtonsPopup.jsx';
+import {SubscriptionPaymentButtons} from '@/Components/Payments/SubscriptionPaymentButtons.jsx';
 import ProPlan from '@/Components/PlanComponents/ProPlan.jsx';
 import PremierPlan from '@/Components/PlanComponents/PremierPlan.jsx';
 import {
@@ -36,7 +36,7 @@ function Plans({path, env}) {
         subId: ""
     });
 
-    const [showPaymentButtonPopup, setShowPaymentButtonPopup] = useState({
+    const [showPaymentButtons, setShowPaymentButtons] = useState({
         show: false,
         type: "",
         plan: "",
@@ -63,7 +63,7 @@ function Plans({path, env}) {
         e.preventDefault();
 
         if (pmType === "paypal") {
-            setShowPaymentButtonPopup({
+            setShowPaymentButtons({
                 show: true,
                 type: "changePlan",
                 plan: plan,
@@ -82,7 +82,7 @@ function Plans({path, env}) {
 
     const handlePurchaseClick = useCallback((e, type, planName) => {
         e.preventDefault();
-        setShowPaymentButtonPopup({
+        setShowPaymentButtons({
             show: true,
             type: type,
             plan: planName
@@ -94,12 +94,12 @@ function Plans({path, env}) {
             <Head title="Subscription Plans"/>
             <div className="container">
                 <div className="my_row form_page plans text-center">
-                    <div className={`card inline-block relative ${confirmChange.show || showPaymentButtonPopup.show ? 'active' : ""} `}>
-                    {showPaymentButtonPopup.show ?
+                    <div className={`card inline-block relative ${confirmChange.show || showPaymentButtons.show ? 'active' : ""} `}>
+                    {showPaymentButtons.show ?
 
-                            <PaymentButtonsPopup
-                                showPaymentButtonPopup={showPaymentButtonPopup}
-                                setShowPaymentButtonPopup={setShowPaymentButtonPopup}
+                            <SubscriptionPaymentButtons
+                                showPaymentButtons={showPaymentButtons}
+                                setShowPaymentButtons={setShowPaymentButtons}
                                 env={env}
                                 subId={subId}
                             />

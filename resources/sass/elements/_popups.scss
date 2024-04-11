@@ -485,7 +485,7 @@
     }
 }
 
-.plans .card {
+.plans .card, .course_creator .card {
     transition: 1000ms max-width ease-in-out;
 
     &.active {

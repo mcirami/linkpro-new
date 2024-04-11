@@ -9,9 +9,9 @@ import {
     getClientId
 } from '@/Services/PayPalRequests.jsx';
 
-export const PaymentButtonsPopup = ({
-                                        showPaymentButtonPopup,
-                                        setShowPaymentButtonPopup,
+export const SubscriptionPaymentButtons = ({
+                                        showPaymentButtons,
+                                        setShowPaymentButtons,
                                         env,
                                         subId,
                                         defaultPage = null
@@ -62,7 +62,7 @@ export const PaymentButtonsPopup = ({
                 label: "paypal"
             }}
             createSubscription={(data, actions) =>
-                showPaymentButtonPopup.type === "purchase" ?
+                showPaymentButtons.type === "purchase" ?
                     createSubscription(data, actions) :
                     changePayPalPlan(data,actions)}
             onApprove={(data, actions) => onApprove(data, actions)}
@@ -71,7 +71,7 @@ export const PaymentButtonsPopup = ({
 
     const createSubscription = (data, actions) => {
 
-        const planId = getPlanId(showPaymentButtonPopup.plan, env)
+        const planId = getPlanId(showPaymentButtons.plan, env)
 
         return actions.subscription.create({
             plan_id: planId,
@@ -88,7 +88,7 @@ export const PaymentButtonsPopup = ({
     * change plan only for PayPal Gateway.
     * **/
     const changePayPalPlan = (data, actions) => {
-        const planId = getPlanId(showPaymentButtonPopup.plan, env)
+        const planId = getPlanId(showPaymentButtons.plan, env)
 
         return actions.subscription.revise(
             subId,
@@ -110,11 +110,11 @@ export const PaymentButtonsPopup = ({
         *
         * */
 
-        if (showPaymentButtonPopup.type === "changePlan") {
+        if (showPaymentButtons.type === "changePlan") {
             const packets = {
-                plan: showPaymentButtonPopup.plan,
+                plan: showPaymentButtons.plan,
                 subId: subId,
-                pmType: showPaymentButtonPopup.pmType,
+                pmType: showPaymentButtons.pmType,
                 defaultPage: defaultPage
             }
             updatePlan(packets).then((response) => {
@@ -133,7 +133,7 @@ export const PaymentButtonsPopup = ({
                     'order_id'      : data.orderID,
                     'subId'         : subscriptionId,
                     'paymentType'   : data.paymentSource,
-                    'planId'        : showPaymentButtonPopup.plan,
+                    'planId'        : showPaymentButtons.plan,
                     'userEmail'     : details.subscriber.email_address,
                 }
 
@@ -164,18 +164,17 @@ export const PaymentButtonsPopup = ({
 
     }
 
-    console.log("showPaymentButtonPopup: ", showPaymentButtonPopup);
     return (
 
         !isLoading &&
         <>
-            {!showPaymentButtonPopup.page &&
+            {!showPaymentButtons.page &&
                 <div className="breadcrumb_links">
                     <ul className="breadcrumb_list">
                         <li>
                             <a className="back" href="#" onClick={(e) => {
                                 e.preventDefault();
-                                setShowPaymentButtonPopup({
+                                setShowPaymentButtons({
                                     show: false,
                                     plan: ""
                                 });
@@ -187,7 +186,7 @@ export const PaymentButtonsPopup = ({
                 </div>
             }
             <div className="buttons_wrap mt-5">
-                {showPaymentButtonPopup.type === "changePlan" &&
+                {showPaymentButtons.type === "changePlan" &&
                     <h4 className="mb-3">In order to change your plan, you will need to log into the PayPal account you are using for your subscription.</h4>
                 }
                 <PayPalScriptProvider options={initialOptions}>
@@ -197,9 +196,9 @@ export const PaymentButtonsPopup = ({
                     <p>{message}</p>
                 }
 
-                {showPaymentButtonPopup.type !== "changePlan" &&
+                {showPaymentButtons.type !== "changePlan" &&
                     <div className="button_row mt-3">
-                        <Link className='button black_gradient' href={'/subscribe?plan=' + showPaymentButtonPopup.plan}>
+                        <Link className='button black_gradient' href={'/subscribe?plan=' + showPaymentButtons.plan}>
                             Checkout With Card
                         </Link>
                         <p>(Credit Card, GooglePay, ApplePay, CashApp)</p>

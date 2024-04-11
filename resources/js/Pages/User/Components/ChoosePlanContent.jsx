@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import ConfirmPlanChange from '@/Pages/User/Components/ConfirmPlanChange.jsx';
 import {changePlan} from '@/Services/SubscriptionRequests.jsx';
-import {PaymentButtonsPopup} from '@/Components/PaymentButtonsPopup.jsx';
+import {SubscriptionPaymentButtons} from '@/Components/Payments/SubscriptionPaymentButtons.jsx';
 import ProPlan from '@/Components/PlanComponents/ProPlan.jsx';
 import PremierPlan from '@/Components/PlanComponents/PremierPlan.jsx';
 import PayPalCancel from '@/Pages/User/Components/PayPalCancel.jsx';
@@ -16,7 +16,7 @@ const ChoosePlanContent = ({
                                env
 }) => {
 
-    const [showPaymentButtonPopup, setShowPaymentButtonPopup] = useState({
+    const [showPaymentButtons, setShowPaymentButtons] = useState({
         show: false,
         type: "",
         plan: "",
@@ -49,7 +49,7 @@ const ChoosePlanContent = ({
                 "changePayPalPlan"
             ]))
 
-            setShowPaymentButtonPopup({
+            setShowPaymentButtons({
                 show: false,
                 type: "changePlan",
                 plan: subscriptionLevel,
@@ -97,9 +97,9 @@ const ChoosePlanContent = ({
                     />
                     :
                     showSection.includes("changePayPalPlan") ?
-                        <PaymentButtonsPopup
-                            showPaymentButtonPopup={showPaymentButtonPopup}
-                            setShowPaymentButtonPopup={setShowPaymentButtonPopup}
+                        <SubscriptionPaymentButtons
+                            showPaymentButtons={showPaymentButtons}
+                            setShowPaymentButtons={setShowPaymentButtons}
                             env={env}
                             subId={subscription.sub_id}
                         />

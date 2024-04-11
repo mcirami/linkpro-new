@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {cancelSubscription, changePlan} from '@/Services/SubscriptionRequests.jsx';
-import {PaymentButtonsPopup} from '@/Components/PaymentButtonsPopup.jsx';
+import {SubscriptionPaymentButtons} from '@/Components/Payments/SubscriptionPaymentButtons.jsx';
 import {getUserPages} from '@/Services/UserService.jsx';
 
 const ConfirmPlanChange = ({
@@ -14,7 +14,7 @@ const ConfirmPlanChange = ({
 }) => {
 
     const [defaultPage, setDefaultPage] = useState("");
-    const [showPaymentButtonPopup, setShowPaymentButtonPopup] = useState({
+    const [showPaymentButtons, setShowPaymentButtons] = useState({
         show: false,
         type: "",
         plan: "",
@@ -57,7 +57,7 @@ const ConfirmPlanChange = ({
                 "changePayPalPlan"
             ]))
             const changeType = showSection.includes("cancel") ? "cancel" : "changePlan";
-            setShowPaymentButtonPopup({
+            setShowPaymentButtons({
                 show: true,
                 type: changeType,
                 plan: "pro",
@@ -111,10 +111,10 @@ const ConfirmPlanChange = ({
 
     return (
         <>
-            { showPaymentButtonPopup.show ?
-                <PaymentButtonsPopup
-                    showPaymentButtonPopup={showPaymentButtonPopup}
-                    setShowPaymentButtonPopup={setShowPaymentButtonPopup}
+            { showPaymentButtons.show ?
+                <SubscriptionPaymentButtons
+                    showPaymentButtons={showPaymentButtons}
+                    setShowPaymentButtons={setShowPaymentButtons}
                     env={env}
                     subId={subscription.sub_id}
                     defaultPage={defaultPage}

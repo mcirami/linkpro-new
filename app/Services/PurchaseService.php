@@ -82,10 +82,7 @@ class PurchaseService {
             $user->assignRole('course.user');
         }
 
-        $billing = $this->getCustomerBillingInfo($request);
-
-        $price  = (float) number_format( ( $request->price / 100 ), 2, '.', ' ' );
-        $course = $offer->Course()->first();
+        $pmType = $request->pmType;
 
         if ( $request->cid && $request->cid != "" ) {
             $clickId = $request->cid;
@@ -93,27 +90,48 @@ class PurchaseService {
             $clickId = Cookie::get( 'lpcid_' . $request->affRef . '_' . $offer->id );
         }
 
-        $purchase = $course->Purchases()->create( [
-            'user_id'         => $user->id,
-            'offer_click_id'  => $clickId,
-            'customer_id'     => $billing['id'],
-            'transaction_id'  => $billing['invoice'],
-            'purchase_amount' => $price,
-            'pm_last_four'    => $billing['last4'],
-            'pm_type'         => $billing['pmType'],
-            'status'          => $billing['status'],
-        ] );
+        if($pmType == "paypal") {
+            $purchaseData = [
+                'user_id'         => $user->id,
+                'offer_click_id'  => $clickId,
+                'customer_id'     => $request->customerId,
+                'transaction_id'  => $request->orderId,
+                'purchase_amount' => $request->price,
+                'pm_type'         => $pmType,
+                'status'          => $request->status,
+            ];
+        } else {
+            $billing = $this->getCustomerBillingInfo($request);
+            $price  = (float) number_format( ( $request->price / 100 ), 2, '.', ' ' );
+            $purchaseData = [
+                'user_id'         => $user->id,
+                'offer_click_id'  => $clickId,
+                'customer_id'     => $billing['id'],
+                'transaction_id'  => $billing['invoice'],
+                'purchase_amount' => $price,
+                'pm_last_four'    => $billing['last4'],
+                'pm_type'         => $billing['pmType'],
+                'status'          => $billing['status'],
+            ];
+        }
+
+        $course = $offer->Course()->first();
+        $purchase = $course->Purchases()->create($purchaseData);
 
         $data = [
             "success"      => true,
             "message"      => "Congrats! You Have Purchased The " . str_replace( '-', " ", $course->slug ) . " Course",
             "courseSlug"   => $course->slug,
             'courseTitle'  => $course->title,
-            "customerName" => $billing['name']
+            "customerName" => $pmType == "paypal" ? $request->customerName : $billing['name']
         ];
 
         PurchasedItem::dispatch( $purchase );
 
         return $data;
+    }
+
+    public function savePayPalPurchase() {
+
     }
 }
