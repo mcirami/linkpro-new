@@ -48,7 +48,7 @@ const User = ({env}) => {
                                 setShowSection={setShowSection}
                             />
                         }
-                        {showSection.includes("plans") || (showSection.includes("cancel") && userInfo.pm_type !== "paypal") ?
+                        {showSection.includes("plans") || (showSection.includes("cancel")) ?
 
                             <ChoosePlanContent
                                 showSection={showSection}
@@ -61,11 +61,11 @@ const User = ({env}) => {
                             />
 
                         :
-                            showSection.includes("cancel") ?
+                            /*showSection.includes("cancel") ?
                                 <PayPalCancel
                                     subName={subscription.name}
                                 />
-                                :
+                                :*/
                             <div className={`w-full inline-block ${ (permissions.includes("view subscription details") &&
                                 (!subscription || subscription.sub_id === "bypass") ) || (!permissions.includes("view subscription details") && permissions.includes('view courses')) ? "two_columns" : ""}`}>
                                 <div className="card-body w-full inline-block">
@@ -87,6 +87,7 @@ const User = ({env}) => {
                                                     showSection={showSection}
                                                     setShowSection={setShowSection}
                                                     setShowLoader={setShowLoader}
+                                                    pmType={userInfo.pm_type}
                                                 />
                                             </div>
                                         }
@@ -94,6 +95,7 @@ const User = ({env}) => {
                                             <div className="column payment">
                                                 <PaymentComponent
                                                     userInfo={userInfo}
+                                                    plan={subscription.name}
                                                 />
                                             </div>
                                         }

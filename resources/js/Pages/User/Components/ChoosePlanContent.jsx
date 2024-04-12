@@ -85,7 +85,7 @@ const ChoosePlanContent = ({
         <div id="popup_choose_level" className="inline-block relative w-full">
             <div className={`form_page plans inline-block w-full`}>
 
-                {showSection.includes("changePlan") || (showSection.includes("cancel") && pmType !== "paypal") ?
+                {showSection.includes("changePlan") || (showSection.includes("cancel")) ?
                     <ConfirmPlanChange
                         subscription={subscription}
                         showSection={showSection}

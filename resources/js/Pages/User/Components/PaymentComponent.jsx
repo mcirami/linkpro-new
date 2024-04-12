@@ -1,9 +1,20 @@
 import React, {useEffect, useState, useRef} from 'react';
 import { BsFillCreditCard2FrontFill } from "react-icons/bs";
 
-const PaymentComponent = ({userInfo}) => {
+const PaymentComponent = ({userInfo, plan}) => {
 
     const {pm_type, pm_last_four, email} = userInfo;
+    const [buttonUrl, setButtonUrl] = useState("");
+
+    useEffect(() => {
+
+        setButtonUrl(pm_type === "paypal" ?
+            '/subscribe?plan=' + plan + "&type=change_payment_method"
+            :
+            "https://checkout.link.pro/p/login/test_3cs6pE5zK02p6Nq145?prefilled_email=" + email
+        )
+
+    }, []);
 
     return (
         <>
@@ -37,7 +48,7 @@ const PaymentComponent = ({userInfo}) => {
                     }
                 </div>
             }
-            <a target="_blank" href={`https://checkout.link.pro/p/login/test_3cs6pE5zK02p6Nq145?prefilled_email=` + email}
+            <a target="_blank" href={buttonUrl}
                className="button blue text-uppercase mt-auto"
             >
                 Change Payment Method

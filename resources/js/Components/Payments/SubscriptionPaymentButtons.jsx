@@ -213,8 +213,7 @@ export const SubscriptionPaymentButtons = ({
 
                 {showPaymentButtons.type !== "changePlan" &&
                     <div className="button_row mt-3">
-                        <Link className='button black_gradient' href={'/subscribe?plan=' +
-                            showPaymentButtons.plan}>
+                        <Link className='button black_gradient' href={'/subscribe?plan=' + showPaymentButtons.plan}>
                             Checkout With Card
                         </Link>
                         <p className="text-center text-sm mt-1">(Credit Card, GooglePay, ApplePay, CashApp)</p>

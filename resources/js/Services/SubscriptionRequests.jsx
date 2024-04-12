@@ -40,6 +40,7 @@ export const cancelSubscription = (packets) => {
 
     return axios.put('/subscribe/cancel', packets).then(
         (response) => {
+
             const returnMessage = JSON.stringify(response.data.message);
             const success = response.data.success;
             const endsAt = response.data.ends_at || null;

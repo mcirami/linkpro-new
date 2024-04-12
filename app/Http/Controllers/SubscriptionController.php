@@ -104,13 +104,20 @@ class SubscriptionController extends Controller
 
         $gatewayData = $subscriptionService->cancelGateway($request);
 
-        $data = $subscriptionService->cancelSubscription($gatewayData);
+        if($gatewayData["success"]) {
+            $data = $subscriptionService->cancelSubscription($gatewayData, $request);
+            $returnResponse = [
+                'success' => $data["success"],
+                'message' => $data["message"],
+                'ends_at' => array_key_exists('ends_at', $data) ? $data["ends_at"] : null,
+            ];
+        } else {
+            $returnResponse = [
+                'success' => false,
+            ];
+        }
 
-        return response()->json([
-            'success' => $data["success"],
-            'message' => $data["message"],
-            'ends_at' => array_key_exists('ends_at', $data) ? $data["ends_at"] : null,
-        ]);
+        return response()->json($returnResponse);
     }
 
     /**

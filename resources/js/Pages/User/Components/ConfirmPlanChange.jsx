@@ -38,11 +38,6 @@ const ConfirmPlanChange = ({
         })
     },[])
 
-    useEffect(() => {
-
-
-
-    },[])
     const handleClick = (e) => {
 
         setShowLoader({
@@ -51,55 +46,54 @@ const ConfirmPlanChange = ({
             icon: ""
         })
 
-        if(pmType === "paypal") {
+        if (showSection.includes("cancel")) {
+
+            const packets = {
+                subId: subscription.sub_id,
+                pmType: pmType,
+                defaultPage: defaultPage,
+                plan: subscription.name
+            }
+
+            cancelSubscription(packets).then((response) => {
+                if (response.success) {
+                    setShowSection([])
+                    setSubscription(prev => ({
+                        ...prev,
+                        status: "canceled",
+                        ends_at: response.ends_at
+                    }))
+                }
+            })
+        } else if(pmType === "paypal" && showSection.includes("changePlan")) {
             setShowSection((prev) => ([
                 ...prev,
                 "changePayPalPlan"
             ]))
-            const changeType = showSection.includes("cancel") ? "cancel" : "changePlan";
             setShowPaymentButtons({
                 show: true,
-                type: changeType,
+                type: "changePlan",
                 plan: "pro",
                 pmType: pmType,
                 page: 'user'
             })
         } else {
 
-            if (showSection.includes("cancel")) {
-
-                const packets = {
-                    subId: subscription.sub_id
-                }
-
-                cancelSubscription(packets).then((response) => {
-                    if (response.success) {
-                        setShowSection([])
-                        setSubscription(prev => ({
-                            ...prev,
-                            status: "canceled",
-                            ends_at: response.ends_at
-                        }))
-                    }
-                })
-            } else if (showSection.includes("changePlan")) {
-
-                const packets = {
-                    defaultPage: defaultPage,
-                    plan: "pro",
-                    subId: subscription.sub_id,
-                }
-
-                changePlan(packets).then((response) => {
-                    if (response.success) {
-                        setSubscription(prev => ({
-                            ...prev,
-                            name: "pro",
-                        }))
-                        setShowSection([])
-                    }
-                })
+            const packets = {
+                defaultPage: defaultPage,
+                plan: "pro",
+                subId: subscription.sub_id,
             }
+
+            changePlan(packets).then((response) => {
+                if (response.success) {
+                    setSubscription(prev => ({
+                        ...prev,
+                        name: "pro",
+                    }))
+                    setShowSection([])
+                }
+            })
         }
 
         setShowLoader({

@@ -11,7 +11,8 @@ const PlanComponent = ({
                            setSubscription,
                            userInfo,
                            setShowSection,
-                           setShowLoader
+                           setShowLoader,
+                           pmType
 }) => {
 
     const [currentDateTime, setCurrentDateTime] = useState("");
@@ -39,7 +40,8 @@ const PlanComponent = ({
 
         const packets = {
             subId: subscription.sub_id,
-            plan: subscription.name
+            plan: subscription.name,
+            pmType: pmType
         }
 
         resumeSubscription(packets).then((response) => {

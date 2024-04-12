@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Traits;
 
+use App\Models\Page;
 use Carbon\Carbon;
 
 trait UserTrait {
@@ -51,5 +52,66 @@ trait UserTrait {
 
         return true;
 
+    }
+
+    /**
+     * @param $user
+     * @param $defaultPage
+     * @param $plan
+     *
+     * @return void
+     */
+    public function updateUserPages($user, $defaultPage, $plan): void {
+
+        $userPages = $this->getUserPages( $user );
+        if ( count( $userPages ) > 1) {
+            foreach ( $userPages as $userPage ) {
+
+                if($plan == "premier") {
+                    if ( $userPage->disabled ) {
+                        $userPage->disabled = false;
+                        $userPage->save();
+                    }
+                }
+
+                if ($plan == "pro") {
+
+                    if ( $defaultPage && $defaultPage == $userPage->id ) {
+                        $userPage->default  = true;
+                        $userPage->disabled = false;
+                        $user->update( [ 'username' => $userPage->name ] );
+                    } else if (!$defaultPage && !$userPage->default) {
+                        $userPage->disabled = true;
+                    } else if ($defaultPage) {
+                        $userPage->default  = false;
+                        $userPage->disabled = true;
+                    }
+
+                    $userPage->save();
+                }
+            }
+        }
+    }
+
+    /**
+     * @param $user
+     * @param $defaultPage
+     *
+     * @return void
+     */
+    public function updateUserDefaultPage($user, $defaultPage): void {
+        $userPages = $this->getUserPages( $user );
+
+        foreach( $userPages as $userPage ) {
+            if( $defaultPage == $userPage->id && !$userPage->default) {
+                $userPage->default  = true;
+            }
+
+            if($defaultPage != $userPage->id && $userPage->default) {
+                $userPage->default  = false;
+            }
+
+            $userPage->save();
+        }
     }
 }

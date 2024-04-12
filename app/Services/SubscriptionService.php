@@ -12,6 +12,8 @@ use App\Http\Traits\BillingTrait;
 use App\Http\Traits\UserTrait;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
+use Throwable;
 
 class SubscriptionService {
 
@@ -158,41 +160,9 @@ class SubscriptionService {
             'downgraded'    => $plan == "pro"
         ] );
 
-        $userPages = $this->getUserPages( $this->user );
+        $this->updateUserPages($this->user, $defaultPage, $plan);
 
         $data = [];
-        if ( count( $userPages ) > 1) {
-            foreach ( $userPages as $userPage ) {
-
-                if($plan == "premier") {
-                    if ( $userPage->disabled ) {
-                        $userPage->disabled = false;
-                        $userPage->save();
-                    }
-                }
-
-                if ($plan == "pro") {
-                    /*if ( $userPage->is_protected ) {
-                        $userPage->is_protected = 0;
-                        $userPage->password     = null;
-                    }*/
-
-                    if ( $defaultPage && $defaultPage == $userPage->id ) {
-                        $userPage->default  = true;
-                        $userPage->disabled = false;
-                        $this->user->update( [ 'username' => $userPage->name ] );
-                    } else if (!$defaultPage && !$userPage->default) {
-                        $userPage->disabled = true;
-                    } else if ($defaultPage) {
-                        $userPage->default  = false;
-                        $userPage->disabled = true;
-                    }
-
-                    $userPage->save();
-                }
-            }
-        }
-
         if($plan == "premier") {
             if ( $this->user->email_subscription ) {
 
@@ -224,25 +194,106 @@ class SubscriptionService {
      * @param $request
      *
      * @return array
+     * @throws Throwable
      */
     public function cancelGateway($request): array {
 
         $subId = $request->subId;
-        $stripe = $this->createGateway();
-
         $data = [];
-        try {
 
-            $sub = $stripe->subscriptions->cancel($subId);
-
-            $data = [
-                'status'    => $sub->status,
-                'endDate'   => $sub->current_period_end
+        if($request->pmType == "paypal") {
+            $provider = new PayPalClient;
+            $accessToken = $provider->getAccessToken();
+            $endpoint = "https://api-m.sandbox.paypal.com/v1/billing/subscriptions/" . $subId . "/suspend";
+            $sendData = [
+                "reason" => "Customer-requested pause"
             ];
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $endpoint,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_TIMEOUT => 30000,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => json_encode($sendData),
+                CURLOPT_HTTPHEADER => array(
+                    // Set Here Your Requested Headers
+                    'Content-Type: application/json',
+                    'Accept: application/json',
+                    'Authorization: Bearer ' . $accessToken['access_token']
+                )
+            ));
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            curl_close($curl);
+            if ($err) {
+                $decodedResponse = "cURL Error suspending sub #:" . $err;
+            } else {
+                $decodedResponse = json_decode($response, true);
+            }
 
-        } catch ( ApiErrorException $e ) {
-            http_response_code(500);
-            $this->saveErrors($e);
+            if(!$decodedResponse) {
+                $endpoint = "https://api-m.sandbox.paypal.com/v1/billing/subscriptions/" . $subId;
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => $endpoint,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_TIMEOUT => 30000,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "GET",
+                    CURLOPT_HTTPHEADER => array(
+                        // Set Here Your Requested Headers
+                        'Content-Type: application/json',
+                        'Accept: application/json',
+                        'Authorization: Bearer ' . $accessToken['access_token']
+                    )
+                ));
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+                curl_close($curl);
+                if ($err) {
+                    $decodedResponse = "cURL Error getting sub #:" . $err;
+
+                    $data = [
+                        'success'   => false,
+                        'error'     => $decodedResponse
+                    ];
+
+                    $this->saveErrors( $decodedResponse );
+                } else {
+                    $decodedResponse = json_decode($response, true);
+                    $lastPayment = Carbon::parse($decodedResponse["billing_info"]["last_payment"]["time"]);
+                    $day = $lastPayment->day;
+                    $dt = Carbon::now()->addMonth();
+                    $dt->day = $day;
+                    $endDate = $dt->endOfDay()->format('Y-m-d H:i:s');
+
+                    $data = [
+                        'success'   => true,
+                        'status'    => "canceled",
+                        'endDate'   => $endDate
+                    ];
+                }
+            }
+        } else {
+            $stripe = $this->createGateway();
+
+            try {
+
+                $sub = $stripe->subscriptions->cancel( $subId );
+
+                $data = [
+                    'success'   => true,
+                    'status'    => $sub->status,
+                    'endDate'   => $sub->current_period_end
+                ];
+
+            } catch ( ApiErrorException $e ) {
+                http_response_code( 500 );
+                $this->saveErrors( $e );
+            }
         }
 
         return $data;
@@ -256,16 +307,25 @@ class SubscriptionService {
      *
      * @return array
      */
-    public function cancelSubscription($gatewayData): array {
+    public function cancelSubscription($gatewayData, $request): array {
 
-        $billingEndDate = Carbon::createFromTimestamp($gatewayData["endDate"]);
-        $endDateDB = $billingEndDate->endOfDay();
-        $endDateMail = $billingEndDate->format( 'F j, Y' );
+        if($request->get('pmType') == "paypal") {
+            $endDateDB = $gatewayData["endDate"];
+            $endDateMail = Carbon::parse($gatewayData["endDate"])->format( 'F j, Y' );
+        } else {
+            $billingEndDate = Carbon::createFromTimestamp($gatewayData["endDate"]);
+            $endDateDB = $billingEndDate->endOfDay();
+            $endDateMail = $billingEndDate->format( 'F j, Y' );
+        }
 
         $subscription = $this->getUserSubscriptions($this->user);
         $subscription->status = strtolower($gatewayData['status']);
         $subscription->ends_at = $endDateDB;
         $subscription->save();
+
+        if ($request->get('defaultPage')) {
+            $this->updateUserDefaultPage($this->user, $request->get('defaultPage'));
+        }
 
         if ($this->user->email_subscription) {
 
@@ -291,32 +351,78 @@ class SubscriptionService {
      */
     public function resumeGateway($request): array {
 
-        $stripe = $this->createGateway();
-        $customerNumber = $this->user->billing_id;
         $activeSubs = $this->getUserSubscriptions($this->user);
-        $startDate = Carbon::parse($activeSubs->ends_at);
-        $lineItems = $this->getPlanDetails($request->get('plan'));
 
-        $response = "";
-        try {
-            $response = $stripe->subscriptions->create([
-                'customer'                      => $customerNumber,
-                'items'                         => [['price' => $lineItems['ApiId'] ]],
-                'billing_cycle_anchor_config'   => ['day_of_month' => $startDate->day],
-                'default_payment_method'        => $this->user->pm_id
-            ]);
+        if($request->get('pmType') == "paypal") {
+            $provider = new PayPalClient;
+            $accessToken = $provider->getAccessToken();
+            $subId = $request->subId;
+            $endpoint = "https://api-m.sandbox.paypal.com/v1/billing/subscriptions/" . $subId . "/activate";
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $endpoint,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_TIMEOUT => 30000,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_HTTPHEADER => array(
+                    // Set Here Your Requested Headers
+                    'Content-Type: application/json',
+                    'Accept: application/json',
+                    'Authorization: Bearer ' . $accessToken['access_token']
+                )
+            ));
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            curl_close($curl);
+            if ($err) {
+                $decodedResponse = "cURL Error getting sub #:" . $err;
+
+                $returnData = [
+                    'success' => false,
+                    'error'   => $decodedResponse
+                ];
+
+                $this->saveErrors( $decodedResponse );
+            } else {
+                $returnData = [
+                    'status'    => "active",
+                    'sub'       => $activeSubs,
+                    'sub_id'    => $subId
+                ];
+            }
+
+        } else {
+            $stripe = $this->createGateway();
+            $customerNumber = $this->user->billing_id;
+            $startDate = Carbon::parse($activeSubs->ends_at);
+            $lineItems = $this->getPlanDetails($request->get('plan'));
+
+            $response = "";
+            try {
+                $response = $stripe->subscriptions->create([
+                    'customer'                      => $customerNumber,
+                    'items'                         => [['price' => $lineItems['ApiId'] ]],
+                    'billing_cycle_anchor_config'   => ['day_of_month' => $startDate->day],
+                    'default_payment_method'        => $this->user->pm_id
+                ]);
 
 
-        } catch ( ApiErrorException $e ) {
-            http_response_code(500);
-            $this->saveErrors($e);
+            } catch ( ApiErrorException $e ) {
+                http_response_code(500);
+                $this->saveErrors($e);
+            }
+
+            $returnData = [
+                'status'    => $response->status,
+                'sub'       => $activeSubs,
+                'sub_id'    => $response->id
+            ];
         }
 
-        return [
-            'status'    => $response->status,
-            'sub'       => $activeSubs,
-            'sub_id'    => $response->id
-        ];
+
+        return $returnData;
     }
 
     /**
