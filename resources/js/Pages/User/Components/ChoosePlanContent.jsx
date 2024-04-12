@@ -110,7 +110,7 @@ const ChoosePlanContent = ({
                             />
                             :
                             <>
-                                <div className="icon_wrap">
+                                <div className="form_icon_wrap image">
                                     <img src={ Vapor.asset('images/icon-change-plans.png') } alt="" />
                                 </div>
                                 <h2>Change Your Plan</h2>

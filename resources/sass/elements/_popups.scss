@@ -493,13 +493,28 @@
     }
 }
 
-.payment_buttons .icon_wrap {
+.form_icon_wrap {
     width: 100%;
     text-align: center;
 
-    svg, img {
+    &.svg {
+        svg {
+            margin: 0 auto;
+            width: 75px;
+            height: 75px;
+        }
+    }
+
+    &.image {
+        max-width: 75px;
         margin: 0 auto;
-        width: 75px;
-        height: 75px;
+    }
+
+    &.check {
+        color: $green;
+    }
+
+    &.blue_icon {
+        color: $blue;
     }
 }

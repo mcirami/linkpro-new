@@ -17,7 +17,7 @@ export const MessageAlertPopup = ({optionText, showMessageAlertPopup, setShowMes
                 </svg>
             </a>
             <div className="box">
-                <div className="icon_wrap blue_icon">
+                <div className="form_icon_wrap blue_icon">
                     <IoMdAlert />
                 </div>
                 <h3><span className="option_text">{ optionText }</span></h3>

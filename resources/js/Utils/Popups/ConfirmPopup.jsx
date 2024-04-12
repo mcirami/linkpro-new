@@ -98,7 +98,7 @@ export const ConfirmPopup = ({
 
         <div id="confirm_popup_link" className={showConfirmPopup ? 'open' : "" }>
             <div className="box">
-                <div className="icon_wrap check">
+                <div className="form_icon_wrap svg check">
                     <MdCheckCircle/>
                 </div>
                 <h2>Confirm</h2>

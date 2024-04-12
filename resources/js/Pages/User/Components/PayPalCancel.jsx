@@ -3,7 +3,7 @@ import { MdCancel } from "react-icons/md";
 const PayPalCancel = ({subName}) => {
     return (
         <div id="popup_choose_level" className="inline-block relative w-full">
-            <div className="icon_wrap">
+            <div className="form_icon_wrap svg">
                 <MdCancel className="text-red-600"/>
             </div>
             <h3 className="mb-4">In order to cancel your subscription follow these steps:</h3>

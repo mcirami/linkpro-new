@@ -24,7 +24,7 @@ const PurchaseCoursePopup = ({purchasePopup, setPurchasePopup}) => {
                 </svg>
             </a>
             <div className="box">
-                <div className="icon_wrap" style={{ color: purchasePopup.button_color }}>
+                <div className="form_icon_wrap svg" style={{ color: purchasePopup.button_color }}>
                     <FaMoneyCheckAlt />
                 </div>
                 <h3><span className="option_text">Purchase course now to get access to this video and more!</span></h3>

@@ -60,7 +60,7 @@ export const ConfirmFolderDelete = ({
 
         <div id="confirm_folder_popup_link" className={showConfirmFolderDelete ? "open" : ""}>
             <div className="box">
-                <div className="icon_wrap check">
+                <div className="form_icon_wrap svg check">
                     <MdCheckCircle/>
                 </div>
                 <h2>Confirm</h2>

@@ -17,7 +17,7 @@ export const UpgradePopup = ({optionText, showUpgradePopup, setShowUpgradePopup}
                 </svg>
             </a>
             <div className="box">
-                <div className="icon_wrap">
+                <div className="form_icon_wrap image">
                     <img src={Vapor.asset('images/icon_uparrow.png')} alt=""/>
                 </div>
                 <h2>Upgrade Now</h2>
