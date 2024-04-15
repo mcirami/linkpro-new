@@ -11,6 +11,7 @@ use App\Http\Traits\BillingTrait;
 use Inertia\Inertia;
 use Inertia\Response;
 use Stripe\Exception\ApiErrorException;
+use Throwable;
 
 class SubscriptionController extends Controller
 {
@@ -99,13 +100,14 @@ class SubscriptionController extends Controller
      * @param SubscriptionService $subscriptionService
      *
      * @return JsonResponse
+     * @throws Throwable
      */
     public function cancel(Request $request, SubscriptionService $subscriptionService): JsonResponse {
 
-        $gatewayData = $subscriptionService->cancelGateway($request);
+        $gatewayData = $subscriptionService->cancelAtGateway($request);
 
         if($gatewayData["success"]) {
-            $data = $subscriptionService->cancelSubscription($gatewayData, $request);
+            $data = $subscriptionService->cancelSubscriptionDB($gatewayData, $request);
             $returnResponse = [
                 'success' => $data["success"],
                 'message' => $data["message"],
@@ -125,12 +127,13 @@ class SubscriptionController extends Controller
      * @param SubscriptionService $subscriptionService
      *
      * @return JsonResponse
+     * @throws Throwable
      */
     public function resume(Request $request, SubscriptionService $subscriptionService): JsonResponse {
 
-        $data = $subscriptionService->resumeGateway($request);
+        $data = $subscriptionService->resumeAtGateway($request);
 
-        $data = $subscriptionService->resumeSubscription($data);
+        $data = $subscriptionService->resumeSubscriptionDB($data);
 
         return response()->json([
             'success' => $data["success"],
