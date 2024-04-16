@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import {Head, usePage} from '@inertiajs/react';
 import PaymentComponent from '@/Pages/User/Components/PaymentComponent.jsx';
@@ -9,9 +9,12 @@ import PlanComponent from '@/Pages/User/Components/PlanComponent.jsx';
 import BreadCrumbs from '@/Pages/User/Components/BreadCrumbs.jsx';
 import {isEmpty} from 'lodash';
 import {Loader} from '@/Utils/Loader.jsx';
-import PayPalCancel from '@/Pages/User/Components/PayPalCancel.jsx';
+import {
+    SubscriptionPaymentButtons
+} from '@/Components/Payments/SubscriptionPaymentButtons.jsx';
+import EventBus from '@/Utils/Bus.jsx';
 
-const User = ({env}) => {
+const User = ({message = null}) => {
 
     const { auth } = usePage().props;
     const permissions = auth.user.permissions;
@@ -19,12 +22,24 @@ const User = ({env}) => {
 
     const [showSection, setShowSection] = useState([]);
     const [subscription, setSubscription] = useState(auth.user.subscription);
+    const [showPaymentButtons, setShowPaymentButtons] = useState({
+        show: false,
+        type: "",
+        plan: "",
+        pmType: ""
+    });
 
     const [showLoader, setShowLoader] = useState({
         show: false,
         icon: "",
         position: ""
     });
+
+    useEffect(() => {
+        if(message) {
+            EventBus.dispatch("success", {message: message});
+        }
+    }, []);
 
     return (
 
@@ -57,15 +72,18 @@ const User = ({env}) => {
                                 setSubscription={setSubscription}
                                 setShowLoader={setShowLoader}
                                 pmType={userInfo.pm_type}
-                                env={env}
+                                env={auth.env}
                             />
 
                         :
-                            /*showSection.includes("cancel") ?
-                                <PayPalCancel
-                                    subName={subscription.name}
+                            showSection.includes("paymentButtons") ?
+                                <SubscriptionPaymentButtons
+                                    showPaymentButtons={showPaymentButtons}
+                                    setShowPaymentButtons={setShowPaymentButtons}
+                                    env={auth.env}
+                                    subId={subscription.sub_id}
                                 />
-                                :*/
+                                :
                             <div className={`w-full inline-block ${ (permissions.includes("view subscription details") &&
                                 (!subscription || subscription.sub_id === "bypass") ) || (!permissions.includes("view subscription details") && permissions.includes('view courses')) ? "two_columns" : ""}`}>
                                 <div className="card-body w-full inline-block">
@@ -96,6 +114,8 @@ const User = ({env}) => {
                                                 <PaymentComponent
                                                     userInfo={userInfo}
                                                     plan={subscription.name}
+                                                    setShowSection={setShowSection}
+                                                    setShowPaymentButtons={setShowPaymentButtons}
                                                 />
                                             </div>
                                         }

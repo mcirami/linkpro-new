@@ -58,12 +58,13 @@ trait BillingTrait {
             $pmType = null;
             $pmId = null;
             if ( !empty($paymentMethod) ) {
-                if( $paymentMethod->type == "card" ) {
-                    $last4 = $paymentMethod->card->last4;
+                $type = $paymentMethod->data[0]["type"];
+                if( $type == "card" ) {
+                    $last4 = $paymentMethod->data[0]["card"]["last4"];
                 }
 
-                $pmType = $paymentMethod->type;
-                $pmId = $paymentMethod->id;
+                $pmType = $type;
+                $pmId = $paymentMethod->data[0]["id"];
             }
 
             $data = [

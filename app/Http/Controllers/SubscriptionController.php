@@ -36,15 +36,24 @@ class SubscriptionController extends Controller
      * @param Request $request
      * @param SubscriptionService $subscriptionService
      *
-     * @return void
+     * @return Response|void
+     * @throws Throwable
      */
-    public function stripeSubscribeSuccess(Request $request, SubscriptionService $subscriptionService): void {
+    public function stripeSubscribeSuccess(Request $request, SubscriptionService $subscriptionService) {
+
+        $type = $request->get('type');
 
         $data = $subscriptionService->getStripeSuccessPage($request);
 
-        $subscriptionService->newStripeSubscription($data);
-
-        $this->showSuccessPage(null, 'subscription', $data['customerName']);
+        if ($type == "change_payment_method") {
+            $subscriptionService->updateUserPaymentMethod($data);
+            $subscriptionService->cancelPayPalSubscription();
+            $subscriptionService->updateUserSubDetails($data);
+            return Inertia::render('User/User')->with(['message' => 'Payment Method Changed']);
+        } else {
+            $subscriptionService->newStripeSubscription($data);
+            $this->showSuccessPage(null, 'subscription', $data['customerName']);
+        }
     }
 
     public function cancelCheckout(): Response {

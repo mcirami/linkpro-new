@@ -43,21 +43,36 @@ class SubscriptionService {
         $lineItems  = $this->getPlanDetails($planName);
         $email      = $this->user->email;
         $customerId = $this->user->billing_id;
+        $type       = $request->get('type');
+        $additionalVars = "";
+
+        if ($type == "change_payment_method") {
+            $subscriptionStartDate = Carbon::parse($this->user->subscriptions()->pluck('created_at')->first());
+            $billingDateTimestamp = $subscriptionStartDate->addMonth()->endOfDay()->getTimestamp();
+            $dynamicData['subscription_data'] = [
+                'proration_behavior'    => 'none',
+                'billing_cycle_anchor'  => $billingDateTimestamp,
+            ];
+            $dynamicData['custom_text'] = [
+                'submit' => [
+                    'message' => 'NOTE: PAYMENT PROCESSOR WILL BE CHANGED FROM PAYPAL TO STRIPE. YOU WILL NOT BE CHARGED UNTIL THE END OF YOUR CURRENT SUBSCRIPTION PERIOD.'
+                ]
+            ];
+            $additionalVars = '&type=change_payment_method';
+        }
 
         // check if user already has a billing id and be sure it's from stripe ie. starts with 'cus'
         if ($customerId && str_contains($customerId, 'cus')) {
-            $customerData = ['customer' => $customerId];
+            $dynamicData['customer'] = $customerId;
         } else {
-            $customerData = [
-                'customer_email' => $email
-            ];
+            $dynamicData['customer_email'] = $email;
         }
 
         $session = "";
 
         try {
             $session = $stripe->checkout->sessions->create( [
-                'success_url'           => $domain . '/subscribe/stripe-success?session_id={CHECKOUT_SESSION_ID}&plan=' . $planName,
+                'success_url'           => $domain . '/subscribe/stripe-success?session_id={CHECKOUT_SESSION_ID}&plan=' . $planName . $additionalVars,
                 'cancel_url'            => $domain . '/subscribe/cancel-checkout',
                 'line_items'            => [
                     [
@@ -66,9 +81,9 @@ class SubscriptionService {
                     ]
                 ],
                 'mode'                  => 'subscription',
-                'allow_promotion_codes' => true,
+                'allow_promotion_codes' => ! ( $type == "change_payment_method" ),
                 'payment_method_types'  => [],
-                $customerData
+                $dynamicData
             ] );
         } catch ( ApiErrorException $e ) {
             $this->saveErrors($e);
@@ -203,11 +218,7 @@ class SubscriptionService {
 
         if($request->pmType == "paypal") {
 
-            $postEndpoint = "https://api-m.sandbox.paypal.com/v1/billing/subscriptions/" . $subId . "/suspend";
-            $sendData = [
-                "reason" => "Customer-requested pause"
-            ];
-            $this->payPalCurlPostCall($postEndpoint, $sendData);
+            $this->cancelPayPalSubscription($subId);
 
             $getEndpoint = "https://api-m.sandbox.paypal.com/v1/billing/subscriptions/" . $subId;
             $data = $this->payPalGetCall($getEndpoint, "cancel");
@@ -293,7 +304,7 @@ class SubscriptionService {
         if($request->get('pmType') == "paypal") {
             $subId = $request->subId;
             $endpoint = "https://api-m.sandbox.paypal.com/v1/billing/subscriptions/" . $subId . "/activate";
-            $this->payPalCurlCall($endpoint, "POST");
+            $this->payPalPostCall($endpoint);
 
             $returnData = [
                 'status'    => "active",
@@ -406,12 +417,28 @@ class SubscriptionService {
     }
 
     /**
+     * @throws Throwable
+     */
+    public function cancelPayPalSubscription($subId = null): void {
+        if(!$subId) {
+            $userSub = $this->getUserSubscriptions($this->user);
+            $subId = $userSub->sub_id;
+        }
+
+        $postEndpoint = "https://api-m.sandbox.paypal.com/v1/billing/subscriptions/" . $subId . "/suspend";
+        $sendData = [
+            "reason" => "Customer-requested pause"
+        ];
+        $this->payPalPostCall($postEndpoint, $sendData);
+    }
+
+    /**
      * @param $endpoint
      * @param array|string $sendData
      *
      * @throws Throwable
      */
-    private function payPalCurlPostCall($endpoint, array|string $sendData = []): void {
+    private function payPalPostCall($endpoint, array|string $sendData = []): void {
 
         $provider = new PayPalClient;
         $accessToken = $provider->getAccessToken();
@@ -528,6 +555,25 @@ class SubscriptionService {
             'sub'       => $activeSubs,
             'sub_id'    => $response->id
         ];
+    }
+
+    public function updateUserPaymentMethod($data): void {
+
+        $this->user->update([
+            'pm_type'       => $data['paymentType'],
+            'billing_id'    => $data['customerId'],
+            'pm_last_four'  => $data['last4'],
+            'pm_id'         => $data['pmId']
+        ]);
+    }
+
+    public function updateUserSubDetails($data): void {
+        $userSub = $this->getUserSubscriptions($this->user);
+
+        $userSub->update( [
+            'sub_id'    => $data['subId'],
+            'status'    => $data['status'],
+        ] );
     }
 
     /*public function createManualSubscription($code) {

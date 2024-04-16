@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -64,7 +65,8 @@ class HandleInertiaRequests extends Middleware
                     'subscription'  => $subData,
                     'courseData'    => $course,
                     'defaultPage'   => $defaultPage
-                ]
+                ],
+                'env' => App::environment()
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

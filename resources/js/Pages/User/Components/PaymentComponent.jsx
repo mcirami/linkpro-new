@@ -1,20 +1,35 @@
 import React, {useEffect, useState, useRef} from 'react';
 import { BsFillCreditCard2FrontFill } from "react-icons/bs";
+import {router} from '@inertiajs/react';
 
-const PaymentComponent = ({userInfo, plan}) => {
+const PaymentComponent = ({
+                              userInfo,
+                              plan,
+                              setShowSection,
+                              setShowPaymentButtons
+}) => {
 
     const {pm_type, pm_last_four, email} = userInfo;
-    const [buttonUrl, setButtonUrl] = useState("");
 
-    useEffect(() => {
+    const handleButtonClick = (e) => {
+        e.preventDefault();
+        if(pm_type === "paypal") {
+            router.visit("/subscribe?plan=" + plan + "&type=change_payment_method");
+        } else {
+            setShowSection((prev) => [
+                ...prev,
+                "paymentButtons"
+            ])
+            setShowPaymentButtons({
+                show: true,
+                type: "change_payment_method",
+                plan: plan,
+                pmType: pm_type
+            });
 
-        setButtonUrl(pm_type === "paypal" ?
-            '/subscribe?plan=' + plan + "&type=change_payment_method"
-            :
-            "https://checkout.link.pro/p/login/test_3cs6pE5zK02p6Nq145?prefilled_email=" + email
-        )
+        }
 
-    }, []);
+    }
 
     return (
         <>
@@ -48,8 +63,10 @@ const PaymentComponent = ({userInfo, plan}) => {
                     }
                 </div>
             }
-            <a target="_blank" href={buttonUrl}
+            <a target="_blank"
+               href="#"
                className="button blue text-uppercase mt-auto"
+               onClick={handleButtonClick}
             >
                 Change Payment Method
             </a>

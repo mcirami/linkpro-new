@@ -9,7 +9,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
@@ -34,15 +33,11 @@ class UserController extends Controller
     }
 
     /**
-     * @param UserService $userService
      *
      * @return Response
      */
-    public function edit(UserService $userService): Response {
-
-        $env = App::environment();
-
-        return Inertia::render('User/User')->with([ 'env' => $env, ]);
+    public function edit(): Response {
+        return Inertia::render('User/User');
     }
 
     /**
