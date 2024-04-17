@@ -188,4 +188,33 @@ class SubscriptionController extends Controller
         ]);
 
     }
+
+    /**
+     * @param Request $request
+     * @param SubscriptionService $subscriptionService
+     *
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function changePaymentMethodToPaypal(Request $request, SubscriptionService $subscriptionService): JsonResponse {
+        $pmData = [
+            'paymentType'   => $request->get('pmType'),
+            'customerId'    => $request->get('userEmail'),
+            'last4'         => null,
+            'pmId'          => null
+        ];
+
+        $subscriptionService->updateUserPaymentMethod($pmData);
+        $subscriptionService->cancelStripeSubscription();
+        $subData = [
+            'subId'     => $request->get('subId'),
+            'status'    => "active"
+        ];
+        $subscriptionService->updateUserSubDetails($subData);
+
+        return response()->json([
+            'success'   => true,
+            'message'   => "Payment Method Updated"
+        ]);
+    }
 }

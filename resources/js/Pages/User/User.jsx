@@ -13,6 +13,7 @@ import {
     SubscriptionPaymentButtons
 } from '@/Components/Payments/SubscriptionPaymentButtons.jsx';
 import EventBus from '@/Utils/Bus.jsx';
+import {getFutureTime} from '@/Services/TimeRequests.jsx';
 
 const User = ({message = null}) => {
 
@@ -26,7 +27,9 @@ const User = ({message = null}) => {
         show: false,
         type: "",
         plan: "",
-        pmType: ""
+        pmType: "",
+        stripeUrl: "https://checkout.link.pro/p/login/test_3cs6pE5zK02p6Nq145?prefilled_email=" + userInfo.email,
+        subStartDate: subscription.created_at
     });
 
     const [showLoader, setShowLoader] = useState({
@@ -49,7 +52,7 @@ const User = ({message = null}) => {
             <div className="container">
                 <div className={`user_account my_row text-center form_page plans ${permissions.includes('view subscription details') ? "mt-4" : "" }`}>
                     <h2 className="page_title">Update Account Settings</h2>
-                    <div className={`card inline-block relative ${(showSection.includes("changePlan") || showSection.includes("changePayPalPlan")) && 'active'}`}>
+                    <div className={`card inline-block relative ${(showSection.includes("changePlan") || showSection.includes("changePayPalPlan") || showPaymentButtons.show) && 'active'}`}>
 
                         {showLoader.show &&
                             <Loader
@@ -76,12 +79,14 @@ const User = ({message = null}) => {
                             />
 
                         :
-                            showSection.includes("paymentButtons") ?
+                            showPaymentButtons.show ?
                                 <SubscriptionPaymentButtons
                                     showPaymentButtons={showPaymentButtons}
                                     setShowPaymentButtons={setShowPaymentButtons}
                                     env={auth.env}
                                     subId={subscription.sub_id}
+                                    setUserInfo={setUserInfo}
+                                    setSubscription={setSubscription}
                                 />
                                 :
                             <div className={`w-full inline-block ${ (permissions.includes("view subscription details") &&
@@ -114,7 +119,6 @@ const User = ({message = null}) => {
                                                 <PaymentComponent
                                                     userInfo={userInfo}
                                                     plan={subscription.name}
-                                                    setShowSection={setShowSection}
                                                     setShowPaymentButtons={setShowPaymentButtons}
                                                 />
                                             </div>

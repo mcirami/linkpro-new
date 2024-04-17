@@ -60,6 +60,35 @@ export const updatePlan = (packets) => {
     });
 }
 
+export const updatePaymentMethod = (packets) => {
+    return axios.post('/subscribe/paypal-payment-method', packets).then(
+        (response) => {
+
+            return {
+                success : response.data.success,
+                message : JSON.stringify(response.data.message),
+            }
+        },
+
+    ).catch(error => {
+        if (error.response) {
+            if (error.response.data.errors) {
+                EventBus.dispatch("error",
+                    {message: error.response.data.errors});
+            } else {
+                console.error(error.response);
+            }
+
+        } else {
+            console.error("ERROR:: ", error);
+        }
+
+        return {
+            success: false
+        }
+    });
+}
+
 export const getClientId = () => {
 
     return axios.post('/subscribe/get-paypal-client').then(

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
@@ -47,10 +48,11 @@ class HandleInertiaRequests extends Middleware
 
             if($subscription) {
                 $subData = [
-                    'name'      => $subscription->name,
-                    'ends_at'   => $subscription->ends_at,
-                    'status'    => $subscription->status,
-                    'sub_id'    => $subscription->sub_id,
+                    'name'          => $subscription->name,
+                    'created_at'    => Carbon::parse($subscription->created_at),
+                    'ends_at'       => $subscription->ends_at,
+                    'status'        => $subscription->status,
+                    'sub_id'        => $subscription->sub_id,
                 ];
             }
         }

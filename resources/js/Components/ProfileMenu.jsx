@@ -13,14 +13,14 @@ const ProfileMenu = () => {
     const userRoles = auth.user.roles;
 
     const [currentDateTime, setCurrentDateTime] = useState("");
-    const [subEnd, setSubEnd]   = useState("");
+    const [subEnd, setSubEnd] = useState("");
 
     useEffect(() => {
         setCurrentDateTime(GetCurrentTime);
     }, []);
 
     useEffect(() => {
-        if(auth.user.subscription) {
+        if(auth.user.subscription && auth.user.subscription.ends_at) {
             setSubEnd(GetHumanReadableTime(auth.user.subscription.ends_at))
         }
 

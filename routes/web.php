@@ -169,6 +169,7 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], funct
         Route::get( '/stripe-success', [ SubscriptionController::class, 'stripeSubscribeSuccess' ] )->name( 'stripe.subscribe.success' );
         Route::get( '/cancel-checkout', [ SubscriptionController::class, 'cancelCheckout' ] )->name( 'cancel.checkout' );
         Route::post( '/paypal-success', [ SubscriptionController::class, 'payPalSubscribeSuccess' ] )->name( 'paypal.subscribe.success' );
+        Route::post( '/paypal-payment-method', [ SubscriptionController::class, 'changePaymentMethodToPaypal' ] )->name( 'paypal.payment.method' );
         Route::get('/success',[ SubscriptionController::class, 'showSuccessPage' ] )->name( 'show.subscribe.success' );
         Route::post('/get-paypal-client', [ SubscriptionController::class, 'getPayPalClient' ]);
     });

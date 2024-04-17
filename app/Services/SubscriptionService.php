@@ -224,22 +224,9 @@ class SubscriptionService {
             $data = $this->payPalGetCall($getEndpoint, "cancel");
 
         } else {
-            $stripe = $this->createGateway();
 
-            try {
+            $date = $this->cancelStripeSubscription($subId);
 
-                $sub = $stripe->subscriptions->cancel( $subId );
-
-                $data = [
-                    'success'   => true,
-                    'status'    => $sub->status,
-                    'endDate'   => $sub->current_period_end
-                ];
-
-            } catch ( ApiErrorException $e ) {
-                http_response_code( 500 );
-                $this->saveErrors( $e );
-            }
         }
 
         return $data;
@@ -400,7 +387,7 @@ class SubscriptionService {
         ] );
 
         $this->user->update([
-            'pm_type'       => $data['paymentType'],
+            'pm_type'       => $data['pmType'],
             'billing_id'    => $data['userEmail']
         ]);
 
@@ -430,6 +417,96 @@ class SubscriptionService {
             "reason" => "Customer-requested pause"
         ];
         $this->payPalPostCall($postEndpoint, $sendData);
+    }
+
+    /**
+     * @param $activeSubs
+     * @param $request
+     *
+     * @return array
+     */
+    public function resumeStripeSubscription($activeSubs, $request): array {
+        $stripe = $this->createGateway();
+        $customerNumber = $this->user->billing_id;
+        $startDate = Carbon::parse($activeSubs->ends_at);
+        $lineItems = $this->getPlanDetails($request->get('plan'));
+
+        $response = "";
+        try {
+            $response = $stripe->subscriptions->create([
+                'customer'                      => $customerNumber,
+                'items'                         => [['price' => $lineItems['ApiId'] ]],
+                'billing_cycle_anchor_config'   => ['day_of_month' => $startDate->day],
+                'default_payment_method'        => $this->user->pm_id
+            ]);
+
+
+        } catch ( ApiErrorException $e ) {
+            http_response_code(500);
+            $this->saveErrors($e);
+        }
+
+        return [
+            'status'    => $response->status,
+            'sub'       => $activeSubs,
+            'sub_id'    => $response->id
+        ];
+    }
+
+    /**
+     * @param $data
+     *
+     * @return void
+     */
+    public function updateUserPaymentMethod($data): void {
+
+        $this->user->update([
+            'pm_type'       => $data['paymentType'],
+            'billing_id'    => $data['customerId'],
+            'pm_last_four'  => $data['last4'],
+            'pm_id'         => $data['pmId']
+        ]);
+    }
+
+    /**
+     * @param $data
+     *
+     * @return void
+     */
+    public function updateUserSubDetails($data): void {
+        $userSub = $this->getUserSubscriptions($this->user);
+
+        $userSub->update( [
+            'sub_id'    => $data['subId'],
+            'status'    => $data['status'],
+        ] );
+    }
+
+    /**
+     * @param $subId
+     *
+     * @return array
+     *
+     */
+    public function cancelStripeSubscription($subId = null): array {
+        if (!$subId) {
+            $subId = $this->user->subscriptions()->pluck('sub_id')->first();
+        }
+        $stripe = $this->createGateway();
+        try {
+
+            $sub = $stripe->subscriptions->cancel( $subId );
+
+            return [
+                'success'   => true,
+                'status'    => $sub->status,
+                'endDate'   => $sub->current_period_end
+            ];
+
+        } catch ( ApiErrorException $e ) {
+            $this->saveErrors( $e );
+            http_response_code( 500 );
+        }
     }
 
     /**
@@ -521,59 +598,6 @@ class SubscriptionService {
                 ];
             }
         }
-    }
-
-    /**
-     * @param $activeSubs
-     * @param $request
-     *
-     * @return array
-     */
-    public function resumeStripeSubscription($activeSubs, $request): array {
-        $stripe = $this->createGateway();
-        $customerNumber = $this->user->billing_id;
-        $startDate = Carbon::parse($activeSubs->ends_at);
-        $lineItems = $this->getPlanDetails($request->get('plan'));
-
-        $response = "";
-        try {
-            $response = $stripe->subscriptions->create([
-                'customer'                      => $customerNumber,
-                'items'                         => [['price' => $lineItems['ApiId'] ]],
-                'billing_cycle_anchor_config'   => ['day_of_month' => $startDate->day],
-                'default_payment_method'        => $this->user->pm_id
-            ]);
-
-
-        } catch ( ApiErrorException $e ) {
-            http_response_code(500);
-            $this->saveErrors($e);
-        }
-
-        return [
-            'status'    => $response->status,
-            'sub'       => $activeSubs,
-            'sub_id'    => $response->id
-        ];
-    }
-
-    public function updateUserPaymentMethod($data): void {
-
-        $this->user->update([
-            'pm_type'       => $data['paymentType'],
-            'billing_id'    => $data['customerId'],
-            'pm_last_four'  => $data['last4'],
-            'pm_id'         => $data['pmId']
-        ]);
-    }
-
-    public function updateUserSubDetails($data): void {
-        $userSub = $this->getUserSubscriptions($this->user);
-
-        $userSub->update( [
-            'sub_id'    => $data['subId'],
-            'status'    => $data['status'],
-        ] );
     }
 
     /*public function createManualSubscription($code) {

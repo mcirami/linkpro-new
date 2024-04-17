@@ -5,30 +5,24 @@ import {router} from '@inertiajs/react';
 const PaymentComponent = ({
                               userInfo,
                               plan,
-                              setShowSection,
                               setShowPaymentButtons
 }) => {
 
-    const {pm_type, pm_last_four, email} = userInfo;
+    const {pm_type, pm_last_four} = userInfo;
 
     const handleButtonClick = (e) => {
         e.preventDefault();
         if(pm_type === "paypal") {
             router.visit("/subscribe?plan=" + plan + "&type=change_payment_method");
         } else {
-            setShowSection((prev) => [
+            setShowPaymentButtons((prev) => ({
                 ...prev,
-                "paymentButtons"
-            ])
-            setShowPaymentButtons({
                 show: true,
                 type: "change_payment_method",
                 plan: plan,
                 pmType: pm_type
-            });
-
+            }));
         }
-
     }
 
     return (
