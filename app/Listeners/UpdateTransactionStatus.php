@@ -41,7 +41,7 @@ class UpdateTransactionStatus implements ShouldQueue
         $transactionId = $event->purchase->transaction_id;
 
         try {
-            $gateway = $this->createGateway();
+            $gateway = $this->createStripeGateway();
             $result = $gateway->transaction()->find($transactionId);
 
             $purchase = Purchase::where('transaction_id', $transactionId)->first();

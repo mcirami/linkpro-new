@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\PayPalService;
+use App\Services\StripeService;
 use App\Services\SubscriptionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -20,14 +22,14 @@ class SubscriptionController extends Controller
 
     /**
      * @param Request $request
-     * @param SubscriptionService $subscriptionService
+     * @param StripeService $stripeService
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws ApiErrorException
      */
-    public function showPurchasePage(Request $request, SubscriptionService $subscriptionService): \Symfony\Component\HttpFoundation\Response {
+    public function showPurchasePage(Request $request, StripeService $stripeService): \Symfony\Component\HttpFoundation\Response {
 
-        $checkout_session = $subscriptionService->getPurchasePage($request);
+        $checkout_session = $stripeService->getStripePurchasePage($request);
 
         return Inertia::location($checkout_session->url);
     }
@@ -35,23 +37,30 @@ class SubscriptionController extends Controller
     /**
      * @param Request $request
      * @param SubscriptionService $subscriptionService
+     * @param StripeService $stripeService
+     * @param PayPalService $payPalService
      *
      * @return Response|void
      * @throws Throwable
      */
-    public function stripeSubscribeSuccess(Request $request, SubscriptionService $subscriptionService) {
+    public function stripeSubscribeSuccess(
+        Request $request,
+        SubscriptionService $subscriptionService,
+        StripeService $stripeService,
+        PayPalService $payPalService
+    ) {
 
         $type = $request->get('type');
 
-        $data = $subscriptionService->getStripeSuccessPage($request);
+        $data = $stripeService->getStripeSuccessPage($request);
 
         if ($type == "change_payment_method") {
             $subscriptionService->updateUserPaymentMethod($data);
-            $subscriptionService->cancelPayPalSubscription();
+            $payPalService->cancelPayPalSubscription();
             $subscriptionService->updateUserSubDetails($data);
             return Inertia::render('User/User')->with(['message' => 'Payment Method Changed']);
         } else {
-            $subscriptionService->newStripeSubscription($data);
+            $stripeService->newStripeSubscription($data);
             $this->showSuccessPage(null, 'subscription', $data['customerName']);
         }
     }
@@ -66,7 +75,11 @@ class SubscriptionController extends Controller
      *
      * @return JsonResponse
      */
-    public function changePlan(Request $request, SubscriptionService $subscriptionService): JsonResponse {
+    public function changePlan(
+        Request $request,
+        SubscriptionService $subscriptionService,
+        StripeService $stripeService,
+    ): JsonResponse {
 
         $plan = $request->get('plan');
         $pmType = $request->get('pmType') ?: null;
@@ -75,11 +88,12 @@ class SubscriptionController extends Controller
         $url = '/dashboard';
 
         if ($pmType && $pmType!= 'paypal') {
-            $subscriptionService->updateGateway( $request );
+            $stripeService->updateStripeInfo( $request );
         }
 
         $data = $subscriptionService->updateSubscription( $plan, $defaultPage );
 
+        // check to see if coming from plans page or user settings page
         $path = $request->session()->get( '_previous' );
         if ( ( str_contains( $path["url"], '/subscribe' ) || str_contains( $path["url"], '/plans' ) ) ) {
             $page = $user->pages()->where( 'user_id', $user["id"] )->where( 'default', true )->first();
@@ -99,9 +113,8 @@ class SubscriptionController extends Controller
     public function showPlans(Request $request, SubscriptionService $subscriptionService): Response {
 
         $path = $request->session()->get('_previous');
-        $env = App::environment();
 
-        return Inertia::render('Plans/Plans')->with([ 'path' => $path["url"], 'env' => $env ]);
+        return Inertia::render('Plans/Plans')->with([ 'path' => $path["url"] ]);
     }
 
     /**
@@ -166,7 +179,10 @@ class SubscriptionController extends Controller
         return Inertia::render('Checkout/Success')->with(['type' => $type, 'name' => $name ]);
     }
 
-    public function getPayPalClient() {
+    /**
+     * @return JsonResponse
+     */
+    public function getPayPalClient(): JsonResponse {
         $payPalClient = App::environment(['local', 'staging']) ? config('paypal.sandbox.client_id') : config('paypal.live.client_id');
         return response()->json([
             'payPalClient' => $payPalClient,
@@ -175,13 +191,13 @@ class SubscriptionController extends Controller
 
     /**
      * @param Request $request
-     * @param SubscriptionService $subscriptionService
+     * @param PayPalService $payPalService
      *
      * @return JsonResponse
      */
-    public function payPalSubscribeSuccess(Request $request, SubscriptionService $subscriptionService): JsonResponse {
+    public function payPalSubscribeSuccess(Request $request, PayPalService $payPalService): JsonResponse {
 
-        $subscriptionService->newPayPalSubscription($request);
+        $payPalService->newPayPalSubscription($request);
 
         return response()->json([
             'success' => true,
@@ -192,11 +208,15 @@ class SubscriptionController extends Controller
     /**
      * @param Request $request
      * @param SubscriptionService $subscriptionService
+     * @param StripeService $stripeService
      *
      * @return JsonResponse
-     * @throws Throwable
      */
-    public function changePaymentMethodToPaypal(Request $request, SubscriptionService $subscriptionService): JsonResponse {
+    public function changePaymentMethodToPaypal(
+        Request $request,
+        SubscriptionService $subscriptionService,
+        StripeService $stripeService
+    ): JsonResponse {
         $pmData = [
             'paymentType'   => $request->get('pmType'),
             'customerId'    => $request->get('userEmail'),
@@ -205,7 +225,7 @@ class SubscriptionController extends Controller
         ];
 
         $subscriptionService->updateUserPaymentMethod($pmData);
-        $subscriptionService->cancelStripeSubscription();
+        $stripeService->cancelStripeSubscription();
         $subData = [
             'subId'     => $request->get('subId'),
             'status'    => "active"

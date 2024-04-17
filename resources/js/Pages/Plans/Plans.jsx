@@ -10,13 +10,14 @@ import {
     GetCurrentTime,
     GetHumanReadableTime,
 } from '@/Services/TimeRequests.jsx';
-function Plans({path, env}) {
+function Plans({path}) {
 
     const { auth } = usePage().props;
     const subscriptionName = auth.user.subscription ? auth.user.subscription.name : null;
     const status = auth.user.subscription ? auth.user.subscription.status : null;
     const subId = auth.user.subscription ? auth.user.subscription.sub_id : null;
     const pmType = auth.user.userInfo.pm_type;
+    const env = auth.env;
 
     const [showLoader, setShowLoader] = useState({
         show: false,

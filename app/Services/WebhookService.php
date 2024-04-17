@@ -59,7 +59,7 @@ class WebhookService {
      */
     public function checkDefaultPaymentMethod($customer): void {
 
-        $stripe = $this->createGateway();
+        $stripe = $this->createStripeGateway();
         $defaultPmId = null;
         try {
             $stripeCustomer = $stripe->customers->retrieve(
@@ -87,7 +87,7 @@ class WebhookService {
      */
     public function updateDefaultPaymentMethod($defaultPmId, $customer): void {
 
-        $stripe = $this->createGateway();
+        $stripe = $this->createStripeGateway();
         $user = User::where('billing_id', '=', $customer)->first();
         if($user) {
             $customerPm = null;
@@ -188,7 +188,7 @@ class WebhookService {
      */
     public function updatePlan($object): void {
 
-        $stripe = $this->createGateway();
+        $stripe = $this->createStripeGateway();
         try {
             $product            = $stripe->products->retrieve( $object->id );
             $unconvertedPrice   = $stripe->prices->retrieve($product->default_price);

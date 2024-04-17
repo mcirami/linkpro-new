@@ -14,7 +14,7 @@ trait BillingTrait {
     /**
      * @return StripeClient
      */
-    public function createGateway(): StripeClient {
+    public function createStripeGateway(): StripeClient {
 
         if (App::environment('local', 'staging')) {
             return new StripeClient(config('services.stripe.sandbox_secret'));
@@ -46,7 +46,7 @@ trait BillingTrait {
     public function getCustomerBillingInfo($request): array {
 
         try {
-            $stripe     = $this->createGateway();
+            $stripe     = $this->createStripeGateway();
             $session    = $stripe->checkout->sessions->retrieve(
                 $request->session_id,
                 ['expand' => ['customer']]

@@ -15,7 +15,7 @@ class PurchaseService {
     private $gateway;
 
     public function __construct() {
-        $this->gateway = $this->createGateway();
+        $this->gateway = $this->createStripeGateway();
 
         return $this->gateway;
     }
