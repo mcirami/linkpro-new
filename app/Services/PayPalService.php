@@ -5,6 +5,7 @@ use App\Http\Traits\BillingTrait;
 use App\Http\Traits\UserTrait;
 use App\Notifications\NotifyAboutUpgrade;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Throwable;
@@ -32,7 +33,8 @@ class PayPalService {
             $subId = $userSub->sub_id;
         }
 
-        $postEndpoint = "https://api-m.sandbox.paypal.com/v1/billing/subscriptions/" . $subId . "/suspend";
+        $apiHost = App::environment() == 'live' ? config('paypal.live.api_host') : config('paypal.sandbox.api_host');
+        $postEndpoint = $apiHost . "/v1/billing/subscriptions/" . $subId . "/suspend";
         $sendData = [
             "reason" => "Customer-requested pause"
         ];

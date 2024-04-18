@@ -7,12 +7,10 @@ use App\Notifications\NotifyAboutCancelation;
 use App\Notifications\NotifyAboutResumeSub;
 use App\Notifications\NotifyAboutUpgrade;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\BillingTrait;
 use App\Http\Traits\UserTrait;
-use Stripe\Checkout\Session;
-use Stripe\Exception\ApiErrorException;
-use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Throwable;
 
 class SubscriptionService {
@@ -92,8 +90,8 @@ class SubscriptionService {
 
             $payPalService = new PayPalService();
             $payPalService->cancelPayPalSubscription($subId);
-
-            $getEndpoint = "https://api-m.sandbox.paypal.com/v1/billing/subscriptions/" . $subId;
+            $apiHost = App::environment() == 'live' ? config('paypal.live.api_host') : config('paypal.sandbox.api_host');
+            $getEndpoint = $apiHost . "/v1/billing/subscriptions/" . $subId;
             $data = $payPalService->payPalGetCall($getEndpoint, "cancel");
 
         } else {
@@ -164,7 +162,8 @@ class SubscriptionService {
 
         if($request->get('pmType') == "paypal") {
             $subId = $request->subId;
-            $endpoint = "https://api-m.sandbox.paypal.com/v1/billing/subscriptions/" . $subId . "/activate";
+            $apiHost = App::environment() == 'live' ? config('paypal.live.api_host') : config('paypal.sandbox.api_host');
+            $endpoint = $apiHost . "/v1/billing/subscriptions/" . $subId . "/activate";
             $payPalService = new PayPalService();
             $payPalService->payPalPostCall($endpoint);
 

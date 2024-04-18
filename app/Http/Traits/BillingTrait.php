@@ -16,10 +16,10 @@ trait BillingTrait {
      */
     public function createStripeGateway(): StripeClient {
 
-        if (App::environment('local', 'staging')) {
-            return new StripeClient(config('services.stripe.sandbox_secret'));
-        } else {
+        if (App::environment('live')) {
             return new StripeClient(config('services.stripe.secret'));
+        } else {
+            return new StripeClient(config('services.stripe.sandbox_secret'));
         }
 
     }
