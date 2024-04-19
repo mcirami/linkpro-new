@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\WebhookService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use App\Http\Traits\BillingTrait;
@@ -123,10 +124,22 @@ class WebhookController extends Controller
         } catch(\UnexpectedValueException $e) {
             // Invalid payload
             http_response_code(400);
+            Log::channel( 'cloudwatch' )->info( "--timestamp--" .
+                                                Carbon::now() .
+                                                "-- kind --"
+                                                . "UnexpectedValueException in Webhook" .
+                                                "-- Error Message -- " .
+                                                $e );
             exit();
         } catch(\Stripe\Exception\SignatureVerificationException $e) {
             // Invalid signature
             http_response_code(400);
+            Log::channel( 'cloudwatch' )->info( "--timestamp--" .
+                                                Carbon::now() .
+                                                "-- kind --"
+                                                . "SignatureVerificationException in Webhook" .
+                                                "-- Error Message -- " .
+                                                $e);
             exit();
         }
     }
