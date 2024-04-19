@@ -183,9 +183,9 @@ class SubscriptionController extends Controller
      * @return JsonResponse
      */
     public function getPayPalClient(): JsonResponse {
-        $payPalClient = App::environment(['local', 'staging']) ? config('paypal.sandbox.client_id') : config('paypal.live.client_id');
+        //$payPalClient = App::environment() == "live" ? config('paypal.live.client_id') : config('paypal.sandbox.client_id');
         return response()->json([
-            'payPalClient' => $payPalClient,
+            'payPalClient' => config('paypal.sandbox.client_id'),
         ]);
     }
 

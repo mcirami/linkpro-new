@@ -29,7 +29,7 @@ const User = ({message = null}) => {
         plan: "",
         pmType: "",
         stripeUrl: "https://checkout.link.pro/p/login/test_3cs6pE5zK02p6Nq145?prefilled_email=" + userInfo.email,
-        subStartDate: subscription.created_at
+        subStartDate: subscription?.created_at || null
     });
 
     const [showLoader, setShowLoader] = useState({

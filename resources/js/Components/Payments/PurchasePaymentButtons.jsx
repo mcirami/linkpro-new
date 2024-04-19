@@ -6,11 +6,16 @@ import {
     usePayPalScriptReducer,
 } from '@paypal/react-paypal-js';
 import {Link, router} from '@inertiajs/react';
+import {Loader} from '@/Utils/Loader.jsx';
 
 const PurchasePaymentButtons = ({showPaymentButtons}) => {
 
     const [initialOptions, setInitialOptions] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
+    const [showLoader, setShowLoader] = useState({
+        show: true,
+        icon: "",
+        position: "absolute"
+    });
 
     useEffect(() => {
         getClientId().then((response) => {
@@ -25,11 +30,13 @@ const PurchasePaymentButtons = ({showPaymentButtons}) => {
                     "data-sdk-integration-source":"integrationbuilder_sc",
                 })
 
-                setIsLoading(false);
+                setShowLoader({
+                    show: false,
+                });
             }
         })
 
-    }, []);
+    }, [showPaymentButtons]);
 
     const ButtonWrapper = ({type}) => {
         const [{ options }, dispatch] = usePayPalScriptReducer();
@@ -98,7 +105,11 @@ const PurchasePaymentButtons = ({showPaymentButtons}) => {
     }
 
     return (
-        !isLoading &&
+        showLoader.show ?
+            <Loader
+                showLoader={showLoader}
+            />
+            :
         <div className="payment_buttons">
             <div className="form_icon_wrap svg">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-credit-card-2-front-fill" viewBox="0 0 16 16">

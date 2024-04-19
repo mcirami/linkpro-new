@@ -52,7 +52,7 @@ export const SubscriptionPaymentButtons = ({
             }
         })
 
-    }, []);
+    }, [showPaymentButtons]);
 
     const ButtonWrapper = ({type}) => {
         const [{ options }, dispatch] = usePayPalScriptReducer();
@@ -85,14 +85,14 @@ export const SubscriptionPaymentButtons = ({
 
     const createSubscription = (data, actions) => {
 
-        const planId = getPlanId(showPaymentButtons.plan, env)
-        let startTime = 'Current time'
+        const planId = getPlanId(showPaymentButtons.plan, env);
+        let postData = {};
         if(showPaymentButtons.type === "change_payment_method") {
-            startTime = getFutureTime(showPaymentButtons.subStartDate, 1);
+            postData["start_time"] = getFutureTime(showPaymentButtons.subStartDate, 1);
         }
         return actions.subscription.create({
-            plan_id: planId,
-            start_time: startTime,
+            plan_id:planId,
+            postData,
             "application_context": {
                 userAction: "SUBSCRIBE_NOW",
             }

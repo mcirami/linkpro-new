@@ -70,6 +70,12 @@ class WebhookController extends Controller
         http_response_code(200);
         if ($response) {
             Log::channel( 'webhooks' )->info( " --- object --- " . $response );
+            Log::channel( 'cloudwatch' )->info( "--timestamp--" .
+                                                Carbon::now() .
+                                                "-- kind --"
+                                                . "receiveProductWebhookResponse" .
+                                                "-- Error Message -- " .
+                                                $response );
         }
     }
 
@@ -81,6 +87,12 @@ class WebhookController extends Controller
     public function receiveProductWebhookResponse(WebhookService $webhook_service): void {
 
         $event = $this->getStripeWebhookInstance('product');
+        Log::channel( 'cloudwatch' )->info( "--timestamp--" .
+                                            Carbon::now() .
+                                            "-- kind --"
+                                            . "receiveProductWebhookResponse" .
+                                            "-- Error Message -- " .
+                                            $event );
         $response = null;
         switch($event->type) {
             case 'product.created':
@@ -108,6 +120,12 @@ class WebhookController extends Controller
         http_response_code(200);
         if ($response) {
             Log::channel( 'webhooks' )->info( " --- object --- " . $response );
+            Log::channel( 'cloudwatch' )->info( "--timestamp--" .
+                                                Carbon::now() .
+                                                "-- kind --"
+                                                . "receiveProductWebhookResponse" .
+                                                "-- Error Message -- " .
+                                                $response );
         }
     }
 
@@ -135,23 +153,23 @@ class WebhookController extends Controller
             );
         } catch(\UnexpectedValueException $e) {
             // Invalid payload
-            http_response_code(400);
             Log::channel( 'cloudwatch' )->info( "--timestamp--" .
                                                 Carbon::now() .
                                                 "-- kind --"
                                                 . "UnexpectedValueException in Webhook" .
                                                 "-- Error Message -- " .
                                                 $e );
+            http_response_code(400);
             exit();
         } catch(\Stripe\Exception\SignatureVerificationException $e) {
             // Invalid signature
-            http_response_code(400);
             Log::channel( 'cloudwatch' )->info( "--timestamp--" .
                                                 Carbon::now() .
                                                 "-- kind --"
                                                 . "SignatureVerificationException in Webhook" .
                                                 "-- Error Message -- " .
                                                 $e);
+            http_response_code(400);
             exit();
         }
     }

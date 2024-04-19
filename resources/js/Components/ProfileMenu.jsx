@@ -32,8 +32,8 @@ const ProfileMenu = () => {
             <ul className="ml-auto">
                 {!isEmpty(userRoles) ?
                      ( (userRoles.includes('admin') || userRoles.includes('lp.user')) && !auth.user.subscription ) ||
-                    (auth.user.subscription.name && auth.user.subscription.name !== "premier" && !auth.user.subscription.ends_at) ||
-                    (auth.user.subscription.ends_at && subEnd < currentDateTime)  ?
+                    (auth.user.subscription && auth.user.subscription.name !== "premier" && !auth.user.subscription.ends_at) ||
+                    (auth.user.subscription && auth.user.subscription.ends_at && subEnd < currentDateTime)  ?
                     <li className="upgrade_link">
                         <Link className="button blue" href={route('plans.get')}>Upgrade</Link>
                     </li>
