@@ -59,6 +59,12 @@ class WebhookController extends Controller
                 break;
             default:
                 $response = 'Received unknown event type ' . $event->type . '---object---' . $event->data->object;
+                Log::channel( 'cloudwatch' )->info( "--timestamp--" .
+                                                    Carbon::now() .
+                                                    "-- kind --"
+                                                    . "receiveWebhookResponse" .
+                                                    "-- Error Message -- " .
+                                                    $response );
                 break;
         }
         http_response_code(200);
@@ -91,6 +97,12 @@ class WebhookController extends Controller
                 break;
             default:
                 $response = 'Received unknown event type ' . $event->type . '---object---' . $event->data->object;
+                Log::channel( 'cloudwatch' )->info( "--timestamp--" .
+                                                    Carbon::now() .
+                                                    "-- kind --"
+                                                    . "receiveProductWebhookResponse" .
+                                                    "-- Error Message -- " .
+                                                    $response );
                 break;
         }
         http_response_code(200);
