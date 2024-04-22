@@ -2,40 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import EventBus from '@/Utils/Bus.jsx';
 
-export const purchaseSubscription = (url, packets) => {
-
-    return axios.post(url, packets).then(
-        (response) => {
-            console.log(response);
-            const returnMessage = response.data.message;
-            const success = response.data.success;
-            const url = response.data.url;
-
-            return {
-                success : success,
-                message : returnMessage,
-                url : url
-            }
-        },
-
-    ).catch(error => {
-        if (error.response) {
-            if(error.response.data.errors) {
-                EventBus.dispatch("error", { message: error.response.data.errors });
-            } else {
-                console.error(error.response);
-            }
-
-        } else {
-            console.error("ERROR:: ", error);
-        }
-
-        return {
-            success : false
-        }
-    });
-}
-
 export const cancelSubscription = (packets) => {
 
     return axios.put('/subscribe/cancel', packets).then(
@@ -79,6 +45,7 @@ export const changePlan = (packets) => {
     return axios.post('/subscribe/change-plan', packets).then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
+            EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
             const success = response.data.success;
             const url = response.data.url;
 

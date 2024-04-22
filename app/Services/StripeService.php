@@ -152,12 +152,12 @@ class StripeService {
         $stripe = $this->createStripeGateway();
         try {
 
-            //$subscriptions = $stripe->subscriptions->all(['customer' => $user->billing_id]);
+            $subscriptions = $stripe->subscriptions->all(['customer' => $this->user->billing_id]);
 
             $stripe->subscriptions->update(
                 $request->get('subId'),
                 ['items'    => [[
-                    //'id'    => $subscriptions->data[0]->items->data[0]->id,
+                    'id'    => $subscriptions->data[0]->items->data[0]->id,
                     'price' => $price['ApiId'],
                 ]]],
             );

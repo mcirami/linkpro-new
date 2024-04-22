@@ -3,7 +3,7 @@ import {Head, Link, router} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { IoCheckmarkCircle } from "react-icons/io5";
 
-const Success = ({name = null, type, url = null, courseTitle = null}) => {
+const Success = ({type, name = null, url = null, courseTitle = null}) => {
 
     const [purchaseType, setPurchaseType] = useState(type);
 

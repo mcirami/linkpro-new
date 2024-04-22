@@ -59,7 +59,8 @@ const ChoosePlanContent = ({
         } else {
             const packets = {
                 plan: subscriptionLevel,
-                subId: subscription.sub_id
+                subId: subscription.sub_id,
+                pmType: pmType
             }
 
             changePlan(packets).then((response) => {

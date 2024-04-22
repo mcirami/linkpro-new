@@ -63,12 +63,12 @@ class WebhookController extends Controller
                                                     Carbon::now() .
                                                     "-- kind --"
                                                     . "receiveWebhookResponse" .
-                                                    "-- Error Message -- " .
+                                                    "-- default switch response -- " .
                                                     $response );
                 break;
         }
         http_response_code(200);
-        if ($response) {
+        /*if ($response) {
             Log::channel( 'webhooks' )->info( " --- object --- " . $response );
             Log::channel( 'cloudwatch' )->info( "--timestamp--" .
                                                 Carbon::now() .
@@ -76,7 +76,7 @@ class WebhookController extends Controller
                                                 . "receiveProductWebhookResponse" .
                                                 "-- Error Message -- " .
                                                 $response );
-        }
+        }*/
     }
 
     /**
@@ -87,12 +87,6 @@ class WebhookController extends Controller
     public function receiveProductWebhookResponse(WebhookService $webhook_service): void {
 
         $event = $this->getStripeWebhookInstance('product');
-        Log::channel( 'cloudwatch' )->info( "--timestamp--" .
-                                            Carbon::now() .
-                                            "-- kind --"
-                                            . "receiveProductWebhookResponse" .
-                                            "-- Error Message -- " .
-                                            $event );
         $response = null;
         switch($event->type) {
             case 'product.created':
@@ -113,12 +107,12 @@ class WebhookController extends Controller
                                                     Carbon::now() .
                                                     "-- kind --"
                                                     . "receiveProductWebhookResponse" .
-                                                    "-- Error Message -- " .
+                                                    "-- default switch response -- " .
                                                     $response );
                 break;
         }
         http_response_code(200);
-        if ($response) {
+        /*if ($response) {
             Log::channel( 'webhooks' )->info( " --- object --- " . $response );
             Log::channel( 'cloudwatch' )->info( "--timestamp--" .
                                                 Carbon::now() .
@@ -126,7 +120,7 @@ class WebhookController extends Controller
                                                 . "receiveProductWebhookResponse" .
                                                 "-- Error Message -- " .
                                                 $response );
-        }
+        }*/
     }
 
     private function getStripeWebhookInstance($type) {

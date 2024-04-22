@@ -23,6 +23,7 @@ const User = ({message = null}) => {
 
     const [showSection, setShowSection] = useState([]);
     const [subscription, setSubscription] = useState(auth.user.subscription);
+    /*TODO: change to dynamic stripeURL when products created on live site*/
     const [showPaymentButtons, setShowPaymentButtons] = useState({
         show: false,
         type: "",

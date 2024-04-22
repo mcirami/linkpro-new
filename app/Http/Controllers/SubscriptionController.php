@@ -61,7 +61,8 @@ class SubscriptionController extends Controller
             return Inertia::render('User/User')->with(['message' => 'Payment Method Changed']);
         } else {
             $stripeService->newStripeSubscription($data);
-            $this->showSuccessPage(null, 'subscription', $data['customerName']);
+            return Inertia::render('Checkout/Success')->with(['type' => 'subscription', 'name' => $data['customerName'] ]);
+            //$this->showSuccessPage(null, 'subscription', $data['customerName']);
         }
     }
 
@@ -183,9 +184,9 @@ class SubscriptionController extends Controller
      * @return JsonResponse
      */
     public function getPayPalClient(): JsonResponse {
-        //$payPalClient = App::environment() == "live" ? config('paypal.live.client_id') : config('paypal.sandbox.client_id');
+        $payPalClient = App::environment() == "live" ? config('paypal.live.client_id') : config('paypal.sandbox.client_id');
         return response()->json([
-            'payPalClient' => config('paypal.sandbox.client_id'),
+            'payPalClient' => $payPalClient,
         ]);
     }
 
