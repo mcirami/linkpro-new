@@ -33,7 +33,7 @@ class PayPalService {
             $subId = $userSub->sub_id;
         }
 
-        $apiHost = App::environment() == 'live' ? config('paypal.live.api_host') : config('paypal.sandbox.api_host');
+        $apiHost = App::environment() == 'production' ? config('paypal.live.api_host') : config('paypal.sandbox.api_host');
         $postEndpoint = $apiHost . "/v1/billing/subscriptions/" . $subId . "/suspend";
         $sendData = [
             "reason" => "Customer-requested pause"

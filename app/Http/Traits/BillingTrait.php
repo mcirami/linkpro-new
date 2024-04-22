@@ -16,7 +16,7 @@ trait BillingTrait {
      */
     public function createStripeGateway(): StripeClient {
 
-        if (App::environment('live')) {
+        if (App::environment() == 'production') {
             return new StripeClient(config('services.stripe.secret'));
         } else {
             return new StripeClient(config('services.stripe.sandbox_secret'));

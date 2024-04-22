@@ -127,12 +127,12 @@ class WebhookController extends Controller
 
         //$stripe = $this->createGateway();
         if ($type == "customer") {
-            $endpointSecret = App::environment('live') ?
+            $endpointSecret = App::environment() == 'production' ?
                 config('services.stripe.webhook_secret') :
                 config('services.stripe.test_webhook_secret');
 
         } else {
-            $endpointSecret = App::environment('live') ?
+            $endpointSecret = App::environment() == 'production' ?
                 config('services.stripe.product_webhook_secret') :
                 config('services.stripe.test_product_webhook_secret');
         }

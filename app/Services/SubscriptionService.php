@@ -90,7 +90,7 @@ class SubscriptionService {
 
             $payPalService = new PayPalService();
             $payPalService->cancelPayPalSubscription($subId);
-            $apiHost = App::environment() == 'live' ? config('paypal.live.api_host') : config('paypal.sandbox.api_host');
+            $apiHost = App::environment() == 'production' ? config('paypal.live.api_host') : config('paypal.sandbox.api_host');
             $getEndpoint = $apiHost . "/v1/billing/subscriptions/" . $subId;
             $data = $payPalService->payPalGetCall($getEndpoint, "cancel");
 
@@ -162,7 +162,7 @@ class SubscriptionService {
 
         if($request->get('pmType') == "paypal") {
             $subId = $request->subId;
-            $apiHost = App::environment() == 'live' ? config('paypal.live.api_host') : config('paypal.sandbox.api_host');
+            $apiHost = App::environment() == 'production' ? config('paypal.live.api_host') : config('paypal.sandbox.api_host');
             $endpoint = $apiHost . "/v1/billing/subscriptions/" . $subId . "/activate";
             $payPalService = new PayPalService();
             $payPalService->payPalPostCall($endpoint);

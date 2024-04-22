@@ -112,7 +112,7 @@ export const getClientId = () => {
 
 export const getPlanId = (planName, env) => {
 
-    if (env === "live") {
+    if (env === "production") {
         return planName === "pro" ? "P-6MH1893903516972EMX5QADY" : "P-5CL62356R3238071JMX5QANA"
     } else {
         return planName === "pro" ? "P-5XM03253A6686724NMYGYLEQ" : "P-17R924989P608662RMYGYLWQ"

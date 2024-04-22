@@ -11,9 +11,7 @@
 .env.backup
 .env-nodebug
 .env.production
-.env.production-new.encrypted
 .env.staging
-.env.staging-new.encrypted
 .phpunit.result.cache
 .DS_store
 docker-compose.override.yml
