@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Notifications\NotifyAboutUpgrade;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
@@ -41,8 +42,13 @@ class StripeService {
         $additionalVars = "";
 
         if ($type == "change_payment_method") {
-            $subscriptionStartDate = Carbon::parse($this->user->subscriptions()->pluck('created_at')->first());
-            $billingDateTimestamp = $subscriptionStartDate->addMonth()->endOfDay()->getTimestamp();
+            $paypalGetCall = new PayPalService();
+            $subId = $this->user->subscriptions()->pluck('sub_id')->first();
+            $apiHost = App::environment() == 'production' ? config('paypal.live.api_host') : config('paypal.sandbox.api_host');
+            $endpoint = $apiHost . "/v1/billing/subscriptions/" . $subId;
+            $nextBillingDate = $paypalGetCall->payPalGetCall($endpoint, "next_billing_date");
+            $billingDateTimestamp = Carbon::parse($nextBillingDate)->timestamp;
+
             $dynamicData['subscription_data'] = [
                 'proration_behavior'    => 'none',
                 'billing_cycle_anchor'  => $billingDateTimestamp,

@@ -147,34 +147,31 @@ export const updatePaymentMethod = (packets) => {
     });
 }
 
-export const checkPromoCode = (packets) => {
+export const getStripeBillingDate = (packets) => {
 
-    return axios.post('/subscribe/check-code', packets).then(
+    return axios.post('/subscribe/get-stripe-billing-date', packets)
+    .then(
         (response) => {
-            const message = response.data.message;
-            const success = response.data.success;
+
+            const success   = response.data.success;
+            const startDate = response.data.startDate;
 
             return {
                 success : success,
-                message : message,
+                startDate: startDate
             }
-
-        },
-
-    ).catch(error => {
-        if (error.response) {
-            if(error.response.data.errors) {
-                EventBus.dispatch("error", { message: error.response.data.errors });
-            } else {
-                console.error(error.response);
-            }
-
+        }
+    )
+    .catch((error) => {
+        if (error.response !== undefined) {
+            console.error("ERROR:: ", error.response.data);
         } else {
             console.error("ERROR:: ", error);
         }
 
         return {
-            success : false
+            success : false,
         }
+
     });
 }

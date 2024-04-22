@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\PayPalService;
 use App\Services\StripeService;
 use App\Services\SubscriptionService;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -18,7 +19,6 @@ use Throwable;
 class SubscriptionController extends Controller
 {
     use BillingTrait;
-
 
     /**
      * @param Request $request
@@ -236,6 +236,25 @@ class SubscriptionController extends Controller
         return response()->json([
             'success'   => true,
             'message'   => "Payment Method Updated"
+        ]);
+    }
+
+    public function getStripeBillingDate(Request $request): JsonResponse {
+
+        $stripe = $this->createStripeGateway();
+        $date = "";
+        try {
+            $sub = $stripe->subscriptions->retrieve( $request->get( 'subId' ) );
+            $carbonDate = Carbon::createFromTimestamp($sub->current_period_end)->startOfDay()->format('Y-m-d\TH:i:s');
+            $date = $carbonDate . "Z";
+        } catch ( ApiErrorException $e ) {
+            $this->saveErrors($e);
+            http_response_code(500);
+        }
+
+        return response()->json([
+            'success'   => true,
+            'startDate' => $date
         ]);
     }
 }

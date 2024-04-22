@@ -159,6 +159,12 @@ class PayPalService {
                     'endDate'   => $endDate
                 ];
             }
+
+            if ($type == "next_billing_date") {
+                return $decodedResponse["billing_info"]["next_billing_time"];
+            }
+
+
         }
     }
 }

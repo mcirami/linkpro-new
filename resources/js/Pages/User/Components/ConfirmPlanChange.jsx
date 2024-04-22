@@ -65,7 +65,7 @@ const ConfirmPlanChange = ({
                     }))
                 }
             })
-        } else if(pmType === "paypal" && showSection.includes("changePlan")) {
+        } else if (pmType === "paypal" && showSection.includes("changePlan")) {
             setShowSection((prev) => ([
                 ...prev,
                 "changePayPalPlan"
@@ -83,6 +83,7 @@ const ConfirmPlanChange = ({
                 defaultPage: defaultPage,
                 plan: "pro",
                 subId: subscription.sub_id,
+                pmType: pmType
             }
 
             changePlan(packets).then((response) => {
@@ -125,7 +126,7 @@ const ConfirmPlanChange = ({
 
                         {showSection.includes("changePlan") ?
 
-                            <h3>By downgrading your account to Pro you will lose access to password protect your links and you will be limited to 1 unique link.</h3>
+                            <h3>By downgrading your account to Pro you will be limited to 1 unique link.</h3>
 
                             :
                             subscription.name === "pro" ?

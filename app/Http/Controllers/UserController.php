@@ -14,10 +14,11 @@ use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 use App\Http\Traits\UserTrait;
 use Inertia\Response;
+use App\Http\Traits\BillingTrait;
 
 class UserController extends Controller
 {
-    use UserTrait;
+    use UserTrait, BillingTrait;
 
     /**
      * @param User $user

@@ -11,6 +11,7 @@ import {
 import EventBus from '@/Utils/Bus.jsx';
 import {getFutureTime} from '@/Services/TimeRequests.jsx';
 import {Loader} from '@/Utils/Loader.jsx';
+import {getStripeBillingDate} from '@/Services/SubscriptionRequests.jsx';
 
 export const SubscriptionPaymentButtons = ({
                                                showPaymentButtons,
@@ -76,9 +77,11 @@ export const SubscriptionPaymentButtons = ({
                 label: "paypal"
             }}
             createSubscription={(data, actions) =>
-                (showPaymentButtons.type === "purchase" || showPaymentButtons.type === "change_payment_method") ?
+                (showPaymentButtons.type === "purchase") ?
                     createSubscription(data, actions) :
-                    changePayPalPlan(data,actions)}
+                    showPaymentButtons.type === "change_payment_method" ?
+                        changePaymentMethodToPaypal(data, actions) :
+                        changePayPalPlan(data,actions)}
             onApprove={(data, actions) => onApprove(data, actions)}
         />);
     }
@@ -86,13 +89,9 @@ export const SubscriptionPaymentButtons = ({
     const createSubscription = (data, actions) => {
 
         const planId = getPlanId(showPaymentButtons.plan, env);
-        let postData = {};
-        if(showPaymentButtons.type === "change_payment_method") {
-            postData["start_time"] = getFutureTime(showPaymentButtons.subStartDate, 1);
-        }
+
         return actions.subscription.create({
             plan_id:planId,
-            postData,
             "application_context": {
                 userAction: "SUBSCRIBE_NOW",
             }
@@ -100,6 +99,29 @@ export const SubscriptionPaymentButtons = ({
             console.error(error);
             setMessage(`Could not initiate PayPal Subscription...`);
         })
+
+    }
+
+    const changePaymentMethodToPaypal = (data, actions) => {
+
+        const packets = {
+            subId: subId
+        }
+        return getStripeBillingDate(packets).then(response => {
+            if(response.success) {
+                const planId = getPlanId(showPaymentButtons.plan, env);
+                return actions.subscription.create({
+                    plan_id:planId,
+                    start_time: response.startDate,
+                    "application_context": {
+                        userAction: "SUBSCRIBE_NOW",
+                    }
+                }).catch(error => {
+                    console.error(error);
+                    setMessage(`Could not initiate PayPal Subscription...`);
+                })
+            }
+        });
     }
 
     /*

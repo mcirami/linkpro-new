@@ -13,7 +13,6 @@ import {
     SubscriptionPaymentButtons
 } from '@/Components/Payments/SubscriptionPaymentButtons.jsx';
 import EventBus from '@/Utils/Bus.jsx';
-import {getFutureTime} from '@/Services/TimeRequests.jsx';
 
 const User = ({message = null}) => {
 
