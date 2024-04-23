@@ -83,22 +83,41 @@ class PayPalService {
         $provider = new PayPalClient;
         $accessToken = $provider->getAccessToken();
 
+        if (empty($sendData)) {
+            $data = array(
+                CURLOPT_URL => $endpoint,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_TIMEOUT => 30000,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_HTTPHEADER => array(
+                    // Set Here Your Requested Headers
+                    'Content-Type: application/json',
+                    'Accept: application/json',
+                    'Authorization: Bearer ' . $accessToken['access_token']
+                )
+            );
+        } else {
+            $data = array(
+                CURLOPT_URL => $endpoint,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_TIMEOUT => 30000,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => json_encode($sendData),
+                CURLOPT_HTTPHEADER => array(
+                    // Set Here Your Requested Headers
+                    'Content-Type: application/json',
+                    'Accept: application/json',
+                    'Authorization: Bearer ' . $accessToken['access_token']
+                )
+            );
+        }
+
         $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => $endpoint,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_TIMEOUT => 30000,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => json_encode($sendData),
-            CURLOPT_HTTPHEADER => array(
-                // Set Here Your Requested Headers
-                'Content-Type: application/json',
-                'Accept: application/json',
-                'Authorization: Bearer ' . $accessToken['access_token']
-            )
-        ));
+        curl_setopt_array($curl, $data);
         $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
@@ -112,10 +131,10 @@ class PayPalService {
      * @param $endpoint
      * @param $type
      *
-     * @return array|void
+     * @return Carbon | array
      * @throws Throwable
      */
-    public function payPalGetCall($endpoint, $type) {
+    public function payPalGetCall($endpoint, $type): array|Carbon {
         $provider = new PayPalClient;
         $accessToken = $provider->getAccessToken();
         $curl = curl_init();
@@ -146,12 +165,10 @@ class PayPalService {
             ];
         } else {
             $decodedResponse = json_decode($response, true);
+            $nextBillingDate = Carbon::parse($decodedResponse["billing_info"]["next_billing_time"]);
             if ($type == "cancel") {
-                $lastPayment = Carbon::parse($decodedResponse["billing_info"]["last_payment"]["time"]);
-                $day = $lastPayment->day;
-                $dt = Carbon::now()->addMonth();
-                $dt->day = $day;
-                $endDate = $dt->endOfDay()->format('Y-m-d H:i:s');
+
+                $endDate = $nextBillingDate->startOfDay()->format('Y-m-d H:i:s');
 
                 return [
                     'success'   => true,
@@ -161,10 +178,10 @@ class PayPalService {
             }
 
             if ($type == "next_billing_date") {
-                return $decodedResponse["billing_info"]["next_billing_time"];
+                return $nextBillingDate;
             }
-
-
         }
+
+        return $decodedResponse;
     }
 }

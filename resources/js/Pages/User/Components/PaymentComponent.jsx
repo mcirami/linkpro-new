@@ -41,19 +41,19 @@ const PaymentComponent = ({
                 :
                 <div className="image_wrap">
                     {pm_type && pm_type.includes('apple') &&
-                        <img src={Vapor.asset('/images/apple-pay.svg')} alt=""/>
+                        <img src={Vapor.asset('images/apple-pay.svg')} alt=""/>
                     }
                     {pm_type && pm_type.includes('google') &&
-                        <img src={Vapor.asset('/images/googlepay.png')} alt=""/>
+                        <img src={Vapor.asset('images/googlepay.png')} alt=""/>
                     }
                     {pm_type && pm_type.includes('cashapp') &&
-                        <img src={Vapor.asset('/images/cashapp.png')} alt=""/>
+                        <img src={Vapor.asset('images/cashapp.png')} alt=""/>
                     }
                     {pm_type && pm_type.includes('link') &&
-                        <img src={Vapor.asset('/images/link-by-stripe.png')} alt="" />
+                        <img src={Vapor.asset('images/link-by-stripe.png')} alt="" />
                     }
                     {pm_type && pm_type.includes('paypal') &&
-                        <img src={Vapor.asset('/images/paypal.png')} alt=""/>
+                        <img src={Vapor.asset('images/paypal.png')} alt=""/>
                     }
                 </div>
             }

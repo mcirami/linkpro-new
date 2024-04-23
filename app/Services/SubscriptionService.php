@@ -89,10 +89,10 @@ class SubscriptionService {
         if($request->pmType == "paypal") {
 
             $payPalService = new PayPalService();
-            $payPalService->cancelPayPalSubscription($subId);
             $apiHost = App::environment() == 'production' ? config('paypal.live.api_host') : config('paypal.sandbox.api_host');
             $getEndpoint = $apiHost . "/v1/billing/subscriptions/" . $subId;
             $data = $payPalService->payPalGetCall($getEndpoint, "cancel");
+            $payPalService->cancelPayPalSubscription($subId);
 
         } else {
 
