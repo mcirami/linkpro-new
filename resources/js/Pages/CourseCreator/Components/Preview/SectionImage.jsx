@@ -11,6 +11,7 @@ const SectionImage = ({
     const [sectionImageStyle, setSectionImageStyle] = useState(null);
 
     useEffect(() => {
+        const backgroundImg = imgUrl || Vapor.asset("images/image-placeholder.jpg");
         setSectionImageStyle (
             completedCrop[elementName]?.isCompleted ?
                 {
@@ -21,7 +22,7 @@ const SectionImage = ({
                 }
                 :
                 {
-                    background: "url(" + imgUrl + ") center 25% no-repeat",
+                    background: "url(" + backgroundImg + ") center 25% no-repeat",
                     backgroundSize: 'cover',
                     padding: '29%'
                 }
@@ -29,8 +30,8 @@ const SectionImage = ({
     },[completedCrop[elementName]])
 
     return (
-        <div style={sectionImageStyle}>
-            {completedCrop[elementName]?.isCompleted ?
+        <div className="image_bg" style={sectionImageStyle}>
+            {completedCrop[elementName] ?
                 <canvas
                     className={`${elementName}_bg_image`}
                     ref={ref => nodesRef.current[elementName] = ref}

@@ -151,6 +151,8 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], funct
             Route::put('/delete-section/{course_section}', [CourseController::class, 'deleteSection'])->name('delete.course.section');
             Route::patch('/update-section-data/{course_section}', [CourseController::class, 'updateSectionData'])->name('update.course.section.data');
             Route::patch('/update-sections-positions', [CourseController::class, 'updateSectionsPositions']);
+            Route::patch('/update-section-image/{course_section}', [CourseController::class, 'updateSectionImage'])->name('update.course.section.image');
+            Route::patch('/update-section-file/{course_section}', [CourseController::class, 'updateSectionFile'])->name('update.course.section.file');
         });
 
         Route::group(['prefix' => 'offer'], function() {

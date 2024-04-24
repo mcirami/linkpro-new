@@ -79,6 +79,10 @@ const Preview = ({
                                         currentSection={section}
                                         index={index}
                                         url={url}
+                                        nodesRef={nodesRef}
+                                        completedCrop={completedCrop}
+                                        position={index + 1}
+                                        hoverSection={hoverSection}
                                     />
                                 )
                             })}

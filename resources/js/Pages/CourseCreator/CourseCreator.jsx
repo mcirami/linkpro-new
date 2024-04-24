@@ -37,6 +37,7 @@ import {
 } from '@dnd-kit/sortable';
 import {updateSectionsPositions} from '../../Services/CourseRequests';
 import {Head, usePage} from '@inertiajs/react';
+import ContentSelect from '@/Pages/CourseCreator/Components/ContentSelect.jsx';
 
 function CourseCreator({courseArray, offerArray, categories}) {
 
@@ -188,6 +189,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
     const liveUrl = window.location.protocol + "//" + window.location.host + "/" + username + "/course/" + courseData["slug"];
     let videoCount = 0;
     let textCount = 0;
+    let imageCount = 0;
 
     const handleDragEnd = (event) => {
         const {active, over} = event;
@@ -402,7 +404,11 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         >
                                                             {sections.map((section, index) => {
 
-                                                                {section.type === "video" ? ++videoCount : ++textCount}
+                                                                {section.type === "video" ?
+                                                                    ++videoCount :
+                                                                    section.type === "image" ?
+                                                                    ++imageCount :
+                                                                    ++textCount}
 
                                                                 return (
 
@@ -416,9 +422,16 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                                         setOpenIndex={setOpenIndex}
                                                                         videoCount={videoCount}
                                                                         textCount={textCount}
+                                                                        imageCount={imageCount}
                                                                         setHoverSection={setHoverSection}
                                                                         showTiny={showTiny}
                                                                         setShowTiny={setShowTiny}
+                                                                        completedCrop={completedCrop}
+                                                                        setCompletedCrop={setCompletedCrop}
+                                                                        nodesRef={nodesRef}
+                                                                        setShowLoader={setShowLoader}
+                                                                        data={courseData}
+                                                                        dispatch={dispatch}
                                                                     />
 
                                                                 )
@@ -430,22 +443,17 @@ function CourseCreator({courseArray, offerArray, categories}) {
 
                                             }
 
-                                            <div className="link_row">
-                                                <AddSectionLink
+                                            <section className="my_row section_row">
+                                                <div className="section_title">
+                                                    <h4>Add Content</h4>
+                                                </div>
+                                                <ContentSelect
                                                     sections={sections}
                                                     setSections={setSections}
-                                                    courseID={courseData["id"]}
+                                                    courseID={courseData['id']}
                                                     setOpenIndex={setOpenIndex}
-                                                    type="text"
                                                 />
-                                                <AddSectionLink
-                                                    sections={sections}
-                                                    setSections={setSections}
-                                                    courseID={courseData["id"]}
-                                                    setOpenIndex={setOpenIndex}
-                                                    type="video"
-                                                />
-                                            </div>
+                                            </section>
 
                                             <section className="my_row section_row">
                                                 <div className="section_title">

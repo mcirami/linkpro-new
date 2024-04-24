@@ -172,9 +172,9 @@ class LandingPageController extends Controller
      * @param LandingPageSection $landingPageSection
      * @param LandingPageService $service
      *
-     * @return JsonResponse|never
+     * @return JsonResponse
      */
-    public function updateSectionImage(Request $request, LandingPageSection $landingPageSection, LandingPageService $service) {
+    public function updateSectionImage(Request $request, LandingPageSection $landingPageSection, LandingPageService $service): JsonResponse {
         $userID = Auth::id();
 
         if ($landingPageSection->user_id != $userID) {
@@ -190,11 +190,13 @@ class LandingPageController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param LandingPageSection $landingPageSection
+     * @param LandingPageService $landingPageService
      *
      * @return JsonResponse|never
      */
-    public function deleteSection(Request $request, LandingPageSection $landingPageSection, LandingPageService $landingPageService) {
+    public function deleteSection(Request $request, LandingPageSection $landingPageSection, LandingPageService $landingPageService): JsonResponse {
         $userID = Auth::id();
 
         if ($landingPageSection->user_id != $userID) {

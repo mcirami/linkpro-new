@@ -101,6 +101,27 @@ class CourseService {
 
     }
 
+    public function saveSectionImage($userID, $request, $key, $section ) {
+        $imgName = time() . '.' . $request->ext;
+
+        $pathToFolder = 'courses/' . $userID . '/' . $section->course_id . '/sections/' . $section->id . '/';
+        $path =  $pathToFolder . $imgName;
+
+        $files = Storage::disk('s3')->allFiles($pathToFolder);
+        Storage::disk('s3')->delete($files);
+
+        Storage::disk('s3')->copy(
+            $request->$key,
+            str_replace($request->$key, $path, $request->$key)
+        );
+
+        $imagePath = Storage::disk('s3')->url($path);
+
+        $section->update(['image' => $imagePath]);
+
+        return $imagePath;
+    }
+
     public function addCourseSection($course, $userID, $request) {
 
         $sectionCount = $course->CourseSections()->count();
@@ -126,6 +147,27 @@ class CourseService {
         ]);
 
         return $keys[0];
+    }
+
+    public function saveSectionFile($userID, $request, $key, $section ) {
+        $fileName = time() . '.' . $request->ext;
+
+        $pathToFolder = 'courses/' . $userID . '/' . $section->course_id . '/sections/' . $section->id . '/';
+        $path =  $pathToFolder . $fileName;
+
+        $files = Storage::disk('s3')->allFiles($pathToFolder);
+        Storage::disk('s3')->delete($files);
+
+        Storage::disk('s3')->copy(
+            $request->$key,
+            str_replace($request->$key, $path, $request->$key)
+        );
+
+        $filePath = Storage::disk('s3')->url($path);
+
+        $section->update(['file' => $filePath]);
+
+        return $filePath;
     }
 
     public function getUnpurchasedCourses($authUserID) {

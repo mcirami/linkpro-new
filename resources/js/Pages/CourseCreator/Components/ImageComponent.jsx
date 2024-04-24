@@ -18,6 +18,7 @@ import { updateImage} from '@/Services/CourseRequests.jsx';
 import {OFFER_ACTIONS, LP_ACTIONS} from '../Reducer';
 import CropTools from '../../../Utils/CropTools';
 import ReactCrop from 'react-image-crop';
+import {updateSectionImage} from '@/Services/CourseRequests.jsx';
 
 const ImageComponent = forwardRef(function ImageComponent(props, ref) {
 
@@ -28,9 +29,12 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
         setShowLoader,
         elementName,
         cropArray,
-        data,
+        data = null,
         dispatch = null,
-        type
+        type,
+        sections = null,
+        setSections = null,
+        currentSection = null
     } = props;
 
     const [disableButton, setDisableButton] = useState(true);
@@ -41,7 +45,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
     const [crop, setCrop] = useState(cropArray);
     const [scale, setScale] = useState(1)
     const [rotate, setRotate] = useState(0)
-    const [aspect, setAspect] = useState(cropArray['aspect'] || "")
+    const [aspect, setAspect] = useState(cropArray['aspect'] || 16 / 9)
 
     useDebounceEffect(
         async () => {
@@ -77,7 +81,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
         if (!files.length) {
             return;
         }
-        //setCrop(undefined)
+        setCrop(undefined)
         setDisableButton(false);
         document.querySelector("." + CSS.escape(elementName) + "_form .bottom_section").classList.remove("hidden");
         if (window.innerWidth < 993) {
@@ -106,7 +110,6 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
     const handleSubmit = (e) => {
         e.preventDefault();
         setDisableButton(true);
-        console.log(previewCanvasRef?.current[elementName]);
         const image = getFileToUpload(previewCanvasRef?.current[elementName])
         image.then((value) => {
             fileUpload(value);
@@ -122,7 +125,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
             icon: 'upload',
             position: 'fixed'
         });
-        Vapor.store(
+        window.Vapor.store(
             image,
             {
                 visibility: "public-read",
@@ -163,6 +166,36 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                             });
                         }
                     })
+            } else if (sections) {
+                updateSectionImage(packets, currentSection.id)
+                .then((data) => {
+                    if (data.success) {
+                        setSections(sections.map((section) => {
+                            if (section.id === currentSection.id) {
+                                return {
+                                    ...section,
+                                    image: data.imagePath,
+                                }
+                            }
+                            return section;
+                        }));
+
+                        setShowLoader({
+                            show: false,
+                            icon: '',
+                            position: ''
+                        });
+
+                        setUpImg(null);
+                        delete completedCrop[elementName];
+                        setCompletedCrop(completedCrop);
+                        document.querySelector(
+                            "." + CSS.escape(elementName) +
+                            "_form .bottom_section").
+                            classList.
+                            add("hidden");
+                    }
+                })
             } else {
                 updateImage(packets, data["id"])
                 .then((data) => {
@@ -196,7 +229,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
             }
 
         }).catch((error) => {
-            console.error("vapor error: ", error);
+            console.error("catch error: ", error);
             setDisableButton(false);
         });
     };
@@ -223,7 +256,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                                     htmlFor={`${elementName}_file_upload`}
                                     className="custom"
                                 >
-                                    {data["icon"] ?
+                                    {(data && data["icon"]) ?
                                         <img src={data["icon"]} alt=""/>
                                         :
                                         ""
@@ -239,7 +272,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                                     </span>
                                 </label>
                                 <input
-                                    className={`custom ${data["icon"] ? "active" : "" }`}
+                                    className={`custom ${(data && data["icon"]) ? "active" : "" }`}
                                     id={`${elementName}_file_upload`}
                                     type="file"
                                     accept="image/png, image/jpeg, image/jpg, image/gif"
@@ -268,6 +301,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                             />
                             <ReactCrop
                                 crop={crop}
+                                aspect={aspect}
                                 onChange={(_, percentCrop) => setCrop(percentCrop)}
                                 onComplete={(c) =>  setCompletedCrop({
                                     ...completedCrop,
@@ -275,7 +309,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                                         isCompleted: c
                                     }
                                 })}
-                                aspect={aspect}
+
                             >
                                 <img
                                     onLoad={(e) => onImageLoad(e, aspect, setCrop)}

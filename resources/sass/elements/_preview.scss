@@ -333,7 +333,6 @@
                 }
             }
         }
-
     }
 }
 
@@ -586,5 +585,15 @@
         .icon {
             color: $white;
         }
+    }
+}
+
+.preview .sections {
+    .text_wrap {
+        padding: 10px;
+    }
+
+    .download_file {
+        text-decoration: underline !important;
     }
 }

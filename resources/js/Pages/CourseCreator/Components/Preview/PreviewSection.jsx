@@ -1,10 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import SectionVideo from './SectionVideo';
+import SectionImage
+    from '@/Pages/CourseCreator/Components/Preview/SectionImage.jsx';
+import SectionFile
+    from '@/Pages/CourseCreator/Components/Preview/SectionFile.jsx';
 
 const PreviewSection = ({
                             currentSection,
                             index,
-                            url
+                            url,
+                            nodesRef,
+                            completedCrop,
+                            position,
+                            hoverSection,
 }) => {
 
     const {
@@ -19,7 +27,9 @@ const PreviewSection = ({
         button_color,
         button_text_color,
         button_text,
-        button_size
+        button_size,
+        image,
+        file
     } = currentSection;
 
     const [buttonStyle, setButtonStyle] = useState(null);
@@ -47,8 +57,8 @@ const PreviewSection = ({
 
     return (
         <section
-            id={`preview_section_${index + 1}`}
-            className={type}
+            id={`preview_section_${position}`}
+            className={ type + " " + hoverSection === 'section_'+ position ? "active" : ""}
             style={{ background: background_color || 'rgba(255,255,255,1)'}}
         >
             {( !!button && button_position === "above") &&
@@ -58,9 +68,11 @@ const PreviewSection = ({
             }
             {{
                 "text":
+                 <div className="text_wrap">
                     <p
                         style={{ color: text_color || 'rgba(0,0,0,1)'}}
                     >{text || ""}</p>
+                 </div>
                     ,
                 "video":
                     <SectionVideo
@@ -70,6 +82,17 @@ const PreviewSection = ({
                         textColor={text_color}
                         index={index}
 
+                    />,
+                "image":
+                    <SectionImage
+                        nodesRef={nodesRef}
+                        completedCrop={completedCrop}
+                        elementName={"section_"+ position + "_" + type}
+                        imgUrl={image}
+                    />,
+                "file":
+                    <SectionFile
+                        file={file}
                     />,
             }[type]}
             {( !!button && button_position === "below") &&

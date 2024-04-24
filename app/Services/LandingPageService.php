@@ -82,8 +82,8 @@ class LandingPageService {
         }
 
         return $landingPage->LandingPageSections()->create([
-           'user_id' => $userID,
-           'type'  => $request->type,
+           'user_id'    => $userID,
+           'type'       => $request->type,
            'position'   => $position,
         ])->fresh();
     }

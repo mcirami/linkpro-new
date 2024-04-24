@@ -9,6 +9,10 @@ import {updateSectionData} from '@/Services/CourseRequests.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
+import ImageComponent
+    from '@/Pages/CourseCreator/Components/ImageComponent.jsx';
+import FileComponent
+    from '@/Pages/CourseCreator/Components/FileComponent.jsx';
 
 const Section = ({
                      section,
@@ -19,7 +23,14 @@ const Section = ({
                      setOpenIndex,
                      videoCount,
                      textCount,
+                     imageCount,
                      setHoverSection,
+                     completedCrop,
+                     setCompletedCrop,
+                     nodesRef,
+                     setShowLoader,
+                     data,
+                     dispatch
 }) => {
 
     const [lockVideo, setLockVideo] = useState(true);
@@ -105,108 +116,149 @@ const Section = ({
                     <MdDragHandle/>
                 </div>
                 <div className="title_column">
-                    <h4>{type} {type === "video" ? videoCount : textCount}</h4>
+                    <h4>{type} {type === "video" ? videoCount : type === "image" ? imageCount : textCount}</h4>
                 </div>
                 <div className={`icon_wrap ${openIndex.includes(index) ? "open" : ""}`}>
                     <MdKeyboardArrowDown />
                 </div>
             </div>
             <div className={`section_content my_row ${openIndex.includes(index) ? "open" : ""}`}>
-                {type === "text" ?
-                    <>
-                        <InputComponent
-                            placeholder="Add Text"
-                            type="textarea"
-                            hoverText="Add Text to Section"
-                            elementName={`section_${index + 1}_text`}
-                            value={text}
-                            currentSection={section}
-                            sections={sections}
-                            setSections={setSections}
-                        />
-                        <ColorPicker
-                            label="Background Color"
-                            currentSection={section}
-                            sections={sections}
-                            setSections={setSections}
-                            elementName={`section_${index + 1}_background_color`}
-                        />
-                        <ColorPicker
-                            label="Text Color"
-                            currentSection={section}
-                            sections={sections}
-                            setSections={setSections}
-                            elementName={`section_${index + 1}_text_color`}
-                        />
+                {(() => {
+                    switch (type) {
+                        case 'text':
+                           return (
+                               <>
+                                   <InputComponent
+                                       placeholder="Add Text"
+                                        type="textarea"
+                                        hoverText="Add Text to Section"
+                                        elementName={`section_${index + 1}_text`}
+                                        value={text}
+                                        currentSection={section}
+                                        sections={sections}
+                                        setSections={setSections}
+                                   />
+                                    <ColorPicker
+                                        label="Background Color"
+                                        currentSection={section}
+                                        sections={sections}
+                                        setSections={setSections}
+                                        elementName={`section_${index + 1}_background_color`}
+                                    />
+                                    <ColorPicker
+                                        label="Text Color"
+                                        currentSection={section}
+                                        sections={sections}
+                                        setSections={setSections}
+                                        elementName={`section_${index + 1}_text_color`}
+                                    />
 
-                        <SectionButtonOptions
-                            position={index + 1}
-                            sections={sections}
-                            setSections={setSections}
-                            currentSection={section}
-                            id={id}
-                        />
-
-                    </>
-                    :
-                    <>
-                        <InputComponent
-                            placeholder="Video Title"
-                            type="text"
-                            maxChar={65}
-                            hoverText="Add Video Title"
-                            elementName={`video_${index + 1}_title`}
-                            value={video_title || ""}
-                            currentSection={section}
-                            sections={sections}
-                            setSections={setSections}
-                        />
-                        <InputComponent
-                            placeholder="YouTube or Vimeo Link"
-                            type="url"
-                            hoverText="Add Embed Link"
-                            elementName={`video_${index + 1}_link`}
-                            value={video_link || ""}
-                            currentSection={section}
-                            sections={sections}
-                            setSections={setSections}
-                        />
-                        <InputComponent
-                            placeholder="Video Text Blurb (optional)"
-                            type="textarea"
-                            hoverText={`Submit Text Blurb`}
-                            elementName={`section_${index + 1}_text`}
-                            value={text || ""}
-                            currentSection={section}
-                            sections={sections}
-                            setSections={setSections}
-                        />
-                        <ColorPicker
-                            label="Background Color"
-                            currentSection={section}
-                            sections={sections}
-                            setSections={setSections}
-                            elementName={`section_${index + 1}_background_color`}
-                        />
-                        <ColorPicker
-                            label="Text Color"
-                            currentSection={section}
-                            sections={sections}
-                            setSections={setSections}
-                            elementName={`section_${index + 1}_text_color`}
-                        />
-                        <div className="switch_wrap two_columns">
-                            <div className={`page_settings border_wrap`}>
-                                <h3>Lock Video</h3>
-                                <IOSSwitch
-                                    onChange={handleChange}
-                                    checked={lockVideo !== null ? Boolean(lockVideo) : true}
+                                    <SectionButtonOptions
+                                        position={index + 1}
+                                        sections={sections}
+                                        setSections={setSections}
+                                        currentSection={section}
+                                        id={id}
+                                    />
+                               </>
+                           )
+                        case 'video':
+                            return (
+                                <>
+                                    <InputComponent
+                                        placeholder="Video Title"
+                                        type="text"
+                                        maxChar={65}
+                                        hoverText="Add Video Title"
+                                        elementName={`video_${index + 1}_title`}
+                                        value={video_title || ""}
+                                        currentSection={section}
+                                        sections={sections}
+                                        setSections={setSections}
+                                    />
+                                    <InputComponent
+                                        placeholder="YouTube or Vimeo Link"
+                                        type="url"
+                                        hoverText="Add Embed Link"
+                                        elementName={`video_${index + 1}_link`}
+                                        value={video_link || ""}
+                                        currentSection={section}
+                                        sections={sections}
+                                        setSections={setSections}
+                                    />
+                                    <InputComponent
+                                        placeholder="Video Text Blurb (optional)"
+                                        type="textarea"
+                                        hoverText={`Submit Text Blurb`}
+                                        elementName={`section_${index + 1}_text`}
+                                        value={text || ""}
+                                        currentSection={section}
+                                        sections={sections}
+                                        setSections={setSections}
+                                    />
+                                    <ColorPicker
+                                        label="Background Color"
+                                        currentSection={section}
+                                        sections={sections}
+                                        setSections={setSections}
+                                        elementName={`section_${index + 1}_background_color`}
+                                    />
+                                    <ColorPicker
+                                        label="Text Color"
+                                        currentSection={section}
+                                        sections={sections}
+                                        setSections={setSections}
+                                        elementName={`section_${index + 1}_text_color`}
+                                    />
+                                    <div className="switch_wrap two_columns">
+                                        <div className={`page_settings border_wrap`}>
+                                            <h3>Lock Video</h3>
+                                            <IOSSwitch
+                                                onChange={handleChange}
+                                                checked={lockVideo !== null ? Boolean(lockVideo) : true}
+                                            />
+                                        </div>
+                                        <ToolTipIcon section="course_lock_video" />
+                                    </div>
+                                </>
+                            )
+                        case 'image' :
+                            return (
+                                <>
+                                    <ImageComponent
+                                        ref={nodesRef}
+                                        completedCrop={completedCrop}
+                                        setCompletedCrop={setCompletedCrop}
+                                        setShowLoader={setShowLoader}
+                                        currentSection={section}
+                                        sections={sections}
+                                        setSections={setSections}
+                                        elementName={`section_${index + 1}_image`}
+                                        placeholder={`Section ${index + 1} Image`}
+                                        type="extPreview"
+                                        cropArray={{
+                                            unit: "%",
+                                            width: 30,
+                                            x: 25,
+                                            y: 25,
+                                            aspect: 16 / 8
+                                        }}
+                                    />
+                                </>
+                            )
+                        case 'file' :
+                            return (
+                                <FileComponent
+                                    elementName={`section_${index + 1}_document`}
+                                    setShowLoader={setShowLoader}
+                                    sectionId={section.id}
+                                    sections={sections}
+                                    setSections={setSections}
                                 />
-                            </div>
-                            <ToolTipIcon section="course_lock_video" />
-                        </div>
-                    </>
-                }
+                            )
+                    }
+
+                })()}
                 <DeleteSection
                     id={id}
                     sections={sections}

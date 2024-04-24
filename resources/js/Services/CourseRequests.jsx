@@ -36,6 +36,41 @@ export const updateImage = (packets, id) => {
 }
 
 /**
+ * Submit a request to update landing page section image
+ * return object
+ */
+export const updateSectionImage = (packets, id) => {
+
+    return axios.patch('/creator-center/course/update-section-image/' + id, packets)
+    .then(
+        (response) => {
+            const returnMessage = JSON.stringify(response.data.message);
+            //EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
+            EventBus.dispatch("success", { message: returnMessage.replaceAll("_", " ") });
+
+            return {
+                success : true,
+                imagePath: response.data.imagePath
+            }
+        }
+    )
+    .catch((error) => {
+        if (error.response !== undefined) {
+            EventBus.dispatch("error",
+                {message: "There was an error saving your image."});
+            console.error("ERROR:: ", error.response.data);
+        } else {
+            console.error("ERROR:: ", error);
+        }
+
+        return {
+            success : false,
+        }
+
+    });
+}
+
+/**
  * Submit a request to update landing page text
  * return object
  */
@@ -48,7 +83,7 @@ export const updateData = (packets, id, elementName) => {
             const slug = response.data.slug
 
             if (!returnMessage.includes("color")) {
-                EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
+                EventBus.dispatch("success", { message: returnMessage.replaceAll("_", " ") });
             }
 
             return {
