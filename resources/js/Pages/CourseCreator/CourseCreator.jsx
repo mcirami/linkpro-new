@@ -190,6 +190,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
     let videoCount = 0;
     let textCount = 0;
     let imageCount = 0;
+    let fileCount = 0;
 
     const handleDragEnd = (event) => {
         const {active, over} = event;
@@ -407,8 +408,11 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                                 {section.type === "video" ?
                                                                     ++videoCount :
                                                                     section.type === "image" ?
-                                                                    ++imageCount :
-                                                                    ++textCount}
+                                                                        ++imageCount :
+                                                                        section.type === "file" ?
+                                                                            ++fileCount :
+                                                                            ++textCount
+                                                                }
 
                                                                 return (
 
@@ -423,6 +427,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                                         videoCount={videoCount}
                                                                         textCount={textCount}
                                                                         imageCount={imageCount}
+                                                                        fileCount={fileCount}
                                                                         setHoverSection={setHoverSection}
                                                                         showTiny={showTiny}
                                                                         setShowTiny={setShowTiny}

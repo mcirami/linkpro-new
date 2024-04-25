@@ -150,8 +150,9 @@ class CourseService {
     }
 
     public function saveSectionFile($userID, $request, $key, $section ) {
-        $fileName = time() . '.' . $request->ext;
 
+        $name = $request->get('name') ? $request->get('name') : time(); ;
+        $fileName = $name . '.' . $request->ext;
         $pathToFolder = 'courses/' . $userID . '/' . $section->course_id . '/sections/' . $section->id . '/';
         $path =  $pathToFolder . $fileName;
 

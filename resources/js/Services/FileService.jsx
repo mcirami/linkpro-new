@@ -40,3 +40,15 @@ export const uploadSectionFile = (id, packets) => {
 
     });
 }
+
+export const getFileParts = (file) => {
+
+    const fileArray = file.split('/');
+    const fileNameAndExt = fileArray[fileArray.length - 1].split(".");
+
+    return {
+        name: fileNameAndExt[0],
+        type: fileNameAndExt[1]
+    }
+
+}

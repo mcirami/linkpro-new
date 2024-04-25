@@ -1,19 +1,27 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {MdEdit} from 'react-icons/md';
-import {uploadSectionFile} from '@/Services/FileService.jsx';
+import {getFileParts, uploadSectionFile} from '@/Services/FileService.jsx';
+import {toLower} from 'lodash';
 
 const FileComponent = ({
                            elementName,
                            setShowLoader,
-                           sectionId,
+                           currentSection,
                            sections,
                            setSections
 }) => {
 
     const [disableButton, setDisableButton] = useState(true);
     const [upFile, setUpFile] = useState('');
-    const [fileName, setFileName] = useState(null);
+    const [fileName, setFileName] = useState("");
+    const [currentFileName, setCurrentFileName] = useState("");
 
+    useEffect(() => {
+        const fileNameObj = getFileParts(currentSection.file);
+        const fileName = fileNameObj.name + "." + fileNameObj.type;
+        setFileName(fileName);
+        setCurrentFileName(fileName);
+    }, []);
     const onSelectFile = (e) => {
         let files = e.target.files || e.dataTransfer.files;
         if (!files.length) {
@@ -46,13 +54,14 @@ const FileComponent = ({
             const packets = {
                 [`${elementName}`]: response.key,
                 ext: response.extension,
+                name: fileName.split('.')[0].replace(/[,\/#!$%\^&\*;:{}=\-_'`~()]/g, '').replaceAll(" ", "-")
             };
 
-            uploadSectionFile(sectionId, packets)
+            uploadSectionFile(currentSection.id, packets)
             .then(response => {
                 if (response.success) {
                     setSections(sections.map((section) => {
-                        if (section.id === sectionId) {
+                        if (section.id === currentSection.id) {
                             return {
                                 ...section,
                                 image: response.imagePath,
@@ -81,6 +90,7 @@ const FileComponent = ({
     const handleCancel = (e) => {
         e.preventDefault();
         setUpFile(null);
+        setFileName(currentFileName);
         document.querySelector("." + CSS.escape(elementName) + "_form .bottom_section").classList.add("hidden");
     }
 
@@ -94,7 +104,7 @@ const FileComponent = ({
                             className="custom"
                         >
                             {
-                                fileName ? fileName : "Upload File"
+                                fileName ? toLower(fileName) : "Upload File"
                             }
                             <span className="edit_icon">
                                 <MdEdit/>

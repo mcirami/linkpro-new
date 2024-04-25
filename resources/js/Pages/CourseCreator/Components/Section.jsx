@@ -24,6 +24,7 @@ const Section = ({
                      videoCount,
                      textCount,
                      imageCount,
+                     fileCount,
                      setHoverSection,
                      completedCrop,
                      setCompletedCrop,
@@ -116,7 +117,14 @@ const Section = ({
                     <MdDragHandle/>
                 </div>
                 <div className="title_column">
-                    <h4>{type} {type === "video" ? videoCount : type === "image" ? imageCount : textCount}</h4>
+                    <h4>{type} {
+                        type === "video" ?
+                            videoCount :
+                            type === "image" ?
+                                imageCount : type === "file" ?
+                                    fileCount :
+                                    textCount
+                    }</h4>
                 </div>
                 <div className={`icon_wrap ${openIndex.includes(index) ? "open" : ""}`}>
                     <MdKeyboardArrowDown />
@@ -249,9 +257,9 @@ const Section = ({
                         case 'file' :
                             return (
                                 <FileComponent
-                                    elementName={`section_${index + 1}_document`}
+                                    elementName={`section_${index + 1}_file`}
                                     setShowLoader={setShowLoader}
-                                    sectionId={section.id}
+                                    currentSection={section}
                                     sections={sections}
                                     setSections={setSections}
                                 />
