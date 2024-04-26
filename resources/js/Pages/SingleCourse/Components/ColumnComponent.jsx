@@ -162,8 +162,9 @@ const ColumnComponent = ({
                    target="_blank"
                    className="button"
                    style={buttonStyle}
-                   onClick={!userAuth ? "" : handleButtonClick}
-                >{button_text || "Get Course"}</a>
+                   onClick={!userAuth ? "" : handleButtonClick}>
+                    {button_text || "Get Course"}
+                </a>
             </div>
         )
     }
@@ -239,7 +240,14 @@ const ColumnComponent = ({
             }
 
             {type === "image" ?
-                <section className={`my_row text_wrap ${type}`} style={bgStyle}></section>
+                <section className={`my_row text_wrap ${type}`} style={bgStyle}>
+                    { (!hasCourseAccess || page === "lander") && button ?
+                        <Button />
+                        :
+                        ""
+                    }
+
+                </section>
                 :
                 ""
             }

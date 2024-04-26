@@ -50,7 +50,7 @@ const Preview = ({
                 <IoIosCloseCircleOutline />
             </div>
 
-            <div className="links_wrap preview lp_creator">
+            <div className="links_wrap preview creator">
                 <div className="inner_content" id="preview_wrap" >
                     <div className="inner_content_wrap" style={{ maxHeight: resizePreviewHeight ? resizePreviewHeight + "px" : loadPreviewHeight + "px"}}>
                         <section className={`my_row header ${hoverSection === 'header_section' ? "active" : ""}`} id="preview_header_section">

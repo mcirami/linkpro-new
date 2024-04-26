@@ -83,8 +83,11 @@ const PreviewSection = ({
     }
 
     return (
-        <section id={`preview_section_${position}`} className={hoverSection === 'section_'+ position ? "active" : ""}>
-            <div className={type} style={{ background: bg_color || 'rgba(255,255,255,1)'}}>
+        <section id={`preview_section_${position}`}
+                 className={hoverSection === 'section_'+ position ? "active" : ""}
+        >
+            <div className={type}
+                 style={{ background: bg_color || 'rgba(255,255,255,1)'}}>
                 {( !!button && button_position === "above") &&
                     <Button
                         buttonText={button_text}

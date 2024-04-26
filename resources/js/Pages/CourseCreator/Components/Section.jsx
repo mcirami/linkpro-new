@@ -252,6 +252,13 @@ const Section = ({
                                             aspect: 16 / 8
                                         }}
                                     />
+                                    <SectionButtonOptions
+                                        position={index + 1}
+                                        sections={sections}
+                                        setSections={setSections}
+                                        currentSection={section}
+                                        id={id}
+                                    />
                                 </>
                             )
                         case 'file' :

@@ -88,11 +88,7 @@
 
         .image {
             position: relative;
-            min-height: 25vw;
-
-            @media screen and (max-width: 992px) {
-                min-height: 40vw;
-            }
+            min-height: 195px;
 
             .button_wrap {
                 position: absolute;
@@ -138,6 +134,17 @@
                 border-bottom-left-radius: 20px;
                 -webkit-border-bottom-left-radius: 20px;
                 -moz-border-radius-bottomleft: 20px;
+            }
+        }
+    }
+
+    &.course {
+        .image {
+            position: relative;
+            min-height: 400px;
+
+            @media screen and (max-width: 992px) {
+                min-height: 225px;
             }
         }
     }
