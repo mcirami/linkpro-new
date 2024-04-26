@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {BiLock} from 'react-icons/bi';
 import {FaCirclePlay} from 'react-icons/fa6';
+import {getFileParts} from '@/Services/FileService.jsx';
 
 const ColumnComponent = ({
                              section,
@@ -30,6 +31,8 @@ const ColumnComponent = ({
         button_color,
         button_size,
         lock_video,
+        image,
+        file
     } = section;
 
     const {header_color, header_text_color} = course;
@@ -37,6 +40,8 @@ const ColumnComponent = ({
     const [imagePlaceholder, setImagePlaceholder] = useState(null);
     const [mobileVideo, setMobileVideo] = useState(null);
     const [buttonStyle, setButtonStyle] = useState(null);
+    const [bgStyle, setBgStyle] = useState(null);
+    const [fileName, setFileName] = useState("");
 
     useEffect(() => {
         if (type === "video" && video_link) {
@@ -51,6 +56,32 @@ const ColumnComponent = ({
             }
         }
     },[])
+
+    useEffect(() => {
+        if(type === "image") {
+            if(section.image) {
+                setBgStyle ({
+                    background: "url(" + image + ") no-repeat",
+                    backgroundPosition: "top center",
+                    backgroundSize: "cover"
+                })
+            } else {
+                setBgStyle ({
+                    background: "url(" + Vapor.asset('images/image-placeholder.jpg') + ") no-repeat",
+                    backgroundPosition: "center",
+                    backgroundSize: "30%",
+                    backgroundColor: '#f4f4f4',
+                })
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (type === "file") {
+            const fileArray = getFileParts(file);
+            setFileName(fileArray.name + " " + fileArray.type);
+        }
+    }, []);
 
     useEffect(() => {
 
@@ -179,29 +210,49 @@ const ColumnComponent = ({
                                 </a>
                             </div>
                          </span>
-
                 :
                 ""
             }
-            <div className="my_row text_wrap">
-                {type === "video" &&
-                    <h3 style={{color: text_color}}>{video_title}</h3>
-                }
 
-                { (!hasCourseAccess || page === "lander") &&
-                    (button && button_position === "above") ?
-                        <Button />
-                        :
-                        ""
-                }
-                <p style={{color: text_color}}>{text}</p>
-                { (!hasCourseAccess || page === "lander") &&
-                    (button && button_position === "below") ?
+            {(type === "video" || type === "text") ?
+                <div className="my_row text_wrap">
+                    {type === "video" &&
+                        <h3 style={{color: text_color}}>{video_title}</h3>
+                    }
+
+                    { (!hasCourseAccess || page === "lander") &&
+                        (button && button_position === "above") ?
                             <Button />
-                        :
-                        ""
-                }
-            </div>
+                            :
+                            ""
+                    }
+                    <p style={{color: text_color}}>{text}</p>
+                    { (!hasCourseAccess || page === "lander") &&
+                        (button && button_position === "below") ?
+                                <Button />
+                            :
+                            ""
+                    }
+                </div>
+                :
+                ""
+            }
+
+            {type === "image" ?
+                <section className={`my_row text_wrap ${type}`} style={bgStyle}></section>
+                :
+                ""
+            }
+
+            {type === "file" ?
+                <section className={`my_row text_wrap text-center ${type}`}>
+                    <a download={file} target="_blank" href={file}>
+                        Download <span className="underline">{fileName}</span>
+                    </a>
+                </section>
+                :
+                ""
+            }
         </div>
 
 

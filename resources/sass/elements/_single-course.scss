@@ -163,9 +163,18 @@
     .sections {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
-        grid-gap: 2rem;
+        grid-column-gap: 2rem;
         padding: 40px 0;
         justify-content: center;
+
+        section:last-child.image {
+            border-bottom-right-radius: 0 !important;
+            -webkit-border-bottom-right-radius: 0 !important;
+            -moz-border-radius-bottomright:0 !important;
+            border-bottom-left-radius: 0 !important;
+            -webkit-border-bottom-left-radius: 0 !important;
+            -moz-border-radius-bottomleft: 0 !important;
+        }
 
         .column {
             padding: 0;
@@ -175,8 +184,21 @@
             -moz-border-radius: 6px;
             z-index: 1;
 
-            &.text {
+            &.text, &.image, &.file {
                 grid-column: 1 / -1;
+            }
+
+            &.text {
+                border-radius: 0;
+                -webkit-border-radius: 0;
+                -moz-border-radius: 0;
+                margin: 20px 0;
+            }
+
+            &.image {
+                border-radius: 0;
+                -webkit-border-radius: 0;
+                -moz-border-radius: 0;
             }
 
             .text_wrap {
