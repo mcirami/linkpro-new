@@ -12,12 +12,16 @@ const SectionFile = ({file}) => {
         }
     )
     useEffect(() => {
-        setCurrentFile(getFileParts(file));
-    }, []);
+        if(file) {
+            setCurrentFile(getFileParts(file));
+        }
+    }, [file]);
 
     return (
         <div className="file_section p-5 text-center">
-            <a className="download_file" target="_blank" href={file} download={file}>Download {currentFile.name} {currentFile.type}</a>
+            {file &&
+                <a className="download_file" target="_blank" href={file} download={file}>Download {currentFile.name} {currentFile.type}</a>
+            }
         </div>
     );
 };

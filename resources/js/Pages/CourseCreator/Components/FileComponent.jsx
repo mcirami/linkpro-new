@@ -17,10 +17,12 @@ const FileComponent = ({
     const [currentFileName, setCurrentFileName] = useState("");
 
     useEffect(() => {
-        const fileNameObj = getFileParts(currentSection.file);
-        const fileName = fileNameObj.name + "." + fileNameObj.type;
-        setFileName(fileName);
-        setCurrentFileName(fileName);
+        if (currentSection.file) {
+            const fileNameObj = getFileParts(currentSection.file);
+            const fileName = fileNameObj.name + "." + fileNameObj.type;
+            setFileName(fileName);
+            setCurrentFileName(fileName);
+        }
     }, []);
     const onSelectFile = (e) => {
         let files = e.target.files || e.dataTransfer.files;
@@ -64,7 +66,7 @@ const FileComponent = ({
                         if (section.id === currentSection.id) {
                             return {
                                 ...section,
-                                image: response.imagePath,
+                                file: response.filePath,
                             }
                         }
                         return section;

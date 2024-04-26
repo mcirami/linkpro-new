@@ -21,7 +21,7 @@ export const uploadSectionFile = (id, packets) => {
 
             return {
                 success : true,
-                imagePath: response.data.imagePath
+                filePath: response.data.filePath
             }
         }
     )

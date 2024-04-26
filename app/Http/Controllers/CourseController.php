@@ -236,9 +236,9 @@ class CourseController extends Controller
 
         $keys = collect($request->all())->keys();
 
-        $imagePath = $courseService->saveSectionFile($userID, $request, $keys[0], $courseSection);
+        $filePath = $courseService->saveSectionFile($userID, $request, $keys[0], $courseSection);
 
-        return response()->json(['message' => $keys[0] . ' Updated', 'imagePath' => $imagePath]);
+        return response()->json(['message' => $keys[0] . ' Updated', 'filePath' => $filePath]);
     }
 
     /**
