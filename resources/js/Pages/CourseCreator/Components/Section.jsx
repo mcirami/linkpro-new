@@ -13,6 +13,7 @@ import ImageComponent
     from '@/Pages/CourseCreator/Components/ImageComponent.jsx';
 import FileComponent
     from '@/Pages/CourseCreator/Components/FileComponent.jsx';
+import {getFileParts} from '@/Services/FileService.jsx';
 
 const Section = ({
                      section,
@@ -98,6 +99,42 @@ const Section = ({
         setOpenIndex([])
     }
 
+    const getSectionTitle = () => {
+        switch(type) {
+            case 'video':
+                const ellipsis = section.video_title.length > 20 ? "..." : ""
+                return (
+                    section.video_title ?
+                        section.video_title.slice(0, 20) + ellipsis :
+                        type  + " " + videoCount
+                )
+            case 'text':
+                return (
+                    section.text ?
+                        section.text.slice(0, 20) + "..." :
+                        type  + " " + textCount
+                )
+            case 'image' :
+                return (
+                    section.image ?
+                        <img className="input_image" src={section.image} alt=""/>
+                        :
+                        type  + " " + imageCount
+                )
+            case 'file' :
+                let content = "";
+                if(section.file) {
+                    const fileNameObj = getFileParts(section.file)
+                    content = fileNameObj.name + "." + fileNameObj.type
+                } else {
+                    content = type  + " " + fileCount
+                }
+                return (
+                    content
+                )
+        }
+    }
+
     return (
         <div ref={setNodeRef}
              id={`section_${index + 1}`}
@@ -117,14 +154,9 @@ const Section = ({
                     <MdDragHandle/>
                 </div>
                 <div className="title_column">
-                    <h4>{type} {
-                        type === "video" ?
-                            videoCount :
-                            type === "image" ?
-                                imageCount : type === "file" ?
-                                    fileCount :
-                                    textCount
-                    }</h4>
+                    <h4>
+                        {getSectionTitle()}
+                    </h4>
                 </div>
                 <div className={`icon_wrap ${openIndex.includes(index) ? "open" : ""}`}>
                     <MdKeyboardArrowDown />

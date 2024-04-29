@@ -141,6 +141,8 @@ function LPCreator({landingPageArray, courses, username}) {
     }
 
     const url = window.location.protocol + "//" + window.location.host + "/" + username;
+    let textCount = 0;
+    let imageCount = 0;
 
     return (
         <AuthenticatedLayout>
@@ -275,7 +277,10 @@ function LPCreator({landingPageArray, courses, username}) {
                                                         strategy={verticalListSortingStrategy}
                                                     >
                                                         {sections.map((section, index) => {
-
+                                                            {section.type === "image" ?
+                                                                ++imageCount :
+                                                                ++textCount
+                                                            }
                                                             return (
 
                                                                 <Section
@@ -295,6 +300,8 @@ function LPCreator({landingPageArray, courses, username}) {
                                                                     showTiny={showTiny}
                                                                     setShowTiny={setShowTiny}
                                                                     courses={courses}
+                                                                    imageCount={imageCount}
+                                                                    textCount={textCount}
                                                                 />
                                                             )
                                                         })}

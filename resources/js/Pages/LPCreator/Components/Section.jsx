@@ -7,6 +7,7 @@ import ImageComponent from './ImageComponent';
 import SectionButtonOptions from './SectionButtonOptions';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
+import isJSON from 'validator/es/lib/isJSON.js';
 
 const Section = ({
                      section,
@@ -22,7 +23,9 @@ const Section = ({
                      handleMouseEnter,
                      showTiny,
                      setShowTiny,
-                     courses
+                     courses,
+                     imageCount,
+                     textCount
 }) => {
 
     const {
@@ -66,6 +69,29 @@ const Section = ({
         setOpenIndex([])
     }
 
+    const getSectionTitle = () => {
+        switch(type) {
+            case 'text':
+                let parsedText = "";
+                if(isJSON(section.text)) {
+                    parsedText = JSON.parse(section.text);
+                }
+
+                return (
+                    section.text ?
+                        parsedText.blocks[0]["text"].slice(0, 20) + "..." :
+                        type  + " " + textCount
+                )
+            case 'image' :
+                return (
+                    section.image ?
+                        <img className="input_image" src={section.image} alt=""/>
+                        :
+                        type  + " " + imageCount
+                )
+        }
+    }
+
     return (
         <div ref={setNodeRef}
              className="section_row"
@@ -84,7 +110,7 @@ const Section = ({
                     <MdDragHandle/>
                 </div>
                 <div className="title_column">
-                    <h4>Section {index + 1}</h4>
+                    <h4>{getSectionTitle()}</h4>
                 </div>
                 <div className={`icon_wrap ${openIndex.includes(index) ? "open" : ""}`}>
                     <MdKeyboardArrowDown />

@@ -44,7 +44,7 @@ const PreviewSection = ({
     useEffect(() => {
 
         if(type === "text" ) {
-            if (firstUpdate.current && text && isJSON(text)) {
+            if (text && isJSON(text)) {
                 const allContent = JSON.parse(text);
                 allContent["blocks"] = allContent["blocks"].map((block) => {
                     if (!block.text) {
@@ -63,9 +63,9 @@ const PreviewSection = ({
 
     },[text])
 
-    const createMarkup = (text) => {
+    const createMarkup = (convertText) => {
         return {
-            __html: DOMPurify.sanitize(text)
+            __html: DOMPurify.sanitize(convertText)
         }
     }
 
@@ -81,7 +81,6 @@ const PreviewSection = ({
             </div>
         )
     }
-
     return (
         <section id={`preview_section_${position}`}
                  className={hoverSection === 'section_'+ position ? "active" : ""}

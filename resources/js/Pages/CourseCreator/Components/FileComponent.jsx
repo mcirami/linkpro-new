@@ -120,14 +120,14 @@ const FileComponent = ({
                             className={`custom`}
                             id={`${elementName}_file_upload`}
                             type="file"
-                            accept=".doc,.docx,application/msword,application/pdf,application/mp4"
+                            accept=".doc,.docx,application/msword,application/pdf,.mp4,.mp3"
                             onChange={onSelectFile}
                         />
                     </div>
                     <div className="my_row info_text file_types">
                         <p className="m-0 char_count w-100 ">
                             Allowed File Types:
-                            <span>.pdf, .doc, .docx, msword</span>
+                            <span>.pdf, .doc, .docx, msword, .mp4, .mp3</span>
                         </p>
                     </div>
                     <div className="bottom_section hidden">

@@ -223,6 +223,16 @@
                             height: 40px;
                         }
                     }
+
+                    .input_image {
+                        width: 75px;
+                        max-width: unset;
+                        position: absolute;
+                        top: 15px;
+                        border-radius: 4px;
+                        -webkit-border-radius: 4px;
+                        -moz-border-radius: 4spx;
+                    }
                 }
 
                 .color_wrap {

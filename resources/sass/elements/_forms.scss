@@ -171,6 +171,16 @@ label.custom {
 
     img {
         max-width: 28px;
+        border-radius: 4px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+    }
+
+    .input_image {
+        width: 75px;
+        max-width: unset;
+        position: absolute;
+        top: 10px;
     }
 
     @media screen and (max-width: 350px) {

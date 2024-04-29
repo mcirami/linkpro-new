@@ -252,16 +252,17 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                     {!completedCrop[elementName]?.isCompleted && (
                         <>
                             <div className="top_section">
+
                                 <label
                                     htmlFor={`${elementName}_file_upload`}
                                     className="custom"
                                 >
-                                    {(data && data["icon"]) ?
-                                        <img src={data["icon"]} alt=""/>
+                                    {(data && data['icon']) || currentSection?.image ?
+                                        <img className={currentSection?.image ? "input_image" : ""} src={currentSection?.image || data['icon']} alt=""/>
                                         :
                                         ""
                                     }
-                                    {type === "extPreview" &&
+                                    { (type === "extPreview" && !currentSection?.image) &&
                                         placeholder
                                     }
                                     <span className="edit_icon">
@@ -271,6 +272,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                                         </div>
                                     </span>
                                 </label>
+
                                 <input
                                     className={`custom ${(data && data["icon"]) ? "active" : "" }`}
                                     id={`${elementName}_file_upload`}

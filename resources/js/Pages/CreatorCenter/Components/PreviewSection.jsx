@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import DOMPurify from 'dompurify';
 import draftToHtml from 'draftjs-to-html';
+import isJSON from 'validator/es/lib/isJSON.js';
 
 const PreviewSection = ({section}) => {
 
@@ -32,21 +33,23 @@ const PreviewSection = ({section}) => {
 
     useEffect(() => {
 
-        if (firstUpdate.current && text) {
+        if(type === "text" ) {
+            if (text && isJSON(text)) {
 
-            const allContent = JSON.parse(text);
-            allContent["blocks"] = allContent["blocks"].map((block) => {
-                if (!block.text) {
-                    block.text = ""
-                }
+                const allContent = JSON.parse(text);
+                allContent["blocks"] = allContent["blocks"].map((block) => {
+                    if (!block.text) {
+                        block.text = ""
+                    }
 
-                return block;
-            })
+                    return block;
+                })
 
-            setTextValue(draftToHtml(allContent));
-            firstUpdate.current = false;
-        } else if (text) {
-            setTextValue(text)
+                setTextValue(draftToHtml(allContent));
+                firstUpdate.current = false;
+            } else if (text) {
+                setTextValue(text)
+            }
         }
 
     },[text])
@@ -59,7 +62,7 @@ const PreviewSection = ({section}) => {
 
     const Button = ({buttonText}) => {
         return (
-            <div className={`button_wrap my_row ${button_position ? button_position : "above"}`}>
+            <div className={`button_wrap text-center my_row ${button_position ? button_position : "above"}`}>
                 <a href={button_link}
                    target="_blank"
                    className="button"
@@ -71,7 +74,8 @@ const PreviewSection = ({section}) => {
 
     return (
         <section>
-            <div className={type} style={{ background: bg_color || 'rgba(255,255,255,1)'}}>
+            <div className={type}
+                 style={{ background: bg_color || 'rgba(255,255,255,1)'}}>
                 {( !!button && button_position === "above") &&
                     <Button
                         buttonText={button_text}

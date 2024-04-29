@@ -76,12 +76,6 @@ class LandingPageController extends Controller
         $landingPageData = $service->getLPData($landingPage);
         $courses = $courseService->getCourses($user);
 
-        /*Javascript::put([
-            'landingPage' => $landingPageData,
-            'courses' => $courses,
-            'username' => $user["username"]
-        ]);*/
-
         return Inertia::render('LPCreator/LPCreator')->with(['landingPageArray' => $landingPageData,
                                                              'courses' => $courses,
                                                              'username' => $user["username"]]);
