@@ -45,12 +45,12 @@ function CourseCreator({courseArray, offerArray, categories}) {
     const username = auth.user.userInfo.username;
 
     const [showTiny, setShowTiny]   = useState(false);
-
     const [openIndex, setOpenIndex] = useState([0]);
     const [hoverSection, setHoverSection] = useState(null);
+
+    const [offerData, dispatchOfferData] = useReducer(offerDataReducer, offerArray);
     const [courseData, dispatch] = useReducer(reducer, courseArray);
     const [sections, setSections] = useState(courseArray["sections"]);
-    const [offerData, dispatchOfferData] = useReducer(offerDataReducer, offerArray);
     const [showPreviewButton, setShowPreviewButton] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
 
@@ -60,18 +60,9 @@ function CourseCreator({courseArray, offerArray, categories}) {
     const [infoClicked, setInfoClicked] = useState(null);
     const [triangleRef, setTriangleRef] = useState(null);
 
-    const initialRender = useRef(true);
-
-    const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        })
-    );
-
     const [completedCrop, setCompletedCrop] = useState({})
     const nodesRef = useRef({});
-
+    const initialRender = useRef(true);
     const divRef = useRef(null);
     const columnRef = useRef(null);
 
@@ -85,6 +76,13 @@ function CourseCreator({courseArray, offerArray, categories}) {
         type: '',
         msg: ''
     });
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
 
     useEffect(() => {
         previewButtonRequest(setShowPreviewButton);

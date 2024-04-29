@@ -35,12 +35,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 function LPCreator({landingPageArray, courses, username}) {
 
     const [showTiny, setShowTiny]   = useState(false);
-
     const [openIndex, setOpenIndex] = useState([0]);
     const [hoverSection, setHoverSection] = useState(null);
 
+
     const [pageData, dispatch] = useReducer(reducer, landingPageArray);
-    const [sections, setSections] = useState(pageData["sections"]);
+    const [sections, setSections] = useState([]);
+
     const [showPreviewButton, setShowPreviewButton] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
 
@@ -64,6 +65,12 @@ function LPCreator({landingPageArray, courses, username}) {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
+
+    useEffect(() => {
+        setSections(pageData["sections"].map((section) => {
+            return section;
+        }))
+    }, []);
 
     useEffect(() => {
         previewButtonRequest(setShowPreviewButton);

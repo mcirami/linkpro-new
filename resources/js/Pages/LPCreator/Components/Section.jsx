@@ -38,6 +38,8 @@ const Section = ({
         button_size
     } = section;
 
+    //console.log("section.text: ", section.text)
+
     const {
         attributes,
         listeners,
@@ -70,16 +72,17 @@ const Section = ({
     }
 
     const getSectionTitle = () => {
+
         switch(type) {
             case 'text':
-                let parsedText = "";
+                let parsedText = null;
                 if(isJSON(section.text)) {
                     parsedText = JSON.parse(section.text);
                 }
 
                 return (
-                    section.text ?
-                        parsedText.blocks[0]["text"].slice(0, 20) + "..." :
+                    parsedText ?
+                        parsedText?.blocks[0]["text"].slice(0, 20) + "..." :
                         type  + " " + textCount
                 )
             case 'image' :
@@ -138,13 +141,6 @@ const Section = ({
                             setSections={setSections}
                             elementName={`section_${index + 1}_bg_color`}
                         />
-                        {/* <ColorPicker
-                            label="Text Color"
-                            currentSection={section}
-                            sections={sections}
-                            setSections={setSections}
-                            elementName={`section_${index + 1}_text_color`}
-                        />*/}
                     </>
                 }
                 {type === "image" &&
