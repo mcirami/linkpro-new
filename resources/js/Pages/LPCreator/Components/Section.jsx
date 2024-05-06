@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import DeleteSection from './DeleteSection';
 import {MdDragHandle, MdKeyboardArrowDown} from 'react-icons/md';
-import InputComponent from './InputComponent';
+import InputComponent from '@/Components/InputComponent';
 import ColorPicker from './ColorPicker';
 import ImageComponent from './ImageComponent';
 import SectionButtonOptions from './SectionButtonOptions';
@@ -28,6 +28,7 @@ const Section = ({
                      textCount
 }) => {
 
+    console.log("section: ", section)
     const {
         id,
         type,
@@ -37,8 +38,6 @@ const Section = ({
         button_course_id,
         button_size
     } = section;
-
-    //console.log("section.text: ", section.text)
 
     const {
         attributes,
@@ -52,6 +51,8 @@ const Section = ({
         transform: CSS.Transform.toString(transform),
         transition,
     };
+
+    const [sectionTitle, setSectionTitle] = useState("");
 
     const handleSectionOpen = (rowIndex) => {
 
@@ -71,7 +72,7 @@ const Section = ({
         setOpenIndex([])
     }
 
-    const getSectionTitle = () => {
+    useEffect(() => {
 
         switch(type) {
             case 'text':
@@ -80,20 +81,23 @@ const Section = ({
                     parsedText = JSON.parse(section.text);
                 }
 
-                return (
-                    parsedText ?
-                        parsedText?.blocks[0]["text"].slice(0, 20) + "..." :
-                        type  + " " + textCount
-                )
+                parsedText = parsedText ?
+                    parsedText?.blocks[0]["text"].slice(0, 20) + "..." :
+                    type  + " " + textCount
+
+
+                return setSectionTitle(parsedText)
+
             case 'image' :
-                return (
-                    section.image ?
-                        <img className="input_image" src={section.image} alt=""/>
-                        :
-                        type  + " " + imageCount
-                )
+                const content = section.image ?
+                    <img className="input_image" src={section.image} alt=""/>
+                    :
+                    type  + " " + imageCount
+
+                return setSectionTitle(content)
+
         }
-    }
+    }, [sections, section]);
 
     return (
         <div ref={setNodeRef}
@@ -113,7 +117,7 @@ const Section = ({
                     <MdDragHandle/>
                 </div>
                 <div className="title_column">
-                    <h4>{getSectionTitle()}</h4>
+                    <h4>{sectionTitle}</h4>
                 </div>
                 <div className={`icon_wrap ${openIndex.includes(index) ? "open" : ""}`}>
                     <MdKeyboardArrowDown />
@@ -124,7 +128,7 @@ const Section = ({
                     <>
                         <InputComponent
                             placeholder="Add Text"
-                            type="textarea"
+                            type="wysiwyg"
                             hoverText={`Add Text to Section ${index + 1}`}
                             elementName={`section_${index + 1}_text`}
                             value={text}
@@ -133,6 +137,7 @@ const Section = ({
                             setSections={setSections}
                             showTiny={showTiny}
                             setShowTiny={setShowTiny}
+                            submitType="landingPage"
                         />
                         <ColorPicker
                             label="Background Color"

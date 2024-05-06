@@ -4,12 +4,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext';
 import {Loader} from '@/Utils/Loader';
 import {Flash} from '@/Utils/Flash';
-import InputComponent from './Components/InputComponent';
+import InputComponent from '@/Components/InputComponent';
 import ColorPicker from './Components/ColorPicker';
 import Preview from './Components/Preview/Preview';
-import AddSectionLink from './Components/AddSectionLink.jsx';
 import ImageComponent from './Components/ImageComponent';
-import {offerDataReducer, reducer} from './Reducer';
+import {
+    offerDataReducer,
+    pageDataReducer,
+} from '@/Components/Reducers/CreatorReducers.jsx';
 import EventBus from '@/Utils/Bus';
 import {isEmpty} from 'lodash';
 import PreviewButton from '../../Components/PreviewButton.jsx';
@@ -35,7 +37,9 @@ import {
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import {updateSectionsPositions} from '../../Services/CourseRequests';
+import {
+    updateSectionsPositions,
+} from '../../Services/CourseRequests';
 import {Head, usePage} from '@inertiajs/react';
 import ContentSelect from '@/Pages/CourseCreator/Components/ContentSelect.jsx';
 
@@ -49,7 +53,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
     const [hoverSection, setHoverSection] = useState(null);
 
     const [offerData, dispatchOfferData] = useReducer(offerDataReducer, offerArray);
-    const [courseData, dispatch] = useReducer(reducer, courseArray);
+    const [courseData, dispatchCourseData] = useReducer(pageDataReducer, courseArray);
     const [sections, setSections] = useState(courseArray["sections"]);
     const [showPreviewButton, setShowPreviewButton] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
@@ -277,9 +281,10 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         maxChar={60}
                                                         hoverText="Submit Course Title"
                                                         elementName="title"
-                                                        courseData={courseData}
-                                                        dispatch={dispatch}
+                                                        data={courseData}
+                                                        dispatch={dispatchCourseData}
                                                         value={courseData["title"]}
+                                                        submitType="course"
                                                     />
                                                     <ImageComponent
                                                         ref={nodesRef}
@@ -287,7 +292,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         setCompletedCrop={setCompletedCrop}
                                                         setShowLoader={setShowLoader}
                                                         data={courseData}
-                                                        dispatch={dispatch}
+                                                        dispatch={dispatchCourseData}
                                                         elementName="logo"
                                                         placeholder="Logo"
                                                         type="extPreview"
@@ -303,7 +308,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         <ColorPicker
                                                             label="Header Background Color"
                                                             courseData={courseData}
-                                                            dispatch={dispatch}
+                                                            dispatch={dispatchCourseData}
                                                             elementName="header_color"
                                                         />
                                                         <ToolTipIcon section="course_header_color" />
@@ -312,14 +317,14 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         <ColorPicker
                                                             label="Course Title Color"
                                                             courseData={courseData}
-                                                            dispatch={dispatch}
+                                                            dispatch={dispatchCourseData}
                                                             elementName="header_text_color"
                                                         />
                                                         <ToolTipIcon section="course_header_text_color" />
                                                     </div>
                                                     <DropdownComponent
                                                         id={courseData["id"]}
-                                                        dispatch={dispatch}
+                                                        dispatch={dispatchCourseData}
                                                         value={courseData["category"] || ""}
                                                         categories={categories}
                                                     />
@@ -354,8 +359,9 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         hoverText="Add Embed Link"
                                                         elementName="intro_video"
                                                         value={courseData["intro_video"] || ""}
-                                                        courseData={courseData}
-                                                        dispatch={dispatch}
+                                                        data={courseData}
+                                                        dispatch={dispatchCourseData}
+                                                        submitType="course"
                                                     />
                                                 </div>
                                             </section>
@@ -373,16 +379,17 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         type="wysiwyg"
                                                         hoverText="Submit Intro Text"
                                                         elementName="intro_text"
-                                                        courseData={courseData}
-                                                        dispatch={dispatch}
+                                                        data={courseData}
+                                                        dispatch={dispatchCourseData}
                                                         value={courseData["intro_text"]}
                                                         showTiny={showTiny}
                                                         setShowTiny={setShowTiny}
+                                                        submitType="course"
                                                     />
                                                     <ColorPicker
                                                         label="Background Color"
                                                         courseData={courseData}
-                                                        dispatch={dispatch}
+                                                        dispatch={dispatchCourseData}
                                                         elementName="intro_background_color"
                                                     />
                                                 </div>
@@ -433,8 +440,6 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                                         setCompletedCrop={setCompletedCrop}
                                                                         nodesRef={nodesRef}
                                                                         setShowLoader={setShowLoader}
-                                                                        data={courseData}
-                                                                        dispatch={dispatch}
                                                                     />
 
                                                                 )
@@ -484,13 +489,14 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         type="currency"
                                                         hoverText="Submit Course Price"
                                                         elementName="price"
-                                                        offerData={offerData}
-                                                        dispatchOffer={dispatchOfferData}
+                                                        data={offerData}
+                                                        dispatch={dispatchOfferData}
                                                         value={offerData["price"]}
+                                                        submitType="offer"
                                                     />
                                                     <SwitchOptions
-                                                        dispatchOffer={dispatchOfferData}
-                                                        offerData={offerData}
+                                                        dispatch={dispatchOfferData}
+                                                        data={offerData}
                                                     />
                                                 </div>
                                             </section>
@@ -498,8 +504,8 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                             {!offerData["published"] &&
 
                                                 <PublishButton
-                                                    offerData={offerData}
-                                                    dispatchOffer={dispatchOfferData}
+                                                    data={offerData}
+                                                    dispatch={dispatchOfferData}
                                                     courseTitle={courseData["title"]}
                                                 />
                                             }
@@ -512,7 +518,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                     <div className={`right_column links_col preview${showPreview ? " show" : ""}`}>
                                         <Preview
                                             sections={sections}
-                                            courseData={courseData}
+                                            data={courseData}
                                             setShowPreview={setShowPreview}
                                             url={landerUrl}
                                             hoverSection={hoverSection}

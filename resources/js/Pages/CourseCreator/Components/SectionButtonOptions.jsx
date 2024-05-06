@@ -7,7 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import Slider from '@mui/material/Slider';
 import ColorPicker from './ColorPicker';
-import InputComponent from './InputComponent';
+import InputComponent from '@/Components/InputComponent.jsx';
 import IOSSwitch from '@/Utils/IOSSwitch';
 
 const SectionButtonOptions = ({

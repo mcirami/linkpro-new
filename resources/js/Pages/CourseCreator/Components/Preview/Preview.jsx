@@ -10,7 +10,7 @@ import {isEmpty} from 'lodash';
 import {IoIosCloseCircleOutline} from 'react-icons/io';
 
 const Preview = ({
-                     courseData,
+                     data,
                      sections,
                      setShowPreview,
                      url,
@@ -28,14 +28,13 @@ const Preview = ({
 
         if (hoverSection) {
             const target = document.getElementById('preview_' + hoverSection);
-
             if (target) {
                 if (hoverSection.includes("header")) {
                     target.parentNode.scrollTop = target.offsetTop;
                 } else if (hoverSection.includes("intro")) {
                     target.parentNode.parentNode.parentNode.scrollTop = target.offsetTop - 100;
                 } else {
-                    target.parentNode.parentNode.scrollTop = target.offsetTop - 100;
+                    target.parentNode.parentNode.scrollTop = target.offsetTop + 200;
                 }
             }
         }
@@ -59,7 +58,7 @@ const Preview = ({
                     <div className="inner_content_wrap" style={{ maxHeight: resizePreviewHeight ? resizePreviewHeight + "px" : loadPreviewHeight + "px"}}>
                         <section className="header" id="preview_header_section">
                             <TopBar
-                                courseData={courseData}
+                                data={data}
                                 nodesRef={nodesRef}
                                 completedCrop={completedCrop}
                                 imgRef={imgRef}
@@ -67,7 +66,7 @@ const Preview = ({
                         </section>
                         <section>
                             <Hero
-                                courseData={courseData}
+                                data={data}
                             />
                         </section>
                         <div className="sections my_row">

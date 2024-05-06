@@ -3,13 +3,18 @@ import {FiThumbsDown, FiThumbsUp} from 'react-icons/Fi';
 import CurrencyInput from 'react-currency-input-field';
 import validator from 'validator/es';
 import {
-    updateData,
-    updateSectionData,
+    updateData as updateCourseData,
+    updateSectionData as updateCourseSectionData,
 } from '@/Services/CourseRequests.jsx';
-import {LP_ACTIONS, OFFER_ACTIONS} from '../Reducer';
+import {
+    updateData as updateLpData,
+    updateSectionData as updateLpSectionData,
+} from '@/Services/LandingPageRequests.jsx';
+import {LP_ACTIONS, OFFER_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
 import {updateOfferData} from '@/Services/OfferRequests.jsx';
-import EditorComponent from '../../LPCreator/Components/EditorComponent';
+import EditorComponent from '@/Components/EditorComponent.jsx';
 import {HandleFocus} from '@/Utils/InputAnimations.jsx';
+
 
 const InputComponent = ({
                             placeholder,
@@ -18,27 +23,27 @@ const InputComponent = ({
                             hoverText,
                             elementName,
                             value,
-                            courseData = null,
-                            offerData = null,
+                            data = null,
                             dispatch = null,
-                            dispatchOffer = null,
                             sections = null,
                             setSections = null,
                             currentSection = null,
                             showTiny = null,
                             setShowTiny = null,
-}) => {
+                            submitType
+                        }) => {
 
     const [charactersLeft, setCharactersLeft] = useState(maxChar);
-    const [isValid, setIsValid] = useState(false)
+    const [isValid, setIsValid] = useState(false);
+    const [textInputValue, setTextInputValue] = useState(value);
     const limit = 1000;
     const prefix = '$';
 
     useEffect(() => {
         if(maxChar) {
-            if (value) {
-                setCharactersLeft(maxChar - value.length);
-                if (maxChar - value.length >= 0) {
+            if (textInputValue) {
+                setCharactersLeft(maxChar - textInputValue.length);
+                if (maxChar - textInputValue.length >= 0) {
                     setIsValid(true);
                 }
             } else {
@@ -66,18 +71,20 @@ const InputComponent = ({
             setIsValid(true);
         }
 
-        dispatchOffer({
-            type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
-            payload: {
-                value: value,
-                name: elementName
-            }
-        })
+        if (submitType === "offer") {
+            dispatch({
+                type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
+                payload: {
+                    value: value,
+                    name: elementName
+                }
+            })
+        }
     }
 
     const handleChange = (e) => {
         let value = e.target.value;
-
+        setTextInputValue(value)
         let check;
 
         if(maxChar) {
@@ -93,7 +100,7 @@ const InputComponent = ({
             }
         }
 
-        if (check || type === "textarea" || type === "text") {
+        if (check || type === "textarea" || type === "text" || !maxChar) {
 
             if (elementName === "title" && value === "") {
                 setIsValid(false)
@@ -110,7 +117,7 @@ const InputComponent = ({
                     element = element[2].replace('_', '');
                 }
 
-                setSections(sections.map((section) => {
+                setSections && setSections(sections.map((section) => {
                     if (section.id === currentSection.id) {
                         return {
                             ...section,
@@ -121,7 +128,7 @@ const InputComponent = ({
                 }))
 
             } else {
-                dispatch({
+                dispatch && dispatch({
                     type: LP_ACTIONS.UPDATE_PAGE_DATA,
                     payload: {
                         value: value,
@@ -154,23 +161,32 @@ const InputComponent = ({
                     [`${element}`]: e.target.value,
                 };
 
-                updateSectionData(packets, currentSection.id);
+                if (submitType === "course") {
+                    updateCourseSectionData(packets, currentSection.id);
+                }
 
-            } else if (offerData) {
+                if (submitType === "landingPage") {
+                    updateLpSectionData(packets, currentSection.id)
+                }
+
+            } else if (submitType === "offer") {
 
                 const packets = {
-                    [`${elementName}`]: offerData[elementName],
+                    [`${elementName}`]: data[elementName],
                 };
 
-                updateOfferData(packets, offerData["id"]);
+                updateOfferData(packets, data["id"]);
 
             } else {
                 const packets = {
-                    [`${elementName}`]: courseData[elementName],
+                    [`${elementName}`]: data[elementName],
                 };
 
-                updateData(packets, courseData["id"], elementName)
-                .then((response) => {
+                const func = submitType === "course" ?
+                    updateCourseData(packets, data["id"], elementName) :
+                    updateLpData(packets, data["id"], elementName)
+
+                func.then((response) => {
                     if(response.success && response.slug) {
                         dispatch({
                             type: LP_ACTIONS.UPDATE_PAGE_DATA,
@@ -277,7 +293,7 @@ const InputComponent = ({
                         setSections={setSections}
                         currentSection={currentSection}
                         elementName={elementName}
-                        data={courseData}
+                        data={data}
                         isValid={isValid}
                         setIsValid={setIsValid}
                         showTiny={showTiny}
@@ -291,7 +307,7 @@ const InputComponent = ({
                         <CurrencyInput
                             className={`animate`}
                             decimalsLimit={2}
-                            defaultValue={offerData[elementName] || ""}
+                            defaultValue={data[elementName] || ""}
                             onValueChange={handleCurrencyChange}
                             onKeyDown={event => {
                                 if (event.key === 'Enter') {
@@ -329,13 +345,13 @@ const InputComponent = ({
     }
 
     return (
-
         <div className="edit_form">
             <form>
                 {switchStatement()}
                 {isValid ?
-                    <a className={`submit_circle ${type === "textarea" || type === "wysiwyg" ?
-                    "textarea" : ""}`} href="#"
+                    <a className={`submit_circle ${type === "textarea" ||
+                    type === "wysiwyg" ?
+                        "textarea" : ""}`} href="#"
                        onClick={(e) => handleSubmit(e)}
                     >
                         <FiThumbsUp/>
@@ -343,8 +359,9 @@ const InputComponent = ({
                             <p>{hoverText}</p></div>
                     </a>
                     :
-                    <span className={`cancel_icon ${type === "textarea" || type === "wysiwyg" ?
-                    "textarea" : ""}`}>
+                    <span className={`cancel_icon ${type === "textarea" ||
+                    type === "wysiwyg" ?
+                        "textarea" : ""}`}>
                         <FiThumbsDown/>
                     </span>
                 }
@@ -365,7 +382,6 @@ const InputComponent = ({
             </form>
             {/*<ToolTipIcon section="title" />*/}
         </div>
-
     );
 };
 

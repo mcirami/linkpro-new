@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {LP_ACTIONS} from '../Reducer';
+import {LP_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
 import { Editor } from '@tinymce/tinymce-react';
 import { ContentState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
@@ -24,7 +24,7 @@ const EditorComponent = ({
                              setIsValid,
                              showTiny = null,
                              setShowTiny = null
-}) => {
+                         }) => {
 
     const editorRef = useRef(null);
 

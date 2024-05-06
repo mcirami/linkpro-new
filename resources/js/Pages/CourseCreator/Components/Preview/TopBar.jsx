@@ -1,14 +1,14 @@
 import React from 'react';
 
 const TopBar = ({
-                    courseData,
+                    data,
                     completedCrop,
                     nodesRef
 }) => {
 
     return (
         <div className="top_section" style={{
-            background: courseData['header_color']
+            background: data['header_color']
         }}>
             <div className="logo">
                 {completedCrop?.logo ?
@@ -22,13 +22,13 @@ const TopBar = ({
                         }}
                     />
                     :
-                    <img src={courseData["logo"] || Vapor.asset("images/logo.png") } alt=""/>
+                    <img src={data["logo"] || Vapor.asset("images/logo.png") } alt=""/>
                 }
             </div>
-            {courseData['title'] &&
+            {data['title'] &&
                 <h2 id="preview_title_section" className="title" style={{
-                    color: courseData['header_text_color']
-                }}>{courseData['title']}</h2>
+                    color: data['header_text_color']
+                }}>{data['title']}</h2>
             }
         </div>
 

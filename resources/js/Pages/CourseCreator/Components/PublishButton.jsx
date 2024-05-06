@@ -3,7 +3,7 @@ import {publishOffer} from '@/Services/OfferRequests.jsx';
 import {OFFER_ACTIONS} from '../Reducer';
 import {IoWarningOutline} from 'react-icons/io5';
 
-const PublishButton = ({offerData, dispatchOffer, courseTitle}) => {
+const PublishButton = ({data, dispatch, courseTitle}) => {
 
 
    const handleOnClick = (e) => {
@@ -13,10 +13,10 @@ const PublishButton = ({offerData, dispatchOffer, courseTitle}) => {
            published: true,
        };
 
-       publishOffer(packets, offerData["id"])
+       publishOffer(packets, data["id"])
        .then((response) => {
            if (response.success) {
-               dispatchOffer({
+               dispatch({
                    type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
                    payload: {
                        value: true,
@@ -29,10 +29,14 @@ const PublishButton = ({offerData, dispatchOffer, courseTitle}) => {
 
     return (
         <div className="my_row button_wrap">
-            <button type="submit" disabled={!offerData["price"] || !offerData["icon"] || !courseTitle ? "disabled" : ""} className={!offerData["price"] || !offerData["icon"] ? "button blue disabled" : "button blue"} onClick={(e) => handleOnClick(e)}>
+            <button type="submit"
+                    disabled={ (!data["price"] || !data["icon"] || !courseTitle) ? "disabled" : ""}
+                    className={!data["price"] || !data["icon"] ? "button blue disabled" : "button blue"}
+                    onClick={(e) => handleOnClick(e)}
+            >
                 Publish
             </button>
-            {!offerData["price"] || !offerData["icon"] ?
+            {!data["price"] || !data["icon"] ?
                 <p><IoWarningOutline /> Course requires an Icon, Price and Title before being published</p>
                 :
                 ""

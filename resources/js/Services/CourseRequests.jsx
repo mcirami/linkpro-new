@@ -94,10 +94,9 @@ export const updateData = (packets, id, elementName) => {
     )
     .catch((error) => {
         if (error.response !== undefined) {
-            if (error.response.data.errors[elementName] !== undefined) {
-                EventBus.dispatch("error",
-                    {message: error.response.data.errors[elementName][0]});
-            }
+            EventBus.dispatch("error",
+                {message: "There was a problem saving the " + elementName});
+
             console.error("ERROR:: ", error.response.data);
         } else {
             console.error("ERROR:: ", error);

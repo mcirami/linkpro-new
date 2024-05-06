@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import DeleteSection from './DeleteSection';
 import {MdDragHandle, MdKeyboardArrowDown} from 'react-icons/md';
-import InputComponent from './InputComponent';
+import InputComponent from '@/Components/InputComponent.jsx';
 import ColorPicker from './ColorPicker';
 import SectionButtonOptions from './SectionButtonOptions';
 import IOSSwitch from '@/Utils/IOSSwitch';
@@ -30,9 +30,7 @@ const Section = ({
                      completedCrop,
                      setCompletedCrop,
                      nodesRef,
-                     setShowLoader,
-                     data,
-                     dispatch
+                     setShowLoader
 }) => {
 
     const [lockVideo, setLockVideo] = useState(true);
@@ -102,7 +100,7 @@ const Section = ({
     const getSectionTitle = () => {
         switch(type) {
             case 'video':
-                const ellipsis = section.video_title.length > 20 ? "..." : ""
+                const ellipsis = section.video_title?.length > 20 ? "..." : ""
                 return (
                     section.video_title ?
                         section.video_title.slice(0, 20) + ellipsis :

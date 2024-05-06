@@ -2,12 +2,14 @@ import React, {useState, useRef, useReducer, useEffect} from 'react';
 
 import {Loader} from '../../Utils/Loader';
 import {Flash} from '../../Utils/Flash';
-import InputComponent from './Components/InputComponent';
+import InputComponent from '@/Components/InputComponent';
 import ColorPicker from './Components/ColorPicker';
 import Preview from './Components/Preview/Preview';
 import AddSectionLink from './Components/AddSectionLink.jsx';
 import ImageComponent from './Components/ImageComponent';
-import {reducer} from './Reducer';
+import {
+    pageDataReducer,
+} from '@/Components/Reducers/CreatorReducers.jsx';
 import EventBus from '../../Utils/Bus';
 import {isEmpty} from 'lodash';
 import PreviewButton from '../../Components/PreviewButton.jsx';
@@ -39,7 +41,7 @@ function LPCreator({landingPageArray, courses, username}) {
     const [hoverSection, setHoverSection] = useState(null);
 
 
-    const [pageData, dispatch] = useReducer(reducer, landingPageArray);
+    const [pageData, dispatchPageData] = useReducer(pageDataReducer, landingPageArray);
     const [sections, setSections] = useState([]);
 
     const [showPreviewButton, setShowPreviewButton] = useState(false);
@@ -200,8 +202,9 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     hoverText="Submit Page Title"
                                                     elementName="title"
                                                     data={pageData}
-                                                    dispatch={dispatch}
+                                                    dispatch={dispatchPageData}
                                                     value={pageData["title"]}
+                                                    submitType="landingPage"
                                                 />
                                             </div>
                                             <div className="section_content my_row">
@@ -211,7 +214,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     setCompletedCrop={setCompletedCrop}
                                                     setShowLoader={setShowLoader}
                                                     pageData={pageData}
-                                                    dispatch={dispatch}
+                                                    dispatch={dispatchPageData}
                                                     elementName="logo"
                                                     cropArray={{
                                                         unit: "%",
@@ -228,8 +231,9 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     hoverText="Submit Slogan Text"
                                                     elementName="slogan"
                                                     data={pageData}
-                                                    dispatch={dispatch}
+                                                    dispatch={dispatchPageData}
                                                     value={pageData["slogan"]}
+                                                    submitType="landingPage"
                                                 />
                                                 <ImageComponent
                                                     ref={nodesRef}
@@ -237,7 +241,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     setCompletedCrop={setCompletedCrop}
                                                     setShowLoader={setShowLoader}
                                                     pageData={pageData}
-                                                    dispatch={dispatch}
+                                                    dispatch={dispatchPageData}
                                                     elementName="hero"
                                                     cropArray={{
                                                         unit: "%",
@@ -250,13 +254,13 @@ function LPCreator({landingPageArray, courses, username}) {
                                                 <ColorPicker
                                                     label="Top Header Color"
                                                     pageData={pageData}
-                                                    dispatch={dispatch}
+                                                    dispatch={dispatchPageData}
                                                     elementName="header_color"
                                                 />
                                                 <ColorPicker
                                                     label="Header Text Color"
                                                     pageData={pageData}
-                                                    dispatch={dispatch}
+                                                    dispatch={dispatchPageData}
                                                     elementName="header_text_color"
                                                 />
                                                 <div className="my_row page_settings">
@@ -338,7 +342,7 @@ function LPCreator({landingPageArray, courses, username}) {
 
                                             <PublishButton
                                                 pageData={pageData}
-                                                dispatch={dispatch}
+                                                dispatch={dispatchPageData}
                                             />
                                         }
                                     </div>

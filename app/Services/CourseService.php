@@ -71,7 +71,7 @@ class CourseService {
                 'slug' => $slug,
             ]);
 
-            $this->updateCourseLinks($course, $request[$keys[0]], $slug);
+            $this->updateCourseLinks($course, $request[$keys[0]]);
         }
 
         return [
@@ -226,19 +226,14 @@ class CourseService {
         $course->categories()->sync($categoryArray);
     }
 
-    private function updateCourseLinks($course, $name, $slug) {
+    private function updateCourseLinks($course, $name) {
 
         $courseLinks = Link::where('course_id', $course->id)->get();
 
         if (count($courseLinks) > 0) {
             foreach($courseLinks as $link) {
-                $courseUrl = explode('course-page', $link->url);
-                $affId = explode('=', $courseUrl[1]);
-                $newUrl = $courseUrl[0] . "course-page/" . $slug . '?a=' . $affId[1];
-
                 $link->update([
                     'name'  => $name,
-                    'url'   => $newUrl
                 ]);
             }
         }

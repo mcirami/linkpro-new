@@ -5,19 +5,19 @@ import {updateOfferData} from '@/Services/OfferRequests.jsx';
 import {OFFER_ACTIONS} from '../Reducer';
 import ToolTipIcon from '../../../Utils/ToolTips/ToolTipIcon';
 
-const SwitchOptions = ({offerData, dispatchOffer}) => {
+const SwitchOptions = ({data, dispatch}) => {
 
     const handleChange = (type) => {
 
-        const value = !offerData[type];
+        const value = !data[type];
 
         const packets = {
             [`${type}`]: value,
         };
 
-        updateOfferData(packets, offerData["id"]).then((response) => {
+        updateOfferData(packets, data["id"]).then((response) => {
             if(response.success) {
-                dispatchOffer({
+                dispatch({
                     type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
                     payload: {
                         value: value,
@@ -84,8 +84,8 @@ const SwitchOptions = ({offerData, dispatchOffer}) => {
                     <h3>Public</h3>
                     <IOSSwitch
                         onChange={() => handleChange('public')}
-                        checked={Boolean(offerData["public"])}
-                        disabled={!Boolean(offerData["published"])}
+                        checked={Boolean(data["public"])}
+                        disabled={!Boolean(data["published"])}
                     />
                 </div>
                 <ToolTipIcon section="public_course" />
@@ -97,8 +97,8 @@ const SwitchOptions = ({offerData, dispatchOffer}) => {
                     <h3>Active</h3>
                     <IOSSwitch
                         onChange={() => handleChange('active')}
-                        checked={Boolean(offerData["active"])}
-                        disabled={!Boolean(offerData["published"])}
+                        checked={Boolean(data["active"])}
+                        disabled={!Boolean(data["published"])}
                     />
                 </div>
                 <ToolTipIcon section="active_course" />
