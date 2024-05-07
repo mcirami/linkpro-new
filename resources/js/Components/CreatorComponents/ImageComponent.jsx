@@ -20,7 +20,7 @@ import {
 } from '@/Services/LandingPageRequests.jsx';
 import {updateSectionImage as updateCourseSectionImage} from '@/Services/CourseRequests.jsx';
 import { updateImage as updateCourseImage} from '@/Services/CourseRequests.jsx';
-import {LP_ACTIONS} from '../Pages/LPCreator/Reducer.jsx';
+import {LP_ACTIONS} from '../../Pages/LPCreator/Reducer.jsx';
 import CropTools from '@/Utils/CropTools.jsx';
 import {updateIcon} from '@/Services/OfferRequests.jsx';
 import {OFFER_ACTIONS} from '@/Pages/CourseCreator/Reducer.jsx';

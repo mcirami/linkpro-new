@@ -2,11 +2,11 @@ import React, {useState, useRef, useReducer, useEffect} from 'react';
 
 import {Loader} from '../../Utils/Loader';
 import {Flash} from '../../Utils/Flash';
-import InputComponent from '@/Components/InputComponent';
+import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
+import ImageComponent from '@/Components/CreatorComponents/ImageComponent.jsx';
+import ContentSelect from '@/Components/CreatorComponents/ContentSelect.jsx';
 import ColorPicker from './Components/ColorPicker';
 import Preview from './Components/Preview/Preview';
-import AddSectionLink from './Components/AddSectionLink.jsx';
-import ImageComponent from '@/Components/ImageComponent.jsx';
 import {
     pageDataReducer,
 } from '@/Components/Reducers/CreatorReducers.jsx';
@@ -190,7 +190,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                  className="my_row section section_row"
                                                  onMouseEnter={(e) =>
                                                      handleMouseEnter(e)
-                                                }>
+                                                 }>
                                             <div className="section_title">
                                                 <h4>Header</h4>
                                             </div>
@@ -203,7 +203,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     elementName="title"
                                                     data={pageData}
                                                     dispatch={dispatchPageData}
-                                                    value={pageData["title"]}
+                                                    value={pageData['title']}
                                                     submitType="landingPage"
                                                 />
                                             </div>
@@ -219,7 +219,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     elementName="logo"
                                                     saveTo="landingPage"
                                                     cropArray={{
-                                                        unit: "%",
+                                                        unit: '%',
                                                         width: 60,
                                                         height: 30,
                                                         x: 25,
@@ -234,7 +234,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     elementName="slogan"
                                                     data={pageData}
                                                     dispatch={dispatchPageData}
-                                                    value={pageData["slogan"]}
+                                                    value={pageData['slogan']}
                                                     submitType="landingPage"
                                                 />
                                                 <ImageComponent
@@ -248,11 +248,11 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     previewType="external"
                                                     saveTo="landingPage"
                                                     cropArray={{
-                                                        unit: "%",
+                                                        unit: '%',
                                                         width: 30,
                                                         x: 25,
                                                         y: 25,
-                                                        aspect: 16 / 8
+                                                        aspect: 16 / 8,
                                                     }}
                                                 />
                                                 <ColorPicker
@@ -268,10 +268,10 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     elementName="header_text_color"
                                                 />
                                                 <div className="my_row page_settings">
-                                                    {pageData["slug"] &&
+                                                    {pageData['slug'] &&
                                                         <div className="url_wrap">
                                                             <p>Landing Page URL:</p>
-                                                            <a target="_blank" href={`${url}/${pageData["slug"]}`}>{`${url}/${pageData["slug"]}`}</a>
+                                                            <a target="_blank" href={`${url}/${pageData['slug']}`}>{`${url}/${pageData['slug']}`}</a>
                                                         </div>
                                                     }
                                                 </div>
@@ -291,10 +291,13 @@ function LPCreator({landingPageArray, courses, username}) {
                                                         items={sections}
                                                         strategy={verticalListSortingStrategy}
                                                     >
-                                                        {sections.map((section, index) => {
-                                                            {section.type === "image" ?
-                                                                ++imageCount :
-                                                                ++textCount
+                                                        {sections.map((section,
+                                                                       index) => {
+                                                            {
+                                                                section.type ===
+                                                                'image' ?
+                                                                    ++imageCount :
+                                                                    ++textCount;
                                                             }
                                                             return (
 
@@ -318,14 +321,38 @@ function LPCreator({landingPageArray, courses, username}) {
                                                                     imageCount={imageCount}
                                                                     textCount={textCount}
                                                                 />
-                                                            )
+                                                            );
                                                         })}
                                                     </SortableContext>
                                                 </section>
                                             </DndContext>
                                         }
 
-                                        <div className="link_row">
+                                        <section className="my_row section_row">
+                                            <div className="section_title">
+                                                <h4>Add Content</h4>
+                                            </div>
+                                            <ContentSelect
+                                                sections={sections}
+                                                setSections={setSections}
+                                                dataId={pageData['id']}
+                                                setOpenIndex={setOpenIndex}
+                                                addTo="landingPage"
+                                                options={[
+                                                    {
+                                                        id: 1,
+                                                        type: "text",
+                                                        label: "Text Section"
+                                                    },
+                                                    {
+                                                        id: 2,
+                                                        type: "image",
+                                                        label: "Image Section"
+                                                    }
+                                                ]}
+                                            />
+                                        </section>
+                                        {/*<div className="link_row">
                                             <AddSectionLink
                                                 sections={sections}
                                                 setSections={setSections}
@@ -340,9 +367,9 @@ function LPCreator({landingPageArray, courses, username}) {
                                                 setOpenIndex={setOpenIndex}
                                                 type="image"
                                             />
-                                        </div>
+                                        </div>*/}
 
-                                        {!pageData["published"] &&
+                                        {!pageData['published'] &&
 
                                             <PublishButton
                                                 pageData={pageData}
@@ -352,7 +379,9 @@ function LPCreator({landingPageArray, courses, username}) {
                                     </div>
                                 </div>
 
-                                <div className={`right_column links_col preview${showPreview ? " show" : ""}`}>
+                                <div className={`right_column links_col preview${showPreview ?
+                                    ' show' :
+                                    ''}`}>
                                     <Preview
                                         completedCrop={completedCrop}
                                         nodesRef={nodesRef}

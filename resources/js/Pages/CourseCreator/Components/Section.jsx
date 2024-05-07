@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import DeleteSection from './DeleteSection';
 import {MdDragHandle, MdKeyboardArrowDown} from 'react-icons/md';
-import InputComponent from '@/Components/InputComponent.jsx';
+import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
 import ColorPicker from './ColorPicker';
 import SectionButtonOptions from './SectionButtonOptions';
 import IOSSwitch from '@/Utils/IOSSwitch';
@@ -10,7 +10,7 @@ import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import ImageComponent
-    from '@/Components/ImageComponent.jsx';
+    from '@/Components/CreatorComponents/ImageComponent.jsx';
 import FileComponent
     from '@/Pages/CourseCreator/Components/FileComponent.jsx';
 import {getFileParts} from '@/Services/FileService.jsx';

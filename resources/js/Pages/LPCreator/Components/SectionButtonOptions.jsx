@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {updateSectionData} from '@/Services/LandingPageRequests.jsx';
 import DropdownComponent from './DropdownComponent';
 import ColorPicker from './ColorPicker';
-import InputComponent from '@/Components/InputComponent';
+import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';

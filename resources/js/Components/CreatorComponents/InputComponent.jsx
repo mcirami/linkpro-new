@@ -12,7 +12,7 @@ import {
 } from '@/Services/LandingPageRequests.jsx';
 import {LP_ACTIONS, OFFER_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
 import {updateOfferData} from '@/Services/OfferRequests.jsx';
-import EditorComponent from '@/Components/EditorComponent.jsx';
+import EditorComponent from '@/Components/CreatorComponents/EditorComponent.jsx';
 import {HandleFocus} from '@/Utils/InputAnimations.jsx';
 
 

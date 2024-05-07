@@ -4,10 +4,10 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext';
 import {Loader} from '@/Utils/Loader';
 import {Flash} from '@/Utils/Flash';
-import InputComponent from '@/Components/InputComponent';
+import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
 import ColorPicker from './Components/ColorPicker';
 import Preview from './Components/Preview/Preview';
-import ImageComponent from '@/Components/ImageComponent';
+import ImageComponent from '@/Components/CreatorComponents/ImageComponent.jsx';
 import {
     offerDataReducer,
     pageDataReducer,
@@ -41,7 +41,7 @@ import {
     updateSectionsPositions,
 } from '../../Services/CourseRequests';
 import {Head, usePage} from '@inertiajs/react';
-import ContentSelect from '@/Pages/CourseCreator/Components/ContentSelect.jsx';
+import ContentSelect from '@/Components/CreatorComponents/ContentSelect.jsx';
 
 function CourseCreator({courseArray, offerArray, categories}) {
 
@@ -458,8 +458,31 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                 <ContentSelect
                                                     sections={sections}
                                                     setSections={setSections}
-                                                    courseID={courseData['id']}
+                                                    dataId={courseData['id']}
                                                     setOpenIndex={setOpenIndex}
+                                                    addTo="course"
+                                                    options={[
+                                                        {
+                                                            id: 1,
+                                                            type: "text",
+                                                            label: "Text Section"
+                                                        },
+                                                        {
+                                                            id: 2,
+                                                            type: "image",
+                                                            label: "Image Section"
+                                                        },
+                                                        {
+                                                            id: 3,
+                                                            type: "video",
+                                                            label: "Video Section"
+                                                        },
+                                                        {
+                                                            id: 4,
+                                                            type: "file",
+                                                            label: "File Section"
+                                                        }
+                                                    ]}
                                                 />
                                             </section>
 

@@ -10,7 +10,7 @@ import {
 } from '@/Services/LandingPageRequests.jsx';
 import {
     updateData as updateCourseData
-} from '@/Services/CourseRequests';
+} from '@/Services/CourseRequests.jsx';
 import isJSON from 'validator/es/lib/isJSON';
 
 const EditorComponent = ({

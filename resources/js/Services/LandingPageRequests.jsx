@@ -159,8 +159,7 @@ export const updateSectionImage = (packets, id) => {
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
-            //EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
-           EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
+           EventBus.dispatch("success", { message: returnMessage.replaceAll("_", " ") });
 
             return {
                 success : true,

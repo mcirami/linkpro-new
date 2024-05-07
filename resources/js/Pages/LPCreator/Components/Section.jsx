@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import DeleteSection from './DeleteSection';
 import {MdDragHandle, MdKeyboardArrowDown} from 'react-icons/md';
-import InputComponent from '@/Components/InputComponent';
+import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
 import ColorPicker from './ColorPicker';
-import ImageComponent from '../../../Components/ImageComponent.jsx';
+import ImageComponent from '../../../Components/CreatorComponents/ImageComponent.jsx';
 import SectionButtonOptions from './SectionButtonOptions';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
@@ -77,7 +77,7 @@ const Section = ({
         switch(type) {
             case 'text':
                 let parsedText = null;
-                if(isJSON(section.text)) {
+                if(section.text && isJSON(section.text)) {
                     parsedText = JSON.parse(section.text);
                 }
 
