@@ -182,11 +182,11 @@ const InputComponent = ({
                     [`${elementName}`]: data[elementName],
                 };
 
-                const func = submitType === "course" ?
+                const method = submitType === "course" ?
                     updateCourseData(packets, data["id"], elementName) :
                     updateLpData(packets, data["id"], elementName)
 
-                func.then((response) => {
+                method.then((response) => {
                     if(response.success && response.slug) {
                         dispatch({
                             type: LP_ACTIONS.UPDATE_PAGE_DATA,

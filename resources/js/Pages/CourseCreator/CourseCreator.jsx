@@ -7,7 +7,7 @@ import {Flash} from '@/Utils/Flash';
 import InputComponent from '@/Components/InputComponent';
 import ColorPicker from './Components/ColorPicker';
 import Preview from './Components/Preview/Preview';
-import ImageComponent from './Components/ImageComponent';
+import ImageComponent from '@/Components/ImageComponent';
 import {
     offerDataReducer,
     pageDataReducer,
@@ -294,8 +294,8 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         data={courseData}
                                                         dispatch={dispatchCourseData}
                                                         elementName="logo"
-                                                        placeholder="Logo"
-                                                        type="extPreview"
+                                                        previewType="external"
+                                                        saveTo="course"
                                                         cropArray={{
                                                             unit: "%",
                                                             x: 25,
@@ -469,7 +469,6 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                 </div>
                                                 <div className="section_content my_row">
                                                     <ImageComponent
-                                                        placeholder="Course Icon"
                                                         ref={nodesRef}
                                                         completedCrop={completedCrop}
                                                         setCompletedCrop={setCompletedCrop}
@@ -477,7 +476,8 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         elementName={`icon`}
                                                         dispatch={dispatchOfferData}
                                                         data={offerData}
-                                                        type={"inlinePreview"}
+                                                        previewType="inline"
+                                                        saveTo="offer"
                                                         cropArray={{
                                                             unit: '%',
                                                             width: 30,

@@ -6,7 +6,7 @@ import InputComponent from '@/Components/InputComponent';
 import ColorPicker from './Components/ColorPicker';
 import Preview from './Components/Preview/Preview';
 import AddSectionLink from './Components/AddSectionLink.jsx';
-import ImageComponent from './Components/ImageComponent';
+import ImageComponent from '@/Components/ImageComponent.jsx';
 import {
     pageDataReducer,
 } from '@/Components/Reducers/CreatorReducers.jsx';
@@ -213,9 +213,11 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     completedCrop={completedCrop}
                                                     setCompletedCrop={setCompletedCrop}
                                                     setShowLoader={setShowLoader}
-                                                    pageData={pageData}
+                                                    data={pageData}
                                                     dispatch={dispatchPageData}
+                                                    previewType="external"
                                                     elementName="logo"
+                                                    saveTo="landingPage"
                                                     cropArray={{
                                                         unit: "%",
                                                         width: 60,
@@ -240,9 +242,11 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     completedCrop={completedCrop}
                                                     setCompletedCrop={setCompletedCrop}
                                                     setShowLoader={setShowLoader}
-                                                    pageData={pageData}
+                                                    data={pageData}
                                                     dispatch={dispatchPageData}
                                                     elementName="hero"
+                                                    previewType="external"
+                                                    saveTo="landingPage"
                                                     cropArray={{
                                                         unit: "%",
                                                         width: 30,

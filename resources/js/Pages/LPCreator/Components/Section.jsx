@@ -3,7 +3,7 @@ import DeleteSection from './DeleteSection';
 import {MdDragHandle, MdKeyboardArrowDown} from 'react-icons/md';
 import InputComponent from '@/Components/InputComponent';
 import ColorPicker from './ColorPicker';
-import ImageComponent from './ImageComponent';
+import ImageComponent from '../../../Components/ImageComponent.jsx';
 import SectionButtonOptions from './SectionButtonOptions';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
@@ -157,7 +157,9 @@ const Section = ({
                         currentSection={section}
                         sections={sections}
                         setSections={setSections}
+                        previewType="external"
                         elementName={`section_${index + 1}_image`}
+                        saveTo="landingPage"
                         cropArray={{
                             unit: "%",
                             width: 30,

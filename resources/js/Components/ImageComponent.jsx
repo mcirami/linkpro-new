@@ -18,8 +18,12 @@ import {
     updateImage,
     updateSectionImage,
 } from '@/Services/LandingPageRequests.jsx';
-import {LP_ACTIONS} from '../Reducer';
-import CropTools from '@/Utils/CropTools';
+import {updateSectionImage as updateCourseSectionImage} from '@/Services/CourseRequests.jsx';
+import { updateImage as updateCourseImage} from '@/Services/CourseRequests.jsx';
+import {LP_ACTIONS} from '../Pages/LPCreator/Reducer.jsx';
+import CropTools from '@/Utils/CropTools.jsx';
+import {updateIcon} from '@/Services/OfferRequests.jsx';
+import {OFFER_ACTIONS} from '@/Pages/CourseCreator/Reducer.jsx';
 
 const ImageComponent = forwardRef(function ImageComponent(props, ref) {
 
@@ -29,11 +33,13 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
         setShowLoader,
         elementName,
         cropArray,
-        pageData = null,
+        data = null,
         dispatch = null,
+        previewType,
         sections = null,
         setSections = null,
-        currentSection = null
+        currentSection = null,
+        saveTo
     } = props;
 
     const [disableButton, setDisableButton] = useState(true);
@@ -45,7 +51,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
     const [crop, setCrop] = useState(cropArray);
     const [scale, setScale] = useState(1)
     const [rotate, setRotate] = useState(0)
-    const [aspect, setAspect] = useState(cropArray['aspect'] || 16 / 9)
+    const [aspect, setAspect] = useState(cropArray['aspect'] || "")
 
     useEffect(() => {
 
@@ -129,16 +135,48 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                 ext: response.extension,
             };
 
-            if(sections) {
+            if(saveTo === "offer") {
+                updateIcon(packets, data["id"]).
+                    then((response) => {
+                        if (response.success) {
+                            dispatch({
+                                type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
+                                payload: {
+                                    value: response.imagePath,
+                                    name: elementName
+                                }
+                            })
+                            setShowLoader({
+                                show: false,
+                                icon: '',
+                                position: ''
+                            });
 
-                updateSectionImage(packets, currentSection.id)
-                .then((data) => {
-                    if (data.success) {
+                            setUpImg(null);
+                            delete completedCrop[elementName];
+                            setCompletedCrop(completedCrop);
+                            document.querySelector("." + CSS.escape(elementName) +
+                                "_form .bottom_section").classList.add("hidden");
+                        } else {
+                            setShowLoader({
+                                show: false,
+                                icon: '',
+                                position: ''
+                            });
+                        }
+                    })
+            } else if (sections) {
+
+                const method = saveTo === "landingPage" ?
+                    updateSectionImage(packets, currentSection.id) :
+                    updateCourseSectionImage(packets, currentSection.id)
+                method.then((response) => {
+                    if (response.success) {
                         setSections(sections.map((section) => {
                             if (section.id === currentSection.id) {
                                 return {
                                     ...section,
-                                    image: data.imagePath,
+                                    image: response.imagePath,
                                 }
                             }
                             return section;
@@ -163,13 +201,15 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
 
             } else {
 
-                updateImage(packets, pageData["id"]).
-                    then((data) => {
-                        if (data.success) {
+                const method = saveTo === "landingPage" ?
+                    updateImage(packets, data["id"]) :
+                    updateCourseImage(packets, data["id"])
+                method.then((response) => {
+                        if (response.success) {
                             dispatch({
                                 type: LP_ACTIONS.UPDATE_PAGE_DATA,
                                 payload: {
-                                    value: data.imagePath,
+                                    value: response.imagePath,
                                     name: elementName
                                 }
                             })
@@ -219,7 +259,16 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                                     htmlFor={`${elementName}_file_upload`}
                                     className="custom"
                                 >
-                                    {elementLabel}
+                                    {(data && data['icon']) || currentSection?.image ?
+                                        <img className={currentSection?.image ? "input_image" : ""}
+                                             src={currentSection?.image || data['icon']} alt=""
+                                        />
+                                        :
+                                        ""
+                                    }
+                                    { (previewType === "external" && !currentSection?.image) &&
+                                        elementLabel
+                                    }
                                     <span className="edit_icon">
                                         <MdEdit />
                                         <div className="hover_text edit_image">
@@ -228,12 +277,15 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                                     </span>
                                 </label>
                                 <input
-                                    className="custom"
+                                    className={`custom ${(data && data["icon"]) ? "active" : "" }`}
                                     id={`${elementName}_file_upload`}
                                     type="file"
                                     accept="image/png, image/jpeg, image/jpg, image/gif"
                                     onChange={onSelectFile}
                                 />
+                                {previewType === "inline" &&
+                                    <label>{elementLabel}</label>
+                                }
                             </div>
                             <div className="my_row info_text file_types">
                                 <p className="m-0 char_count w-100 ">
@@ -269,6 +321,23 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                                     style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
                                     alt="Crop me"/>
                             </ReactCrop>
+                            {(previewType === "inline" && completedCrop[elementName]?.isCompleted) &&
+                                <div className="icon_col">
+                                    <p>Icon Preview</p>
+                                    <canvas
+                                        ref={ref => previewCanvasRef.current[elementName] = ref}
+                                        // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
+                                        style={{
+                                            backgroundSize: `cover`,
+                                            backgroundRepeat: `no-repeat`,
+                                            width: completedCrop[elementName]?.isCompleted ? `100%` : 0,
+                                            height: completedCrop[elementName]?.isCompleted ? `100%` : 0,
+                                            borderRadius: `20px`,
+                                        }}
+
+                                    />
+                                </div>
+                            }
                         </div>
                         <div className="bottom_row">
                             <button

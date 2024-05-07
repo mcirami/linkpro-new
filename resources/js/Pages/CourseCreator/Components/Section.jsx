@@ -10,7 +10,7 @@ import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import ImageComponent
-    from '@/Pages/CourseCreator/Components/ImageComponent.jsx';
+    from '@/Components/ImageComponent.jsx';
 import FileComponent
     from '@/Pages/CourseCreator/Components/FileComponent.jsx';
 import {getFileParts} from '@/Services/FileService.jsx';
@@ -272,8 +272,8 @@ const Section = ({
                                         sections={sections}
                                         setSections={setSections}
                                         elementName={`section_${index + 1}_image`}
-                                        placeholder={`Section ${index + 1} Image`}
-                                        type="extPreview"
+                                        previewType="external"
+                                        saveTo="course"
                                         cropArray={{
                                             unit: "%",
                                             width: 30,
