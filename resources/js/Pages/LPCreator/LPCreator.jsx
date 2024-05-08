@@ -352,22 +352,6 @@ function LPCreator({landingPageArray, courses, username}) {
                                                 ]}
                                             />
                                         </section>
-                                        {/*<div className="link_row">
-                                            <AddSectionLink
-                                                sections={sections}
-                                                setSections={setSections}
-                                                pageID={pageData["id"]}
-                                                setOpenIndex={setOpenIndex}
-                                                type="text"
-                                            />
-                                            <AddSectionLink
-                                                sections={sections}
-                                                setSections={setSections}
-                                                pageID={pageData["id"]}
-                                                setOpenIndex={setOpenIndex}
-                                                type="image"
-                                            />
-                                        </div>*/}
 
                                         {!pageData['published'] &&
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {LP_ACTIONS} from '../Reducer';
+import {LP_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
 import {IoWarningOutline} from 'react-icons/io5';
 import {publishPage} from '@/Services/LandingPageRequests.jsx';
 

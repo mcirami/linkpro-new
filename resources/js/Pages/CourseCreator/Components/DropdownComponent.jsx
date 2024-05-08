@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {updateData} from '@/Services/CourseRequests.jsx';
-import {LP_ACTIONS} from '../Reducer';
+import {LP_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 
 const DropdownComponent = ({

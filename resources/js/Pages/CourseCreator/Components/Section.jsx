@@ -4,7 +4,7 @@ import {MdDragHandle, MdKeyboardArrowDown} from 'react-icons/md';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
 import ColorPicker from '@/Components/CreatorComponents/ColorPicker.jsx';
 import ImageComponent from '@/Components/CreatorComponents/ImageComponent.jsx';
-import SectionButtonOptions from './SectionButtonOptions';
+import SectionButtonOptions from '@/Components/CreatorComponents/SectionButtonOptions.jsx';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import FileComponent
@@ -193,11 +193,12 @@ const Section = ({
                                     />
 
                                     <SectionButtonOptions
-                                        position={index + 1}
+                                        sectionPosition={index + 1}
                                         sections={sections}
                                         setSections={setSections}
                                         currentSection={section}
                                         id={id}
+                                        submitTo="course"
                                     />
                                </>
                            )
@@ -286,11 +287,12 @@ const Section = ({
                                         }}
                                     />
                                     <SectionButtonOptions
-                                        position={index + 1}
+                                        sectionPosition={index + 1}
                                         sections={sections}
                                         setSections={setSections}
                                         currentSection={section}
                                         id={id}
+                                        submitTo="course"
                                     />
                                 </>
                             )

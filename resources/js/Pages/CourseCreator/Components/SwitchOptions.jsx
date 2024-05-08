@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Switch from '@mui/material/Switch'
 import { styled } from '@mui/material/styles';
 import {updateOfferData} from '@/Services/OfferRequests.jsx';
-import {OFFER_ACTIONS} from '../Reducer';
+import {OFFER_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
 import ToolTipIcon from '../../../Utils/ToolTips/ToolTipIcon';
 
 const SwitchOptions = ({data, dispatch}) => {

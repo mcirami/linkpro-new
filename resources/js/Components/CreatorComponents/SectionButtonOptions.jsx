@@ -7,15 +7,21 @@ import Radio from '@mui/material/Radio';
 import Slider from '@mui/material/Slider';
 import ColorPicker from '@/Components/CreatorComponents/ColorPicker.jsx';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
-import IOSSwitch from '@/Utils/IOSSwitch';
 import {updateSectionData} from '@/Services/CourseRequests.jsx';
+import {updateSectionData as updateLPSectionData} from '@/Services/LandingPageRequests.jsx';
+import DropdownComponent
+    from '@/Pages/LPCreator/Components/DropdownComponent.jsx';
+import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 
 const SectionButtonOptions = ({
-                                  position,
+                                  sectionPosition,
                                   sections,
                                   setSections,
                                   currentSection,
-                                  id
+                                  id,
+                                  courses = null,
+                                  buttonCourseId = null,
+                                  submitTo
 }) => {
 
     const {
@@ -44,7 +50,10 @@ const SectionButtonOptions = ({
             button: !includeButtonValue,
         };
 
-        updateSectionData(packets, id).then((response) => {
+        const method = submitTo === "course" ?
+            updateSectionData(packets, id) :
+            updateLPSectionData(packets, id)
+        method.then((response) => {
             if(response.success) {
                 setSections(
                     sections.map((section) => {
@@ -66,7 +75,10 @@ const SectionButtonOptions = ({
             button_position: value,
         };
 
-        updateSectionData(packets, id).then((response) => {
+        const method = submitTo === "course" ?
+            updateSectionData(packets, id) :
+            updateLPSectionData(packets, id)
+        method.then((response) => {
             if(response.success) {
                 setSections(
                     sections.map((section) => {
@@ -90,7 +102,10 @@ const SectionButtonOptions = ({
             button_size: buttonSizeState,
         };
 
-        updateSectionData(packets, id).then((response) => {
+        const method = submitTo === "course" ?
+            updateSectionData(packets, id) :
+            updateLPSectionData(packets, id)
+        method.then((response) => {
             if(response.success) {
                 setSections(
                     sections.map((section) => {
@@ -123,7 +138,7 @@ const SectionButtonOptions = ({
                     <div className="radios_wrap">
                         <FormControl>
                             <FormLabel
-                                id={`section_${position}_above`}
+                                id={`section_${sectionPosition}_above`}
                                 sx={{
                                     color: '#000'
                                 }}
@@ -132,8 +147,8 @@ const SectionButtonOptions = ({
                             </FormLabel>
                             <RadioGroup
                                 row
-                                aria-labelledby={`section_${position}_above`}
-                                name={`section_${position}_above`}
+                                aria-labelledby={`section_${sectionPosition}_above`}
+                                name={`section_${sectionPosition}_above`}
                                 onChange={(e) => {handleRadioChange(e.target.value)}}
                             >
                                 <FormControlLabel
@@ -181,28 +196,38 @@ const SectionButtonOptions = ({
                     sections={sections}
                     setSections={setSections}
                     currentSection={currentSection}
-                    elementName={`section_${position}_button_text_color`}
-                    submitTo="course"
+                    elementName={`section_${sectionPosition}_button_text_color`}
+                    submitTo={submitTo}
                 />
                 <ColorPicker
                     label="Button Color"
                     sections={sections}
                     setSections={setSections}
                     currentSection={currentSection}
-                    elementName={`section_${position}_button_color`}
-                    submitTo="course"
+                    elementName={`section_${sectionPosition}_button_color`}
+                    submitTo={submitTo}
                 />
                 <InputComponent
                     placeholder="Update Button Text (optional)"
                     type="text"
                     maxChar={15}
                     hoverText="Submit Button Text"
-                    elementName={`section_${position}_button_text`}
+                    elementName={`section_${sectionPosition}_button_text`}
                     sections={sections}
                     setSections={setSections}
                     currentSection={currentSection}
                     value={button_text}
+                    submitType={submitTo}
                 />
+                {courses &&
+                    <DropdownComponent
+                        courses={courses}
+                        buttonCourseId={buttonCourseId}
+                        sections={sections}
+                        setSections={setSections}
+                        id={id}
+                    />
+                }
             </div>
         </>
     );

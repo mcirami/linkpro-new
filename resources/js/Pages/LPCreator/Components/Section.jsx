@@ -4,7 +4,7 @@ import {MdDragHandle, MdKeyboardArrowDown} from 'react-icons/md';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
 import ColorPicker from '@/Components/CreatorComponents/ColorPicker';
 import ImageComponent from '@/Components/CreatorComponents/ImageComponent.jsx';
-import SectionButtonOptions from './SectionButtonOptions';
+import SectionButtonOptions from '@/Components/CreatorComponents/SectionButtonOptions';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import isJSON from 'validator/es/lib/isJSON.js';
@@ -32,10 +32,7 @@ const Section = ({
         id,
         type,
         text,
-        button_position,
-        button,
         button_course_id,
-        button_size
     } = section;
 
     const {
@@ -171,16 +168,14 @@ const Section = ({
                 }
                 <div className="my_row">
                     <SectionButtonOptions
-                        position={index + 1}
-                        buttonPosition={button_position}
-                        includeButton={button}
+                        sectionPosition={index + 1}
                         sections={sections}
                         setSections={setSections}
                         currentSection={section}
                         buttonCourseId={button_course_id}
-                        buttonSize={button_size}
                         courses={courses}
                         id={id}
+                        submitTo="landingPage"
                     />
                 </div>
                 <DeleteSection

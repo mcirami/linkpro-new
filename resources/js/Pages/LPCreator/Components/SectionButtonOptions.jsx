@@ -12,16 +12,13 @@ import Slider from '@mui/material/Slider';
 import IOSSwitch from '@/Utils/IOSSwitch';
 
 const SectionButtonOptions = ({
-                                  position,
-                                  buttonPosition,
-                                  includeButton,
+                                  sectionPosition,
                                   sections,
                                   setSections,
                                   currentSection,
                                   id,
                                   courses = null,
                                   buttonCourseId = null,
-                                  buttonSize,
 }) => {
 
     const [includeButtonValue, setIncludeButtonValue] = useState(false);

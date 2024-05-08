@@ -1,6 +1,6 @@
 import React from 'react';
 import {publishOffer} from '@/Services/OfferRequests.jsx';
-import {OFFER_ACTIONS} from '../Reducer';
+import {OFFER_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
 import {IoWarningOutline} from 'react-icons/io5';
 
 const PublishButton = ({data, dispatch, courseTitle}) => {
