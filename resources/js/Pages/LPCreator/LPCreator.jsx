@@ -1,19 +1,19 @@
 import React, {useState, useRef, useReducer, useEffect} from 'react';
 
-import {Loader} from '../../Utils/Loader';
-import {Flash} from '../../Utils/Flash';
+import {Loader} from '@/Utils/Loader';
+import {Flash} from '@/Utils/Flash';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
 import ImageComponent from '@/Components/CreatorComponents/ImageComponent.jsx';
 import ContentSelect from '@/Components/CreatorComponents/ContentSelect.jsx';
-import ColorPicker from './Components/ColorPicker';
-import Preview from './Components/Preview/Preview';
+import ColorPicker from '@/Components/CreatorComponents/ColorPicker';
 import {
     pageDataReducer,
 } from '@/Components/Reducers/CreatorReducers.jsx';
-import EventBus from '../../Utils/Bus';
+import Preview from './Components/Preview/Preview';
+import EventBus from '@/Utils/Bus';
 import {isEmpty} from 'lodash';
-import PreviewButton from '../../Components/PreviewButton.jsx';
-import {previewButtonRequest} from '../../Services/PageRequests';
+import PreviewButton from '@/Components/PreviewButton.jsx';
+import {previewButtonRequest} from '@/Services/PageRequests';
 import PublishButton from './Components/PublishButton';
 import Section from './Components/Section';
 import {
@@ -30,7 +30,7 @@ import {
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import {updateSectionsPositions} from '../../Services/LandingPageRequests';
+import {updateSectionsPositions} from '@/Services/LandingPageRequests';
 import {Head} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 
@@ -257,13 +257,13 @@ function LPCreator({landingPageArray, courses, username}) {
                                                 />
                                                 <ColorPicker
                                                     label="Top Header Color"
-                                                    pageData={pageData}
+                                                    data={pageData}
                                                     dispatch={dispatchPageData}
                                                     elementName="header_color"
                                                 />
                                                 <ColorPicker
                                                     label="Header Text Color"
-                                                    pageData={pageData}
+                                                    data={pageData}
                                                     dispatch={dispatchPageData}
                                                     elementName="header_text_color"
                                                 />

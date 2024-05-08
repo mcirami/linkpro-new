@@ -5,18 +5,22 @@ import {
     updateData,
     updateSectionData,
 } from '@/Services/CourseRequests.jsx';
-import {LP_ACTIONS} from '../Reducer';
+import {
+    updateData as updateLPData,
+    updateSectionData as updateLPSectionData,
+} from '@/Services/LandingPageRequests.jsx';
+import {LP_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
 import {VscTriangleDown} from 'react-icons/vsc';
-
 
 const ColorPicker = ({
                          label,
                          elementName,
-                         courseData = null,
+                         data = null,
                          dispatch = null,
                          sections = null,
                          setSections = null,
-                         currentSection = null
+                         currentSection = null,
+                         submitTo
 }) => {
 
     const [sketchPickerColor, setSketchPickerColor] = useState({
@@ -62,10 +66,10 @@ const ColorPicker = ({
                 previous: color
             }))
         } else {
-            setPickerBg({ background: courseData[elementName] })
+            setPickerBg({ background: data[elementName] })
             setColorValues((prev) => ({
                 ...prev,
-                previous: courseData[elementName]
+                previous: data[elementName]
             }))
         }
 
@@ -146,8 +150,10 @@ const ColorPicker = ({
                 [`${element}`]: colorValues.current,
             };
 
-            updateSectionData(packets, currentSection.id)
-            .then((response) => {
+            const method = submitTo === "course" ?
+                updateSectionData(packets, currentSection.id) :
+                updateLPSectionData(packets, currentSection.id)
+            method.then((response) => {
                 if (response.success) {
                     setColorValues({
                         previous: colorValues.current,
@@ -162,8 +168,10 @@ const ColorPicker = ({
                 [`${elementName}`]: colorValues.current,
             };
 
-            updateData(packets, courseData["id"], elementName)
-            .then((response) => {
+            const method = submitTo === "course" ?
+                updateData(packets, data["id"], elementName) :
+                updateLPData(packets, data["id"], elementName)
+            method.then((response) => {
                 if (response.success) {
                     setShowPicker(false);
                     setColorValues({

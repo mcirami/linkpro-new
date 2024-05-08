@@ -2,18 +2,17 @@ import React, {useEffect, useState} from 'react';
 import DeleteSection from './DeleteSection';
 import {MdDragHandle, MdKeyboardArrowDown} from 'react-icons/md';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
-import ColorPicker from './ColorPicker';
+import ColorPicker from '@/Components/CreatorComponents/ColorPicker.jsx';
+import ImageComponent from '@/Components/CreatorComponents/ImageComponent.jsx';
 import SectionButtonOptions from './SectionButtonOptions';
-import IOSSwitch from '@/Utils/IOSSwitch';
-import {updateSectionData} from '@/Services/CourseRequests.jsx';
-import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import ImageComponent
-    from '@/Components/CreatorComponents/ImageComponent.jsx';
 import FileComponent
     from '@/Pages/CourseCreator/Components/FileComponent.jsx';
 import {getFileParts} from '@/Services/FileService.jsx';
+import {updateSectionData} from '@/Services/CourseRequests.jsx';
+import IOSSwitch from '@/Utils/IOSSwitch';
+import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 
 const Section = ({
                      section,
@@ -182,6 +181,7 @@ const Section = ({
                                         sections={sections}
                                         setSections={setSections}
                                         elementName={`section_${index + 1}_background_color`}
+                                        submitTo="course"
                                     />
                                     <ColorPicker
                                         label="Text Color"
@@ -189,6 +189,7 @@ const Section = ({
                                         sections={sections}
                                         setSections={setSections}
                                         elementName={`section_${index + 1}_text_color`}
+                                        submitTo="course"
                                     />
 
                                     <SectionButtonOptions
@@ -240,6 +241,7 @@ const Section = ({
                                         sections={sections}
                                         setSections={setSections}
                                         elementName={`section_${index + 1}_background_color`}
+                                        submitTo="course"
                                     />
                                     <ColorPicker
                                         label="Text Color"
@@ -247,6 +249,7 @@ const Section = ({
                                         sections={sections}
                                         setSections={setSections}
                                         elementName={`section_${index + 1}_text_color`}
+                                        submitTo="course"
                                     />
                                     <div className="switch_wrap two_columns">
                                         <div className={`page_settings border_wrap`}>

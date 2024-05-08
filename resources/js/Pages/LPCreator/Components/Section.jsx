@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import DeleteSection from './DeleteSection';
 import {MdDragHandle, MdKeyboardArrowDown} from 'react-icons/md';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
-import ColorPicker from './ColorPicker';
-import ImageComponent from '../../../Components/CreatorComponents/ImageComponent.jsx';
+import ColorPicker from '@/Components/CreatorComponents/ColorPicker';
+import ImageComponent from '@/Components/CreatorComponents/ImageComponent.jsx';
 import SectionButtonOptions from './SectionButtonOptions';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
@@ -28,7 +28,6 @@ const Section = ({
                      textCount
 }) => {
 
-    console.log("section: ", section)
     const {
         id,
         type,
@@ -145,6 +144,7 @@ const Section = ({
                             sections={sections}
                             setSections={setSections}
                             elementName={`section_${index + 1}_bg_color`}
+                            submitTo="landingPage"
                         />
                     </>
                 }

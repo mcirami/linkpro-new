@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {updateSectionData} from '@/Services/CourseRequests.jsx';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import Slider from '@mui/material/Slider';
-import ColorPicker from './ColorPicker';
+import ColorPicker from '@/Components/CreatorComponents/ColorPicker.jsx';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
 import IOSSwitch from '@/Utils/IOSSwitch';
+import {updateSectionData} from '@/Services/CourseRequests.jsx';
 
 const SectionButtonOptions = ({
                                   position,
@@ -182,6 +182,7 @@ const SectionButtonOptions = ({
                     setSections={setSections}
                     currentSection={currentSection}
                     elementName={`section_${position}_button_text_color`}
+                    submitTo="course"
                 />
                 <ColorPicker
                     label="Button Color"
@@ -189,6 +190,7 @@ const SectionButtonOptions = ({
                     setSections={setSections}
                     currentSection={currentSection}
                     elementName={`section_${position}_button_color`}
+                    submitTo="course"
                 />
                 <InputComponent
                     placeholder="Update Button Text (optional)"

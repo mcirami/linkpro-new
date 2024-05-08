@@ -1,25 +1,26 @@
 import React, {useState, useRef, useReducer, useEffect} from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 
-import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext';
 import {Loader} from '@/Utils/Loader';
 import {Flash} from '@/Utils/Flash';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
-import ColorPicker from './Components/ColorPicker';
-import Preview from './Components/Preview/Preview';
+import ContentSelect from '@/Components/CreatorComponents/ContentSelect.jsx';
+import ColorPicker from '@/Components/CreatorComponents/ColorPicker.jsx';
+import PreviewButton from '@/Components/PreviewButton.jsx';
 import ImageComponent from '@/Components/CreatorComponents/ImageComponent.jsx';
 import {
     offerDataReducer,
     pageDataReducer,
 } from '@/Components/Reducers/CreatorReducers.jsx';
+import Preview from './Components/Preview/Preview';
 import EventBus from '@/Utils/Bus';
 import {isEmpty} from 'lodash';
-import PreviewButton from '../../Components/PreviewButton.jsx';
 import SwitchOptions from './Components/SwitchOptions';
-import {previewButtonRequest} from '@/Services/PageRequests';
 import PublishButton from './Components/PublishButton';
 import Section from './Components/Section';
 import DropdownComponent from './Components/DropdownComponent';
+import {previewButtonRequest} from '@/Services/PageRequests';
+import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext';
 import InfoText from '@/Utils/ToolTips/InfoText';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 
@@ -41,7 +42,6 @@ import {
     updateSectionsPositions,
 } from '../../Services/CourseRequests';
 import {Head, usePage} from '@inertiajs/react';
-import ContentSelect from '@/Components/CreatorComponents/ContentSelect.jsx';
 
 function CourseCreator({courseArray, offerArray, categories}) {
 
@@ -307,18 +307,20 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                     <div className="picker_wrap">
                                                         <ColorPicker
                                                             label="Header Background Color"
-                                                            courseData={courseData}
+                                                            data={courseData}
                                                             dispatch={dispatchCourseData}
                                                             elementName="header_color"
+                                                            submitTo="course"
                                                         />
                                                         <ToolTipIcon section="course_header_color" />
                                                     </div>
                                                     <div className="picker_wrap">
                                                         <ColorPicker
                                                             label="Course Title Color"
-                                                            courseData={courseData}
+                                                            data={courseData}
                                                             dispatch={dispatchCourseData}
                                                             elementName="header_text_color"
+                                                            submitTo="course"
                                                         />
                                                         <ToolTipIcon section="course_header_text_color" />
                                                     </div>
@@ -388,9 +390,10 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                     />
                                                     <ColorPicker
                                                         label="Background Color"
-                                                        courseData={courseData}
+                                                        data={courseData}
                                                         dispatch={dispatchCourseData}
                                                         elementName="intro_background_color"
+                                                        submitTo="course"
                                                     />
                                                 </div>
                                             </section>

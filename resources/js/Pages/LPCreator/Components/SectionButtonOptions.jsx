@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {updateSectionData} from '@/Services/LandingPageRequests.jsx';
 import DropdownComponent from './DropdownComponent';
-import ColorPicker from './ColorPicker';
+import ColorPicker from '@/Components/CreatorComponents/ColorPicker';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -181,6 +181,7 @@ const SectionButtonOptions = ({
                     setSections={setSections}
                     currentSection={currentSection}
                     elementName={`section_${position}_button_text_color`}
+                    submitTo="landingPage"
                 />
                 <ColorPicker
                     label="Button Color"
@@ -188,6 +189,7 @@ const SectionButtonOptions = ({
                     setSections={setSections}
                     currentSection={currentSection}
                     elementName={`section_${position}_button_color`}
+                    submitTo="landingPage"
                 />
                 <InputComponent
                     placeholder="Update Button Text (optional)"
