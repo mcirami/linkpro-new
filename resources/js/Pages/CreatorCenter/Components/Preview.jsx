@@ -11,7 +11,7 @@ const Preview = ({landingPage}) => {
     const {header_color, header_text_color, hero, logo, sections, slogan} = landingPage;
 
     return (
-        <div className="links_wrap preview lp_creator">
+        <div className="links_wrap preview creator">
             <div className="inner_content" id="preview_wrap">
                 <div className="inner_content_wrap" style={{ maxHeight: resizePreviewHeight ? resizePreviewHeight + "px" : loadPreviewHeight + "px"}}>
                     <section className="header my_row" id="preview_header_section">

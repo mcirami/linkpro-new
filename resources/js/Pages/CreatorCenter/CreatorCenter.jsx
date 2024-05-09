@@ -84,7 +84,7 @@ function CreatorCenter({offers, landingPage}) {
                                 <div className="column">
                                     <div className="column_title">
                                         <h3>
-                                            <span>Landing Page</span>
+                                            <span>Global Course Page</span>
                                             <ToolTipIcon section="creator_lp" />
                                         </h3>
                                     </div>
