@@ -21,7 +21,7 @@ const SectionButtonOptions = ({
                                   id,
                                   courses = null,
                                   buttonCourseId = null,
-                                  submitTo
+                                  saveTo
 }) => {
 
     const {
@@ -50,7 +50,7 @@ const SectionButtonOptions = ({
             button: !includeButtonValue,
         };
 
-        const method = submitTo === "course" ?
+        const method = saveTo === "course" ?
             updateSectionData(packets, id) :
             updateLPSectionData(packets, id)
         method.then((response) => {
@@ -75,7 +75,7 @@ const SectionButtonOptions = ({
             button_position: value,
         };
 
-        const method = submitTo === "course" ?
+        const method = saveTo === "course" ?
             updateSectionData(packets, id) :
             updateLPSectionData(packets, id)
         method.then((response) => {
@@ -102,7 +102,7 @@ const SectionButtonOptions = ({
             button_size: buttonSizeState,
         };
 
-        const method = submitTo === "course" ?
+        const method = saveTo === "course" ?
             updateSectionData(packets, id) :
             updateLPSectionData(packets, id)
         method.then((response) => {
@@ -197,7 +197,7 @@ const SectionButtonOptions = ({
                     setSections={setSections}
                     currentSection={currentSection}
                     elementName={`section_${sectionPosition}_button_text_color`}
-                    submitTo={submitTo}
+                    saveTo={saveTo}
                 />
                 <ColorPicker
                     label="Button Color"
@@ -205,7 +205,7 @@ const SectionButtonOptions = ({
                     setSections={setSections}
                     currentSection={currentSection}
                     elementName={`section_${sectionPosition}_button_color`}
-                    submitTo={submitTo}
+                    saveTo={saveTo}
                 />
                 <InputComponent
                     placeholder="Update Button Text (optional)"
@@ -217,7 +217,7 @@ const SectionButtonOptions = ({
                     setSections={setSections}
                     currentSection={currentSection}
                     value={button_text}
-                    submitType={submitTo}
+                    submitType={saveTo}
                 />
                 {courses &&
                     <DropdownComponent

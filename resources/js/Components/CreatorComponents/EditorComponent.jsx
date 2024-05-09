@@ -7,9 +7,11 @@ import htmlToDraft from "html-to-draftjs";
 
 import {
     updateSectionData,
+    updateData
 } from '@/Services/LandingPageRequests.jsx';
 import {
-    updateData as updateCourseData
+    updateData as updateCourseData,
+    updateSectionData as updateCourseSectionData
 } from '@/Services/CourseRequests.jsx';
 import isJSON from 'validator/es/lib/isJSON';
 
@@ -23,7 +25,8 @@ const EditorComponent = ({
                              isValid,
                              setIsValid,
                              showTiny = null,
-                             setShowTiny = null
+                             setShowTiny = null,
+                             saveTo
                          }) => {
 
     const editorRef = useRef(null);
@@ -142,7 +145,9 @@ const EditorComponent = ({
                     [`${element}`]: finalValue,
                 };
 
-                updateSectionData(packets, currentSection.id);
+               saveTo === "course" ?
+                    updateCourseSectionData(packets, currentSection.id) :
+                    updateSectionData(packets, currentSection.id);
 
             } else {
                 //const value = data[elementName];
@@ -150,8 +155,11 @@ const EditorComponent = ({
                     [`${elementName}`]: finalValue,
                 };
 
-                updateCourseData(packets, data["id"], elementName).
-                    then((response) => {
+                const method = saveTo === "course" ?
+                    updateCourseData(packets, data["id"], elementName) :
+                    updateData(packets, data["id"], elementName)
+
+                method.then((response) => {
                         if (response.success && response.slug) {
                             dispatch({
                                 type: LP_ACTIONS.UPDATE_PAGE_DATA,

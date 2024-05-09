@@ -20,7 +20,7 @@ const ColorPicker = ({
                          sections = null,
                          setSections = null,
                          currentSection = null,
-                         submitTo
+                         saveTo
 }) => {
 
     const [sketchPickerColor, setSketchPickerColor] = useState({
@@ -150,7 +150,7 @@ const ColorPicker = ({
                 [`${element}`]: colorValues.current,
             };
 
-            const method = submitTo === "course" ?
+            const method = saveTo === "course" ?
                 updateSectionData(packets, currentSection.id) :
                 updateLPSectionData(packets, currentSection.id)
             method.then((response) => {
@@ -168,7 +168,7 @@ const ColorPicker = ({
                 [`${elementName}`]: colorValues.current,
             };
 
-            const method = submitTo === "course" ?
+            const method = saveTo === "course" ?
                 updateData(packets, data["id"], elementName) :
                 updateLPData(packets, data["id"], elementName)
             method.then((response) => {

@@ -69,7 +69,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                 previewCanvasRef?.current[elementName]
             ) {
                 // We use canvasPreview as it's much faster than imgPreview.
-                canvasPreview(
+                await canvasPreview(
                     imgRef.current,
                     previewCanvasRef?.current[elementName],
                     completedCrop[elementName]?.isCompleted,
@@ -155,14 +155,6 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                             setUpImg(null);
                             delete completedCrop[elementName];
                             setCompletedCrop(completedCrop);
-                            document.querySelector("." + CSS.escape(elementName) +
-                                "_form .bottom_section").classList.add("hidden");
-                        } else {
-                            setShowLoader({
-                                show: false,
-                                icon: '',
-                                position: ''
-                            });
                         }
                     })
             } else if (sections) {
@@ -182,20 +174,9 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                             return section;
                         }))
 
-                        setShowLoader({
-                            show: false,
-                            icon: '',
-                            position: ''
-                        });
-
                         setUpImg(null);
                         delete completedCrop[elementName];
                         setCompletedCrop(completedCrop);
-                        document.querySelector(
-                            "." + CSS.escape(elementName) +
-                            "_form .bottom_section").
-                            classList.
-                            add("hidden");
                     }
                 })
 
@@ -213,23 +194,29 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                                     name: elementName
                                 }
                             })
-                            setShowLoader({
-                                show: false,
-                                icon: '',
-                                position: ''
-                            });
 
                             setUpImg(null);
                             delete completedCrop[elementName];
                             setCompletedCrop(completedCrop);
-                            document.querySelector(
-                                "." + CSS.escape(elementName) +
-                                "_form .bottom_section").
-                                classList.
-                                add("hidden");
                         }
                     })
             }
+
+            setShowLoader({
+                show: false,
+                icon: '',
+                position: ''
+            });
+            const activeSection = "." + CSS.escape(elementName) + "_form";
+            document.querySelector(activeSection + " .bottom_section").classList.add("hidden");
+            setTimeout(function() {
+                document.querySelector(activeSection).scrollIntoView({
+                    behavior: 'smooth',
+                    block: "center",
+                    inline: "nearest"
+                });
+            },800);
+
         }).catch((error) => {
             console.error(error);
             setDisableButton(false);

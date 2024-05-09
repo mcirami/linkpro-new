@@ -57,7 +57,7 @@ const Section = ({
     };
 
     useEffect(() => {
-        setLockVideo(lock_video ? lock_video : true)
+        setLockVideo(lock_video !== null ? lock_video : true)
     },[])
 
     const handleSectionOpen = (rowIndex) => {
@@ -166,7 +166,7 @@ const Section = ({
                            return (
                                <>
                                    <InputComponent
-                                       placeholder="Add Text"
+                                        placeholder="Add Text"
                                         type="textarea"
                                         hoverText="Add Text to Section"
                                         elementName={`section_${index + 1}_text`}
@@ -174,6 +174,7 @@ const Section = ({
                                         currentSection={section}
                                         sections={sections}
                                         setSections={setSections}
+                                        saveTo="course"
                                    />
                                     <ColorPicker
                                         label="Background Color"
@@ -181,7 +182,7 @@ const Section = ({
                                         sections={sections}
                                         setSections={setSections}
                                         elementName={`section_${index + 1}_background_color`}
-                                        submitTo="course"
+                                        saveTo="course"
                                     />
                                     <ColorPicker
                                         label="Text Color"
@@ -189,7 +190,7 @@ const Section = ({
                                         sections={sections}
                                         setSections={setSections}
                                         elementName={`section_${index + 1}_text_color`}
-                                        submitTo="course"
+                                        saveTo="course"
                                     />
 
                                     <SectionButtonOptions
@@ -198,7 +199,7 @@ const Section = ({
                                         setSections={setSections}
                                         currentSection={section}
                                         id={id}
-                                        submitTo="course"
+                                        saveTo="course"
                                     />
                                </>
                            )
@@ -215,6 +216,7 @@ const Section = ({
                                         currentSection={section}
                                         sections={sections}
                                         setSections={setSections}
+                                        saveTo="course"
                                     />
                                     <InputComponent
                                         placeholder="YouTube or Vimeo Link"
@@ -225,6 +227,7 @@ const Section = ({
                                         currentSection={section}
                                         sections={sections}
                                         setSections={setSections}
+                                        saveTo="course"
                                     />
                                     <InputComponent
                                         placeholder="Video Text Blurb (optional)"
@@ -235,6 +238,7 @@ const Section = ({
                                         currentSection={section}
                                         sections={sections}
                                         setSections={setSections}
+                                        saveTo="course"
                                     />
                                     <ColorPicker
                                         label="Background Color"
@@ -242,7 +246,7 @@ const Section = ({
                                         sections={sections}
                                         setSections={setSections}
                                         elementName={`section_${index + 1}_background_color`}
-                                        submitTo="course"
+                                        saveTo="course"
                                     />
                                     <ColorPicker
                                         label="Text Color"
@@ -250,14 +254,14 @@ const Section = ({
                                         sections={sections}
                                         setSections={setSections}
                                         elementName={`section_${index + 1}_text_color`}
-                                        submitTo="course"
+                                        saveTo="course"
                                     />
                                     <div className="switch_wrap two_columns">
                                         <div className={`page_settings border_wrap`}>
                                             <h3>Lock Video</h3>
                                             <IOSSwitch
                                                 onChange={handleChange}
-                                                checked={lockVideo !== null ? Boolean(lockVideo) : true}
+                                                checked={Boolean(lockVideo)}
                                             />
                                         </div>
                                         <ToolTipIcon section="course_lock_video" />
@@ -292,7 +296,7 @@ const Section = ({
                                         setSections={setSections}
                                         currentSection={section}
                                         id={id}
-                                        submitTo="course"
+                                        saveTo="course"
                                     />
                                 </>
                             )

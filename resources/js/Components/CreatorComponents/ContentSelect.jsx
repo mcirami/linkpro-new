@@ -7,7 +7,7 @@ const ContentSelect = ({
                            setSections,
                            dataId,
                            setOpenIndex,
-                           addTo,
+                           saveTo,
                            options
 }) => {
 
@@ -21,7 +21,7 @@ const ContentSelect = ({
             type: e.target.value
         }
 
-        if (addTo === "course") {
+        if (saveTo === "course") {
             addSection(packets, dataId)
             .then((response) => {
                 if (response.success) {

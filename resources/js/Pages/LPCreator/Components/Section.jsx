@@ -133,7 +133,7 @@ const Section = ({
                             setSections={setSections}
                             showTiny={showTiny}
                             setShowTiny={setShowTiny}
-                            submitType="landingPage"
+                            saveTo="landingPage"
                         />
                         <ColorPicker
                             label="Background Color"
@@ -141,7 +141,7 @@ const Section = ({
                             sections={sections}
                             setSections={setSections}
                             elementName={`section_${index + 1}_bg_color`}
-                            submitTo="landingPage"
+                            saveTo="landingPage"
                         />
                     </>
                 }
@@ -175,7 +175,7 @@ const Section = ({
                         buttonCourseId={button_course_id}
                         courses={courses}
                         id={id}
-                        submitTo="landingPage"
+                        saveTo="landingPage"
                     />
                 </div>
                 <DeleteSection

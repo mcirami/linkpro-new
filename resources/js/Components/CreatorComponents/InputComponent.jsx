@@ -30,7 +30,7 @@ const InputComponent = ({
                             currentSection = null,
                             showTiny = null,
                             setShowTiny = null,
-                            submitType
+                            saveTo
                         }) => {
 
     const [charactersLeft, setCharactersLeft] = useState(maxChar);
@@ -71,7 +71,7 @@ const InputComponent = ({
             setIsValid(true);
         }
 
-        if (submitType === "offer") {
+        if (saveTo === "offer") {
             dispatch({
                 type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
                 payload: {
@@ -161,15 +161,15 @@ const InputComponent = ({
                     [`${element}`]: e.target.value,
                 };
 
-                if (submitType === "course") {
+                if (saveTo === "course") {
                     updateCourseSectionData(packets, currentSection.id);
                 }
 
-                if (submitType === "landingPage") {
+                if (saveTo === "landingPage") {
                     updateLpSectionData(packets, currentSection.id)
                 }
 
-            } else if (submitType === "offer") {
+            } else if (saveTo === "offer") {
 
                 const packets = {
                     [`${elementName}`]: data[elementName],
@@ -182,7 +182,7 @@ const InputComponent = ({
                     [`${elementName}`]: data[elementName],
                 };
 
-                const method = submitType === "course" ?
+                const method = saveTo === "course" ?
                     updateCourseData(packets, data["id"], elementName) :
                     updateLpData(packets, data["id"], elementName)
 
@@ -298,6 +298,7 @@ const InputComponent = ({
                         setIsValid={setIsValid}
                         showTiny={showTiny}
                         setShowTiny={setShowTiny}
+                        saveTo={saveTo}
                     />
                 )
             case 'currency' :

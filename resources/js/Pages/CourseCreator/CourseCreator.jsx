@@ -23,6 +23,7 @@ import {previewButtonRequest} from '@/Services/PageRequests';
 import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext';
 import InfoText from '@/Utils/ToolTips/InfoText';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
+import {handleDragEndAction} from '@/Services/CreatorServices.jsx';
 
 import {
     DndContext,
@@ -194,35 +195,6 @@ function CourseCreator({courseArray, offerArray, categories}) {
     let imageCount = 0;
     let fileCount = 0;
 
-    const handleDragEnd = (event) => {
-        const {active, over} = event;
-
-        if (active.id !== over.id) {
-
-            let newArray;
-
-           setSections((sections) => {
-                const oldIndex = sections.map(function (e) {
-                    return e.id;
-                }).indexOf(active.id);
-                const newIndex = sections.map(function (e) {
-                    return e.id;
-                }).indexOf(over.id);
-               newArray = arrayMove(sections, oldIndex, newIndex);
-               return newArray;
-            });
-
-            const packets = {
-                sections: newArray
-            }
-
-            updateSectionsPositions(packets).then(() => {
-               setShowTiny(false);
-               setShowTiny(true);
-            });
-        }
-    }
-
     return (
         <AuthenticatedLayout>
             <Head title="Course Creator"/>
@@ -284,7 +256,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         data={courseData}
                                                         dispatch={dispatchCourseData}
                                                         value={courseData["title"]}
-                                                        submitType="course"
+                                                        saveTo="course"
                                                     />
                                                     <ImageComponent
                                                         ref={nodesRef}
@@ -310,7 +282,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                             data={courseData}
                                                             dispatch={dispatchCourseData}
                                                             elementName="header_color"
-                                                            submitTo="course"
+                                                            saveTo="course"
                                                         />
                                                         <ToolTipIcon section="course_header_color" />
                                                     </div>
@@ -320,7 +292,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                             data={courseData}
                                                             dispatch={dispatchCourseData}
                                                             elementName="header_text_color"
-                                                            submitTo="course"
+                                                            saveTo="course"
                                                         />
                                                         <ToolTipIcon section="course_header_text_color" />
                                                     </div>
@@ -363,7 +335,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         value={courseData["intro_video"] || ""}
                                                         data={courseData}
                                                         dispatch={dispatchCourseData}
-                                                        submitType="course"
+                                                        saveTo="course"
                                                     />
                                                 </div>
                                             </section>
@@ -386,14 +358,14 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         value={courseData["intro_text"]}
                                                         showTiny={showTiny}
                                                         setShowTiny={setShowTiny}
-                                                        submitType="course"
+                                                        saveTo="course"
                                                     />
                                                     <ColorPicker
                                                         label="Background Color"
                                                         data={courseData}
                                                         dispatch={dispatchCourseData}
                                                         elementName="intro_background_color"
-                                                        submitTo="course"
+                                                        saveTo="course"
                                                     />
                                                 </div>
                                             </section>
@@ -403,8 +375,13 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                 <DndContext
                                                     sensors={sensors}
                                                     collisionDetection={closestCenter}
-                                                    onDragEnd={handleDragEnd}
-                                                >
+                                                    onDragEnd={event =>
+                                                        handleDragEndAction(
+                                                            event,
+                                                            updateSectionsPositions,
+                                                            setSections,
+                                                            setShowTiny)
+                                                }>
                                                     <section className="sections_wrap my_row mb-4">
 
                                                         <SortableContext
@@ -518,7 +495,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         data={offerData}
                                                         dispatch={dispatchOfferData}
                                                         value={offerData["price"]}
-                                                        submitType="offer"
+                                                        saveTo="offer"
                                                     />
                                                     <SwitchOptions
                                                         dispatch={dispatchOfferData}

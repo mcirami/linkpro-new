@@ -33,6 +33,7 @@ import {
 import {updateSectionsPositions} from '@/Services/LandingPageRequests';
 import {Head} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
+import {handleDragEndAction} from '@/Services/CreatorServices.jsx';
 
 function LPCreator({landingPageArray, courses, username}) {
 
@@ -120,33 +121,17 @@ function LPCreator({landingPageArray, courses, username}) {
 
     const handleDragEnd = (event) => {
 
-        const {active, over} = event;
+        const array = handleDragEndAction(event, setSections);
 
-        if (active.id !== over.id) {
-
-            let newArray;
-
-            setSections((sections) => {
-                const oldIndex = sections.map(function (e) {
-                    return e.id;
-                }).indexOf(active.id);
-                const newIndex = sections.map(function (e) {
-                    return e.id;
-                }).indexOf(over.id);
-                newArray = arrayMove(sections, oldIndex, newIndex);
-                return newArray;
-            });
-
-
-            const packets = {
-                sections: newArray
-            }
-
-            updateSectionsPositions(packets).then(() => {
-                setShowTiny(false);
-                setShowTiny(true);
-            });
+        const packets = {
+            sections: array
         }
+
+        updateSectionsPositions(packets).then(() => {
+            setShowTiny(false);
+            setShowTiny(true);
+        });
+
     }
 
     const url = window.location.protocol + "//" + window.location.host + "/" + username;
@@ -204,7 +189,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     data={pageData}
                                                     dispatch={dispatchPageData}
                                                     value={pageData['title']}
-                                                    submitType="landingPage"
+                                                    saveTo="landingPage"
                                                 />
                                             </div>
                                             <div className="section_content my_row">
@@ -235,7 +220,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     data={pageData}
                                                     dispatch={dispatchPageData}
                                                     value={pageData['slogan']}
-                                                    submitType="landingPage"
+                                                    saveTo="landingPage"
                                                 />
                                                 <ImageComponent
                                                     ref={nodesRef}

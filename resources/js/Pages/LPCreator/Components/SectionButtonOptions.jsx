@@ -178,7 +178,7 @@ const SectionButtonOptions = ({
                     setSections={setSections}
                     currentSection={currentSection}
                     elementName={`section_${position}_button_text_color`}
-                    submitTo="landingPage"
+                    saveTo="landingPage"
                 />
                 <ColorPicker
                     label="Button Color"
@@ -186,7 +186,7 @@ const SectionButtonOptions = ({
                     setSections={setSections}
                     currentSection={currentSection}
                     elementName={`section_${position}_button_color`}
-                    submitTo="landingPage"
+                    saveTo="landingPage"
                 />
                 <InputComponent
                     placeholder="Update Button Text (optional)"
@@ -198,7 +198,7 @@ const SectionButtonOptions = ({
                     setSections={setSections}
                     currentSection={currentSection}
                     value={currentSection["button_text"]}
-                    submitType="landingPage"
+                    saveTo="landingPage"
                 />
                 <DropdownComponent
                     courses={courses}
