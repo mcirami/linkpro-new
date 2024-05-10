@@ -27,15 +27,15 @@ const Preview = ({
                      setValue,
                      subStatus,
                      pageHeaderRef,
+                     showPreview,
                      setShowPreview,
                      pageName
 }) => {
 
-    const loadPreviewHeight = UseLoadPreviewHeight();
-    const resizePreviewHeight = UseResizePreviewHeight();
-
     const { userLinks } = useContext(UserLinksContext);
     const {pageSettings} = useContext(PageContext);
+    const loadPreviewHeight = UseLoadPreviewHeight();
+    const resizePreviewHeight = UseResizePreviewHeight();
     const [iconCount, setIconCount] = useState(null);
     const [clickType, setClickType] = useState(null);
 
@@ -55,7 +55,7 @@ const Preview = ({
             const windowWidth = window.outerWidth;
 
             if (windowWidth > 992) {
-                document.querySelector('.links_col.preview').classList.remove('show');
+                setShowPreview(false);
                 document.querySelector('body').classList.remove('fixed');
             }
         }
@@ -80,7 +80,10 @@ const Preview = ({
 
     return (
 
-        <>
+        <div className={`right_column links_col preview ${showPreview ?
+            "show" :
+            ""}`}
+        >
             <div className="close_preview" onClick={ClosePreview}>
                 <IoIosCloseCircleOutline/>
             </div>
@@ -264,8 +267,7 @@ const Preview = ({
                                                             )
                                                         case "folder":
                                                             return (
-                                                                <div className={`my_row folder ${dataRow ==
-                                                                row ?
+                                                                <div className={`my_row folder ${dataRow == row ?
                                                                     "open" :
                                                                     ""}`}>
                                                                     <div className="icons_wrap inner">
@@ -298,7 +300,7 @@ const Preview = ({
                     <LivePageButton pageName={pageName}/>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

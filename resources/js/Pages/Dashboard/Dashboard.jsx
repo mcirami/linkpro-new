@@ -645,20 +645,19 @@ function Dashboard({
 
                                                 </div>
                                             </div>
-                                            <div className={`right_column links_col preview ${showPreview ? "show" : ""}`}>
-                                                <Preview
-                                                    nodesRef={nodesRef}
-                                                    completedCrop={completedCrop}
-                                                    row={row}
-                                                    setRow={setRow}
-                                                    value={value}
-                                                    setValue={setValue}
-                                                    subStatus={subStatus}
-                                                    pageHeaderRef={pageHeaderRef}
-                                                    setShowPreview={setShowPreview}
-                                                    pageName={pageSettings['name']}
-                                                />
-                                            </div>
+                                            <Preview
+                                                nodesRef={nodesRef}
+                                                completedCrop={completedCrop}
+                                                row={row}
+                                                setRow={setRow}
+                                                value={value}
+                                                setValue={setValue}
+                                                subStatus={subStatus}
+                                                pageHeaderRef={pageHeaderRef}
+                                                showPreview={showPreview}
+                                                setShowPreview={setShowPreview}
+                                                pageName={pageSettings['name']}
+                                            />
                                         </ToolTipContextProvider>
                                     </PageContext.Provider>
                                 </FolderLinksContext.Provider>
