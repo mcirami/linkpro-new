@@ -37,11 +37,7 @@ function resizePreviewHeight(altPxToMinus) {
 
     let pixelsToMinus;
     if (windowWidth > 551) {
-        if (altPxToMinus) {
-            pixelsToMinus = altPxToMinus;
-        } else {
-            pixelsToMinus = 30;
-        }
+        pixelsToMinus = altPxToMinus || 30
     } else {
         pixelsToMinus = 20;
     }

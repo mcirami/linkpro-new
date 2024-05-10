@@ -338,6 +338,17 @@
 
 .links_wrap.preview {
     margin: 0 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    justify-content: center;
+    -webkit-justify-content: center;
 
     @media screen and (max-width: 992px) {
         max-width: 394px;
@@ -506,6 +517,23 @@
 
         .form form h3 {
             font-size: .9rem;
+        }
+    }
+
+    .view_live_link {
+        display: block;
+        position: absolute;
+        width: 100%;
+        bottom: -75px;
+        padding: 0;
+        max-width: 330px;
+
+        @media screen and (max-width: 1010px) {
+            max-width: 322px;
+        }
+
+        @include query(smallMobile) {
+            max-width: 250px;
         }
     }
 }

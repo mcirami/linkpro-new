@@ -76,13 +76,13 @@ function LPCreator({landingPageArray, courses, username}) {
     }, []);
 
     useEffect(() => {
-        previewButtonRequest(setShowPreviewButton);
+        previewButtonRequest(setShowPreviewButton, setShowPreview);
     }, [])
 
     useEffect(() => {
 
         function setPreviewButton() {
-            previewButtonRequest(setShowPreviewButton);
+            previewButtonRequest(setShowPreviewButton, setShowPreview);
         }
 
         window.addEventListener('resize', setPreviewButton);

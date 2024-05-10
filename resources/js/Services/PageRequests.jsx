@@ -187,13 +187,13 @@ export const updateProfileLayout = (packets, pageID) => {
 
 }
 
-export const previewButtonRequest = (setShowPreviewButton) => {
+export const previewButtonRequest = (setShowPreviewButton, setShowPreview) => {
 
     if (window.innerWidth < 993) {
         setShowPreviewButton(true)
     } else {
         setShowPreviewButton(false)
+        setShowPreview(false)
+        document.querySelector('body').classList.remove('fixed');
     }
 }
-
-export default addPage;

@@ -139,13 +139,13 @@ function Dashboard({
     },[])
 
     useEffect(() => {
-        previewButtonRequest(setShowPreviewButton);
+        previewButtonRequest(setShowPreviewButton, setShowPreview);
     }, [])
 
     useEffect(() => {
 
         function setPreviewButton() {
-            previewButtonRequest(setShowPreviewButton);
+            previewButtonRequest(setShowPreviewButton, setShowPreview);
         }
 
         window.addEventListener('resize', setPreviewButton);
@@ -386,10 +386,6 @@ function Dashboard({
                                                         }
                                                     </div>
 
-                                                    <div className="my_row view_live_link link_row">
-                                                        <LivePageButton pageName={pageSettings['name']}/>
-                                                    </div>
-
                                                     {editID || showLinkForm || editFolderID ?
                                                         <div className="my_row icon_links" id="scrollTo">
                                                             <p className="form_title">
@@ -437,21 +433,23 @@ function Dashboard({
 
                                                     {!editID && !editFolderID && !showLinkForm ?
                                                         <div className="my_row link_row">
-                                                            <div className="add_more_link">
-                                                                <AddLink
-                                                                    setShowLinkForm={setShowLinkForm}
-                                                                    subStatus={subStatus}
-                                                                    setShowUpgradePopup={setShowUpgradePopup}
-                                                                    setOptionText={setOptionText}
-                                                                />
-                                                            </div>
-                                                            <div className="add_more_link">
-                                                                <AddFolder
-                                                                    subStatus={subStatus}
-                                                                    setShowUpgradePopup={setShowUpgradePopup}
-                                                                    setOptionText={setOptionText}
-                                                                    setEditFolderID={setEditFolderID}
-                                                                />
+                                                            <div className="add_content_links">
+                                                                <div className="add_more_link">
+                                                                    <AddLink
+                                                                        setShowLinkForm={setShowLinkForm}
+                                                                        subStatus={subStatus}
+                                                                        setShowUpgradePopup={setShowUpgradePopup}
+                                                                        setOptionText={setOptionText}
+                                                                    />
+                                                                </div>
+                                                                <div className="add_more_link">
+                                                                    <AddFolder
+                                                                        subStatus={subStatus}
+                                                                        setShowUpgradePopup={setShowUpgradePopup}
+                                                                        setOptionText={setOptionText}
+                                                                        setEditFolderID={setEditFolderID}
+                                                                    />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         :
@@ -658,6 +656,7 @@ function Dashboard({
                                                     subStatus={subStatus}
                                                     pageHeaderRef={pageHeaderRef}
                                                     setShowPreview={setShowPreview}
+                                                    pageName={pageSettings['name']}
                                                 />
                                             </div>
                                         </ToolTipContextProvider>

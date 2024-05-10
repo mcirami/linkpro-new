@@ -607,6 +607,26 @@
     .button {
         width: 100%;
     }
+
+    .add_content_links {
+        width: 100%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        -webkit-justify-content: space-between;
+        padding: 15px;
+        border: 1px solid $borderGray;
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+    }
 }
 
 .icon_wrap {
