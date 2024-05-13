@@ -183,7 +183,7 @@ const ColumnComponent = ({
                         </div>
                     </div>
                     :
-                    (hasCourseAccess || !lock_video) && page !== "lander" ?
+                    ((hasCourseAccess && page !== "lander") || !lock_video) ?
                         <a className="my_row relative" href="#"
                            data-video={video_link}
                            data-index={index}
