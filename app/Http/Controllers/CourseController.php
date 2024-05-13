@@ -40,7 +40,12 @@ class CourseController extends Controller
         $hasCourseAccess = $this->checkCoursePermission($course);
         $sections        = $course->CourseSections()->orderBy('position')->get();
 
-        return Inertia::render( 'SingleCourse/Course' )->with( [
+        return Inertia::render( 'SingleCourse/Course' ,[
+            'event' => [
+                'title' => $course->title,
+                'image' => $course->logo
+            ]
+        ])->with( [
             'course'            => $course,
             'creator'           => $user->username,
             'sections'          => $sections,
@@ -70,7 +75,12 @@ class CourseController extends Controller
 
         $sections        = $course->CourseSections()->orderBy('position')->get();
 
-        return Inertia::render( 'SingleCourse/Course' )->with( [
+        return Inertia::render( 'SingleCourse/Course',[
+            'event' => [
+                'title' => $course->title,
+                'image' => $course->logo
+            ]
+        ] )->with( [
             'course'            => $course,
             'offerPrice'        => $offer->price,
             'creator'           => $user->username,

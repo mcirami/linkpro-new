@@ -9,7 +9,10 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+        @if(isset($page['props']['event']))
+            <meta property="og:title" content="{{ isset($page['props']['event']['title']) ? $page['props']['event']['title'] : ''}}" />
+            <meta property="og:image" content="{{ isset($page['props']['event']['image']) ? $page['props']['event']['image'] : ''}}"/>
+        @endif
         <!-- Scripts -->
         @routes
         @viteReactRefresh
