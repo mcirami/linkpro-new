@@ -440,7 +440,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                     setSections={setSections}
                                                     dataId={courseData['id']}
                                                     setOpenIndex={setOpenIndex}
-                                                    addTo="course"
+                                                    saveTo="course"
                                                     options={[
                                                         {
                                                             id: 1,

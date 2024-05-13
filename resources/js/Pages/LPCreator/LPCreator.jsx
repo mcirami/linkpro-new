@@ -322,7 +322,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                 setSections={setSections}
                                                 dataId={pageData['id']}
                                                 setOpenIndex={setOpenIndex}
-                                                addTo="landingPage"
+                                                saveTo="landingPage"
                                                 options={[
                                                     {
                                                         id: 1,
