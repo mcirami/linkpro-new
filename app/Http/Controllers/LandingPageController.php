@@ -35,7 +35,12 @@ class LandingPageController extends Controller
                                 ->get();
 
 
-        return Inertia::render('LiveLP/LandingPage')->with([
+        return Inertia::render('LiveLP/LandingPage',[
+            'event' => [
+                'title' => $landingPage->title,
+                'image' => $landingPage->logo
+            ]
+        ])->with([
             'page' => $landingPage,
             'sections' => $sections,
         ]);

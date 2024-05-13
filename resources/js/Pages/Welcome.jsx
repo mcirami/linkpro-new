@@ -5,7 +5,7 @@ export default function Welcome({ auth }) {
 
     return (
         <GuestLayout>
-            <Head title="LinkPro" />
+            <Head title="Home" />
             <div className="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
                 <div className="guest_home">
                     <section className="two_col top">
@@ -18,7 +18,7 @@ export default function Welcome({ auth }) {
                             <div className="bottom_row my_row">
                                 <Link className="button blue" href={route('register')}>Sign up free</Link>
                                 <p><em><strong>Already on LinkPro?</strong></em>
-                                    <Link href={route('login')}>Log In</Link>
+                                    <Link href={route('login')}> Log In</Link>
                                 </p>
                             </div>
                         </div>

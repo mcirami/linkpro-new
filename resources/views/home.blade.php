@@ -11,7 +11,7 @@
                 </div>
                 <div class="bottom_row my_row">
                     <a class="button blue" href="{{ route('register') }}">Sign up free</a>
-                    <p><em><strong>Already on LinkPro?</strong></em> <a href="{{ route('login') }}">Log In</a></p>
+                    <p><em><strong>Already on LinkPro?</strong></em> <a href="{{ route('login') }}"> Log In</a></p>
                 </div>
             </div>
             <div id="desktop_video" class="col desktop">

@@ -45,6 +45,11 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'event' => [
+            'title' => 'LinkPro',
+            'image' => asset('images/logo.png'),
+            'description' => 'Connect your followers across all platforms and turn your following into revenue!',
+        ]
     ]);
 })->name('home');
 
