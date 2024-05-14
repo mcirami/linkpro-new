@@ -74,7 +74,8 @@ function CourseCreator({courseArray, offerArray, categories}) {
     const [showLoader, setShowLoader] = useState({
         show: false,
         icon: "",
-        position: ""
+        position: "",
+        progress: null
     });
     const [flash, setFlash] = useState({
         show: false,

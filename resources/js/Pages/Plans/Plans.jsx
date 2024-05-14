@@ -22,7 +22,8 @@ function Plans({path}) {
     const [showLoader, setShowLoader] = useState({
         show: false,
         icon: "",
-        position: ""
+        position: "",
+        progress: null
     });
 
     const [error, setError] = useState({

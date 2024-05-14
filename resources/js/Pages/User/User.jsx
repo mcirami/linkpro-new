@@ -35,7 +35,8 @@ const User = ({message = null}) => {
     const [showLoader, setShowLoader] = useState({
         show: false,
         icon: "",
-        position: ""
+        position: "",
+        progress: null
     });
 
     useEffect(() => {

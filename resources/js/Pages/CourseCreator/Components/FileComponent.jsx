@@ -51,6 +51,13 @@ const FileComponent = ({
             upFile,
             {
                 visibility: "public-read",
+                progress: progress => {
+                    //this.uploadProgress = Math.round(progress * 100);
+                    setShowLoader(prev => ({
+                        ...prev,
+                        progress: Math.round(progress * 100)
+                    }))
+                },
             }
         ).then((response) => {
             const packets = {

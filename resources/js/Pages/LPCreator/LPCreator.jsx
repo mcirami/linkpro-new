@@ -54,7 +54,8 @@ function LPCreator({landingPageArray, courses, username}) {
     const [showLoader, setShowLoader] = useState({
         show: false,
         icon: "",
-        position: ""
+        position: "",
+        progress: null
     });
     const [flash, setFlash] = useState({
         show: false,

@@ -14,7 +14,8 @@ const PurchasePaymentButtons = ({showPaymentButtons}) => {
     const [showLoader, setShowLoader] = useState({
         show: true,
         icon: "",
-        position: "absolute"
+        position: "absolute",
+        progress: null
     });
 
     useEffect(() => {

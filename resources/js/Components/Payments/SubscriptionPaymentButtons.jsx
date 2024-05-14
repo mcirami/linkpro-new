@@ -27,7 +27,8 @@ export const SubscriptionPaymentButtons = ({
     const [showLoader, setShowLoader] = useState({
         show: true,
         icon: "",
-        position: "absolute"
+        position: "absolute",
+        progress: null
     });
     const [initialOptions, setInitialOptions] = useState({});
     const stripeButtonUrl = showPaymentButtons.type === "change_payment_method" ?

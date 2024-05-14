@@ -122,10 +122,12 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
             image,
             {
                 visibility: "public-read",
-            },
-            {
-                progress: (progress) => {
-                    this.uploadProgress = Math.round(progress * 100);
+                progress: progress => {
+                    //this.uploadProgress = Math.round(progress * 100);
+                    setShowLoader(prev => ({
+                        ...prev,
+                        progress: Math.round(progress * 100)
+                    }))
                 },
             }
         ).then((response) => {
@@ -146,11 +148,6 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                                     name: elementName
                                 }
                             })
-                            setShowLoader({
-                                show: false,
-                                icon: '',
-                                position: ''
-                            });
 
                             setUpImg(null);
                             delete completedCrop[elementName];
@@ -205,7 +202,8 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
             setShowLoader({
                 show: false,
                 icon: '',
-                position: ''
+                position: '',
+                progress: null
             });
             const activeSection = "." + CSS.escape(elementName) + "_form";
             document.querySelector(activeSection + " .bottom_section").classList.add("hidden");

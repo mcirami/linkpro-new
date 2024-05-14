@@ -388,11 +388,13 @@ const CustomForm = ({
             window.Vapor.store(
                 image,
                 {
-                    visibility: "public-read"
-                },
-                {
+                    visibility: "public-read",
                     progress: progress => {
-                        this.uploadProgress = Math.round(progress * 100);
+                        //this.uploadProgress = Math.round(progress * 100);
+                        setShowLoader(prev => ({
+                            ...prev,
+                            progress: Math.round(progress * 100)
+                        }))
                     }
                 }
             ).then(response => {
