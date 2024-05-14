@@ -47,7 +47,7 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
         'event' => [
             'title' => 'LinkPro',
-            'image' => asset('images/logo.png'),
+            'image' => asset('images/logo-large.png'),
             'description' => 'Connect your followers across all platforms and turn your following into revenue!',
         ]
     ]);
