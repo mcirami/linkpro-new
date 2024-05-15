@@ -391,16 +391,14 @@ const IntegrationForm = ({
     }
 
     const handleLinkName = useCallback ( (e) => {
-            let value = e.target.value;
+        let value = e.target.value;
+        setCharactersLeft(11 - value.length);
 
-            setCharactersLeft(11 - value.length);
-
-            setCurrentLink(() => ({
-                ...currentLink,
-                name: value
-            }))
-        }
-    )
+        setCurrentLink(() => ({
+            ...currentLink,
+            name: value
+        }))
+    },[])
 
     const checkForMailchimpForm = () => {
         const link = userLinks.find(function(e) {

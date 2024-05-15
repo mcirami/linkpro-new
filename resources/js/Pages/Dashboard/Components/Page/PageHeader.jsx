@@ -129,7 +129,7 @@ const PageHeader = forwardRef(function PageHeader(props, ref) {
                 console.error(error);
                 EventBus.dispatch("error", { message: "There was an error saving your image." });
                 setDisableButton(false);
-                setShowLoader({show: false, icon: null, position: ""})
+                setShowLoader({show: false, icon: null, position: "", progress: null})
             });
     };
 
