@@ -465,7 +465,6 @@ const CustomForm = ({
                 const func = editID ? updateLink(packets, editID) : addLink(packets);
 
                 func.then((data) => {
-                    setShowLoader({show: false, icon: null});
 
                     if (data.success) {
 
@@ -588,10 +587,14 @@ const CustomForm = ({
                         setEditID(null)
                         setInputType(null);
                     }
+
+                    setShowLoader({show: false, icon: null, progress: null});
                 })
 
             }).catch(error => {
+                EventBus.dispatch("error", { message: "There was a problem uploading your image." });
                 console.error(error);
+                setShowLoader({show: false, icon: null, progress: null});
             });
         } else {
             EventBus.dispatch("error", { message: "Icon Destination and Name is Required" });

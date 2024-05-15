@@ -95,11 +95,13 @@ const PageProfile = forwardRef(function PageProfile(props, ref) {
         window.Vapor.store(
             image,
             {
-                visibility: "public-read"
-            },
-            {
+                visibility: "public-read",
                 progress: progress => {
-                    this.uploadProgress = Math.round(progress * 100);
+                    //this.uploadProgress = Math.round(progress * 100);
+                    setShowLoader(prev => ({
+                        ...prev,
+                        progress: Math.round(progress * 100)
+                    }))
                 }
             }
         ).then(response => {
@@ -111,7 +113,6 @@ const PageProfile = forwardRef(function PageProfile(props, ref) {
 
             profileImage(packets, pageSettings["id"], pageSettings["default"])
             .then((data) => {
-                setShowLoader({show: false, icon: null, position: ""})
                 if (data.success) {
                     setUpImg(null)
                     const newArray = {...pageSettings};
@@ -119,11 +120,18 @@ const PageProfile = forwardRef(function PageProfile(props, ref) {
                     setPageSettings(newArray);
                     document.querySelector('form.profile_img_form .bottom_section').classList.add('hidden');
                 }
+                setShowLoader({show: false, icon: null, position: "", progress: null})
             })
         }).catch(error => {
             console.error(error);
             setDisableButton(false);
             EventBus.dispatch("error", { message: "There was an error saving your image." });
+            setShowLoader({
+                show: false,
+                icon: '',
+                position: '',
+                progress: null
+            });
         });
 
     }

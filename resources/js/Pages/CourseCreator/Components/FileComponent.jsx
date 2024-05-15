@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {MdEdit} from 'react-icons/md';
 import {getFileParts, uploadSectionFile} from '@/Services/FileService.jsx';
 import {toLower} from 'lodash';
+import EventBus from '@/Utils/Bus.jsx';
 
 const FileComponent = ({
                            elementName,
@@ -79,12 +80,6 @@ const FileComponent = ({
                         return section;
                     }));
 
-                    setShowLoader({
-                        show: false,
-                        icon: '',
-                        position: ''
-                    });
-
                     setUpFile(null);
                     document.querySelector(
                         "." + CSS.escape(elementName) +
@@ -92,7 +87,13 @@ const FileComponent = ({
                         classList.
                         add("hidden");
                 }
-            })
+
+                setShowLoader({show: false, icon: null, position: "", progress: null})
+            }).catch((error) => {
+                console.error(error);
+                EventBus.dispatch("error", { message: "There was an error saving your image." });
+                setShowLoader({show: false, icon: null, position: "", progress: null})
+            });
         });
     }
 

@@ -272,11 +272,13 @@ const IntegrationForm = ({
             window.Vapor.store(
                 image,
                 {
-                    visibility: "public-read"
-                },
-                {
+                    visibility: "public-read",
                     progress: progress => {
-                        this.uploadProgress = Math.round(progress * 100);
+                        //this.uploadProgress = Math.round(progress * 100);
+                        setShowLoader(prev => ({
+                            ...prev,
+                            progress: Math.round(progress * 100)
+                        }))
                     }
                 }
             ).then(response => {
@@ -315,7 +317,6 @@ const IntegrationForm = ({
                 const func = editID ? updateLink(packets, editID) : addLink(packets);
 
                 func.then((data) => {
-                    setShowLoader({show: false, icon: null});
 
                     if (data.success) {
 
@@ -376,10 +377,13 @@ const IntegrationForm = ({
                             type: null
                         })
                     }
+                    setShowLoader({show: false, icon: null, progress: null});
                 })
 
             }).catch(error => {
                 console.error(error);
+                EventBus.dispatch("error", { message: "There was an error saving your image." });
+                setShowLoader({show: false, icon: null, progress: null});
             });
         } else {
             EventBus.dispatch("error", { message: "Icon Destination and Name is Required" });

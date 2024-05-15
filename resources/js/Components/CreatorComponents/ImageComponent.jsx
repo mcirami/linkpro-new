@@ -24,6 +24,7 @@ import {LP_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
 import CropTools from '@/Utils/CropTools.jsx';
 import {updateIcon} from '@/Services/OfferRequests.jsx';
 import {OFFER_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
+import EventBus from '@/Utils/Bus.jsx';
 
 const ImageComponent = forwardRef(function ImageComponent(props, ref) {
 
@@ -198,13 +199,6 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                         }
                     })
             }
-
-            setShowLoader({
-                show: false,
-                icon: '',
-                position: '',
-                progress: null
-            });
             const activeSection = "." + CSS.escape(elementName) + "_form";
             document.querySelector(activeSection + " .bottom_section").classList.add("hidden");
             setTimeout(function() {
@@ -214,10 +208,24 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
                     inline: "nearest"
                 });
             },800);
+            setShowLoader({
+                show: false,
+                icon: '',
+                position: '',
+                progress: null
+            });
 
         }).catch((error) => {
             console.error(error);
+            EventBus.dispatch("error", { message: "There was an error saving your image." });
             setDisableButton(false);
+
+            setShowLoader({
+                show: false,
+                icon: '',
+                position: '',
+                progress: null
+            });
         });
     };
 

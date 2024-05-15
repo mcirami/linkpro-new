@@ -96,10 +96,12 @@ const PageHeader = forwardRef(function PageHeader(props, ref) {
             image,
             {
                 visibility: "public-read",
-            },
-            {
                 progress: (progress) => {
                     this.uploadProgress = Math.round(progress * 100);
+                    setShowLoader(prev => ({
+                        ...prev,
+                        progress: Math.round(progress * 100)
+                    }))
                 },
             }
         )
@@ -112,7 +114,6 @@ const PageHeader = forwardRef(function PageHeader(props, ref) {
                 headerImage(packets, pageSettings["id"])
                 .then((data) => {
                     setShowLoader({show: false, icon: null, position: ""})
-
                     if (data.success) {
                         setUpImg(null);
                         setCompletedCrop({});
@@ -121,12 +122,14 @@ const PageHeader = forwardRef(function PageHeader(props, ref) {
                         setPageSettings(newArray);
                         document.querySelector("form.header_img_form .bottom_section").classList.add("hidden");
                     }
+
                 });
             })
             .catch((error) => {
                 console.error(error);
                 EventBus.dispatch("error", { message: "There was an error saving your image." });
                 setDisableButton(false);
+                setShowLoader({show: false, icon: null, position: ""})
             });
     };
 
