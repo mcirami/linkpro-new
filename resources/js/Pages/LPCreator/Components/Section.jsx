@@ -8,6 +8,8 @@ import SectionButtonOptions from '@/Components/CreatorComponents/SectionButtonOp
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import isJSON from 'validator/es/lib/isJSON.js';
+import draftToHtml from 'draftjs-to-html';
+import DOMPurify from 'dompurify';
 
 const Section = ({
                      section,
@@ -73,16 +75,30 @@ const Section = ({
         switch(type) {
             case 'text':
                 let parsedText = null;
-                if(section.text && isJSON(section.text)) {
+                if (section.text && isJSON(section.text)) {
                     parsedText = JSON.parse(section.text);
+                    parsedText['blocks'] = parsedText['blocks'].map((block) => {
+                        if (!block.text) {
+                            block.text = '';
+                        }
+
+                        return block;
+                    });
+                    parsedText = parsedText.blocks[0]['text'].length > 20 ?
+                        parsedText.blocks[0]['text'].slice(0, 20) + '...' :
+                        parsedText.blocks[0]['text'];
+                } else if (section.text) {
+                    parsedText = section.text.length > 20 ?
+                        section.text.slice(0,20) + "..." :
+                        section.text;
+                } else {
+                    parsedText = type + ' ' + textCount;
                 }
 
-                parsedText = parsedText ?
-                    parsedText?.blocks[0]["text"].slice(0, 20) + "..." :
-                    type  + " " + textCount
-
-
-                return setSectionTitle(parsedText)
+                /*parsedText = parsedText ?
+                    parsedText?.blocks[0]['text'].slice(0, 20) + '...' :
+                    type + ' ' + textCount*/
+                return setSectionTitle(parsedText);
 
             case 'image' :
                 const content = section.image ?
@@ -93,7 +109,13 @@ const Section = ({
                 return setSectionTitle(content)
 
         }
-    }, [sections, section]);
+    }, []);
+
+    const createMarkup = (convertText) => {
+        return {
+            __html: DOMPurify.sanitize(convertText)
+        }
+    }
 
     return (
         <div ref={setNodeRef}
@@ -113,7 +135,12 @@ const Section = ({
                     <MdDragHandle/>
                 </div>
                 <div className="title_column">
-                    <h4>{sectionTitle}</h4>
+                    <h4>{type === 'text' ?
+                            <div dangerouslySetInnerHTML={createMarkup(sectionTitle)}>
+                            </div> :
+                            sectionTitle
+                    }
+                    </h4>
                 </div>
                 <div className={`icon_wrap ${openIndex.includes(index) ? "open" : ""}`}>
                     <MdKeyboardArrowDown />
@@ -134,6 +161,7 @@ const Section = ({
                             showTiny={showTiny}
                             setShowTiny={setShowTiny}
                             saveTo="landingPage"
+                            index={index}
                         />
                         <ColorPicker
                             label="Background Color"

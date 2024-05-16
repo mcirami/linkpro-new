@@ -43,7 +43,7 @@ function LPCreator({landingPageArray, courses, username}) {
 
 
     const [pageData, dispatchPageData] = useReducer(pageDataReducer, landingPageArray);
-    const [sections, setSections] = useState([]);
+    const [sections, setSections] = useState(pageData["sections"]);
 
     const [showPreviewButton, setShowPreviewButton] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
@@ -70,11 +70,14 @@ function LPCreator({landingPageArray, courses, username}) {
         })
     );
 
-    useEffect(() => {
+    /*useEffect(() => {
         setSections(pageData["sections"].map((section) => {
+            if(section.type === "text") {
+                console.log("sectionText: ", section.text)
+            }
             return section;
         }))
-    }, []);
+    }, []);*/
 
     useEffect(() => {
         previewButtonRequest(setShowPreviewButton, setShowPreview);
@@ -118,21 +121,6 @@ function LPCreator({landingPageArray, courses, username}) {
 
     const handleMouseEnter = (e) => {
         setHoverSection(e.target.id)
-    }
-
-    const handleDragEnd = (event) => {
-
-        const array = handleDragEndAction(event, setSections);
-
-        const packets = {
-            sections: array
-        }
-
-        updateSectionsPositions(packets).then(() => {
-            setShowTiny(false);
-            setShowTiny(true);
-        });
-
     }
 
     const url = window.location.protocol + "//" + window.location.host + "/" + username;
@@ -269,7 +257,12 @@ function LPCreator({landingPageArray, courses, username}) {
                                             <DndContext
                                                 sensors={sensors}
                                                 collisionDetection={closestCenter}
-                                                onDragEnd={handleDragEnd}
+                                                onDragEnd={event =>
+                                                    handleDragEndAction(
+                                                        event,
+                                                        setSections,
+                                                        updateSectionsPositions,
+                                                        setShowTiny)}
                                             >
                                                 <section className="sections_wrap my_row">
 
@@ -285,6 +278,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                                     ++imageCount :
                                                                     ++textCount;
                                                             }
+
                                                             return (
 
                                                                 <Section

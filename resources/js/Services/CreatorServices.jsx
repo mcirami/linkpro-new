@@ -1,9 +1,9 @@
 import {arrayMove} from '@dnd-kit/sortable';
-import {updateSectionsPositions} from '@/Services/CourseRequests.jsx';
+//import {updateSectionsPositions} from '@/Services/CourseRequests.jsx';
 
 export const handleDragEndAction = ( event,
-                                     updateSectionsPositions,
                                      setSections,
+                                     updateSectionsPositions,
                                      setShowTiny
 ) => {
 
@@ -16,9 +16,11 @@ export const handleDragEndAction = ( event,
             const oldIndex = sections.map(function(e) {
                 return e.id;
             }).indexOf(active.id);
+
             const newIndex = sections.map(function(e) {
                 return e.id;
             }).indexOf(over.id);
+
             newArray = arrayMove(sections, oldIndex, newIndex);
             return newArray;
         });
@@ -31,6 +33,7 @@ export const handleDragEndAction = ( event,
             setShowTiny(false);
             setShowTiny(true);
         });
+
     }
 
     return newArray;

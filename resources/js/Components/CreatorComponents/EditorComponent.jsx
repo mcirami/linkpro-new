@@ -26,7 +26,8 @@ const EditorComponent = ({
                              setIsValid,
                              showTiny = null,
                              setShowTiny = null,
-                             saveTo
+                             saveTo,
+                             index
                          }) => {
 
     const editorRef = useRef(null);
@@ -64,7 +65,7 @@ const EditorComponent = ({
             }
         }
 
-    },[])
+    },[sections])
 
     useEffect(() => {
         if (currentSection) {
@@ -180,7 +181,7 @@ const EditorComponent = ({
             {showTiny &&
                 <Editor
                     apiKey='h3695sldkjcjhvyl34syvczmxxely99ind71gtafhpnxy8zj'
-                    key={currentSection ? currentSection.id : data.id}
+                    key={currentSection ? currentSection.id + index : data.id + index}
                     onInit={(evt, editor) => editorRef.current = editor}
                     initialValue={editorState}
                     value={editorValue}

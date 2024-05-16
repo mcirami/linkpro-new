@@ -5,7 +5,7 @@ import React, {
     useState,
 } from 'react';
 import {MdEdit} from 'react-icons/md';
-import ReactCrop from 'react-image-crop';
+import ReactCrop, {centerCrop, makeAspectCrop} from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
 import {
     canvasPreview,
@@ -52,7 +52,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
     const [crop, setCrop] = useState(cropArray);
     const [scale, setScale] = useState(1)
     const [rotate, setRotate] = useState(0)
-    const [aspect, setAspect] = useState(cropArray['aspect'] || "")
+    const [aspect, setAspect] = useState("aspect" in cropArray ? cropArray["aspect"] : null)
 
     useEffect(() => {
 
@@ -89,7 +89,9 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
             return;
         }
 
-        setCrop(undefined)
+        if (aspect) {
+            setCrop(undefined)
+        }
         setDisableButton(false);
         document.querySelector("." + CSS.escape(elementName) + "_form .bottom_section").classList.remove("hidden");
         if (window.innerWidth < 993) {

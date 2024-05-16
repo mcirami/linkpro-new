@@ -34,7 +34,6 @@ import {
     useSensors,
 } from '@dnd-kit/core';
 import {
-    arrayMove,
     SortableContext,
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
@@ -379,8 +378,8 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                     onDragEnd={event =>
                                                         handleDragEndAction(
                                                             event,
-                                                            updateSectionsPositions,
                                                             setSections,
+                                                            updateSectionsPositions,
                                                             setShowTiny)
                                                 }>
                                                     <section className="sections_wrap my_row mb-4">

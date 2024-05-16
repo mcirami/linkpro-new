@@ -30,7 +30,8 @@ const InputComponent = ({
                             currentSection = null,
                             showTiny = null,
                             setShowTiny = null,
-                            saveTo
+                            saveTo,
+                            index
                         }) => {
 
     const [charactersLeft, setCharactersLeft] = useState(maxChar);
@@ -299,6 +300,7 @@ const InputComponent = ({
                         showTiny={showTiny}
                         setShowTiny={setShowTiny}
                         saveTo={saveTo}
+                        index={index}
                     />
                 )
             case 'currency' :
