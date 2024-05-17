@@ -97,7 +97,6 @@ const PageProfile = forwardRef(function PageProfile(props, ref) {
             {
                 visibility: "public-read",
                 progress: progress => {
-                    //this.uploadProgress = Math.round(progress * 100);
                     setShowLoader(prev => ({
                         ...prev,
                         progress: Math.round(progress * 100)

@@ -7,13 +7,17 @@ use App\Models\Course;
 use App\Models\CourseSection;
 use App\Models\Link;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CourseService {
 
-    public function getCourses($user) {
+    /**
+     * @param $user
+     *
+     * @return mixed
+     */
+    public function getCourses($user): mixed {
 
         return $user->Offers()
                     ->where('published', '=', true)
@@ -22,7 +26,12 @@ class CourseService {
                     ->get()->toArray();
     }
 
-    public function getCourseData($course) {
+    /**
+     * @param $course
+     *
+     * @return mixed
+     */
+    public function getCourseData($course): mixed {
         $courseData = $course->attributesToArray();
         $sections = $course->CourseSections()->orderBy('position', 'asc')->get()->toArray();
         $courseCategory = $course->categories()->orderBy('id', 'desc')->get();
@@ -53,7 +62,7 @@ class CourseService {
         return $course->Offer()->first();
     }
 
-    public function saveCourseData($course, $request) {
+    public function saveCourseData($course, $request): array {
         $keys = collect($request->all())->keys();
         $slug = null;
 
@@ -80,7 +89,15 @@ class CourseService {
         ];
     }
 
-    public function saveCourseImage($userID, $request, $key, $course) {
+    /**
+     * @param $userID
+     * @param $request
+     * @param $key
+     * @param $course
+     *
+     * @return string
+     */
+    public function saveCourseImage($userID, $request, $key, $course): string {
         $imgName = time() . '.' . $request->ext;
         $pathToFolder = 'courses/' . $userID . '/' . $course->id . '/' . $key . '/';
         $path = $pathToFolder . $imgName;
@@ -101,7 +118,15 @@ class CourseService {
 
     }
 
-    public function saveSectionImage($userID, $request, $key, $section ) {
+    /**
+     * @param $userID
+     * @param $request
+     * @param $key
+     * @param $section
+     *
+     * @return string
+     */
+    public function saveSectionImage($userID, $request, $key, $section ): string {
         $imgName = time() . '.' . $request->ext;
 
         $pathToFolder = 'courses/' . $userID . '/' . $section->course_id . '/sections/' . $section->id . '/';
@@ -122,7 +147,14 @@ class CourseService {
         return $imagePath;
     }
 
-    public function addCourseSection($course, $userID, $request) {
+    /**
+     * @param $course
+     * @param $userID
+     * @param $request
+     *
+     * @return mixed
+     */
+    public function addCourseSection($course, $userID, $request): mixed {
 
         $sectionCount = $course->CourseSections()->count();
         if ($sectionCount > 0) {
@@ -139,7 +171,13 @@ class CourseService {
         ])->fresh();
     }
 
-    public function saveSectionData($section, $request) {
+    /**
+     * @param $section
+     * @param $request
+     *
+     * @return mixed
+     */
+    public function saveSectionData($section, $request): mixed {
         $keys = collect($request->all())->keys();
 
         $section->update([
@@ -149,7 +187,15 @@ class CourseService {
         return $keys[0];
     }
 
-    public function saveSectionFile($userID, $request, $key, $section ) {
+    /**
+     * @param $userID
+     * @param $request
+     * @param $key
+     * @param $section
+     *
+     * @return string
+     */
+    public function saveSectionFile($userID, $request, $key, $section ): string {
 
         $name = $request->get('name') ? $request->get('name') : time(); ;
         $fileName = $name . '.' . $request->ext;
@@ -171,7 +217,12 @@ class CourseService {
         return $filePath;
     }
 
-    public function getUnpurchasedCourses($authUserID) {
+    /**
+     * @param $authUserID
+     *
+     * @return mixed
+     */
+    public function getUnpurchasedCourses($authUserID): mixed {
         $courses = Course::whereDoesntHave('purchases',
             function (Builder $query)  use($authUserID) {
             $query->where('user_id', '=', $authUserID);
@@ -189,7 +240,12 @@ class CourseService {
         return $unique->values()->all();
     }
 
-    public function getUserPurchasedCourses($userID) {
+    /**
+     * @param $userID
+     *
+     * @return mixed
+     */
+    public function getUserPurchasedCourses($userID): mixed {
         $courses = Course::whereHas('purchases', function (Builder $query) use($userID) {
             $query->where('user_id', 'like', $userID);
         })->leftJoin('users', 'users.id', '=', 'courses.user_id')
@@ -203,7 +259,12 @@ class CourseService {
         return $unique->values()->all();
     }
 
-    public function updateAllSectionsPositions($request) {
+    /**
+     * @param $request
+     *
+     * @return void
+     */
+    public function updateAllSectionsPositions($request): void {
 
         foreach($request['sections'] as $index => $section) {
             $currentSection = CourseSection::findOrFail( $section["id"] );
@@ -214,7 +275,13 @@ class CourseService {
         }
     }
 
-    private function saveCourseCategory($course, $value) {
+    /**
+     * @param $course
+     * @param $value
+     *
+     * @return void
+     */
+    private function saveCourseCategory($course, $value): void {
 
         $categoryArray = [$value];
         $category = Category::where('id', '=', $value)->pluck('parent_id');
@@ -226,7 +293,13 @@ class CourseService {
         $course->categories()->sync($categoryArray);
     }
 
-    private function updateCourseLinks($course, $name) {
+    /**
+     * @param $course
+     * @param $name
+     *
+     * @return void
+     */
+    private function updateCourseLinks($course, $name): void {
 
         $courseLinks = Link::where('course_id', $course->id)->get();
 

@@ -118,7 +118,7 @@ const Section = ({
 
     return (
         <div ref={setNodeRef}
-             className="section_row"
+             className={`section_row ${id}`}
              id={`section_${index + 1}`}
              style={style}
              onMouseEnter={(e) => handleMouseEnter(e)}

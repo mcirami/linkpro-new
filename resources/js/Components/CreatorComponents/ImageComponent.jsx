@@ -4,6 +4,7 @@ import React, {
     useRef,
     useState,
 } from 'react';
+import Compressor from 'compressorjs';
 import {MdEdit} from 'react-icons/md';
 import ReactCrop, {centerCrop, makeAspectCrop} from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
@@ -100,7 +101,16 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
             });
         }
 
-        createImage(files[0], setUpImg);
+        new Compressor(files[0], {
+            quality: 0.6,
+            success(result) {
+                /*const formData = new FormData();
+                formData.append('file', result, result.name);*/
+                createImage(result, setUpImg);
+            }
+        });
+
+
     };
 
     const handleSubmit = (e) => {
@@ -126,7 +136,6 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
             {
                 visibility: "public-read",
                 progress: progress => {
-                    //this.uploadProgress = Math.round(progress * 100);
                     setShowLoader(prev => ({
                         ...prev,
                         progress: Math.round(progress * 100)
