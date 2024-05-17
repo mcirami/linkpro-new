@@ -8,7 +8,6 @@ import SectionButtonOptions from '@/Components/CreatorComponents/SectionButtonOp
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import isJSON from 'validator/es/lib/isJSON.js';
-import draftToHtml from 'draftjs-to-html';
 import DOMPurify from 'dompurify';
 
 const Section = ({
@@ -88,16 +87,16 @@ const Section = ({
                         parsedText.blocks[0]['text'].slice(0, 20) + '...' :
                         parsedText.blocks[0]['text'];
                 } else if (section.text) {
-                    parsedText = section.text.length > 20 ?
-                        section.text.slice(0,20) + "..." :
-                        section.text;
+                    const regex = /(<([^>]+)>)/gi;
+                    const result = section.text.replace(regex, "");
+
+                    parsedText = result.length > 20 ?
+                        result.slice(0,20) + "..." :
+                        result;
                 } else {
                     parsedText = type + ' ' + textCount;
                 }
 
-                /*parsedText = parsedText ?
-                    parsedText?.blocks[0]['text'].slice(0, 20) + '...' :
-                    type + ' ' + textCount*/
                 return setSectionTitle(parsedText);
 
             case 'image' :
@@ -109,7 +108,7 @@ const Section = ({
                 return setSectionTitle(content)
 
         }
-    }, []);
+    }, [sections]);
 
     const createMarkup = (convertText) => {
         return {
@@ -135,7 +134,7 @@ const Section = ({
                     <MdDragHandle/>
                 </div>
                 <div className="title_column">
-                    <h4>{type === 'text' ?
+                    <h4 className="font-extrabold">{type === 'text' ?
                             <div dangerouslySetInnerHTML={createMarkup(sectionTitle)}>
                             </div> :
                             sectionTitle

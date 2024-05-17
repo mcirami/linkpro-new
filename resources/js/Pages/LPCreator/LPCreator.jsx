@@ -70,15 +70,6 @@ function LPCreator({landingPageArray, courses, username}) {
         })
     );
 
-    /*useEffect(() => {
-        setSections(pageData["sections"].map((section) => {
-            if(section.type === "text") {
-                console.log("sectionText: ", section.text)
-            }
-            return section;
-        }))
-    }, []);*/
-
     useEffect(() => {
         previewButtonRequest(setShowPreviewButton, setShowPreview);
     }, [])
