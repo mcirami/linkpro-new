@@ -184,41 +184,6 @@ export const updateSectionImage = (packets, id) => {
 }
 
 /**
- * Submit a request to update landing page section image
- * return object
- */
-export const deleteSection = (id, packets) => {
-
-    return axios.put('/creator-center/landing-page/delete-section/' + id, packets)
-    .then(
-        (response) => {
-            const returnMessage = JSON.stringify(response.data.message);
-            //EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
-            EventBus.dispatch("success", { message: returnMessage });
-
-            return {
-                success : true,
-            }
-        }
-    )
-    .catch((error) => {
-        if (error.response !== undefined) {
-            EventBus.dispatch("error",
-                {message: "There was an error deleting the section."});
-            console.error("ERROR:: ", error.response.data);
-        } else {
-            console.error("ERROR:: ", error);
-        }
-
-        return {
-            success : false,
-        }
-
-    });
-}
-
-
-/**
  * Submit a request to update page published status
  * return object
  */

@@ -181,40 +181,6 @@ export const updateSectionData = (packets, id, elementName) => {
     });
 }
 
-/**
- * Submit a request to update landing page section image
- * return object
- */
-export const deleteSection = (id, packets) => {
-
-    return axios.put('/creator-center/course/delete-section/' + id, packets)
-    .then(
-        (response) => {
-            const returnMessage = JSON.stringify(response.data.message);
-            //EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
-            EventBus.dispatch("success", { message: returnMessage });
-
-            return {
-                success : true,
-            }
-        }
-    )
-    .catch((error) => {
-        if (error.response !== undefined) {
-            EventBus.dispatch("error",
-                {message: "There was an error deleting the section."});
-            console.error("ERROR:: ", error.response.data);
-        } else {
-            console.error("ERROR:: ", error);
-        }
-
-        return {
-            success : false,
-        }
-
-    });
-}
-
 export const getCourseCategories = () => {
     return axios.get('/get-course-categories')
     .then(

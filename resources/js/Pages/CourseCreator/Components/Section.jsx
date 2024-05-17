@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import DeleteSection from './DeleteSection';
+import DeleteSection from '@/Components/CreatorComponents/DeleteSection.jsx';
 import {MdDragHandle, MdKeyboardArrowDown} from 'react-icons/md';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
 import ColorPicker from '@/Components/CreatorComponents/ColorPicker.jsx';
@@ -318,6 +318,7 @@ const Section = ({
                     sections={sections}
                     setSections={setSections}
                     setOpenIndex={setOpenIndex}
+                    url={"/creator-center/course/delete-section/" + id}
                 />
             </div>
         </div>

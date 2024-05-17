@@ -1,7 +1,13 @@
 import React from 'react';
-import {deleteSection} from '@/Services/CourseRequests.jsx';
+import {deleteSection} from '@/Services/CreatorRequests.jsx';
 
-const DeleteSection = ({id, sections, setSections, setOpenIndex}) => {
+const DeleteSection = ({
+                           id,
+                           sections,
+                           setSections,
+                           setOpenIndex,
+                           url
+}) => {
 
     const handleDeleteClick = (e) => {
         e.preventDefault();
@@ -15,7 +21,7 @@ const DeleteSection = ({id, sections, setSections, setOpenIndex}) => {
             sections: newSectionsArray
         }
 
-        deleteSection(id, packets)
+        deleteSection(packets, url)
         .then((response) => {
             if(response.success) {
                 setSections(newSectionsArray)
