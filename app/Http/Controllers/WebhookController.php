@@ -128,13 +128,13 @@ class WebhookController extends Controller
         $webhookData = $request->all();
         $event_type = $webhookData["event_type"];
         $subscription_id = $webhookData['resource']['id'];
-        $endDate = $webhookData['resource']['agreement_details']['last_payment_date'];
+        $endDate = $webhookData['resource']['start_time'];
+        Log::channel( 'webhooks' )->info( " --- PayPal event type --- " . print_r($webhookData, true ) );
 
+        //TODO: event of payment failure
         if ($event_type == "BILLING.SUBSCRIPTION.CANCELLED") {
             $webhook_service->cancelSubscription($subscription_id, $endDate);
         }
-
-        Log::channel( 'webhooks' )->info( " --- PayPal event type --- " . print_r($webhookData, true ) );
     }
 
     private function getStripeWebhookInstance($type) {

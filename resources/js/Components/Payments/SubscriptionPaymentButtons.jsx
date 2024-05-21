@@ -243,7 +243,7 @@ export const SubscriptionPaymentButtons = ({
                 }
             }).catch(error => {
                 console.error(error);
-                setMessage(`Could not initiate PayPal Subscription...`);
+                setMessage(`Your subscription is resumed but an error occurred. Please contact support...`);
             })
         }
 

@@ -199,6 +199,12 @@ class SubscriptionService {
             'sub_id'    => $data['sub_id']
         ]);
 
+        if (key_exists('billing_id', $data)) {
+            $this->user->update([
+                'billing_id' => $data['billing_id'],
+            ]);
+        }
+
         if ($this->user->email_subscription) {
 
             $userData = ( [

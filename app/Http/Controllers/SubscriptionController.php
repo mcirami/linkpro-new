@@ -205,9 +205,10 @@ class SubscriptionController extends Controller
 
         if($subscription) {
             $data = [
-                'sub'       => $subscription,
-                'status'    => 'active',
-                'sub_id'    => $request->get('subId')
+                'sub'           => $subscription,
+                'status'        => 'active',
+                'sub_id'        => $request->get('subId'),
+                'billing_id'    => $request->get('userEmail')
             ];
             $response = $subscriptionService->resumeSubscriptionDB($data);
         } else {

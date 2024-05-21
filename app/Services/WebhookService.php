@@ -39,7 +39,7 @@ class WebhookService {
      */
     public function cancelSubscription($subId, $endDate): void {
         $subscription = Subscription::where('sub_id', $subId )->first();
-        $billingEndDate = Carbon::createFromTimestamp($endDate);
+        $billingEndDate = Carbon::parse($endDate);
         $endDateDB = $billingEndDate->endOfDay();
 
         if ($subscription != null) {
