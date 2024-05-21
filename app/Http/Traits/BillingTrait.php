@@ -2,6 +2,7 @@
 
 namespace App\Http\Traits;
 use App\Models\Referral;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Stripe\Exception\ApiErrorException;
@@ -111,6 +112,7 @@ trait BillingTrait {
             'code'          => $error->getCode(),
             'message'       => $error->getMessage(),
             'attribute'     => $error->getStripeCode(),
+            'created_at'    => Carbon::now()->format('Y-m-d H:i:s')
         ]);
     }
 }

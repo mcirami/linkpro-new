@@ -26,6 +26,7 @@ class SubscriptionController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws ApiErrorException
+     * @throws Throwable
      */
     public function showPurchasePage(Request $request, StripeService $stripeService): \Symfony\Component\HttpFoundation\Response {
 
@@ -73,6 +74,7 @@ class SubscriptionController extends Controller
     /**
      * @param Request $request
      * @param SubscriptionService $subscriptionService
+     * @param StripeService $stripeService
      *
      * @return JsonResponse
      */
@@ -196,13 +198,26 @@ class SubscriptionController extends Controller
      *
      * @return JsonResponse
      */
-    public function payPalSubscribeSuccess(Request $request, PayPalService $payPalService): JsonResponse {
+    public function payPalSubscribeSuccess(Request $request, PayPalService $payPalService, SubscriptionService $subscriptionService): JsonResponse {
 
-        $payPalService->newPayPalSubscription($request);
+        $user = Auth::user();
+        $subscription = $user->subscriptions()->first();
 
-        return response()->json([
-            'success' => true,
-        ]);
+        if($subscription) {
+            $data = [
+                'sub'       => $subscription,
+                'status'    => 'active',
+                'sub_id'    => $request->get('subId')
+            ];
+            $response = $subscriptionService->resumeSubscriptionDB($data);
+        } else {
+            $payPalService->newPayPalSubscription( $request );
+            $response = [
+                'success' => true,
+            ];
+        }
+
+        return response()->json($response);
 
     }
 

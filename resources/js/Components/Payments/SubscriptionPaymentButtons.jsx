@@ -9,9 +9,9 @@ import {
     getClientId, updatePaymentMethod,
 } from '@/Services/PayPalRequests.jsx';
 import EventBus from '@/Utils/Bus.jsx';
-import {getFutureTime} from '@/Services/TimeRequests.jsx';
 import {Loader} from '@/Utils/Loader.jsx';
 import {getStripeBillingDate} from '@/Services/SubscriptionRequests.jsx';
+import {getInternetDateTimeFormat} from '@/Services/TimeRequests.jsx';
 
 export const SubscriptionPaymentButtons = ({
                                                showPaymentButtons,
@@ -20,7 +20,8 @@ export const SubscriptionPaymentButtons = ({
                                                subId,
                                                defaultPage = null,
                                                setUserInfo = {},
-                                               setSubscription = {}
+                                               setSubscription = {},
+                                               subEndDate = null
 }) => {
 
     const [message, setMessage] = useState(null);
@@ -78,7 +79,7 @@ export const SubscriptionPaymentButtons = ({
                 label: "paypal"
             }}
             createSubscription={(data, actions) =>
-                (showPaymentButtons.type === "purchase") ?
+                (showPaymentButtons.type === "purchase" || showPaymentButtons.type === "resumePaypalSub") ?
                     createSubscription(data, actions) :
                     showPaymentButtons.type === "change_payment_method" ?
                         changePaymentMethodToPaypal(data, actions) :
@@ -90,17 +91,29 @@ export const SubscriptionPaymentButtons = ({
     const createSubscription = (data, actions) => {
 
         const planId = getPlanId(showPaymentButtons.plan, env);
-
-        return actions.subscription.create({
-            plan_id:planId,
-            "application_context": {
-                userAction: "SUBSCRIBE_NOW",
-            }
-        }).catch(error => {
-            console.error(error);
-            setMessage(`Could not initiate PayPal Subscription...`);
-        })
-
+        const startTime = getInternetDateTimeFormat(subEndDate);
+        if (showPaymentButtons.type === "resumePaypalSub") {
+            return actions.subscription.create({
+                plan_id:planId,
+                start_time: startTime,
+                "application_context": {
+                    userAction: "SUBSCRIBE_NOW",
+                }
+            }).catch(error => {
+                console.error(error);
+                setMessage(`Could not initiate PayPal Subscription...`);
+            })
+        } else {
+            return actions.subscription.create({
+                plan_id:planId,
+                "application_context": {
+                    userAction: "SUBSCRIBE_NOW",
+                }
+            }).catch(error => {
+                console.error(error);
+                setMessage(`Could not initiate PayPal Subscription...`);
+            })
+        }
     }
 
     const changePaymentMethodToPaypal = (data, actions) => {
@@ -205,13 +218,26 @@ export const SubscriptionPaymentButtons = ({
                     saveSubscription(packets).then((response) => {
 
                         if(response.success) {
-                            router.visit(route('show.subscribe.success'), {
-                                method: 'get',
-                                data: {
-                                    type: "subscription",
-                                    name: userName
-                                }
-                            })
+
+                            if (showPaymentButtons.type === "resumePaypalSub") {
+                                setSubscription((prev) => ({
+                                    ...prev,
+                                    sub_id: subscriptionId
+                                }));
+                                setShowPaymentButtons({
+                                    show: false,
+                                    plan: ""
+                                });
+                                EventBus.dispatch("success", {message: response.message});
+                            } else {
+                                router.visit(route('show.subscribe.success'), {
+                                    method: 'get',
+                                    data: {
+                                        type: "subscription",
+                                        name: userName
+                                    }
+                                })
+                            }
                         }
                     });
                 }
@@ -248,7 +274,10 @@ export const SubscriptionPaymentButtons = ({
                                         plan: ""
                                     });
                                 }}>
-                                    <BiChevronLeft/>BACK TO {showPaymentButtons.type === "change_payment_method" ? "SETTINGS" : "PLANS" }
+                                    <BiChevronLeft/>BACK TO {
+                                    (showPaymentButtons.type === "change_payment_method" || showPaymentButtons.type === "resumePaypalSub") ?
+                                        "SETTINGS" :
+                                        "PLANS"}
                                 </a>
                             </li>
                         </ul>
@@ -270,7 +299,12 @@ export const SubscriptionPaymentButtons = ({
                                     <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-2zm0 3a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
                                 </svg>
                             </div>
-                            <h3 className="text-center mb-4 text-2xl">Choose Your Payment Method</h3>
+                            {showPaymentButtons.type === 'resumePaypalSub' ?
+                                <h4 className="mb-3">In order to reactivate your plan, you will need to log into your PayPal account.</h4>
+                                :
+                                <h3 className="text-center mb-4 text-2xl">Choose Your Payment Method</h3>
+                            }
+
                         </>
                     }
                     <PayPalScriptProvider options={initialOptions}>
@@ -280,7 +314,7 @@ export const SubscriptionPaymentButtons = ({
                         <p>{message}</p>
                     }
 
-                    {showPaymentButtons.type !== "changePlan" &&
+                    { (showPaymentButtons.type !== "changePlan" && showPaymentButtons.type !== "resumePaypalSub") &&
                         <div className="button_row mt-3">
                             <a className='button black_gradient' href={stripeButtonUrl}>
                                 Checkout With Card

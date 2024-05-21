@@ -1,10 +1,11 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React from 'react';
 import { BsFillCreditCard2FrontFill } from "react-icons/bs";
 import {router} from '@inertiajs/react';
 
 const PaymentComponent = ({
                               userInfo,
                               plan,
+                              status,
                               setShowPaymentButtons
 }) => {
 
@@ -13,7 +14,7 @@ const PaymentComponent = ({
     const handleButtonClick = (e) => {
         e.preventDefault();
         if(pm_type === "paypal") {
-            router.visit("/subscribe?plan=" + plan + "&type=change_payment_method");
+            router.get("/subscribe?plan=" + plan + "&type=change_payment_method");
         } else {
             setShowPaymentButtons((prev) => ({
                 ...prev,
@@ -57,13 +58,15 @@ const PaymentComponent = ({
                     }
                 </div>
             }
-            <a target="_blank"
-               href="#"
-               className="button blue text-uppercase mt-auto"
-               onClick={handleButtonClick}
-            >
-                Change Payment Method
-            </a>
+            {status !== 'canceled' &&
+                <a target="_blank"
+                   href="#"
+                   className="button blue text-uppercase mt-auto"
+                   onClick={handleButtonClick}
+                >
+                    Change Payment Method
+                </a>
+            }
         </>
     );
 };

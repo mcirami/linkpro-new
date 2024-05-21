@@ -8,6 +8,7 @@ export const saveSubscription = (packets) => {
 
             return {
                 success : response.data.success,
+                message : JSON.stringify(response.data.message),
             }
         },
 

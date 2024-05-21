@@ -12,7 +12,8 @@ const PlanComponent = ({
                            userInfo,
                            setShowSection,
                            setShowLoader,
-                           pmType
+                           pmType,
+                           setShowPaymentButtons
 }) => {
 
     const [currentDateTime, setCurrentDateTime] = useState("");
@@ -32,33 +33,44 @@ const PlanComponent = ({
     const handleResumeClick = (e) => {
         e.preventDefault();
 
-        setShowLoader({
-            show: true,
-            position: 'absolute',
-            icon: ""
-        })
-
-        const packets = {
-            subId: subscription.sub_id,
-            plan: subscription.name,
-            pmType: pmType
-        }
-
-        resumeSubscription(packets).then((response) => {
-            if(response.success) {
-                setSubscription((prev) => ({
-                    ...prev,
-                    ends_at: null,
-                    status: "active"
-                }));
-            }
-
+        if(pmType === 'paypal') {
+            setShowPaymentButtons((prev) => ({
+                ...prev,
+                show: true,
+                type: "resumePaypalSub",
+                plan: subscription.name,
+                pmType: pmType,
+            }));
+        } else {
             setShowLoader({
-                show: false,
-                position: "",
+                show: true,
+                position: 'absolute',
                 icon: ""
             })
-        })
+
+            const packets = {
+                subId: subscription.sub_id,
+                plan: subscription.name,
+                pmType: pmType,
+                ends_at: subscription.ends_at,
+            }
+
+            resumeSubscription(packets).then((response) => {
+                if (response.success) {
+                    setSubscription((prev) => ({
+                        ...prev,
+                        ends_at: null,
+                        status: "active"
+                    }));
+                }
+
+                setShowLoader({
+                    show: false,
+                    position: "",
+                    icon: ""
+                })
+            })
+        }
     }
 
     return (

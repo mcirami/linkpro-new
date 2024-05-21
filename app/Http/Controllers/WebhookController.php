@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use App\Http\Traits\BillingTrait;
+use Illuminate\Http\Request;
 use Stripe\Webhook;
 
 class WebhookController extends Controller
@@ -121,6 +122,19 @@ class WebhookController extends Controller
                                                 "-- Error Message -- " .
                                                 $response );
         }*/
+    }
+
+    public function receivePaypalWebhookResponse(Request $request, WebhookService $webhook_service): void {
+        $webhookData = $request->all();
+        $event_type = $webhookData["event_type"];
+        $subscription_id = $webhookData['resource']['id'];
+        $endDate = $webhookData['resource']['agreement_details']['last_payment_date'];
+
+        if ($event_type == "BILLING.SUBSCRIPTION.CANCELLED") {
+            $webhook_service->cancelSubscription($subscription_id, $endDate);
+        }
+
+        Log::channel( 'webhooks' )->info( " --- PayPal event type --- " . print_r($webhookData, true ) );
     }
 
     private function getStripeWebhookInstance($type) {

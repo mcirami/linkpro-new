@@ -55,7 +55,6 @@ class WebhookService {
      *
      * @return void
      *
-     * TODO: SEPARATE GATEWAY FUNCTIONS
      */
     public function checkDefaultPaymentMethod($customer): void {
 
@@ -82,7 +81,6 @@ class WebhookService {
      *
      * @return void
      *
-     * TODO: SEPARATE GATEWAY FUNCTIONS
      *
      */
     public function updateDefaultPaymentMethod($defaultPmId, $customer): void {
@@ -121,7 +119,6 @@ class WebhookService {
      *
      * @return void
      *
-     * TODO: MAKE PRODUCT NAME DYNAMIC
      */
     public function handleSubscriptionEnded($subId, $productId): void {
         $productName = $this->getProductName($productId);
@@ -161,7 +158,12 @@ class WebhookService {
         ]);
     }
 
-    public function addPlan($object) {
+    /**
+     * @param $object
+     *
+     * @return void
+     */
+    public function addPlan($object): void {
 
         $name = strtolower(explode(" ", $object->name)[0]);
 
@@ -184,7 +186,6 @@ class WebhookService {
      *
      * @return void
      *
-     * TODO: SEPARATE GATEWAY FUNCTIONS
      */
     public function updatePlan($object): void {
 
@@ -211,7 +212,13 @@ class WebhookService {
 
 
     }
-    public function deletePlan($object) {
+
+    /**
+     * @param $object
+     *
+     * @return void
+     */
+    public function deletePlan($object): void {
         DB::table('plans')->where('product_id', '=', $object->id)->delete();
     }
 

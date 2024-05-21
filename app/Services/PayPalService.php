@@ -34,9 +34,9 @@ class PayPalService {
         }
 
         $apiHost = App::environment() == 'production' ? config('paypal.live.api_host') : config('paypal.sandbox.api_host');
-        $postEndpoint = $apiHost . "/v1/billing/subscriptions/" . $subId . "/suspend";
+        $postEndpoint = $apiHost . "/v1/billing/subscriptions/" . $subId . "/cancel";
         $sendData = [
-            "reason" => "Customer-requested pause"
+            "reason" => "Customer-requested Cancel"
         ];
         $this->payPalPostCall($postEndpoint, $sendData);
     }
@@ -75,10 +75,12 @@ class PayPalService {
     /**
      * @param $endpoint
      * @param array|string $sendData
+     * @param bool $returnResponse
      *
+     * @return null|void|integer|string
      * @throws Throwable
      */
-    public function payPalPostCall($endpoint, array|string $sendData = []): void {
+    public function payPalPostCall($endpoint, array|string $sendData = [], bool $returnResponse = false) {
 
         $provider = new PayPalClient;
         $accessToken = $provider->getAccessToken();
@@ -124,6 +126,12 @@ class PayPalService {
         if ($err) {
             $decodedResponse = "cURL Error getting sub #:" . $err;
             $this->saveErrors( $decodedResponse );
+            return $decodedResponse;
+        }
+
+        if($returnResponse) {
+            $decodedResponse = json_decode($response, true);
+            return $decodedResponse['id'];
         }
     }
 
@@ -131,10 +139,10 @@ class PayPalService {
      * @param $endpoint
      * @param $type
      *
-     * @return Carbon | array
+     * @return Carbon | array | string
      * @throws Throwable
      */
-    public function payPalGetCall($endpoint, $type): array|Carbon {
+    public function payPalGetCall($endpoint, $type): array|Carbon|string {
         $provider = new PayPalClient;
         $accessToken = $provider->getAccessToken();
         $curl = curl_init();
@@ -165,23 +173,37 @@ class PayPalService {
             ];
         } else {
             $decodedResponse = json_decode($response, true);
-            $nextBillingDate = Carbon::parse($decodedResponse["billing_info"]["next_billing_time"]);
-            if ($type == "cancel") {
 
-                $endDate = $nextBillingDate->startOfDay()->format('Y-m-d H:i:s');
-
-                return [
-                    'success'   => true,
-                    'status'    => "canceled",
-                    'endDate'   => $endDate
-                ];
-            }
-
-            if ($type == "next_billing_date") {
-                return $nextBillingDate;
+            switch ($type) {
+                case 'cancel':
+                    $nextBillingDate = Carbon::parse($decodedResponse["billing_info"]["next_billing_time"]);
+                    $endDate = $nextBillingDate->startOfDay()->format('Y-m-d H:i:s');
+                    return [
+                        'success'   => true,
+                        'status'    => "canceled",
+                        'endDate'   => $endDate
+                    ];
+                case 'next_billing_date':
+                    return Carbon::parse($decodedResponse["billing_info"]["next_billing_time"]);
+                case 'sub_status':
+                    return $decodedResponse["status"];
             }
         }
 
         return $decodedResponse;
+    }
+
+    /**
+     * @param $planName
+     *
+     * @return string
+     */
+    public function getPaypalPlanId($planName): string {
+
+        if (App::environment() === "production") {
+            return $planName === "pro" ? "P-6MH1893903516972EMX5QADY" : "P-5CL62356R3238071JMX5QANA";
+        } else {
+            return $planName === "pro" ? "P-5XM03253A6686724NMYGYLEQ" : "P-17R924989P608662RMYGYLWQ";
+        }
     }
 }

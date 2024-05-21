@@ -22,3 +22,11 @@ export const getFutureTime = (date, addMonth) => {
     const split = dateFormat.split('/');
     return split[2] + "-" + split[0] + "-" + split[1] + "T00:00:00Z";
 }
+
+export const getInternetDateTimeFormat = (date) => {
+    const newDate = new Date(date);
+    const dateFormat = new Intl.DateTimeFormat("en-US",{year: 'numeric', month: '2-digit',day: '2-digit'})
+    .format(newDate);
+    const split = dateFormat.split('/');
+    return split[2] + "-" + split[0] + "-" + split[1] + "T00:00:00Z";
+}

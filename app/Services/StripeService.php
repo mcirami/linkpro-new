@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use App\Http\Traits\BillingTrait;
+use Throwable;
 
 class StripeService {
 
@@ -28,7 +29,7 @@ class StripeService {
      * @param $request
      *
      * @return Session
-     * @throws ApiErrorException
+     * @throws ApiErrorException|Throwable
      */
     public function getStripePurchasePage($request): \Stripe\Checkout\Session {
 

@@ -160,11 +160,11 @@ class SubscriptionService {
 
         $activeSubs = $this->getUserSubscriptions($this->user);
 
-        if($request->get('pmType') == "paypal") {
+        /*if($request->get('pmType') == "paypal") {
             $subId = $request->subId;
             $apiHost = App::environment() == 'production' ? config('paypal.live.api_host') : config('paypal.sandbox.api_host');
-            $endpoint = $apiHost . "/v1/billing/subscriptions/" . $subId . "/activate";
             $payPalService = new PayPalService();
+            $endpoint = $apiHost . "/v1/billing/subscriptions/" . $subId . "/activate";
             $payPalService->payPalPostCall($endpoint);
 
             $returnData = [
@@ -172,14 +172,12 @@ class SubscriptionService {
                 'sub'       => $activeSubs,
                 'sub_id'    => $subId
             ];
-        } else {
+        } else {*/
 
             $stripeService = new StripeService();
-            $returnData = $stripeService->resumeStripeSubscription($activeSubs, $request);
+            return $stripeService->resumeStripeSubscription($activeSubs, $request);
 
-        }
-
-        return $returnData;
+        /*}*/
     }
 
     /**
