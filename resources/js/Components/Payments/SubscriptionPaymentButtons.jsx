@@ -204,7 +204,7 @@ export const SubscriptionPaymentButtons = ({
                             }));
                             setSubscription((prev) => ({
                                 ...prev,
-                                sub_id: subscriptionId
+                                sub_id: subscriptionId,
                             }));
                             setShowPaymentButtons({
                                 show: false,
@@ -222,7 +222,9 @@ export const SubscriptionPaymentButtons = ({
                             if (showPaymentButtons.type === "resumePaypalSub") {
                                 setSubscription((prev) => ({
                                     ...prev,
-                                    sub_id: subscriptionId
+                                    sub_id: subscriptionId,
+                                    ends_at: null,
+                                    status: "active"
                                 }));
                                 setShowPaymentButtons({
                                     show: false,

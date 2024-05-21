@@ -19,6 +19,7 @@ const PlanComponent = ({
     const [currentDateTime, setCurrentDateTime] = useState("");
     const [subEnd, setSubEnd]   = useState("");
 
+    console.log(subscription);
     useEffect(() => {
         setCurrentDateTime(GetCurrentTime);
     }, []);
