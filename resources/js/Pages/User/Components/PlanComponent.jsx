@@ -19,7 +19,6 @@ const PlanComponent = ({
     const [currentDateTime, setCurrentDateTime] = useState("");
     const [subEnd, setSubEnd]   = useState("");
 
-    console.log(subscription);
     useEffect(() => {
         setCurrentDateTime(GetCurrentTime);
     }, []);
@@ -61,7 +60,8 @@ const PlanComponent = ({
                     setSubscription((prev) => ({
                         ...prev,
                         ends_at: null,
-                        status: "active"
+                        status: "active",
+                        sub_id: response.sub_id
                     }));
                 }
 

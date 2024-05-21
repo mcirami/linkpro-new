@@ -156,13 +156,14 @@ class SubscriptionController extends Controller
      */
     public function resume(Request $request, SubscriptionService $subscriptionService): JsonResponse {
 
-        $data = $subscriptionService->resumeAtGateway($request);
+        $gatewayData = $subscriptionService->resumeAtGateway($request);
 
-        $data = $subscriptionService->resumeSubscriptionDB($data);
+        $data = $subscriptionService->resumeSubscriptionDB($gatewayData);
 
         return response()->json([
             'success' => $data["success"],
             'message' => $data["message"],
+            'sub_id'  => $gatewayData['sub_id']
         ]);
     }
 

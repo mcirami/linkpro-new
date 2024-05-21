@@ -90,6 +90,7 @@ export const resumeSubscription = (packets) => {
 
             return {
                 success : success,
+                sub_id : response.data.sub_id
             }
 
         },
