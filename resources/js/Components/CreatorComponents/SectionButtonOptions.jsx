@@ -7,6 +7,7 @@ import Radio from '@mui/material/Radio';
 import Slider from '@mui/material/Slider';
 import ColorPicker from '@/Components/CreatorComponents/ColorPicker.jsx';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
+import SliderComponent from '@/Components/CreatorComponents/SliderComponent.jsx';
 import {updateSectionData} from '@/Services/CourseRequests.jsx';
 import {updateSectionData as updateLPSectionData} from '@/Services/LandingPageRequests.jsx';
 import DropdownComponent
@@ -33,7 +34,6 @@ const SectionButtonOptions = ({
 
     const [includeButtonValue, setIncludeButtonValue] = useState(false);
     const [buttonPositionValue, setButtonPositionValue] = useState("above");
-    const [buttonSizeState, setButtonSizeState] = useState(button_size);
 
     useEffect(() => {
         setIncludeButtonValue(button)
@@ -93,41 +93,10 @@ const SectionButtonOptions = ({
         });
     }
 
-    const handleRangeChange = (value) => {
-        setButtonSizeState(value)
-    }
-
-    const submitButtonSize = () => {
-        const packets = {
-            button_size: buttonSizeState,
-        };
-
-        const method = saveTo === "course" ?
-            updateSectionData(packets, id) :
-            updateLPSectionData(packets, id)
-        method.then((response) => {
-            if(response.success) {
-                setSections(
-                    sections.map((section) => {
-                        if(section.id === id) {
-                            section.button_size = buttonSizeState;
-                        }
-
-                        return section;
-                    })
-                )
-            }
-        });
-    }
-
-    const rangePercent = (value) => {
-        return value + "%";
-    }
-
     return (
         <>
             <div className={`switch_wrap page_settings border_wrap ${!button ? "mb-4" : "" }`}>
-                <h3>Include Button</h3>
+                <h4>Include Button</h4>
                 <IOSSwitch
                     onChange={handleSwitchChange}
                     checked={Boolean(includeButtonValue)}
@@ -143,7 +112,7 @@ const SectionButtonOptions = ({
                                     color: '#000'
                                 }}
                             >
-                                <h3>Button Location</h3>
+                                <h4>Button Location</h4>
                             </FormLabel>
                             <RadioGroup
                                 row
@@ -171,26 +140,21 @@ const SectionButtonOptions = ({
                         </FormControl>
                     </div>
                 </article>
-                <article className="my_row page_settings border_wrap">
-                    <h3>Button Size</h3>
-                    <div className="slider_wrap">
-                        <Slider
-                            value={buttonSizeState}
-                            aria-label="Default"
-                            valueLabelDisplay="auto"
-                            valueLabelFormat={rangePercent}
-                            color="primary"
-                            step={1}
-                            min={25}
-                            max={100}
-                            sx={{
-                                color: '#424fcf'
-                            }}
-                            onChange={(e) => handleRangeChange(e.target.value)}
-                            onChangeCommitted={submitButtonSize}
-                        />
-                    </div>
-                </article>
+                <SliderComponent
+                    label="Button Size"
+                    id={id}
+                    value={button_size}
+                    elementName="button_size"
+                    sliderValues={{
+                        step: 1,
+                        min: 25,
+                        max: 100,
+                        unit: "%",
+                    }}
+                    saveTo={saveTo}
+                    sections={sections}
+                    setSections={setSections}
+                />
                 <ColorPicker
                     label="Button Text Color"
                     sections={sections}

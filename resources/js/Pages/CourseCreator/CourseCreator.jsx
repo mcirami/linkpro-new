@@ -42,6 +42,7 @@ import {
     updateSectionsPositions,
 } from '../../Services/CourseRequests';
 import {Head, usePage} from '@inertiajs/react';
+import SliderComponent from '@/Components/CreatorComponents/SliderComponent.jsx';
 
 function CourseCreator({courseArray, offerArray, categories}) {
 
@@ -255,7 +256,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         elementName="title"
                                                         data={courseData}
                                                         dispatch={dispatchCourseData}
-                                                        value={courseData["title"]}
+                                                        value={courseData['title']}
                                                         saveTo="course"
                                                     />
                                                     <ImageComponent
@@ -269,7 +270,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         previewType="external"
                                                         saveTo="course"
                                                         cropArray={{
-                                                            unit: "%",
+                                                            unit: '%',
                                                             x: 25,
                                                             y: 25,
                                                             width: 50,
@@ -284,25 +285,41 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                             elementName="header_color"
                                                             saveTo="course"
                                                         />
-                                                        <ToolTipIcon section="course_header_color" />
+                                                        <ToolTipIcon section="course_header_color"/>
                                                     </div>
                                                     <div className="picker_wrap">
                                                         <ColorPicker
-                                                            label="Course Title Color"
+                                                            label="Title Color"
                                                             data={courseData}
                                                             dispatch={dispatchCourseData}
                                                             elementName="header_text_color"
                                                             saveTo="course"
                                                         />
-                                                        <ToolTipIcon section="course_header_text_color" />
+                                                        <ToolTipIcon section="course_header_text_color"/>
                                                     </div>
-                                                    <DropdownComponent
+                                                    <SliderComponent
+                                                        label="Title Font Size"
                                                         id={courseData["id"]}
                                                         dispatch={dispatchCourseData}
-                                                        value={courseData["category"] || ""}
+                                                        value={courseData["header_font_size"]}
+                                                        elementName="header_font_size"
+                                                        sliderValues={{
+                                                            step: .1,
+                                                            min: .1,
+                                                            max: 5,
+                                                            unit: "rem",
+                                                        }}
+                                                        saveTo="course"
+                                                    />
+                                                    <DropdownComponent
+                                                        id={courseData['id']}
+                                                        dispatch={dispatchCourseData}
+                                                        value={courseData['category'] ||
+                                                            ''}
                                                         categories={categories}
                                                     />
-                                                    {courseData["slug"] && offerData["published"] ?
+                                                    {courseData['slug'] &&
+                                                    offerData['published'] ?
                                                         <>
                                                             <div className="url_wrap mb-4">
                                                                 <p>Landing Page:</p>
@@ -314,14 +331,15 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                             </div>
                                                         </>
                                                         :
-                                                        ""
+                                                        ''
                                                     }
                                                 </div>
                                             </section>
                                             <section id="intro_video_section"
                                                      className="my_row section_row"
                                                      onMouseEnter={(e) =>
-                                                         setHoverSection(e.target.id)
+                                                         setHoverSection(
+                                                             e.target.id)
                                                      }>
                                                 <div className="section_title">
                                                     <h4>Intro Video</h4>

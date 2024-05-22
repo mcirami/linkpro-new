@@ -47,7 +47,7 @@ export const updateData = (packets, id, elementName) => {
             const returnMessage = JSON.stringify(response.data.message);
             const slug = response.data.slug
 
-            if (!returnMessage.includes("color")) {
+            if (!returnMessage.includes("color") && !returnMessage.includes("size")) {
                 EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
             }
 
@@ -122,7 +122,7 @@ export const updateSectionData = (packets, id, elementName) => {
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
             //EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
-            if (!returnMessage.includes("color") && !returnMessage.includes("button")) {
+            if (!returnMessage.includes("color") && !returnMessage.includes("button") && !returnMessage.includes("size")) {
                 EventBus.dispatch("success", { message: returnMessage.replace("_", " ") });
             }
 

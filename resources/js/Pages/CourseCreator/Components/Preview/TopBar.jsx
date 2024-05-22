@@ -27,7 +27,8 @@ const TopBar = ({
             </div>
             {data['title'] &&
                 <h2 id="preview_title_section" className="title" style={{
-                    color: data['header_text_color']
+                    color: data['header_text_color'],
+                    fontSize: data['header_font_size'] + 'rem',
                 }}>{data['title']}</h2>
             }
         </div>

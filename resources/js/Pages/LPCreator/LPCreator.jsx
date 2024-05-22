@@ -34,6 +34,8 @@ import {updateSectionsPositions} from '@/Services/LandingPageRequests';
 import {Head} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import {handleDragEndAction} from '@/Services/CreatorServices.jsx';
+import SliderComponent
+    from '@/Components/CreatorComponents/SliderComponent.jsx';
 
 function LPCreator({landingPageArray, courses, username}) {
 
@@ -221,7 +223,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     }}
                                                 />
                                                 <ColorPicker
-                                                    label="Top Header Color"
+                                                    label="Header Background Color"
                                                     data={pageData}
                                                     dispatch={dispatchPageData}
                                                     elementName="header_color"
@@ -231,6 +233,20 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     data={pageData}
                                                     dispatch={dispatchPageData}
                                                     elementName="header_text_color"
+                                                />
+                                                <SliderComponent
+                                                    label="Header Font Size"
+                                                    id={pageData["id"]}
+                                                    dispatch={dispatchPageData}
+                                                    value={pageData["header_font_size"]}
+                                                    elementName="header_font_size"
+                                                    sliderValues={{
+                                                        step: .1,
+                                                        min: .1,
+                                                        max: 5,
+                                                        unit: "rem",
+                                                    }}
+                                                    saveTo="landingPage"
                                                 />
                                                 <div className="my_row page_settings">
                                                     {pageData['slug'] &&
