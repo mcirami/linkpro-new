@@ -25,6 +25,9 @@ class LandingPageSection extends Model
      */
     protected $hidden = ['created_at', 'updated_at'];
 
+    protected $casts = [
+        'text' => 'array'
+    ];
     public function LandingPage() {
         return $this->belongsTo(LandingPage::class);
     }

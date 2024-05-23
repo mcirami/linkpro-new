@@ -15,7 +15,6 @@ import {updateOfferData} from '@/Services/OfferRequests.jsx';
 import EditorComponent from '@/Components/CreatorComponents/EditorComponent.jsx';
 import {HandleFocus} from '@/Utils/InputAnimations.jsx';
 
-
 const InputComponent = ({
                             placeholder,
                             type,

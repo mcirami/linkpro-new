@@ -3,7 +3,6 @@ import VideoComponent from './Components/VideoComponent';
 import React, {useEffect, useState} from 'react';
 import draftToHtml from 'draftjs-to-html';
 import DOMPurify from 'dompurify';
-import isJSON from 'validator/es/lib/isJSON';
 import {Head} from '@inertiajs/react';
 import CourseLayout from '@/Layouts/CourseLayout.jsx';
 import Menu from '@/Menu/Menu.jsx';
@@ -77,9 +76,8 @@ function Course({
 
     useEffect(() => {
 
-            if (introText && isJSON(introText)) {
-                const allContent = JSON.parse(introText);
-                allContent["blocks"] = allContent["blocks"].map((block) => {
+            if (introText && introText.hasOwnProperty('blocks')) {
+                introText["blocks"] = introText["blocks"].map((block) => {
                     if (!block.text) {
                         block.text = ""
                     }
@@ -87,7 +85,7 @@ function Course({
                     return block;
                 })
 
-                setIntroText(draftToHtml(allContent));
+                setIntroText(draftToHtml(introText));
             } else {
                 setIntroText(introText)
             }

@@ -77,7 +77,7 @@ const ColumnComponent = ({
     }, []);
 
     useEffect(() => {
-        if (type === "file") {
+        if (type === "file" && file) {
             const fileArray = getFileParts(file);
             setFileName(fileArray.name + " " + fileArray.type);
         }

@@ -2,7 +2,6 @@ import React, {useEffect, useState, useRef} from 'react';
 import SectionImage from './SectionImage';
 import DOMPurify from 'dompurify';
 import draftToHtml from 'draftjs-to-html';
-import isJSON from 'validator/es/lib/isJSON';
 
 const PreviewSection = ({
                             currentSection,
@@ -44,9 +43,9 @@ const PreviewSection = ({
     useEffect(() => {
 
         if(type === "text" ) {
-            if (text && isJSON(text)) {
-                const allContent = JSON.parse(text);
-                allContent["blocks"] = allContent["blocks"].map((block) => {
+            if (text && text.hasOwnProperty("blocks")) {
+
+                text["blocks"] = text["blocks"].map((block) => {
                     if (!block.text) {
                         block.text = ""
                     }
@@ -54,8 +53,9 @@ const PreviewSection = ({
                     return block;
                 })
 
-                setTextValue(draftToHtml(allContent));
+                setTextValue(draftToHtml(text));
                 firstUpdate.current = false;
+
             } else {
                 setTextValue(text)
             }

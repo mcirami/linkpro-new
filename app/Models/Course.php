@@ -27,6 +27,10 @@ class Course extends Model
      */
     protected $hidden = ['created_at', 'updated_at'];
 
+    protected $casts = [
+        'intro_text' => 'array'
+    ];
+
     public function user() {
         return $this->belongsTo(User::class);
     }

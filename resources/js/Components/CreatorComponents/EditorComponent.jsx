@@ -14,7 +14,8 @@ import {
     updateSectionData as updateCourseSectionData
 } from '@/Services/CourseRequests.jsx';
 import isJSON from 'validator/es/lib/isJSON';
-
+import {BubbleMenu, EditorProvider, FloatingMenu, useEditor, EditorContent, useCurrentEditor} from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit'
 const EditorComponent = ({
                              dispatch,
                              sections = null,
@@ -34,26 +35,39 @@ const EditorComponent = ({
 
     const [editorState, setEditorState] = useState("");
     const [editorValue, setEditorValue] = useState("");
-
+    const [tipTapContent, setTipTapContent] = useState(useEditor({
+        extensions: [
+            StarterKit.configure(),
+        ],
+        content: currentSection ? draftToHtml(currentSection["text"]) : ""
+    }));
     useEffect(() => {
 
         if (currentSection) {
 
-            if (currentSection["text"] && isJSON(currentSection["text"])) {
-                const allContent = JSON.parse(currentSection["text"]);
-                allContent["blocks"] = allContent["blocks"].map((block) => {
-                    if (!block.text) {
-                        block.text = ""
-                    }
+            if (currentSection["text"]) {
+                const allContent = currentSection["text"];
+                if(allContent.hasOwnProperty("blocks")) {
+                    allContent["blocks"] = allContent["blocks"].map((block) => {
+                        if (!block.text) {
+                            block.text = ""
+                        }
 
-                    return block;
-                })
-                setEditorState(draftToHtml(allContent))
+                        return block;
+                    })
+                    setEditorState(draftToHtml(allContent))
+                }
+                /*setTipTapContent( useEditor({
+                    extensions: [
+                        StarterKit.configure(),
+                    ],
+                    content: draftToHtml(allContent)
+                }))*/
             }
-        } else {
+        } else if (data["intro_text"]) {
 
-            if (data["intro_text"] && isJSON(data["intro_text"])) {
-                const allContent = JSON.parse(data["intro_text"]);
+            const allContent = data["intro_text"];
+            if(allContent.hasOwnProperty("blocks")) {
                 allContent["blocks"] = allContent["blocks"].map((block) => {
                     if (!block.text) {
                         block.text = ""
@@ -69,13 +83,15 @@ const EditorComponent = ({
 
     useEffect(() => {
         if (currentSection) {
-            if (currentSection["text"] && isJSON(currentSection["text"]) &&
-                JSON.parse(currentSection["text"])["blocks"][0]["text"] !== "") {
+            if (currentSection["text"] &&
+                currentSection["text"].hasOwnProperty("blocks") &&
+                currentSection["text"]["blocks"][0]["text"] !== "") {
                 setIsValid(true)
             }
         } else {
-            if (data["intro_text"] && isJSON(data["intro_text"]) &&
-                JSON.parse(data["intro_text"])["blocks"][0]["text"] !== "") {
+            if (data["intro_text"] &&
+                data["intro_text"].hasOwnProperty("blocks") &&
+                data["intro_text"]["blocks"][0]["text"] !== "") {
                 setIsValid(true)
             }
         }
@@ -230,9 +246,20 @@ const EditorComponent = ({
                     }}
                 />
             }
+            {/*<div className="tiptap">
+                <EditorProvider extensions={extensions} content={editorState}>
+                    <FloatingMenu>This is the floating menu</FloatingMenu>
+                    <BubbleMenu>This is the bubble menu</BubbleMenu>
+                </EditorProvider>
+                <EditorContent className="editor__content" editor={tipTapContent} />
+                <FloatingMenu editor={tipTapContent}>This is the floating menu</FloatingMenu>
+                <BubbleMenu editor={tipTapContent}>This is the bubble menu</BubbleMenu>
+                <pre>
+                  {JSON.stringify(editor.getJSON(), null, 2)}
+                </pre>
+            </div>*/}
         </div>
     );
 };
-
 
 export default EditorComponent;

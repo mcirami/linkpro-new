@@ -7,7 +7,6 @@ import ImageComponent from '@/Components/CreatorComponents/ImageComponent.jsx';
 import SectionButtonOptions from '@/Components/CreatorComponents/SectionButtonOptions';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import isJSON from 'validator/es/lib/isJSON.js';
 import DOMPurify from 'dompurify';
 
 const Section = ({
@@ -74,18 +73,22 @@ const Section = ({
         switch(type) {
             case 'text':
                 let parsedText = null;
-                if (section.text && isJSON(section.text)) {
-                    parsedText = JSON.parse(section.text);
-                    parsedText['blocks'] = parsedText['blocks'].map((block) => {
-                        if (!block.text) {
-                            block.text = '';
-                        }
+                if (section.text && section.text.hasOwnProperty('blocks')) {
+                    parsedText = section.text;
+                    if(parsedText.hasOwnProperty('blocks')) {
+                        parsedText['blocks'] = parsedText['blocks'].map(
+                            (block) => {
+                                if (!block.text) {
+                                    block.text = '';
+                                }
 
-                        return block;
-                    });
-                    parsedText = parsedText.blocks[0]['text'].length > 20 ?
-                        parsedText.blocks[0]['text'].slice(0, 20) + '...' :
-                        parsedText.blocks[0]['text'];
+                                return block;
+                            });
+
+                        parsedText = parsedText.blocks[0]['text'].length > 20 ?
+                            parsedText.blocks[0]['text'].slice(0, 20) + '...' :
+                            parsedText.blocks[0]['text'];
+                    }
                 } else if (section.text) {
                     const regex = /(<([^>]+)>)/gi;
                     const result = section.text.replace(regex, "");

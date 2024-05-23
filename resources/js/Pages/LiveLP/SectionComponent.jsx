@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import draftToHtml from 'draftjs-to-html';
 import DOMPurify from 'dompurify';
-import isJSON from 'validator/es/lib/isJSON';
 
 const SectionComponent = ({section}) => {
 
@@ -30,9 +29,8 @@ const SectionComponent = ({section}) => {
 
     useEffect(() => {
         if(type === "text" ) {
-            if (text && isJSON(text)) {
-                const allContent = JSON.parse(text);
-                allContent["blocks"] = allContent["blocks"].map((block) => {
+            if (text && text.hasOwnProperty('blocks')) {
+                text["blocks"] = text["blocks"].map((block) => {
                     if (!block.text) {
                         block.text = ""
                     }
@@ -40,7 +38,7 @@ const SectionComponent = ({section}) => {
                     return block;
                 })
 
-                setTextValue(draftToHtml(allContent));
+                setTextValue(draftToHtml(text));
             } else {
                 setTextValue(text)
             }
