@@ -161,13 +161,9 @@ const InputComponent = ({
                     [`${element}`]: e.target.value,
                 };
 
-                if (saveTo === "course") {
-                    updateCourseSectionData(packets, currentSection.id);
-                }
-
-                if (saveTo === "landingPage") {
+                saveTo === "course" ?
+                    updateCourseSectionData(packets, currentSection.id) :
                     updateLpSectionData(packets, currentSection.id)
-                }
 
             } else if (saveTo === "offer") {
 

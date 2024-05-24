@@ -4,6 +4,10 @@ import {LP_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
 import { ContentState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from "html-to-draftjs";
+import TextAlign from '@tiptap/extension-text-align';
+import Underline from '@tiptap/extension-underline';
+import { Color } from '@tiptap/extension-color'
+import TextStyle from '@tiptap/extension-text-style'
 
 import {
     updateSectionData,
@@ -40,7 +44,6 @@ const EditorComponent = ({
     useEffect(() => {
 
         if (currentSection) {
-
             if (currentSection["text"]) {
                 const allContent = currentSection["text"];
                 if(allContent.hasOwnProperty("blocks")) {
@@ -183,14 +186,21 @@ const EditorComponent = ({
 
     const extensions = [
         StarterKit,
+        TextAlign.configure({
+            types: ['heading', 'paragraph'],
+        }),
+        Color,
+        Underline,
+        TextStyle
     ]
+
     const editor = useEditor({
         extensions: extensions,
         content: editorState,
         onUpdate({ editor }) {
             console.log("json", editor.getJSON())
             handleEditorChange(editor.getHTML())
-        }
+        },
     })
 
     return (
@@ -248,10 +258,9 @@ const EditorComponent = ({
                         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                     }}
                 />*/}
-                <div className="tiptap">
+                <div className="tiptap w-full">
                     <MenuBar editor={editor} />
                     <EditorContent className="editor__content" editor={editor} />
-
                 </div>
                 </>
             }
