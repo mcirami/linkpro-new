@@ -70,22 +70,48 @@
                     margin-bottom: 0;
                     padding: 0;
 
-                    .tox-tinymce {
-                        border: none;
-                    }
-
-                    .public-DraftStyleDefault-block {
-                        margin: 0;
-                    }
-
-                    .rdw-editor-main {
-                        min-height: 200px;
-                    }
-
                     + .submit_circle, + .cancel_icon {
                         bottom: 40px !important;
                         right: 15px !important;
                     }
+
+                    .ProseMirror {
+                        padding: 20px;
+                    }
+
+                    .menuBar {
+                        display: -webkit-box;
+                        display: -ms-flexbox;
+                        display: flex;
+                        -webkit-box-orient: horizontal;
+                        -webkit-box-direction: normal;
+                        -ms-flex-direction: row;
+                        flex-direction: row;
+                        -ms-flex-wrap: nowrap;
+                        flex-wrap: nowrap;
+                        gap: 10px;
+                        padding: 10px;
+                        border-bottom: 1px solid $borderGray;
+
+                        button {
+                            box-shadow: none;
+                            width: auto;
+                            border: 1px solid $blue;
+
+                            svg {
+                                color: $blue;
+                            }
+
+                            &.is_active {
+                                background: $blue;
+
+                                svg {
+                                    color: $white;
+                                }
+                            }
+                        }
+                    }
+
 
                 }
             }

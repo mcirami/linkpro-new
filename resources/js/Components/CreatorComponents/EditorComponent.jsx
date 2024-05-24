@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {LP_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
-import { Editor } from '@tinymce/tinymce-react';
+//import { Editor } from '@tinymce/tinymce-react';
 import { ContentState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from "html-to-draftjs";
@@ -14,8 +14,9 @@ import {
     updateSectionData as updateCourseSectionData
 } from '@/Services/CourseRequests.jsx';
 import isJSON from 'validator/es/lib/isJSON';
-import {BubbleMenu, EditorProvider, FloatingMenu, useEditor, EditorContent, useCurrentEditor} from '@tiptap/react';
+import {BubbleMenu, EditorProvider, FloatingMenu, useEditor, EditorContent, useCurrentEditor, Editor} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit'
+import MenuBar from '@/Components/CreatorComponents/MenuBar.jsx';
 const EditorComponent = ({
                              dispatch,
                              sections = null,
@@ -35,12 +36,7 @@ const EditorComponent = ({
 
     const [editorState, setEditorState] = useState("");
     const [editorValue, setEditorValue] = useState("");
-    const [tipTapContent, setTipTapContent] = useState(useEditor({
-        extensions: [
-            StarterKit.configure(),
-        ],
-        content: currentSection ? draftToHtml(currentSection["text"]) : ""
-    }));
+
     useEffect(() => {
 
         if (currentSection) {
@@ -57,12 +53,6 @@ const EditorComponent = ({
                     })
                     setEditorState(draftToHtml(allContent))
                 }
-                /*setTipTapContent( useEditor({
-                    extensions: [
-                        StarterKit.configure(),
-                    ],
-                    content: draftToHtml(allContent)
-                }))*/
             }
         } else if (data["intro_text"]) {
 
@@ -103,9 +93,9 @@ const EditorComponent = ({
         }
     },[])
 
-    const handleEditorChange = () => {
+    const handleEditorChange = (value) => {
 
-        const value = editorRef.current.getContent();
+        //const value = editorRef.current.getContent();
         setEditorValue(value);
 
         if (value !== "") {
@@ -191,11 +181,24 @@ const EditorComponent = ({
         }
     }
 
+    const extensions = [
+        StarterKit,
+    ]
+    const editor = useEditor({
+        extensions: extensions,
+        content: editorState,
+        onUpdate({ editor }) {
+            console.log("json", editor.getJSON())
+            handleEditorChange(editor.getHTML())
+        }
+    })
+
     return (
         <div className="page_settings border_wrap wysiwyg">
 
             {showTiny &&
-                <Editor
+                <>
+                {/*<Editor
                     apiKey='h3695sldkjcjhvyl34syvczmxxely99ind71gtafhpnxy8zj'
                     key={currentSection ? currentSection.id + index : data.id + index}
                     onInit={(evt, editor) => editorRef.current = editor}
@@ -244,20 +247,15 @@ const EditorComponent = ({
                             'removeformat | forecolor backcolor',
                         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                     }}
-                />
+                />*/}
+                <div className="tiptap">
+                    <MenuBar editor={editor} />
+                    <EditorContent className="editor__content" editor={editor} />
+
+                </div>
+                </>
             }
-            {/*<div className="tiptap">
-                <EditorProvider extensions={extensions} content={editorState}>
-                    <FloatingMenu>This is the floating menu</FloatingMenu>
-                    <BubbleMenu>This is the bubble menu</BubbleMenu>
-                </EditorProvider>
-                <EditorContent className="editor__content" editor={tipTapContent} />
-                <FloatingMenu editor={tipTapContent}>This is the floating menu</FloatingMenu>
-                <BubbleMenu editor={tipTapContent}>This is the bubble menu</BubbleMenu>
-                <pre>
-                  {JSON.stringify(editor.getJSON(), null, 2)}
-                </pre>
-            </div>*/}
+
         </div>
     );
 };
