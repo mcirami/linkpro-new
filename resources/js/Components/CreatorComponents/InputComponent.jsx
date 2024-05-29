@@ -295,7 +295,6 @@ const InputComponent = ({
                         showTiny={showTiny}
                         setShowTiny={setShowTiny}
                         saveTo={saveTo}
-                        index={index}
                     />
                 )
             case 'currency' :

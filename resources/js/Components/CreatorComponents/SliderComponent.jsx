@@ -69,7 +69,7 @@ const SliderComponent = ({
 
     return (
         <div className="my_row page_settings border_wrap">
-            <h4>{label}</h4>
+            <label>{label}</label>
             <div className="slider_wrap">
                 <Slider
                     value={value}

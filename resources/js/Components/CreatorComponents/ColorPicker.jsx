@@ -247,7 +247,7 @@ const ColorPicker = ({
 
     return (
         <article className="my_row page_settings border_wrap">
-            <h4>{label}</h4>
+            <label>{label}</label>
             <div className="icon_wrap">
                 <a ref={linkRef}
                    href="#"

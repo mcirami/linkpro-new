@@ -11,6 +11,12 @@ import SetFlash from '@/Utils/SetFlash.jsx';
 import {isEmpty} from 'lodash';
 import PurchasePaymentButtons
     from '@/Components/Payments/PurchasePaymentButtons.jsx';
+import {generateHTML} from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import TextAlign from '@tiptap/extension-text-align';
+import {Color} from '@tiptap/extension-color';
+import Underline from '@tiptap/extension-underline';
+import TextStyle from '@tiptap/extension-text-style';
 
 function Course({
                     auth,
@@ -87,7 +93,23 @@ function Course({
 
                 setIntroText(draftToHtml(introText));
             } else {
-                setIntroText(introText)
+                const output = generateHTML(JSON.parse(introText), [
+                    StarterKit.configure({
+                        heading: {
+                            levels: [1, 2, 3, 4, 5],
+                        },
+                        bulletList:{
+                            keepAttributes: true,
+                        }
+                    }),
+                    TextAlign.configure({
+                        types: ['heading', 'paragraph'],
+                    }),
+                    Color,
+                    Underline,
+                    TextStyle,
+                ])
+                setIntroText(output);
             }
 
     },[])

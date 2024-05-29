@@ -96,7 +96,7 @@ const SectionButtonOptions = ({
     return (
         <>
             <div className={`switch_wrap page_settings border_wrap ${!button ? "mb-4" : "" }`}>
-                <h4>Include Button</h4>
+                <label>Include Button</label>
                 <IOSSwitch
                     onChange={handleSwitchChange}
                     checked={Boolean(includeButtonValue)}
@@ -112,7 +112,7 @@ const SectionButtonOptions = ({
                                     color: '#000'
                                 }}
                             >
-                                <h4>Button Location</h4>
+                                <label>Button Location</label>
                             </FormLabel>
                             <RadioGroup
                                 row

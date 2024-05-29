@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import DOMPurify from 'dompurify';
 import draftToHtml from 'draftjs-to-html';
+import isJSON from 'validator/es/lib/isJSON.js';
 
 const PreviewSection = ({section}) => {
 
@@ -33,7 +34,7 @@ const PreviewSection = ({section}) => {
     useEffect(() => {
 
         if(type === "text" ) {
-            if (text) {
+            if (text && isJSON(text) && text.hasOwnProperty("blocks")) {
 
                 const allContent = text;
                 allContent["blocks"] = allContent["blocks"].map((block) => {

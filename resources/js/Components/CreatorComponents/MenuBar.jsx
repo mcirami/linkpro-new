@@ -20,19 +20,25 @@ const MenuBar = ({editor}) => {
         return null;
     }
     return (
-        <div className="menuBar">
-            <input
-                type="color"
-                onInput={event => editor.chain().focus().setColor(event.target.value).run()}
-                value={editor.getAttributes('textStyle').color}
-                data-testid="setColor"
-            />
+        <div className="menu_bar">
+
+            <div className="input_wrap">
+                <input
+                    type="color"
+                    onInput={event => editor.chain().
+                        focus().
+                        setColor(event.target.value).
+                        run()}
+                    value={editor.getAttributes('textStyle').color}
+                    data-testid="setColor"
+                />
+            </div>
             <button
                 onClick={(e) => {
                     e.preventDefault();
-                    editor.chain().focus().toggleBold().run()
+                    editor.chain().focus().toggleBold().run();
                 }}
-                className={editor.isActive("bold") ? "is_active" : ""}
+                className={editor.isActive('bold') ? 'is_active' : ''}
             >
                 <FaBold/>
             </button>
@@ -41,16 +47,17 @@ const MenuBar = ({editor}) => {
                     e.preventDefault();
                     editor.chain().focus().toggleItalic().run();
                 }}
-                className={editor.isActive("italic") ? "is_active" : ""}
+                className={editor.isActive('italic') ? 'is_active' : ''}
             >
                 <FaItalic/>
             </button>
+
             <button
-                onClick={() => editor.chain().
-                    focus().
-                    toggleUnderline().
-                    run()}
-                className={editor.isActive("underline") ? "is_active" : ""}
+                onClick={(e) => {
+                    e.preventDefault();
+                    editor.chain().focus().toggleUnderline().run();
+                }}
+                className={editor.isActive('underline') ? 'is_active' : ''}
             >
                 <FaUnderline/>
             </button>
@@ -59,7 +66,7 @@ const MenuBar = ({editor}) => {
                     e.preventDefault();
                     editor.chain().focus().toggleStrike().run();
                 }}
-                className={editor.isActive("strike") ? "is_active" : ""}
+                className={editor.isActive('strike') ? 'is_active' : ''}
             >
                 <FaStrikethrough/>
             </button>
@@ -69,9 +76,9 @@ const MenuBar = ({editor}) => {
                     editor.chain().focus().setParagraph().run();
                 }}
                 className={
-                    editor.isActive("paragraph") ?
-                        "is_active" :
-                        ""
+                    editor.isActive('paragraph') ?
+                        'is_active' :
+                        ''
                 }
             >
                 <FaParagraph/>
@@ -82,9 +89,9 @@ const MenuBar = ({editor}) => {
                     editor.chain().focus().toggleHeading({level: 1}).run();
                 }}
                 className={
-                    editor.isActive("heading", {level: 1}) ?
-                        "is_active" :
-                        ""
+                    editor.isActive('heading', {level: 1}) ?
+                        'is_active' :
+                        ''
                 }
             >
                 H1
@@ -95,9 +102,9 @@ const MenuBar = ({editor}) => {
                     editor.chain().focus().toggleHeading({level: 2}).run();
                 }}
                 className={
-                    editor.isActive("heading", {level: 2}) ?
-                        "is_active" :
-                        ""
+                    editor.isActive('heading', {level: 2}) ?
+                        'is_active' :
+                        ''
                 }
             >
                 H2
@@ -108,9 +115,9 @@ const MenuBar = ({editor}) => {
                     editor.chain().focus().toggleHeading({level: 3}).run();
                 }}
                 className={
-                    editor.isActive("heading", {level: 3}) ?
-                        "is_active" :
-                        ""
+                    editor.isActive('heading', {level: 3}) ?
+                        'is_active' :
+                        ''
                 }
             >
                 H3
@@ -121,9 +128,9 @@ const MenuBar = ({editor}) => {
                     editor.chain().focus().toggleHeading({level: 4}).run();
                 }}
                 className={
-                    editor.isActive("heading", {level: 4}) ?
-                        "is_active" :
-                        ""
+                    editor.isActive('heading', {level: 4}) ?
+                        'is_active' :
+                        ''
                 }
             >
                 H4
@@ -134,16 +141,27 @@ const MenuBar = ({editor}) => {
                     editor.chain().focus().toggleHeading({level: 5}).run();
                 }}
                 className={
-                    editor.isActive("heading", {level: 5}) ?
-                        "is_active" :
-                        ""
+                    editor.isActive('heading', {level: 5}) ?
+                        'is_active' :
+                        ''
                 }
             >
                 H5
             </button>
+
+
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    editor.chain().focus().toggleBlockquote().run();
+                }}
+                className={editor.isActive('blockquote') ? 'is_active' : ''}
+            >
+                <FaQuoteLeft/>
+            </button>
             <button onClick={(e) => {
                 e.preventDefault();
-                editor.chain().focus().TextAlign('justify').run()
+                editor.chain().focus().setTextAlign('justify').run();
             }} className={editor.isActive({textAlign: 'justify'}) ?
                 'is-active' :
                 ''}>
@@ -151,7 +169,7 @@ const MenuBar = ({editor}) => {
             </button>
             <button onClick={(e) => {
                 e.preventDefault();
-                editor.chain().focus().TextAlign('left').run()
+                editor.chain().focus().setTextAlign('left').run()
             }} className={editor.isActive({textAlign: 'left'}) ?
                 'is-active' :
                 ''}>
@@ -193,15 +211,6 @@ const MenuBar = ({editor}) => {
             >
                 <FaListOl/>
             </button>
-            <button
-                onClick={(e) => {
-                    e.preventDefault();
-                    editor.chain().focus().toggleBlockquote().run();
-                }}
-                className={editor.isActive("blockquote") ? "is_active" : ""}
-            >
-                <FaQuoteLeft/>
-            </button>
             <button onClick={(e) => {
                 e.preventDefault();
                 editor.chain().focus().undo().run();
@@ -214,7 +223,6 @@ const MenuBar = ({editor}) => {
             }}>
                 <FaRedo/>
             </button>
-
         </div>
     );
 };
