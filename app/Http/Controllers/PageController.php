@@ -8,12 +8,15 @@ use App\Http\Requests\PageTitleRequest;
 use App\Models\Page;
 use App\Models\User;
 use App\Services\PageService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\UserTrait;
 use Illuminate\Support\Facades\Cookie;
 use Inertia\Inertia;
 use App\Http\Traits\PageTrait;
+use Inertia\Response;
 
 
 class PageController extends Controller
@@ -21,7 +24,13 @@ class PageController extends Controller
 
     use UserTrait, PageTrait;
 
-    public function show(PageService $pageService, Page $page) {
+    /**
+     * @param PageService $pageService
+     * @param Page $page
+     *
+     * @return Response
+     */
+    public function show(PageService $pageService, Page $page): Response {
 
         if ($page->disabled) {
             return abort(404);
@@ -44,7 +53,10 @@ class PageController extends Controller
         ]);
     }
 
-    public function showCreatePage() {
+    /**
+     * @return Response|\Symfony\Component\HttpFoundation\Response
+     */
+    public function showCreatePage(): \Inertia\Response|\Symfony\Component\HttpFoundation\Response {
 
         $user = Auth::user();
         $userPages = $this->getUserPages($user);
@@ -59,14 +71,27 @@ class PageController extends Controller
         return Inertia::render('Register/CreatePage', ['pageNames' => $pages]);
     }
 
-    public function store(PageNameRequest $request, PageService $pageService) {
+    /**
+     * @param PageNameRequest $request
+     * @param PageService $pageService
+     *
+     * @return JsonResponse
+     */
+    public function store(PageNameRequest $request, PageService $pageService): \Illuminate\Http\JsonResponse {
 
         $page = $pageService->createNewPage($request);
 
         return response()->json(['message'=> 'New Link Added', 'page_id' => $page->id]);
     }
 
-    public function updateName(PageNameRequest $request, PageService $pageService, Page $page) {
+    /**
+     * @param PageNameRequest $request
+     * @param PageService $pageService
+     * @param Page $page
+     *
+     * @return JsonResponse
+     */
+    public function updateName(PageNameRequest $request, PageService $pageService, Page $page): JsonResponse {
 
         if ($page->user_id != Auth::id()) {
             return abort(404);
@@ -78,7 +103,13 @@ class PageController extends Controller
 
     }
 
-    public function edit(PageService $pageService, Page $page) {
+    /**
+     * @param PageService $pageService
+     * @param Page $page
+     *
+     * @return Response
+     */
+    public function edit(PageService $pageService, Page $page): Response {
 
         $user = Auth::user();
 
@@ -91,7 +122,14 @@ class PageController extends Controller
         return Inertia::render('Dashboard/Dashboard')->with(["userData" => $data]);
     }
 
-    public function updateHeaderImage(Request $request, Page $page, PageService $pageService) {
+    /**
+     * @param Request $request
+     * @param Page $page
+     * @param PageService $pageService
+     *
+     * @return JsonResponse
+     */
+    public function updateHeaderImage(Request $request, Page $page, PageService $pageService): JsonResponse {
 
         $userID = Auth::id();
 
@@ -105,7 +143,14 @@ class PageController extends Controller
 
     }
 
-    public function updateProfileImage(Request $request, Page $page, PageService $pageService) {
+    /**
+     * @param Request $request
+     * @param Page $page
+     * @param PageService $pageService
+     *
+     * @return JsonResponse
+     */
+    public function updateProfileImage(Request $request, Page $page, PageService $pageService): JsonResponse {
 
         $userID = Auth::id();
 
@@ -119,7 +164,14 @@ class PageController extends Controller
 
     }
 
-    public function updateTitle(PageTitleRequest $request, Page $page, PageService $pageService) {
+    /**
+     * @param PageTitleRequest $request
+     * @param Page $page
+     * @param PageService $pageService
+     *
+     * @return JsonResponse
+     */
+    public function updateTitle(PageTitleRequest $request, Page $page, PageService $pageService): JsonResponse {
 
 
         if ($page->user_id != Auth::id()) {
@@ -132,7 +184,14 @@ class PageController extends Controller
 
     }
 
-    public function updateBio(PageBioRequest $request, Page $page, PageService $pageService) {
+    /**
+     * @param PageBioRequest $request
+     * @param Page $page
+     * @param PageService $pageService
+     *
+     * @return JsonResponse
+     */
+    public function updateBio(PageBioRequest $request, Page $page, PageService $pageService): JsonResponse {
 
         if ($page->user_id != Auth::id()) {
             return abort(404);
@@ -144,7 +203,14 @@ class PageController extends Controller
 
     }
 
-    public function updateProfileLayout(Request $request, Page $page, PageService $pageService) {
+    /**
+     * @param Request $request
+     * @param Page $page
+     * @param PageService $pageService
+     *
+     * @return JsonResponse
+     */
+    public function updateProfileLayout(Request $request, Page $page, PageService $pageService): JsonResponse {
 
         if ($page->user_id != Auth::id()) {
             return abort(404);
@@ -155,14 +221,26 @@ class PageController extends Controller
         return response()->json(['message' => 'Layout Updated']);
     }
 
-    public function pageAuth(Request $request, Page $page, PageService $pageService) {
+    /**
+     * @param Request $request
+     * @param Page $page
+     * @param PageService $pageService
+     *
+     * @return RedirectResponse
+     */
+    public function pageAuth(Request $request, Page $page, PageService $pageService): \Illuminate\Http\RedirectResponse {
 
         $pageService->authorizePage($request, $page);
 
         return redirect()->back()->withErrors(['unauthorized' => 'Incorrect Pin']);
     }
 
-    public function redirect(Request $request) {
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function redirect(Request $request): \Symfony\Component\HttpFoundation\Response {
         $redirected = $request->redirected;
         $storeID = $request->store;
         $error = $request->connection_error;
@@ -184,7 +262,10 @@ class PageController extends Controller
         return Inertia::location($url);
     }
 
-    public function showPreRegister() {
+    /**
+     * @return Response
+     */
+    public function showPreRegister(): Response {
 
         return Inertia::render('PreRegister/PreRegister');
     }

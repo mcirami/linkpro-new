@@ -10,7 +10,7 @@ import {
     GetCurrentTime,
     GetHumanReadableTime,
 } from '@/Services/TimeRequests.jsx';
-function Plans({path}) {
+function Plans({type}) {
 
     const { auth } = usePage().props;
     const subscriptionName = auth.user.subscription ? auth.user.subscription.name : null;
@@ -108,7 +108,7 @@ function Plans({path}) {
 
                         :
                         <>
-                            {path.includes('create-page') ?
+                            {type === "register" ?
                                 <>
                                     <h2 className="page_title !m-0">Welcome to Link Pro!</h2>
                                     <p className="sub_title mb-5">Continue free forever or upgrade for advanced features!</p>
@@ -191,7 +191,7 @@ function Plans({path}) {
                                         </div>
                                     </div>
                                 }
-                                {path.includes('create-page') &&
+                                {type === "register" &&
                                     <div className="my_row">
                                         <div className="column free plans_page">
                                             <h2 className="text-uppercase">Free</h2>

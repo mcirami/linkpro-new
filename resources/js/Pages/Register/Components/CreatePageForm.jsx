@@ -22,7 +22,7 @@ const CreatePageForm = ({pageNames}) => {
             addPage(packets).then((data) => {
 
                 if (data.success) {
-                    router.get('/plans');
+                    router.get('/plans?type=register');
                 }
             })
         }
@@ -66,7 +66,7 @@ const CreatePageForm = ({pageNames}) => {
                     />
                     <label>Link Name</label>
                     {available ?
-                        <a className="submit_circle" href="resources/js/Pages/Register/Components/CreatePageForm#"
+                        <a className="submit_circle" href="#"
                            onClick={(e) => handleSubmit(e)}
                         >
                             <FiThumbsUp/>

@@ -51,6 +51,9 @@ export const SubscriptionPaymentButtons = ({
 
                 setShowLoader({
                     show: false,
+                    icon: "",
+                    position: "absolute",
+                    progress: null
                 });
             }
         })

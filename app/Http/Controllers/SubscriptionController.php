@@ -109,15 +109,14 @@ class SubscriptionController extends Controller
 
     /**
      * @param Request $request
-     * @param SubscriptionService $subscriptionService
      *
      * @return Response
      */
-    public function showPlans(Request $request, SubscriptionService $subscriptionService): Response {
+    public function showPlans(Request $request): Response {
 
-        $path = $request->session()->get('_previous');
+        $type = $request->get('type');
 
-        return Inertia::render('Plans/Plans')->with([ 'path' => $path["url"] ]);
+        return Inertia::render('Plans/Plans')->with([ 'type' => $type ]);
     }
 
     /**
