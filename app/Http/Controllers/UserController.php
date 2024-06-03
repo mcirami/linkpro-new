@@ -9,7 +9,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
@@ -94,9 +93,6 @@ class UserController extends Controller
     public function paymentOnboarding(): \Symfony\Component\HttpFoundation\Response {
         $stripe     = $this->createStripeGateway();
         $domain     = config('app.url');
-        $accountID  = App::environment() === "production" ?
-            config('services.stripe.connect_id') :
-            config('services.stripe.sandbox_connect_id');
         $user = Auth::user();
         $response = "";
         try {
