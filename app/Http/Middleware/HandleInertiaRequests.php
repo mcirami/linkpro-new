@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Route;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 

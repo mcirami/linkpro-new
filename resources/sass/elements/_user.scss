@@ -27,19 +27,9 @@
                 @include osbold;
             }
         }
+    }
 
-
-        /*.bt-drop-in-wrapper {
-
-            [data-braintree-id="toggle"] {
-                display: none;
-            }
-
-            .braintree-heading {
-                width: 100%;
-                text-align: center;
-                @include osbold;
-            }
-        }*/
+    .payout {
+        @include columnStyle;
     }
 }

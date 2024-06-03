@@ -9,12 +9,14 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 use App\Http\Traits\UserTrait;
 use Inertia\Response;
 use App\Http\Traits\BillingTrait;
+use Stripe\Exception\ApiErrorException;
 
 class UserController extends Controller
 {
@@ -38,7 +40,12 @@ class UserController extends Controller
      * @return Response
      */
     public function edit(): Response {
-        return Inertia::render('User/User');
+        $user = Auth::user();
+        $hasOffers = $user->offers()->first();
+        $isAffiliate = $user->Affiliates()->first();
+        $payoutInfoSubmitted = $user->payout_info_submitted;
+
+        return Inertia::render('User/User')->with(compact('hasOffers', 'isAffiliate', 'payoutInfoSubmitted'));
     }
 
     /**
@@ -79,5 +86,64 @@ class UserController extends Controller
         $pages = $this->getUserPages($user);
 
         return response()->json(['success' => true, 'pages' => $pages]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function paymentOnboarding(): \Symfony\Component\HttpFoundation\Response {
+        $stripe     = $this->createStripeGateway();
+        $domain     = config('app.url');
+        $accountID  = App::environment() === "production" ?
+            config('services.stripe.connect_id') :
+            config('services.stripe.sandbox_connect_id');
+        $user = Auth::user();
+        $response = "";
+        try {
+
+            $account = $stripe->accounts->create([
+                'email' => $user->email,
+                'controller' => [
+                    'stripe_dashboard' => [
+                        'type' => 'express',
+                    ],
+                    'fees' => [
+                        'payer' => 'application'
+                    ],
+                    'losses' => [
+                        'payments' => 'application'
+                    ],
+                ],
+            ]);
+            $response = $stripe->accountLinks->create([
+                'account' => $account->id,
+                'refresh_url' => $domain . '/edit-account',
+                'return_url' => $domain . '/onboarding-success',
+                'type' => 'account_onboarding',
+            ]);
+
+        } catch ( ApiErrorException $e ) {
+            $this->saveErrors($e);
+            http_response_code(500);
+            $data = [
+                "success" => false,
+                "message" => 'An error occurred with the message: ' . $e
+            ];
+            //echo json_encode(['error' => $e->getMessage()]);
+        }
+
+        return response()->json(['success' => true, 'url' => $response->url]);
+    }
+
+    /**
+     * @return Response
+     */
+    public function onboardingSuccess(): Response {
+        $user = Auth::user();
+        $user->update([
+            'payout_info_submitted' => true
+        ]);
+
+        return Inertia::render('Onboarding/Success');
     }
 }

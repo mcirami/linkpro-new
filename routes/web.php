@@ -79,6 +79,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-standard-icons', [IconController::class, 'getStandardIcons']);
     Route::get('/get-custom-icons', [IconController::class, 'getCustomIcons']);
 
+    Route::post('/payment-onboarding', [UserController::class, 'paymentOnboarding'])->name('payment.onboarding');
+    Route::get('/onboarding-success', [UserController::class, 'onboardingSuccess'])->name('onboarding.success');
+
     Route::group(['prefix' => 'dashboard'], function() {
         Route::post('/links/new', [LinkController::class, 'store']);
         Route::put('/links/update/{link}', [LinkController::class, 'update']);

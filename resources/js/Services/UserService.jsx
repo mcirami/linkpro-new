@@ -307,3 +307,26 @@ export const purchaseCourse = (packets) => {
         }
     });
 }
+
+export const redirectToOnboarding = () => {
+
+    return axios.post('/payment-onboarding').then(
+        (response) => {
+            return {
+                success : true,
+                url: response.data.url
+            }
+        },
+
+    ).catch(error => {
+        if (error.response) {
+            console.error("ERROR:: ", error.response);
+        } else {
+            console.error("ERROR:: ", error);
+        }
+
+        return {
+            success : false
+        }
+    });
+}

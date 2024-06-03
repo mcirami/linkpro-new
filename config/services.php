@@ -49,6 +49,8 @@ return [
         'webhook_secret'                => env('STRIPE_WEBHOOK_SECRET'),
         'product_webhook_secret'        => env('STRIPE_PRODUCT_WEBHOOK_SECRET'),
         'test_webhook_secret'           => env('STRIPE_TEST_WEBHOOK_SECRET'),
-        'test_product_webhook_secret'   => env('STRIPE_TEST_PRODUCT_WEBHOOK_SECRET')
+        'test_product_webhook_secret'   => env('STRIPE_TEST_PRODUCT_WEBHOOK_SECRET'),
+        'connect_id'                    => env('STRIPE_CONNECT_ID'),
+        'sandbox_connect_id'            => env('STRIPE_SANDBOX_CONNECT_ID')
     ]
 ];

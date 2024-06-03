@@ -41,7 +41,7 @@ class SubscriptionController extends Controller
      * @param StripeService $stripeService
      * @param PayPalService $payPalService
      *
-     * @return Response|void
+     * @return Response
      * @throws Throwable
      */
     public function stripeSubscribeSuccess(
@@ -49,7 +49,7 @@ class SubscriptionController extends Controller
         SubscriptionService $subscriptionService,
         StripeService $stripeService,
         PayPalService $payPalService
-    ) {
+    ): Response {
 
         $type = $request->get('type');
 

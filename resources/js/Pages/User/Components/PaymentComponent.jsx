@@ -6,7 +6,7 @@ const PaymentComponent = ({
                               userInfo,
                               plan,
                               status,
-                              setShowPaymentButtons
+                              setShowPaymentButtons,
 }) => {
 
     const {pm_type, pm_last_four} = userInfo;

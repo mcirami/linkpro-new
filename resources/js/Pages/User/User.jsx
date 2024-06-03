@@ -13,22 +13,33 @@ import {
     SubscriptionPaymentButtons
 } from '@/Components/Payments/SubscriptionPaymentButtons.jsx';
 import EventBus from '@/Utils/Bus.jsx';
+import PayOutComponent from '@/Pages/User/Components/PayOutComponent.jsx';
 
-const User = ({message = null}) => {
+const User = ({
+                  message = null,
+                  isAffiliate = false,
+                  hasOffers = false,
+                  payoutInfoSubmitted = false
+}) => {
 
     const { auth } = usePage().props;
     const permissions = auth.user.permissions;
     const [userInfo, setUserInfo] = useState(auth.user.userInfo);
+    const env = auth.env;
 
     const [showSection, setShowSection] = useState([]);
     const [subscription, setSubscription] = useState(auth.user.subscription);
-    /*TODO: change to dynamic stripeURL when products created on live site*/
+
+    const stripeUrl = env === "production" ?
+        "https://checkout.link.pro/p/login/eVa2aU4q09HyfKg144?prefilled_email=" :
+        "https://checkout.link.pro/p/login/test_3cs6pE5zK02p6Nq145?prefilled_email=";
+
     const [showPaymentButtons, setShowPaymentButtons] = useState({
         show: false,
         type: "",
         plan: "",
         pmType: "",
-        stripeUrl: "https://checkout.link.pro/p/login/test_3cs6pE5zK02p6Nq145?prefilled_email=" + userInfo.email,
+        stripeUrl: stripeUrl + userInfo.email,
     });
 
     const [showLoader, setShowLoader] = useState({
@@ -131,6 +142,13 @@ const User = ({message = null}) => {
                                             </div>
                                         }
                                     </div>
+                                    { (hasOffers || isAffiliate) && !payoutInfoSubmitted ?
+                                        <PayOutComponent
+                                            setShowLoader={setShowLoader}
+                                        />
+                                        :
+                                        ""
+                                    }
                                 </div>
                             </div>
                         }
