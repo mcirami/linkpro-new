@@ -35,7 +35,6 @@ import {
     LINKS_ACTIONS,
 } from '@/Services/Reducer.jsx';
 import PageHeaderLayout from './Components/Page/PageHeaderLayout';
-import LivePageButton from './Components/LivePageButton';
 import InfoText from '../../Utils/ToolTips/InfoText';
 import {MessageAlertPopup} from '@/Utils/Popups/MessageAlertPopup';
 import StandardForm from './Components/Link/Forms/StandardForm';
@@ -86,11 +85,16 @@ function Dashboard({
     const [storeID, setStoreID] = useState(null);
     const [shopifyStores, setShopifyStores] = useState([]);
 
-    const [showUpgradePopup, setShowUpgradePopup] = useState(false);
+    const [showUpgradePopup, setShowUpgradePopup] = useState({
+        show: false,
+        text: ""
+    });
     const [showConfirmPopup, setShowConfirmPopup] = useState(false);
-    const [showMessageAlertPopup, setShowMessageAlertPopup] = useState(false);
+    const [showMessageAlertPopup, setShowMessageAlertPopup] = useState({
+        show: false,
+        text: ""
+    });
     const [showConfirmFolderDelete, setShowConfirmFolderDelete] = useState(false);
-    const [optionText, setOptionText] = useState("");
 
     const nodesRef = useRef({});
     const [completedCrop, setCompletedCrop] = useState({});
@@ -254,8 +258,10 @@ function Dashboard({
                 text = "earn money from an affiliate offer"
             }
 
-            setShowUpgradePopup(true);
-            setOptionText(text);
+            setShowUpgradePopup({
+                show: true,
+                text: text
+            });
         }
     }
 
@@ -277,17 +283,15 @@ function Dashboard({
 
                             <SetFlash />
 
-                            {showUpgradePopup &&
+                            {showUpgradePopup.show &&
                                 <UpgradePopup
-                                    optionText={optionText}
                                     showUpgradePopup={showUpgradePopup}
                                     setShowUpgradePopup={setShowUpgradePopup}
                                 />
                             }
 
-                            {showMessageAlertPopup &&
+                            {showMessageAlertPopup.show &&
                                 <MessageAlertPopup
-                                    optionText={optionText}
                                     showMessageAlertPopup={showMessageAlertPopup}
                                     setShowMessageAlertPopup={setShowMessageAlertPopup}
                                 />
@@ -342,7 +346,6 @@ function Dashboard({
                                                     userSub={userSub}
                                                     subStatus={subStatus}
                                                     setShowUpgradePopup={setShowUpgradePopup}
-                                                    setOptionText={setOptionText}
                                                     pageNames={allPageNames}
                                                 />
 
@@ -440,14 +443,12 @@ function Dashboard({
                                                                         setShowLinkForm={setShowLinkForm}
                                                                         subStatus={subStatus}
                                                                         setShowUpgradePopup={setShowUpgradePopup}
-                                                                        setOptionText={setOptionText}
                                                                     />
                                                                 </div>
                                                                 <div className="add_more_link">
                                                                     <AddFolder
                                                                         subStatus={subStatus}
                                                                         setShowUpgradePopup={setShowUpgradePopup}
-                                                                        setOptionText={setOptionText}
                                                                         setEditFolderID={setEditFolderID}
                                                                     />
                                                                 </div>
@@ -461,7 +462,6 @@ function Dashboard({
                                                                         setShowLinkForm={setShowLinkForm}
                                                                         subStatus={subStatus}
                                                                         setShowUpgradePopup={setShowUpgradePopup}
-                                                                        setOptionText={setOptionText}
                                                                     />
                                                                 </div>
                                                             </div>
@@ -494,7 +494,6 @@ function Dashboard({
                                                                                 setShowLinkForm={setShowLinkForm}
                                                                                 setEditID={setEditID}
                                                                                 setShowUpgradePopup={setShowUpgradePopup}
-                                                                                setOptionText={setOptionText}
                                                                                 folderID={editFolderID}
                                                                                 showTiny={showTiny}
                                                                                 setShowTiny={setShowTiny}
@@ -527,7 +526,6 @@ function Dashboard({
                                                                                 setShowLinkForm={setShowLinkForm}
                                                                                 setEditID={setEditID}
                                                                                 setShowUpgradePopup={setShowUpgradePopup}
-                                                                                setOptionText={setOptionText}
                                                                                 folderID={editFolderID}
                                                                                 affiliateStatus={affiliateStatus}
                                                                                 setAffiliateStatus={setAffiliateStatus}
@@ -595,7 +593,6 @@ function Dashboard({
                                                                                     setShowLinkForm={setShowLinkForm}
                                                                                     setEditID={setEditID}
                                                                                     setShowMessageAlertPopup={setShowMessageAlertPopup}
-                                                                                    setOptionText={setOptionText}
                                                                                     setShowLoader={setShowLoader}
                                                                                     setIntegrationType={setIntegrationType}
                                                                                     integrationType={integrationType}
@@ -638,7 +635,6 @@ function Dashboard({
                                                                     setRow={setRow}
                                                                     setValue={setValue}
                                                                     setShowUpgradePopup={setShowUpgradePopup}
-                                                                    setOptionText={setOptionText}
                                                                     setAccordionValue={setAccordionValue}
                                                                 />
                                                             </ErrorBoundary>

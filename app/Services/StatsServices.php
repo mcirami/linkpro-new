@@ -24,7 +24,7 @@ class StatsServices {
      *
      * @return array
      */
-    public function getAllPageStats($request) {
+    public function getAllPageStats($request): array {
 
         $dates = $this->getDateValues($request);
 
@@ -39,7 +39,7 @@ class StatsServices {
      *
      * @return array
      */
-    public function getAllLinkStats($request) {
+    public function getAllLinkStats($request): array {
 
         $dates = $this->getDateValues($request);
 
@@ -52,7 +52,12 @@ class StatsServices {
         ];
     }
 
-    public function getAllFolderStats($request) {
+    /**
+     * @param $request
+     *
+     * @return array[]
+     */
+    public function getAllFolderStats($request): array {
 
         $dates = $this->getDateValues($request);
 
@@ -65,22 +70,33 @@ class StatsServices {
         ];
     }
 
-    public function getAllOfferStats($request) {
+    /**
+     * @param $request
+     *
+     * @return array
+     */
+    public function getAllOfferStats($request): array {
 
         $dates = $this->getDateValues($request);
 
         $offerData = $this->getOfferStatsByDate($dates["startDate"], $dates["endDate"]);
 
         return [
-            'affiliateData'      => $offerData['offerArray'],
+            'affiliateData'  => $offerData['offerArray'],
             'totals'         => $offerData['totals']
         ];
     }
 
-    private function getOfferStatsByDate($startDate, $endDate) {
+    /**
+     * @param $startDate
+     * @param $endDate
+     *
+     * @return array
+     */
+    private function getOfferStatsByDate($startDate, $endDate): array {
 
         $authUserID = Auth::user()->id;
-        $offers = Offer::where('published', true)->get();
+        $offers = Offer::get();
 
         $offerArray = array();
         $totalsArray = array();
@@ -88,22 +104,13 @@ class StatsServices {
         foreach ($offers as $offer) {
 
             if ($offer->user_id != $authUserID) {
-
                 $object = $this->getPublisherOfferStats($authUserID, $startDate, $endDate, $offer);
-
-                if (!empty($object)) {
-                    $totalsArray = $this->sumTotals( $totalsArray, $object, null );
-                    array_push( $offerArray, $object );
-                }
-
             } else {
-
                 $object = $this->getCreatorOfferStats($authUserID, $startDate, $endDate, $offer);
-
-                if (!empty($object)) {
-                    $totalsArray = $this->sumTotals( $totalsArray, $object, null );
-                    array_push($offerArray, $object );
-                }
+            }
+            if (!empty($object)) {
+                $totalsArray = $this->sumTotals( $totalsArray, $object, null );
+                array_push( $offerArray, $object );
             }
         }
 
@@ -113,17 +120,34 @@ class StatsServices {
         ];
     }
 
-    private function getCreatorOfferStats($authUserID, $startDate, $endDate, $offer) {
+    /**
+     * @param $authUserID
+     * @param $startDate
+     * @param $endDate
+     * @param $offer
+     *
+     * @return array
+     */
+    private function getCreatorOfferStats($authUserID, $startDate, $endDate, $offer): array {
 
         $object = [];
 
-        $offerClicks = $offer
-            ->OfferClicks()
-            ->whereBetween('offer_clicks.created_at', [ $startDate, $endDate ])
-            ->leftJoin('users', 'users.id', '=', 'offer_clicks.referral_id')
-            ->leftJoin('purchases', 'purchases.offer_click_id', '=', 'offer_clicks.id')
-            ->select('users.username', 'offer_clicks.is_unique', 'offer_clicks.referral_id', 'purchases.purchase_amount')
-            ->get();
+        if($startDate && $endDate) {
+            $offerClicks = $offer
+                ->OfferClicks()
+                ->whereBetween('offer_clicks.created_at', [ $startDate, $endDate ])
+                ->leftJoin('users', 'users.id', '=', 'offer_clicks.referral_id')
+                ->leftJoin('purchases', 'purchases.offer_click_id', '=', 'offer_clicks.id')
+                ->select('users.username', 'offer_clicks.is_unique', 'offer_clicks.referral_id', 'purchases.purchase_amount')
+                ->get();
+        } else {
+            $offerClicks = $offer
+                ->OfferClicks()
+                ->leftJoin('users', 'users.id', '=', 'offer_clicks.referral_id')
+                ->leftJoin('purchases', 'purchases.offer_click_id', '=', 'offer_clicks.id')
+                ->select('users.username', 'offer_clicks.is_unique', 'offer_clicks.referral_id', 'purchases.purchase_amount')
+                ->get();
+        }
 
         if (count($offerClicks) > 0) {
 
@@ -148,18 +172,39 @@ class StatsServices {
 
         return $object;
     }
-    private function getPublisherOfferStats($authUserID, $startDate, $endDate, $offer) {
 
+    /**
+     * @param $authUserID
+     * @param $startDate
+     * @param $endDate
+     * @param $offer
+     *
+     * @return array
+     */
+    private function getPublisherOfferStats($authUserID, $startDate, $endDate, $offer): array {
 
         $object = [];
-        $offerClicks = $offer
-            ->OfferClicks()
-            ->where( 'referral_id', '=', $authUserID )
-            ->whereBetween('offer_clicks.created_at', [ $startDate, $endDate ])
-            ->leftJoin('users', 'users.id', '=', 'offer_clicks.referral_id')
-            ->leftJoin('purchases', 'purchases.offer_click_id', '=', 'offer_clicks.id')
-            ->select('users.username', 'offer_clicks.is_unique', 'offer_clicks.referral_id', 'purchases.purchase_amount')
-            ->get();
+
+        if($startDate && $endDate) {
+            $offerClicks = $offer
+                ->OfferClicks()
+                ->where( 'referral_id', '=', $authUserID )
+                ->whereBetween( 'offer_clicks.created_at', [ $startDate, $endDate ] )
+                ->leftJoin( 'users', 'users.id', '=', 'offer_clicks.referral_id' )
+                ->leftJoin( 'purchases', 'purchases.offer_click_id', '=', 'offer_clicks.id' )
+                ->select( 'users.username', 'offer_clicks.is_unique', 'offer_clicks.referral_id',
+                    'purchases.purchase_amount' )
+                ->get();
+        }else {
+            $offerClicks = $offer
+                ->OfferClicks()
+                ->where( 'referral_id', '=', $authUserID )
+                ->leftJoin( 'users', 'users.id', '=', 'offer_clicks.referral_id' )
+                ->leftJoin( 'purchases', 'purchases.offer_click_id', '=', 'offer_clicks.id' )
+                ->select( 'users.username', 'offer_clicks.is_unique', 'offer_clicks.referral_id',
+                    'purchases.purchase_amount' )
+                ->get();
+        }
 
         if (count($offerClicks) > 0) {
             $payout = $this->calculatePayout($offerClicks, $offer->price, $offer->user_id);
@@ -181,7 +226,12 @@ class StatsServices {
         return $object;
     }
 
-    public function getAllPublisherStats($request) {
+    /**
+     * @param $request
+     *
+     * @return array
+     */
+    public function getAllPublisherStats($request): array {
 
         $dates = $this->getDateValues($request);
 
@@ -193,7 +243,13 @@ class StatsServices {
         ];
     }
 
-    private function getPubStatsByDate($startDate, $endDate) {
+    /**
+     * @param $startDate
+     * @param $endDate
+     *
+     * @return array
+     */
+    private function getPubStatsByDate($startDate, $endDate): array {
 
         $authUserID = Auth::user()->id;
         $totalsArray = array();
@@ -224,7 +280,13 @@ class StatsServices {
         ];
     }
 
-    private function getPageStats($startDate, $endDate) {
+    /**
+     * @param $startDate
+     * @param $endDate
+     *
+     * @return array
+     */
+    private function getPageStats($startDate, $endDate): array {
 
         $user = Auth::user();
 
@@ -253,7 +315,13 @@ class StatsServices {
         return $pageArray;
     }
 
-    private function getLinkStats($startDate, $endDate) {
+    /**
+     * @param $startDate
+     * @param $endDate
+     *
+     * @return array
+     */
+    private function getLinkStats($startDate, $endDate): array {
         $user = Auth::user();
 
         $links = $user->links()->where('folder_id', null)->get();
@@ -281,7 +349,13 @@ class StatsServices {
         return $linksArray;
     }
 
-    private function getDeletedLinksStats($startDate, $endDate) {
+    /**
+     * @param $startDate
+     * @param $endDate
+     *
+     * @return array
+     */
+    private function getDeletedLinksStats($startDate, $endDate): array {
         $deletedArray = array();
 
         $deletedLinks = DB::table('deleted_links')->where('user_id', '=', Auth::id())->get();
@@ -303,7 +377,14 @@ class StatsServices {
 
         return $deletedArray;
     }
-    private function getFolderStats($startDate, $endDate) {
+
+    /**
+     * @param $startDate
+     * @param $endDate
+     *
+     * @return array
+     */
+    private function getFolderStats($startDate, $endDate): array {
 
         $folderArray = array();
 

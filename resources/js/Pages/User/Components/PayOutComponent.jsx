@@ -2,26 +2,34 @@ import React from 'react';
 import {redirectToOnboarding} from '@/Services/UserService.jsx';
 import {router} from '@inertiajs/react';
 
-const PayOutComponent = ({setShowLoader}) => {
+const PayOutComponent = ({setShowLoader, total, setShowMessageAlertPopup}) => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        setShowLoader({
-            show: true,
-            position: 'fixed',
-            icon: ""
-        })
-        redirectToOnboarding().then(response => {
-            if(response.success) {
-                window.location.href = response.url
-            }
 
+        if (total < 100) {
             setShowLoader({
-                show: false,
-                position: "",
+                show: true,
+                position: 'fixed',
                 icon: ""
             })
-        })
+            redirectToOnboarding().then(response => {
+                if (response.success) {
+                    window.location.href = response.url
+                }
+
+                setShowLoader({
+                    show: false,
+                    position: "",
+                    icon: ""
+                })
+            })
+        } else {
+            setShowMessageAlertPopup({
+                show: true,
+                text: "You must earn at least $100 before setting up your payment information."
+            })
+        }
     }
 
     return (

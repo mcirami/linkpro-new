@@ -5,7 +5,6 @@ import {UserLinksContext} from '../../Dashboard.jsx';
 const AddLink = ({
                      subStatus,
                      setShowUpgradePopup,
-                     setOptionText,
                      setShowLinkForm
 }) => {
 
@@ -30,8 +29,10 @@ const AddLink = ({
             }, 800)
 
         } else {
-            setShowUpgradePopup(true);
-            setOptionText("add more icons");
+            setShowUpgradePopup({
+                show: true,
+                text: "add more icons"
+            });
         }
     };
 

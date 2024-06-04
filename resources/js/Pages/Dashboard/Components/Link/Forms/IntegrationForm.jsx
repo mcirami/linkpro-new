@@ -39,7 +39,6 @@ const IntegrationForm = ({
                              editID,
                              setShowLinkForm,
                              setEditID,
-                             setOptionText,
                              setShowMessageAlertPopup,
                              setShowLoader,
                              setIntegrationType,
@@ -254,8 +253,10 @@ const IntegrationForm = ({
                 })
             }
         } else {
-            setShowMessageAlertPopup(true);
-            setOptionText("Only 1 Mailchimp subscribe form is allowed per page.")
+            setShowMessageAlertPopup({
+                show: true,
+                text: "Only 1 Mailchimp subscribe form is allowed per page."
+            });
         }
     };
 

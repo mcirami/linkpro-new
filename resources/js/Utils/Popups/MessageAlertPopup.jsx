@@ -1,15 +1,18 @@
 import React from 'react';
 import {IoMdAlert} from 'react-icons/io';
-export const MessageAlertPopup = ({optionText, showMessageAlertPopup, setShowMessageAlertPopup}) => {
+export const MessageAlertPopup = ({showMessageAlertPopup, setShowMessageAlertPopup}) => {
 
     const handleClose = e => {
         e.preventDefault();
-        setShowMessageAlertPopup(false)
+        setShowMessageAlertPopup({
+            show: false,
+            text: ""
+        })
     }
 
     return (
 
-        <div id="upgrade_popup" className={ showMessageAlertPopup ? "open" : "" }>
+        <div id="upgrade_popup" className="open">
             <a className="close_popup" href="#" onClick={handleClose}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-circle" viewBox="0 0 16 16">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -17,10 +20,13 @@ export const MessageAlertPopup = ({optionText, showMessageAlertPopup, setShowMes
                 </svg>
             </a>
             <div className="box">
-                <div className="form_icon_wrap blue_icon">
+                <div className="icon_wrap !text-red-600">
                     <IoMdAlert />
                 </div>
-                <h3><span className="option_text">{ optionText }</span></h3>
+                <h3><span className="option_text">{ showMessageAlertPopup.text }</span></h3>
+                <a className="blue button" href="#" onClick={handleClose}>
+                    Ok
+                </a>
             </div>
         </div>
 

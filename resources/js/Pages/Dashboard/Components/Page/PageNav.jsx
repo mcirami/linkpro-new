@@ -11,7 +11,6 @@ const PageNav = ({
                      userSub,
                      subStatus,
                      setShowUpgradePopup,
-                     setOptionText,
                      pageNames
 }) => {
 
@@ -52,8 +51,10 @@ const PageNav = ({
 
     const enablePopup = (text) => {
 
-        setShowUpgradePopup(true);
-        setOptionText(text);
+        setShowUpgradePopup({
+            show: true,
+            text: text,
+        });
     }
 
     return (

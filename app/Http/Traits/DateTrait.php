@@ -6,7 +6,12 @@ use Carbon\Carbon;
 
 trait DateTrait {
 
-    public function getDateRange($value) {
+    /**
+     * @param $value
+     *
+     * @return array
+     */
+    public function getDateRange($value): array {
 
         switch ($value) {
 
@@ -48,7 +53,10 @@ trait DateTrait {
         ];
     }
 
-    public function getMyDates() {
+    /**
+     * @return array
+     */
+    public function getMyDates(): array {
 
         if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
 
@@ -80,19 +88,27 @@ trait DateTrait {
         ];
     }
 
-    public function getDateValues($request) {
+    /**
+     * @param $request
+     *
+     * @return array
+     */
+    public function getDateValues($request): array {
 
-        if ($request->currentDay) {
+        if ( (is_array($request) && key_exists('currentDay', $request)) ||
+             (is_object($request) && $request->currentDay)) {
             $startDate = Carbon::now()->startOfDay();
             $endDate = Carbon::now()->endOfDay();
 
-        } else if ($request->dateValue) {
+        } else if ( (is_array($request) && key_exists('dateValue', $request)) ||
+                    (is_object($request) && $request->dateValue) ) {
 
             $data = $this->getDateRange($request->dateValue);
             $startDate = $data['startDate'];
             $endDate = $data['endDate'];
 
-        } else if ($request->clear) {
+        } else if ((is_array($request) && key_exists('clear', $request)) ||
+                   (is_object($request) && $request->clear)) {
 
             $startDate = null;
             $endDate = null;

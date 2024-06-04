@@ -14,19 +14,24 @@ import {
 } from '@/Components/Payments/SubscriptionPaymentButtons.jsx';
 import EventBus from '@/Utils/Bus.jsx';
 import PayOutComponent from '@/Pages/User/Components/PayOutComponent.jsx';
+import {MessageAlertPopup} from '@/Utils/Popups/MessageAlertPopup.jsx';
 
 const User = ({
                   message = null,
                   isAffiliate = false,
                   hasOffers = false,
-                  payoutInfoSubmitted = false
+                  payoutInfoSubmitted = false,
+                  total = false,
 }) => {
 
     const { auth } = usePage().props;
     const permissions = auth.user.permissions;
     const [userInfo, setUserInfo] = useState(auth.user.userInfo);
     const env = auth.env;
-
+    const [showMessageAlertPopup, setShowMessageAlertPopup] = useState({
+        show: false,
+        text: ""
+    });
     const [showSection, setShowSection] = useState([]);
     const [subscription, setSubscription] = useState(auth.user.subscription);
 
@@ -61,6 +66,12 @@ const User = ({
             <Head title="Edit Accouunt" />
             <SetFlash />
             <div className="container">
+                {showMessageAlertPopup.show &&
+                    <MessageAlertPopup
+                        showMessageAlertPopup={showMessageAlertPopup}
+                        setShowMessageAlertPopup={setShowMessageAlertPopup}
+                    />
+                }
                 <div className={`user_account my_row text-center form_page plans ${permissions.includes('view subscription details') ? "mt-4" : "" }`}>
                     <h2 className="page_title">Update Account Settings</h2>
                     <div className={`card inline-block relative
@@ -145,6 +156,8 @@ const User = ({
                                     { (hasOffers || isAffiliate) && !payoutInfoSubmitted ?
                                         <PayOutComponent
                                             setShowLoader={setShowLoader}
+                                            total={total}
+                                            setShowMessageAlertPopup={setShowMessageAlertPopup}
                                         />
                                         :
                                         ""

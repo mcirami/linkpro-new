@@ -37,7 +37,6 @@ const StandardForm = ({
                           setShowLinkForm,
                           setEditID,
                           setShowUpgradePopup,
-                          setOptionText,
                           folderID,
                           affiliateStatus = null,
                           setAffiliateStatus = null,
@@ -124,8 +123,10 @@ const StandardForm = ({
     const handleOnClick = e => {
 
         if (!subStatus) {
-            setShowUpgradePopup(true);
-            setOptionText("change link name");
+            setShowUpgradePopup({
+                show: true,
+                text: "change link name"
+            });
         }
     }
 

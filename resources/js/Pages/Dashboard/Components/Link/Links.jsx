@@ -39,7 +39,6 @@ const Links = ({
                    setRow,
                    setValue,
                    setShowUpgradePopup,
-                   setOptionText,
                    subStatus,
                    setAccordionValue
 }) => {
@@ -61,9 +60,10 @@ const Links = ({
         if(hasLinks) {
 
             if ((currentItem.type && currentItem.type === "folder") && !subStatus) {
-                setShowUpgradePopup(true);
-                setOptionText("enable your folders");
-
+                setShowUpgradePopup({
+                    show: true,
+                    text: "enable your folders"
+                });
             } else {
                 const newStatus = !currentItem.active_status;
 
@@ -140,8 +140,10 @@ const Links = ({
             }, 300)
 
         } else {
-            setShowUpgradePopup(true);
-            setOptionText("access your folders");
+            setShowUpgradePopup({
+                show: true,
+                text: "access your folders"
+            });
         }
 
     }

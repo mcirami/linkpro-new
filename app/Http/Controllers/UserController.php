@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Course;
+use App\Models\OfferClick;
+use App\Models\Purchase;
+use App\Services\StatsServices;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -44,7 +48,14 @@ class UserController extends Controller
         $isAffiliate = $user->Affiliates()->first();
         $payoutInfoSubmitted = $user->payout_info_submitted;
 
-        return Inertia::render('User/User')->with(compact('hasOffers', 'isAffiliate', 'payoutInfoSubmitted'));
+        $statsService = new StatsServices();
+        $data = $statsService->getAllOfferStats(['clear' => true]);
+        $total = 0;
+        if (!empty($data['totals'])) {
+            $total = $data['totals']['totalPayout'];
+        }
+
+        return Inertia::render('User/User')->with(compact('hasOffers', 'isAffiliate', 'payoutInfoSubmitted', 'total'));
     }
 
     /**

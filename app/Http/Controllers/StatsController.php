@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\StatsServices;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -14,7 +15,7 @@ class StatsController extends Controller
     /**
      * @return Response
      */
-    public function show(): \Inertia\Response {
+    public function show(Request $request): \Inertia\Response {
 
         return Inertia::render('Stats/Stats');
     }
@@ -23,9 +24,9 @@ class StatsController extends Controller
      * @param Request $request
      * @param StatsServices $statsServices
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getPageStats(Request $request, StatsServices $statsServices) {
+    public function getPageStats(Request $request, StatsServices $statsServices): JsonResponse {
 
         $data = $statsServices->getAllPageStats($request);
 
@@ -36,9 +37,9 @@ class StatsController extends Controller
      * @param Request $request
      * @param StatsServices $statsServices
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getLinkStats(Request $request, StatsServices $statsServices) {
+    public function getLinkStats(Request $request, StatsServices $statsServices): JsonResponse {
 
         $data = $statsServices->getAllLinkStats($request);
 
@@ -48,9 +49,10 @@ class StatsController extends Controller
     /**
      * Get deleted link stats for today
      *
+     * @param Request $request
      * @param StatsServices $statsServices
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     /*public function getDeletedStats(StatsServices $statsServices) {
 
@@ -61,21 +63,39 @@ class StatsController extends Controller
         ]);
     }*/
 
-    public function getFolderStats(Request $request, StatsServices $statsServices) {
+    /**
+     * @param Request $request
+     * @param StatsServices $statsServices
+     *
+     * @return JsonResponse
+     */
+    public function getFolderStats(Request $request, StatsServices $statsServices): JsonResponse {
 
         $data = $statsServices->getAllFolderStats($request);
 
         return response()->json(['data' => $data]);
     }
 
-    public function getOfferStats(Request $request, StatsServices $statsServices) {
+    /**
+     * @param Request $request
+     * @param StatsServices $statsServices
+     *
+     * @return JsonResponse
+     */
+    public function getOfferStats(Request $request, StatsServices $statsServices): JsonResponse {
 
         $data = $statsServices->getAllOfferStats($request);
 
         return response()->json(['data' => $data]);
     }
 
-    public function getPublisherStats(Request $request, StatsServices $statsServices) {
+    /**
+     * @param Request $request
+     * @param StatsServices $statsServices
+     *
+     * @return JsonResponse
+     */
+    public function getPublisherStats(Request $request, StatsServices $statsServices): JsonResponse {
 
         $data = $statsServices->getAllPublisherStats($request);
 

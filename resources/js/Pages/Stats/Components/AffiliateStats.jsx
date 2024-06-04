@@ -130,6 +130,7 @@ const AffiliateStats = ({
                 url = '/stats/get/publisher'
             }
 
+            console.log("packets: ", packets);
             getStatsCall(packets, url)
         }
     }

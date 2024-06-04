@@ -15,7 +15,6 @@ import {
 
 const AddFolder = ({
                        setShowUpgradePopup,
-                       setOptionText,
                        setEditFolderID,
                        subStatus,
 }) => {
@@ -57,8 +56,10 @@ const AddFolder = ({
             })
 
         } else {
-            setShowUpgradePopup(true);
-            setOptionText("add folders");
+            setShowUpgradePopup({
+                show: true,
+                text: "add folders"
+            });
         }
     };
 
