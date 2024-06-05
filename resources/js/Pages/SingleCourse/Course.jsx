@@ -11,12 +11,7 @@ import SetFlash from '@/Utils/SetFlash.jsx';
 import {isEmpty} from 'lodash';
 import PurchasePaymentButtons
     from '@/Components/Payments/PurchasePaymentButtons.jsx';
-import {generateHTML} from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import TextAlign from '@tiptap/extension-text-align';
-import {Color} from '@tiptap/extension-color';
-import Underline from '@tiptap/extension-underline';
-import TextStyle from '@tiptap/extension-text-style';
+import {convertText} from '@/Services/CreatorServices.jsx';
 
 function Course({
                     auth,
@@ -82,35 +77,12 @@ function Course({
 
     useEffect(() => {
 
-            if (introText && introText.hasOwnProperty('blocks')) {
-                introText["blocks"] = introText["blocks"].map((block) => {
-                    if (!block.text) {
-                        block.text = ""
-                    }
-
-                    return block;
-                })
-
-                setIntroText(draftToHtml(introText));
-            } else {
-                const output = generateHTML(JSON.parse(introText), [
-                    StarterKit.configure({
-                        heading: {
-                            levels: [1, 2, 3, 4, 5],
-                        },
-                        bulletList:{
-                            keepAttributes: true,
-                        }
-                    }),
-                    TextAlign.configure({
-                        types: ['heading', 'paragraph'],
-                    }),
-                    Color,
-                    Underline,
-                    TextStyle,
-                ])
-                setIntroText(output);
-            }
+        const convertedText = convertText(introText);
+        if (convertedText.type === "blocks") {
+            setIntroText(draftToHtml(convertedText.text));
+        } else {
+            setIntroText(convertedText.text);
+        }
 
     },[])
 

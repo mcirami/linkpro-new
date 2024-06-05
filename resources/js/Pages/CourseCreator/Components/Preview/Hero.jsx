@@ -8,6 +8,7 @@ import {Color} from '@tiptap/extension-color';
 import Underline from '@tiptap/extension-underline';
 import TextStyle from '@tiptap/extension-text-style';
 import {generateHTML} from "@tiptap/react";
+import {convertText} from '@/Services/CreatorServices.jsx';
 
 const Hero = ({ data }) => {
 
@@ -15,41 +16,15 @@ const Hero = ({ data }) => {
 
     useEffect(() => {
 
-        if (data["intro_text"] !== "") {
-            if (data["intro_text"] && isJSON(data["intro_text"])) {
-
-                const allContent = JSON.parse(data["intro_text"]);
-                if(allContent.hasOwnProperty("blocks")) {
-                    allContent["blocks"] = allContent["blocks"].map((block) => {
-                        if (!block.text) {
-                            block.text = ""
-                        }
-
-                        return block;
-                    })
-                    setTextValue(draftToHtml(allContent));
-                } else {
-                    const output = generateHTML(JSON.parse(data["intro_text"]), [
-                            StarterKit.configure({
-                                heading: {
-                                    levels: [1, 2, 3, 4, 5],
-                                },
-                                bulletList:{
-                                    keepAttributes: true,
-                                }
-                            }),
-                            TextAlign.configure({
-                                types: ['heading', 'paragraph'],
-                            }),
-                            Color,
-                            Underline,
-                            TextStyle,
-                        ])
-                    setTextValue(output);
-                }
+        if (data["intro_text"] && isJSON(data["intro_text"])) {
+            const content = convertText(data["intro_text"]);
+            if (content.type === "blocks") {
+                setTextValue(draftToHtml(content.text));
             } else {
-                setTextValue(data["intro_text"])
+                setTextValue(content.text);
             }
+        } else {
+            setTextValue(data["intro_text"])
         }
 
     },[data["intro_text"]])

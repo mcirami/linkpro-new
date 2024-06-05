@@ -62,7 +62,7 @@ const ColumnComponent = ({
             if(section.image) {
                 setBgStyle ({
                     background: "url(" + image + ") no-repeat",
-                    backgroundPosition: "top center",
+                    backgroundPosition: "center center",
                     backgroundSize: "cover"
                 })
             } else {

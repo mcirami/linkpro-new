@@ -2,6 +2,13 @@ import React, {useEffect, useState, useRef} from 'react';
 import SectionImage from './SectionImage';
 import DOMPurify from 'dompurify';
 import draftToHtml from 'draftjs-to-html';
+import isJSON from 'validator/es/lib/isJSON.js';
+import {generateHTML} from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import TextAlign from '@tiptap/extension-text-align';
+import {Color} from '@tiptap/extension-color';
+import Underline from '@tiptap/extension-underline';
+import TextStyle from '@tiptap/extension-text-style';
 
 const PreviewSection = ({
                             currentSection,
@@ -29,8 +36,6 @@ const PreviewSection = ({
     const [buttonStyle, setButtonStyle] = useState(null);
     const [textValue, setTextValue] = useState(text)
 
-    const firstUpdate = useRef(true);
-
     useEffect(() => {
         setButtonStyle ({
             background: button_color,
@@ -43,18 +48,38 @@ const PreviewSection = ({
     useEffect(() => {
 
         if(type === "text" ) {
-            if (text && text.hasOwnProperty("blocks")) {
+            if (text && isJSON(text)) {
 
-                text["blocks"] = text["blocks"].map((block) => {
-                    if (!block.text) {
-                        block.text = ""
-                    }
+                const allContent = JSON.parse(text);
+                if(allContent.hasOwnProperty("blocks")) {
+                    allContent["blocks"] = allContent["blocks"].map((block) => {
+                        if (!block.text) {
+                            block.text = ""
+                        }
 
-                    return block;
-                })
+                        return block;
+                    })
 
-                setTextValue(draftToHtml(text));
-                firstUpdate.current = false;
+                    setTextValue(draftToHtml(allContent));
+                } else {
+                    const output = generateHTML(allContent, [
+                        StarterKit.configure({
+                            heading: {
+                                levels: [1, 2, 3, 4, 5],
+                            },
+                            bulletList:{
+                                keepAttributes: true,
+                            }
+                        }),
+                        TextAlign.configure({
+                            types: ['heading', 'paragraph'],
+                        }),
+                        Color,
+                        Underline,
+                        TextStyle,
+                    ])
+                    setTextValue(output);
+                }
 
             } else {
                 setTextValue(text)

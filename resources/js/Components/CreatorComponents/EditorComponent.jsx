@@ -12,6 +12,7 @@ import {
 } from '@/Services/CourseRequests.jsx';
 import TipTap from '@/Components/CreatorComponents/TipTap.jsx';
 import isJSON from 'validator/es/lib/isJSON';
+import {convertText} from '@/Services/CreatorServices.jsx';
 const EditorComponent = ({
                              dispatch,
                              sections = null,
@@ -30,49 +31,25 @@ const EditorComponent = ({
 
     useEffect(() => {
 
-        if (currentSection) {
-            if (currentSection["text"] && isJSON(currentSection["text"])) {
-                const allContent = JSON.parse(currentSection["text"]);
-                if(allContent.hasOwnProperty("blocks")) {
-                    allContent["blocks"] = allContent["blocks"].map((block) => {
-                        if (!block.text) {
-                            block.text = ""
-                        }
-
-                        return block;
-                    })
-                    setEditorState(draftToHtml(allContent))
-                } else {
-                    setEditorState(allContent)
-                }
-            }
-        } else if (data.hasOwnProperty('intro_text') && isJSON(data["intro_text"])) {
-
-            const allContent = JSON.parse(data["intro_text"]);
-            if(allContent.hasOwnProperty("blocks")) {
-                allContent["blocks"] = allContent["blocks"].map((block) => {
-                    if (!block.text) {
-                        block.text = ""
-                    }
-                    return block;
-                })
-                setEditorState(draftToHtml(allContent))
-            } else {
-                setEditorState(allContent)
-            }
+        const textToConvert = data && data.hasOwnProperty('intro_text') ?
+            data["intro_text"] :
+            currentSection["text"];
+        const convertedText = convertText(textToConvert);
+        if (convertedText.type === "blocks") {
+            setEditorState(draftToHtml(convertedText.text))
+        } else {
+            setEditorState(convertedText.text)
         }
 
     },[sections])
 
     useEffect(() => {
         if (currentSection) {
-            if (currentSection["text"] && isJSON(currentSection["text"]) &&
-                JSON.parse(currentSection["text"])["blocks"][0]["text"] !== "") {
+            if (currentSection["text"] && isJSON(currentSection["text"]) ) {
                 setIsValid(true)
             }
         } else {
-            if (data["intro_text"] && isJSON(data["intro_text"]) &&
-                JSON.parse(data["intro_text"])["blocks"][0]["text"] !== "") {
+            if (data["intro_text"] && isJSON(data["intro_text"])) {
                 setIsValid(true)
             }
         }

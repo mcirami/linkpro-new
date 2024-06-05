@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import draftToHtml from 'draftjs-to-html';
 import DOMPurify from 'dompurify';
+import isJSON from 'validator/es/lib/isJSON.js';
+import {convertText} from '@/Services/CreatorServices.jsx';
 
 const SectionComponent = ({section}) => {
-
-    //const bgImage = section.type === "image" && section.image ? section.image : Vapor.asset('images/image-placeholder.jpg');
 
     const [bgStyle, setBgStyle] = useState(null);
     const [buttonStyle, setButtonStyle] = useState(null);
@@ -29,16 +29,13 @@ const SectionComponent = ({section}) => {
 
     useEffect(() => {
         if(type === "text" ) {
-            if (text && text.hasOwnProperty('blocks')) {
-                text["blocks"] = text["blocks"].map((block) => {
-                    if (!block.text) {
-                        block.text = ""
-                    }
-
-                    return block;
-                })
-
-                setTextValue(draftToHtml(text));
+            if (text && isJSON(text)) {
+                const content = convertText(text);
+                if (content.type === "blocks") {
+                    setTextValue(draftToHtml(content.text));
+                } else {
+                    setTextValue(content.text);
+                }
             } else {
                 setTextValue(text)
             }

@@ -8,6 +8,8 @@ import SectionButtonOptions from '@/Components/CreatorComponents/SectionButtonOp
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import DOMPurify from 'dompurify';
+import {convertText} from '@/Services/CreatorServices.jsx';
+import isJSON from 'validator/es/lib/isJSON.js';
 
 const Section = ({
                      section,
@@ -71,31 +73,33 @@ const Section = ({
     useEffect(() => {
 
         switch(type) {
+
             case 'text':
-                let parsedText = null;
-                if (section.text && section.text.hasOwnProperty('blocks')) {
-                    parsedText = section.text;
-                    if(parsedText.hasOwnProperty('blocks')) {
-                        parsedText['blocks'] = parsedText['blocks'].map(
-                            (block) => {
-                                if (!block.text) {
-                                    block.text = '';
-                                }
+                const regex = /(<([^>]+)>)/gi;
+                let parsedText = "";
+                if (section.text && isJSON(section.text)) {
+                    const convertedText = convertText(section.text);
 
-                                return block;
-                            });
-
-                        parsedText = parsedText.blocks[0]['text'].length > 20 ?
-                            parsedText.blocks[0]['text'].slice(0, 20) + '...' :
-                            parsedText.blocks[0]['text'];
+                    if (convertedText.type === "blocks") {
+                        parsedText = convertedText.text.blocks[0]['text'].length > 20 ?
+                            convertedText.text.blocks[0]['text'].slice(0, 20) + '...' :
+                            convertedText.text.blocks[0]['text'];
+                    } else {
+                        parsedText = convertedText.text;
                     }
+                    const result = parsedText.replace(regex, "");
+
+                    parsedText = result.length > 20 ?
+                        result.slice(0, 20) + '...' :
+                        result;
+
                 } else if (section.text) {
-                    const regex = /(<([^>]+)>)/gi;
                     const result = section.text.replace(regex, "");
 
                     parsedText = result.length > 20 ?
                         result.slice(0,20) + "..." :
                         result;
+
                 } else {
                     parsedText = type + ' ' + textCount;
                 }
