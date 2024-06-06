@@ -11,6 +11,7 @@ import SetFlash from '@/Utils/SetFlash.jsx';
 import {isEmpty} from 'lodash';
 import PurchasePaymentButtons
     from '@/Components/Payments/PurchasePaymentButtons.jsx';
+import {convertText} from '@/Services/CreatorServices.jsx';
 
 function Course({
                     auth,
@@ -76,19 +77,12 @@ function Course({
 
     useEffect(() => {
 
-            if (introText && introText.hasOwnProperty('blocks')) {
-                introText["blocks"] = introText["blocks"].map((block) => {
-                    if (!block.text) {
-                        block.text = ""
-                    }
-
-                    return block;
-                })
-
-                setIntroText(draftToHtml(introText));
-            } else {
-                setIntroText(introText)
-            }
+        const convertedText = convertText(introText);
+        if (convertedText.type === "blocks") {
+            setIntroText(draftToHtml(convertedText.text));
+        } else {
+            setIntroText(convertedText.text);
+        }
 
     },[])
 

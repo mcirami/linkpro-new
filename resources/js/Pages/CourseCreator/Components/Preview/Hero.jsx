@@ -1,32 +1,30 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, useMemo} from 'react';
 import DOMPurify from 'dompurify';
 import draftToHtml from 'draftjs-to-html';
+import isJSON from 'validator/es/lib/isJSON.js';
+import StarterKit from '@tiptap/starter-kit';
+import TextAlign from '@tiptap/extension-text-align';
+import {Color} from '@tiptap/extension-color';
+import Underline from '@tiptap/extension-underline';
+import TextStyle from '@tiptap/extension-text-style';
+import {generateHTML} from "@tiptap/react";
+import {convertText} from '@/Services/CreatorServices.jsx';
 
 const Hero = ({ data }) => {
 
     const [textValue, setTextValue] = useState(data["intro_text"])
 
-    const firstUpdate = useRef(true);
-
     useEffect(() => {
 
-        if (data["intro_text"] !== "") {
-            if (firstUpdate.current && data["intro_text"]) {
-
-                const allContent = data["intro_text"];
-                allContent["blocks"] = allContent["blocks"].map((block) => {
-                    if (!block.text) {
-                        block.text = ""
-                    }
-
-                    return block;
-                })
-
-                setTextValue(draftToHtml(allContent));
-                firstUpdate.current = false;
+        if (data["intro_text"] && isJSON(data["intro_text"])) {
+            const content = convertText(data["intro_text"]);
+            if (content.type === "blocks") {
+                setTextValue(draftToHtml(content.text));
             } else {
-                setTextValue(data["intro_text"])
+                setTextValue(content.text);
             }
+        } else {
+            setTextValue(data["intro_text"])
         }
 
     },[data["intro_text"]])

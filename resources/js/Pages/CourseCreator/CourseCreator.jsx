@@ -259,6 +259,30 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         value={courseData['title']}
                                                         saveTo="course"
                                                     />
+                                                    <div className="picker_wrap">
+                                                        <ColorPicker
+                                                            label="Title Color"
+                                                            data={courseData}
+                                                            dispatch={dispatchCourseData}
+                                                            elementName="header_text_color"
+                                                            saveTo="course"
+                                                        />
+                                                        <ToolTipIcon section="course_header_text_color"/>
+                                                    </div>
+                                                    <SliderComponent
+                                                        label="Title Font Size"
+                                                        id={courseData['id']}
+                                                        dispatch={dispatchCourseData}
+                                                        value={courseData['header_font_size']}
+                                                        elementName="header_font_size"
+                                                        sliderValues={{
+                                                            step: .1,
+                                                            min: .1,
+                                                            max: 5,
+                                                            unit: 'rem',
+                                                        }}
+                                                        saveTo="course"
+                                                    />
                                                     <ImageComponent
                                                         ref={nodesRef}
                                                         completedCrop={completedCrop}
@@ -287,30 +311,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         />
                                                         <ToolTipIcon section="course_header_color"/>
                                                     </div>
-                                                    <div className="picker_wrap">
-                                                        <ColorPicker
-                                                            label="Title Color"
-                                                            data={courseData}
-                                                            dispatch={dispatchCourseData}
-                                                            elementName="header_text_color"
-                                                            saveTo="course"
-                                                        />
-                                                        <ToolTipIcon section="course_header_text_color"/>
-                                                    </div>
-                                                    <SliderComponent
-                                                        label="Title Font Size"
-                                                        id={courseData["id"]}
-                                                        dispatch={dispatchCourseData}
-                                                        value={courseData["header_font_size"]}
-                                                        elementName="header_font_size"
-                                                        sliderValues={{
-                                                            step: .1,
-                                                            min: .1,
-                                                            max: 5,
-                                                            unit: "rem",
-                                                        }}
-                                                        saveTo="course"
-                                                    />
+
                                                     <DropdownComponent
                                                         id={courseData['id']}
                                                         dispatch={dispatchCourseData}
@@ -350,7 +351,8 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                         type="url"
                                                         hoverText="Add Embed Link"
                                                         elementName="intro_video"
-                                                        value={courseData["intro_video"] || ""}
+                                                        value={courseData['intro_video'] ||
+                                                            ''}
                                                         data={courseData}
                                                         dispatch={dispatchCourseData}
                                                         saveTo="course"

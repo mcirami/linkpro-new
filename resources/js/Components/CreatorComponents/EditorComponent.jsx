@@ -1,9 +1,6 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useMemo} from 'react';
 import {LP_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
-import { Editor } from '@tinymce/tinymce-react';
-import { ContentState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from "html-to-draftjs";
 
 import {
     updateSectionData,
@@ -13,9 +10,9 @@ import {
     updateData as updateCourseData,
     updateSectionData as updateCourseSectionData
 } from '@/Services/CourseRequests.jsx';
+import TipTap from '@/Components/CreatorComponents/TipTap.jsx';
 import isJSON from 'validator/es/lib/isJSON';
-import {BubbleMenu, EditorProvider, FloatingMenu, useEditor, EditorContent, useCurrentEditor} from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit'
+import {convertText} from '@/Services/CreatorServices.jsx';
 const EditorComponent = ({
                              dispatch,
                              sections = null,
@@ -27,86 +24,41 @@ const EditorComponent = ({
                              setIsValid,
                              showTiny = null,
                              setShowTiny = null,
-                             saveTo,
-                             index
+                             saveTo
                          }) => {
 
-    const editorRef = useRef(null);
-
     const [editorState, setEditorState] = useState("");
-    const [editorValue, setEditorValue] = useState("");
-    const [tipTapContent, setTipTapContent] = useState(useEditor({
-        extensions: [
-            StarterKit.configure(),
-        ],
-        content: currentSection ? draftToHtml(currentSection["text"]) : ""
-    }));
+
     useEffect(() => {
 
-        if (currentSection) {
+        const textToConvert = data && data.hasOwnProperty('intro_text') ?
+            data["intro_text"] :
+            currentSection.hasOwnProperty('section_text') ?
+                currentSection["section_text"] :
+            currentSection["text"];
+        const convertedText = convertText(textToConvert);
 
-            if (currentSection["text"]) {
-                const allContent = currentSection["text"];
-                if(allContent.hasOwnProperty("blocks")) {
-                    allContent["blocks"] = allContent["blocks"].map((block) => {
-                        if (!block.text) {
-                            block.text = ""
-                        }
-
-                        return block;
-                    })
-                    setEditorState(draftToHtml(allContent))
-                }
-                /*setTipTapContent( useEditor({
-                    extensions: [
-                        StarterKit.configure(),
-                    ],
-                    content: draftToHtml(allContent)
-                }))*/
-            }
-        } else if (data["intro_text"]) {
-
-            const allContent = data["intro_text"];
-            if(allContent.hasOwnProperty("blocks")) {
-                allContent["blocks"] = allContent["blocks"].map((block) => {
-                    if (!block.text) {
-                        block.text = ""
-                    }
-
-                    return block;
-                })
-                setEditorState(draftToHtml(allContent))
-            }
+        if (convertedText.type === "blocks") {
+            setEditorState(draftToHtml(convertedText.text))
+        } else {
+            setEditorState(convertedText.text)
         }
 
     },[sections])
 
     useEffect(() => {
         if (currentSection) {
-            if (currentSection["text"] &&
-                currentSection["text"].hasOwnProperty("blocks") &&
-                currentSection["text"]["blocks"][0]["text"] !== "") {
+            if ((currentSection["text"] || currentSection["section_text"]) && isJSON(currentSection["text"]) ) {
                 setIsValid(true)
             }
         } else {
-            if (data["intro_text"] &&
-                data["intro_text"].hasOwnProperty("blocks") &&
-                data["intro_text"]["blocks"][0]["text"] !== "") {
+            if (data["intro_text"] && isJSON(data["intro_text"])) {
                 setIsValid(true)
             }
         }
     },[])
 
-    useEffect(() => {
-        if(setShowTiny) {
-            setShowTiny(true);
-        }
-    },[])
-
-    const handleEditorChange = () => {
-
-        const value = editorRef.current.getContent();
-        setEditorValue(value);
+    const handleEditorChange = (value) => {
 
         if (value !== "") {
             setIsValid(true);
@@ -140,18 +92,9 @@ const EditorComponent = ({
         }
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = (content) => {
 
         if (isValid) {
-
-            const blocksFromHTML = htmlToDraft(editorValue);
-
-            const { contentBlocks, entityMap } = blocksFromHTML;
-
-            const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-
-            const finalValue = convertToRaw(contentState);
 
             if (sections) {
 
@@ -159,7 +102,7 @@ const EditorComponent = ({
                 element = element[2].replace('_', '');
 
                 const packets = {
-                    [`${element}`]: finalValue,
+                    [`${element}`]: content,
                 };
 
                saveTo === "course" ?
@@ -169,7 +112,7 @@ const EditorComponent = ({
             } else {
                 //const value = data[elementName];
                 const packets = {
-                    [`${elementName}`]: finalValue,
+                    [`${elementName}`]: content,
                 };
 
                 const method = saveTo === "course" ?
@@ -191,73 +134,23 @@ const EditorComponent = ({
         }
     }
 
+    useEffect(() => {
+        if(setShowTiny) {
+            setShowTiny(true);
+        }
+    },[])
+
     return (
         <div className="page_settings border_wrap wysiwyg">
 
             {showTiny &&
-                <Editor
-                    apiKey='h3695sldkjcjhvyl34syvczmxxely99ind71gtafhpnxy8zj'
-                    key={currentSection ? currentSection.id + index : data.id + index}
-                    onInit={(evt, editor) => editorRef.current = editor}
-                    initialValue={editorState}
-                    value={editorValue}
-                    onEditorChange={handleEditorChange}
-                    onBlur={(e) => handleSubmit(e)}
-                    onSubmit={(e) => handleSubmit(e)}
-                    init={{
-                        height: 500,
-                        width: 100 + '%',
-                        menubar: false,
-                        menu: {
-                            file: {
-                                title: 'File',
-                                items: ''
-                            },
-                            edit: {
-                                title: 'Edit',
-                                items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'
-                            },
-                            view: {
-                                title: 'View',
-                                items: 'visualaid visualchars visualblocks | spellchecker | preview fullscreen | showcomments'
-                            },
-                            insert: {
-                                title: 'Insert',
-                                items: 'link | emoticons hr | pagebreak '
-                            },
-                            format: {
-                                title: 'Format',
-                                items: 'bold italic underline strikethrough superscript subscript | styles blocks fontfamily fontsize align lineheight | forecolor backcolor | language | removeformat'
-                            },
-                            tools: {
-                                title: 'Tools',
-                                items: 'spellchecker spellcheckerlanguage | a11ycheck wordcount'
-                            },
-                        },
-                        plugins: [
-                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                            'anchor', 'searchreplace', 'fullscreen', 'wordcount'
-                        ],
-                        toolbar: 'undo redo | blocks | ' +
-                            'bold italic forecolor | alignleft aligncenter ' +
-                            'alignright alignjustify | bullist numlist outdent indent | ' +
-                            'removeformat | forecolor backcolor',
-                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-                    }}
+
+                <TipTap
+                    editorState={editorState}
+                    handleEditorChange={handleEditorChange}
+                    handleSubmit={handleSubmit}
                 />
             }
-            {/*<div className="tiptap">
-                <EditorProvider extensions={extensions} content={editorState}>
-                    <FloatingMenu>This is the floating menu</FloatingMenu>
-                    <BubbleMenu>This is the bubble menu</BubbleMenu>
-                </EditorProvider>
-                <EditorContent className="editor__content" editor={tipTapContent} />
-                <FloatingMenu editor={tipTapContent}>This is the floating menu</FloatingMenu>
-                <BubbleMenu editor={tipTapContent}>This is the bubble menu</BubbleMenu>
-                <pre>
-                  {JSON.stringify(editor.getJSON(), null, 2)}
-                </pre>
-            </div>*/}
         </div>
     );
 };

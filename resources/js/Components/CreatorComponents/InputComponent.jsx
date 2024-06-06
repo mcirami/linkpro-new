@@ -29,8 +29,7 @@ const InputComponent = ({
                             currentSection = null,
                             showTiny = null,
                             setShowTiny = null,
-                            saveTo,
-                            index
+                            saveTo
                         }) => {
 
     const [charactersLeft, setCharactersLeft] = useState(maxChar);
@@ -161,13 +160,9 @@ const InputComponent = ({
                     [`${element}`]: e.target.value,
                 };
 
-                if (saveTo === "course") {
-                    updateCourseSectionData(packets, currentSection.id);
-                }
-
-                if (saveTo === "landingPage") {
+                saveTo === "course" ?
+                    updateCourseSectionData(packets, currentSection.id) :
                     updateLpSectionData(packets, currentSection.id)
-                }
 
             } else if (saveTo === "offer") {
 
@@ -299,7 +294,6 @@ const InputComponent = ({
                         showTiny={showTiny}
                         setShowTiny={setShowTiny}
                         saveTo={saveTo}
-                        index={index}
                     />
                 )
             case 'currency' :

@@ -2,6 +2,10 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {BiLock} from 'react-icons/bi';
 import {FaCirclePlay} from 'react-icons/fa6';
 import {getFileParts} from '@/Services/FileService.jsx';
+import isJSON from 'validator/es/lib/isJSON.js';
+import {convertText} from '@/Services/CreatorServices.jsx';
+import draftToHtml from 'draftjs-to-html';
+import DOMPurify from 'dompurify';
 
 const ColumnComponent = ({
                              section,
@@ -20,9 +24,11 @@ const ColumnComponent = ({
     const {
         type,
         text,
+        section_text,
         text_color,
         video_title,
         video_link,
+        title_color,
         background_color,
         button,
         button_position,
@@ -42,6 +48,29 @@ const ColumnComponent = ({
     const [buttonStyle, setButtonStyle] = useState(null);
     const [bgStyle, setBgStyle] = useState(null);
     const [fileName, setFileName] = useState("");
+    const [textValue, setTextValue] = useState(section_text)
+
+
+    useEffect(() => {
+
+        if (section_text && isJSON(section_text)) {
+            const content = convertText(section_text);
+            if (content.type === "blocks") {
+                setTextValue(draftToHtml(content.text));
+            } else {
+                setTextValue(content.text);
+            }
+        } else if (text) {
+            setTextValue(text)
+        }
+
+    },[])
+
+    const createMarkup = (convertText) => {
+        return {
+            __html: DOMPurify.sanitize(convertText)
+        }
+    }
 
     useEffect(() => {
         if (type === "video" && video_link) {
@@ -62,7 +91,7 @@ const ColumnComponent = ({
             if(section.image) {
                 setBgStyle ({
                     background: "url(" + image + ") no-repeat",
-                    backgroundPosition: "top center",
+                    backgroundPosition: "center center",
                     backgroundSize: "cover"
                 })
             } else {
@@ -218,7 +247,7 @@ const ColumnComponent = ({
             {(type === "video" || type === "text") ?
                 <div className="my_row text_wrap">
                     {type === "video" &&
-                        <h3 style={{color: text_color}}>{video_title}</h3>
+                        <h3 style={{color: title_color}}>{video_title}</h3>
                     }
 
                     { (!hasCourseAccess || page === "lander") &&
@@ -227,9 +256,10 @@ const ColumnComponent = ({
                             :
                             ""
                     }
-                    <p style={{color: text_color}}>{text}</p>
-                    { (!hasCourseAccess || page === "lander") &&
-                        (button && button_position === "below") ?
+                    <div dangerouslySetInnerHTML={createMarkup(textValue)}>
+                    </div>
+                    {(!hasCourseAccess || page === 'lander') &&
+                    (button && button_position === "below") ?
                                 <Button />
                             :
                             ""

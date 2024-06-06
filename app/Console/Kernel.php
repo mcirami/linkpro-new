@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CopyTextToJsonCol;
 use App\Console\Commands\EmailInactiveUsers;
 use App\Console\Commands\EmailSocialShare;
 use App\Console\Commands\EmailFreeTrialCode;
@@ -21,6 +22,7 @@ class Kernel extends ConsoleKernel
         EmailSocialShare::class,
         EmailFreeTrialCode::class,
         GetIcons::class,
+        CopyTextToJsonCol::class
     ];
 
     /**

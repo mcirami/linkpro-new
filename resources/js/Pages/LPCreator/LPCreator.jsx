@@ -204,6 +204,26 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     value={pageData['slogan']}
                                                     saveTo="landingPage"
                                                 />
+                                                <ColorPicker
+                                                    label="Header Text Color"
+                                                    data={pageData}
+                                                    dispatch={dispatchPageData}
+                                                    elementName="header_text_color"
+                                                />
+                                                <SliderComponent
+                                                    label="Header Font Size"
+                                                    id={pageData["id"]}
+                                                    dispatch={dispatchPageData}
+                                                    value={pageData["header_font_size"]}
+                                                    elementName="header_font_size"
+                                                    sliderValues={{
+                                                        step: .1,
+                                                        min: .1,
+                                                        max: 5,
+                                                        unit: "rem",
+                                                    }}
+                                                    saveTo="landingPage"
+                                                />
                                                 <ImageComponent
                                                     ref={nodesRef}
                                                     completedCrop={completedCrop}
@@ -227,26 +247,6 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     data={pageData}
                                                     dispatch={dispatchPageData}
                                                     elementName="header_color"
-                                                />
-                                                <ColorPicker
-                                                    label="Header Text Color"
-                                                    data={pageData}
-                                                    dispatch={dispatchPageData}
-                                                    elementName="header_text_color"
-                                                />
-                                                <SliderComponent
-                                                    label="Header Font Size"
-                                                    id={pageData["id"]}
-                                                    dispatch={dispatchPageData}
-                                                    value={pageData["header_font_size"]}
-                                                    elementName="header_font_size"
-                                                    sliderValues={{
-                                                        step: .1,
-                                                        min: .1,
-                                                        max: 5,
-                                                        unit: "rem",
-                                                    }}
-                                                    saveTo="landingPage"
                                                 />
                                                 <div className="my_row page_settings">
                                                     {pageData['slug'] &&

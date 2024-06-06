@@ -51,7 +51,7 @@ const ColorPicker = ({
             element = element[2].replace('_', '');
 
             let color;
-            if(element === "text_color" && !currentSection[element]) {
+            if(element === "title_color" && !currentSection[element]) {
                 color = 'rgba(0,0,0,1)';
             } else if (element === "bg_color" && !currentSection[element]) {
                 color = 'rgba(255,255,255,1)';
@@ -247,7 +247,7 @@ const ColorPicker = ({
 
     return (
         <article className="my_row page_settings border_wrap">
-            <h4>{label}</h4>
+            <label>{label}</label>
             <div className="icon_wrap">
                 <a ref={linkRef}
                    href="#"

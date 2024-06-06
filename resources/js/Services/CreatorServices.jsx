@@ -1,5 +1,11 @@
 import {arrayMove} from '@dnd-kit/sortable';
-//import {updateSectionsPositions} from '@/Services/CourseRequests.jsx';
+import isJSON from 'validator/es/lib/isJSON.js';
+import {generateHTML} from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import TextAlign from '@tiptap/extension-text-align';
+import {Color} from '@tiptap/extension-color';
+import Underline from '@tiptap/extension-underline';
+import TextStyle from '@tiptap/extension-text-style';
 
 export const handleDragEndAction = ( event,
                                      setSections,
@@ -37,4 +43,51 @@ export const handleDragEndAction = ( event,
     }
 
     return newArray;
+}
+
+export const convertText = (text) => {
+    let parsedText = "";
+    //have to check if text is in old editor format using blocks as a key
+    if (text && isJSON(text)) {
+        parsedText = JSON.parse(text);
+        if(parsedText.hasOwnProperty('blocks')) {
+            parsedText['blocks'] = parsedText['blocks'].map(
+                (block) => {
+                    if (!block.text) {
+                        block.text = '';
+                    }
+
+                    return block;
+                });
+
+            parsedText = {
+                type: "blocks",
+                text: parsedText
+            };
+        } else {
+            const convertedText = generateHTML(parsedText, [
+                StarterKit.configure({
+                    heading: {
+                        levels: [1, 2, 3, 4, 5],
+                    },
+                    bulletList:{
+                        keepAttributes: true,
+                    }
+                }),
+                TextAlign.configure({
+                    types: ['heading', 'paragraph'],
+                }),
+                Color,
+                Underline,
+                TextStyle,
+            ])
+
+            parsedText = {
+                type: "html",
+                text: convertedText
+            }
+        }
+    }
+
+    return parsedText;
 }

@@ -13,6 +13,8 @@ import {getFileParts} from '@/Services/FileService.jsx';
 import {updateSectionData} from '@/Services/CourseRequests.jsx';
 import IOSSwitch from '@/Utils/IOSSwitch';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
+import SliderComponent
+    from '@/Components/CreatorComponents/SliderComponent.jsx';
 
 const Section = ({
                      section,
@@ -33,12 +35,15 @@ const Section = ({
 }) => {
 
     const [lockVideo, setLockVideo] = useState(true);
+    const [showTiny, setShowTiny]   = useState(false);
 
     const {
         id,
         type,
+        section_text,
         text,
         video_title,
+        title_size,
         video_link,
         lock_video,
     } = section;
@@ -167,13 +172,15 @@ const Section = ({
                                <>
                                    <InputComponent
                                         placeholder="Add Text"
-                                        type="textarea"
+                                        type="wysiwyg"
                                         hoverText="Add Text to Section"
-                                        elementName={`section_${index + 1}_text`}
-                                        value={text}
+                                        elementName={`section_${index + 1}_section_text`}
+                                        value={section_text}
                                         currentSection={section}
                                         sections={sections}
                                         setSections={setSections}
+                                        showTiny={showTiny}
+                                        setShowTiny={setShowTiny}
                                         saveTo="course"
                                    />
                                     <ColorPicker
@@ -184,15 +191,6 @@ const Section = ({
                                         elementName={`section_${index + 1}_background_color`}
                                         saveTo="course"
                                     />
-                                    <ColorPicker
-                                        label="Text Color"
-                                        currentSection={section}
-                                        sections={sections}
-                                        setSections={setSections}
-                                        elementName={`section_${index + 1}_text_color`}
-                                        saveTo="course"
-                                    />
-
                                     <SectionButtonOptions
                                         sectionPosition={index + 1}
                                         sections={sections}
@@ -218,6 +216,30 @@ const Section = ({
                                         setSections={setSections}
                                         saveTo="course"
                                     />
+                                    <SliderComponent
+                                        label="Title Font Size"
+                                        id={id}
+                                        currentSection={section}
+                                        sections={sections}
+                                        setSections={setSections}
+                                        value={title_size}
+                                        elementName={`section_${index + 1}_title_size`}
+                                        sliderValues={{
+                                            step: .1,
+                                            min: .1,
+                                            max: 5,
+                                            unit: 'rem',
+                                        }}
+                                        saveTo="course"
+                                    />
+                                    <ColorPicker
+                                        label="Title Color"
+                                        currentSection={section}
+                                        sections={sections}
+                                        setSections={setSections}
+                                        elementName={`section_${index + 1}_title_color`}
+                                        saveTo="course"
+                                    />
                                     <InputComponent
                                         placeholder="YouTube or Vimeo Link"
                                         type="url"
@@ -231,13 +253,15 @@ const Section = ({
                                     />
                                     <InputComponent
                                         placeholder="Video Text Blurb (optional)"
-                                        type="textarea"
+                                        type="wysiwyg"
                                         hoverText={`Submit Text Blurb`}
-                                        elementName={`section_${index + 1}_text`}
-                                        value={text || ""}
+                                        elementName={`section_${index + 1}_section_text`}
+                                        value={section_text || ""}
                                         currentSection={section}
                                         sections={sections}
                                         setSections={setSections}
+                                        showTiny={showTiny}
+                                        setShowTiny={setShowTiny}
                                         saveTo="course"
                                     />
                                     <ColorPicker
@@ -246,14 +270,6 @@ const Section = ({
                                         sections={sections}
                                         setSections={setSections}
                                         elementName={`section_${index + 1}_background_color`}
-                                        saveTo="course"
-                                    />
-                                    <ColorPicker
-                                        label="Text Color"
-                                        currentSection={section}
-                                        sections={sections}
-                                        setSections={setSections}
-                                        elementName={`section_${index + 1}_text_color`}
                                         saveTo="course"
                                     />
                                     <div className="switch_wrap two_columns">

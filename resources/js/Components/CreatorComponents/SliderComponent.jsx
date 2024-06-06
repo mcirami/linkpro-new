@@ -33,10 +33,13 @@ const SliderComponent = ({
         }
 
         if (sections && setSections) {
+            let element = elementName.split(/(\d+)/);
+            element = element[2].replace('_', '');
+
             setSections(
                 sections.map((section) => {
                     if(section.id === id) {
-                        section[elementName] = e.target.value;
+                        section[element] = e.target.value;
                     }
 
                     return section;
@@ -46,9 +49,16 @@ const SliderComponent = ({
 
     }
     const handleSubmit = (e) => {
+        let element = "";
+        if (elementName.includes('section')) {
+            element = elementName.split(/(\d+)/);
+            element = element[2].replace('_', '');
+        } else {
+            element = elementName;
+        }
 
         const packets = {
-            [`${elementName}`]: value,
+            [`${element}`]: value,
         };
 
         if(sections) {
@@ -57,8 +67,8 @@ const SliderComponent = ({
                 updateLPSectionData(packets, id);
         } else {
             saveTo === "course" ?
-                updateCourseData(packets, id, elementName) :
-                updateLpData(packets, id, elementName)
+                updateCourseData(packets, id, element) :
+                updateLpData(packets, id, element)
         }
 
     }
@@ -69,7 +79,7 @@ const SliderComponent = ({
 
     return (
         <div className="my_row page_settings border_wrap">
-            <h4>{label}</h4>
+            <label>{label}</label>
             <div className="slider_wrap">
                 <Slider
                     value={value}

@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import DOMPurify from 'dompurify';
 import draftToHtml from 'draftjs-to-html';
-
+import isJSON from 'validator/es/lib/isJSON.js';
+import {convertText} from '@/Services/CreatorServices.jsx';
 const PreviewSection = ({section}) => {
 
-    const firstUpdate = useRef(true);
     const [buttonStyle, setButtonStyle] = useState(null);
     const {
         type,
@@ -33,19 +33,14 @@ const PreviewSection = ({section}) => {
     useEffect(() => {
 
         if(type === "text" ) {
-            if (text) {
+            if (text && isJSON(text)) {
+                const content = convertText(text);
+                if (content.type === "blocks") {
+                    setTextValue(draftToHtml(content.text));
+                } else {
+                    setTextValue(content.text);
+                }
 
-                const allContent = text;
-                allContent["blocks"] = allContent["blocks"].map((block) => {
-                    if (!block.text) {
-                        block.text = ""
-                    }
-
-                    return block;
-                })
-
-                setTextValue(draftToHtml(allContent));
-                firstUpdate.current = false;
             } else if (text) {
                 setTextValue(text)
             }
@@ -53,9 +48,9 @@ const PreviewSection = ({section}) => {
 
     },[text])
 
-    const createMarkup = (text) => {
+    const createMarkup = (convertText) => {
         return {
-            __html: DOMPurify.sanitize(text)
+            __html: DOMPurify.sanitize(convertText)
         }
     }
 
