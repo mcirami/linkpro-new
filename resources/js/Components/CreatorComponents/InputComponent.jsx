@@ -29,8 +29,7 @@ const InputComponent = ({
                             currentSection = null,
                             showTiny = null,
                             setShowTiny = null,
-                            saveTo,
-                            index
+                            saveTo
                         }) => {
 
     const [charactersLeft, setCharactersLeft] = useState(maxChar);

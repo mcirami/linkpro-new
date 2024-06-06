@@ -4,6 +4,8 @@ import SectionImage
     from '@/Pages/CourseCreator/Components/Preview/SectionImage.jsx';
 import SectionFile
     from '@/Pages/CourseCreator/Components/Preview/SectionFile.jsx';
+import SectionText
+    from '@/Pages/CourseCreator/Components/Preview/SectionText.jsx';
 
 const PreviewSection = ({
                             currentSection,
@@ -20,7 +22,10 @@ const PreviewSection = ({
         background_color,
         text_color,
         text,
+        section_text,
         video_title,
+        title_color,
+        title_size,
         video_link,
         button,
         button_position,
@@ -69,16 +74,17 @@ const PreviewSection = ({
                 }
                 {{
                     "text":
-                        <p style={{ color: text_color || 'rgba(0,0,0,1)'}}>
-                            {text || ""}
-                        </p>
+                        <SectionText
+                            text={section_text}
+                        />
                         ,
                     "video":
                         <SectionVideo
                             title={video_title}
                             link={video_link}
-                            text={text}
-                            textColor={text_color}
+                            text={section_text}
+                            titleColor={title_color}
+                            titleSize={title_size}
                             index={index}
 
                         />,

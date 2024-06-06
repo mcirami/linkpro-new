@@ -3,12 +3,7 @@ import SectionImage from './SectionImage';
 import DOMPurify from 'dompurify';
 import draftToHtml from 'draftjs-to-html';
 import isJSON from 'validator/es/lib/isJSON.js';
-import {generateHTML} from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import TextAlign from '@tiptap/extension-text-align';
-import {Color} from '@tiptap/extension-color';
-import Underline from '@tiptap/extension-underline';
-import TextStyle from '@tiptap/extension-text-style';
+import {convertText} from '@/Services/CreatorServices.jsx';
 
 const PreviewSection = ({
                             currentSection,
@@ -49,39 +44,13 @@ const PreviewSection = ({
 
         if(type === "text" ) {
             if (text && isJSON(text)) {
-
-                const allContent = JSON.parse(text);
-                if(allContent.hasOwnProperty("blocks")) {
-                    allContent["blocks"] = allContent["blocks"].map((block) => {
-                        if (!block.text) {
-                            block.text = ""
-                        }
-
-                        return block;
-                    })
-
-                    setTextValue(draftToHtml(allContent));
+                const content = convertText(text);
+                if (content.type === "blocks") {
+                    setTextValue(draftToHtml(content.text));
                 } else {
-                    const output = generateHTML(allContent, [
-                        StarterKit.configure({
-                            heading: {
-                                levels: [1, 2, 3, 4, 5],
-                            },
-                            bulletList:{
-                                keepAttributes: true,
-                            }
-                        }),
-                        TextAlign.configure({
-                            types: ['heading', 'paragraph'],
-                        }),
-                        Color,
-                        Underline,
-                        TextStyle,
-                    ])
-                    setTextValue(output);
+                    setTextValue(content.text);
                 }
-
-            } else {
+            } else if (text) {
                 setTextValue(text)
             }
         }

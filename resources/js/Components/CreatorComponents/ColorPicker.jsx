@@ -51,7 +51,7 @@ const ColorPicker = ({
             element = element[2].replace('_', '');
 
             let color;
-            if(element === "text_color" && !currentSection[element]) {
+            if(element === "title_color" && !currentSection[element]) {
                 color = 'rgba(0,0,0,1)';
             } else if (element === "bg_color" && !currentSection[element]) {
                 color = 'rgba(255,255,255,1)';

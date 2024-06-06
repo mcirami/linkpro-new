@@ -33,8 +33,11 @@ const EditorComponent = ({
 
         const textToConvert = data && data.hasOwnProperty('intro_text') ?
             data["intro_text"] :
+            currentSection.hasOwnProperty('section_text') ?
+                currentSection["section_text"] :
             currentSection["text"];
         const convertedText = convertText(textToConvert);
+
         if (convertedText.type === "blocks") {
             setEditorState(draftToHtml(convertedText.text))
         } else {
@@ -45,7 +48,7 @@ const EditorComponent = ({
 
     useEffect(() => {
         if (currentSection) {
-            if (currentSection["text"] && isJSON(currentSection["text"]) ) {
+            if ((currentSection["text"] || currentSection["section_text"]) && isJSON(currentSection["text"]) ) {
                 setIsValid(true)
             }
         } else {

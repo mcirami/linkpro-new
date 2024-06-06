@@ -1,17 +1,45 @@
 import React, {useEffect, useState} from 'react';
 import { FaCirclePlay } from "react-icons/fa6";
 import {getVideoScreenshot} from '@/Services/VideoService.jsx';
+import {convertText} from '@/Services/CreatorServices.jsx';
+import draftToHtml from 'draftjs-to-html';
+import isJSON from 'validator/es/lib/isJSON.js';
+import DOMPurify from 'dompurify';
 
 const SectionVideo = ({
                           title,
                           link,
                           text,
-                          textColor,
+                          titleColor,
+                          titleSize,
                           index
 }) => {
 
     const [imagePlaceholder, setImagePlaceholder] = useState("");
     const [indexValue, setIndexValue] = useState(null);
+    const [textValue, setTextValue] = useState(null);
+
+    useEffect(() => {
+
+        if (text && isJSON(text)) {
+            const content = convertText(text);
+            if (content.type === "blocks") {
+                setTextValue(draftToHtml(content.text));
+            } else {
+                setTextValue(content.text);
+            }
+
+        } else if (text) {
+            setTextValue(text)
+        }
+
+    },[text])
+
+    const createMarkup = (convertText) => {
+        return {
+            __html: DOMPurify.sanitize(convertText)
+        }
+    }
 
     useEffect(() => {
         if(link) {
@@ -48,10 +76,11 @@ const SectionVideo = ({
             }
 
             <div className="text_wrap">
-                <h3 style={{color: textColor || "rgba(0,0,0,1)" }}>{title || "Video Title"}</h3>
+                <h3 style={{color: titleColor, fontSize: titleSize + "rem" }}>{title || "Video Title"}</h3>
 
                 {text &&
-                    <p style={{color: textColor || "rgba(0,0,0,1)"}}>{text}</p>
+                    <div dangerouslySetInnerHTML={createMarkup(textValue)}>
+                    </div>
                 }
             </div>
         </>

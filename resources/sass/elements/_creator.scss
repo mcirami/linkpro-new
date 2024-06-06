@@ -167,7 +167,7 @@
                     padding: 20px;
                 }
 
-                .page_settings label {
+                .page_settings:not(.icon) label {
                     @include osbold;
                     font-size: 1.2em;
                     margin: 0;
@@ -738,7 +738,7 @@
     }
 }
 
-.editor__content, .sections, .intro_text {
+.editor__content, .sections, .intro_text, .video_description {
     ul {
         list-style: disc;
         padding: 0 1rem;
