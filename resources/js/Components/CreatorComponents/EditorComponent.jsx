@@ -48,7 +48,7 @@ const EditorComponent = ({
 
     useEffect(() => {
         if (currentSection) {
-            if ((currentSection["text"] || currentSection["section_text"]) && isJSON(currentSection["text"]) ) {
+            if ((currentSection["text"] || currentSection["section_text"])) {
                 setIsValid(true)
             }
         } else {

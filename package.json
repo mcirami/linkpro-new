@@ -14,7 +14,6 @@
         "@mui/material": "^5.13.0",
         "@paypal/react-paypal-js": "^8.1.4",
         "@tanstack/react-table": "^8.8.5",
-        "@tinymce/tinymce-react": "^5.0.1",
         "@tiptap/extension-color": "^2.4.0",
         "@tiptap/extension-list-item": "^2.4.0",
         "@tiptap/extension-text": "^2.4.0",
