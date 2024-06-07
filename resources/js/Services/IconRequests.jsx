@@ -1,6 +1,11 @@
+import {useMemo} from "react";
+import { generateJSON } from '@tiptap/html'
 import axios from 'axios';
-import htmlToDraft from 'html-to-draftjs';
-import {ContentState, convertToRaw} from 'draft-js';
+import StarterKit from '@tiptap/starter-kit';
+import TextAlign from '@tiptap/extension-text-align';
+import {Color} from '@tiptap/extension-color';
+import Underline from '@tiptap/extension-underline';
+import TextStyle from '@tiptap/extension-text-style';
 
 /**
  * Submit a request to get aff offer icons
@@ -35,12 +40,21 @@ export const getIcons = (url) => {
     });
 }
 
-export const getTextValue = (description) => {
-    const blocksFromHTML = htmlToDraft(description);
-
-    const { contentBlocks, entityMap } = blocksFromHTML;
-
-    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-
-    return convertToRaw(contentState);
+export const getJsonValue = (description) => {
+    return generateJSON(description, [
+        StarterKit.configure({
+            heading: {
+                levels: [1, 2, 3, 4, 5],
+            },
+            bulletList:{
+                keepAttributes: true,
+            }
+        }),
+        TextAlign.configure({
+            types: ['heading', 'paragraph'],
+        }),
+        Color,
+        Underline,
+        TextStyle,
+    ])
 }

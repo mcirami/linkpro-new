@@ -48,7 +48,7 @@ export const handleDragEndAction = ( event,
 export const convertText = (text) => {
     let parsedText = "";
     //have to check if text is in old editor format using blocks as a key
-    if (text && isJSON(text)) {
+    if (text && text !== "" && isJSON(text)) {
         parsedText = JSON.parse(text);
         if(parsedText.hasOwnProperty('blocks')) {
             parsedText['blocks'] = parsedText['blocks'].map(

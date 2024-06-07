@@ -36,7 +36,7 @@ import 'react-image-crop/src/ReactCrop.scss';
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 import CropTools from '@/Utils/CropTools';
 import IconDescription from './IconDescription.jsx';
-import {getTextValue} from '@/Services/IconRequests.jsx';
+import {getJsonValue} from '@/Services/IconRequests.jsx';
 
 const CustomForm = ({
                         accordionValue,
@@ -48,8 +48,6 @@ const CustomForm = ({
                         setEditID,
                         folderID,
                         setShowLoader,
-                        showTiny,
-                        setShowTiny,
 }) => {
 
     const [customIconArray, setCustomIconArray] = useState([]);
@@ -125,12 +123,6 @@ const CustomForm = ({
     )
 
     useEffect(() => {
-        if(setShowTiny) {
-            setShowTiny(true);
-        }
-    },[])
-
-    useEffect(() => {
         if(currentLink.name) {
             setCharactersLeft(11 - currentLink.name.length);
         }
@@ -189,7 +181,7 @@ const CustomForm = ({
                     if(descChecked) {
                         iconType = "advanced";
                     }
-                    descValue = getTextValue(currentLink.description);
+                    descValue = getJsonValue(currentLink.description);
                 }
 
                 switch (inputType) {
@@ -285,6 +277,7 @@ const CustomForm = ({
                                     mailchimp_list_id: currentLink.mailchimp_list_id,
                                     shopify_products: currentLink.shopify_products,
                                     shopify_id: currentLink.shopify_id,
+                                    description: currentLink.description,
                                     icon: currentLink.icon,
                                     position: data.position,
                                     active_status: true
@@ -349,6 +342,7 @@ const CustomForm = ({
                                     mailchimp_list_id: currentLink.mailchimp_list_id,
                                     shopify_products: currentLink.shopify_products,
                                     shopify_id: currentLink.shopify_id,
+                                    description: currentLink.description,
                                     icon: currentLink.icon,
                                     position: data.position,
                                     active_status: true
@@ -411,7 +405,7 @@ const CustomForm = ({
                     if(descChecked) {
                         iconType = "advanced";
                     }
-                    descValue = getTextValue(currentLink.description);
+                    descValue = getJsonValue(currentLink.description);
                 }
 
                 switch (inputType) {
@@ -423,6 +417,7 @@ const CustomForm = ({
                             page_id: pageSettings["id"],
                             ext: response.extension,
                             folder_id: folderID,
+                            description: descValue,
                             type: iconType,
                         };
                         break;
@@ -434,6 +429,7 @@ const CustomForm = ({
                             page_id: pageSettings["id"],
                             ext: response.extension,
                             folder_id: folderID,
+                            description: descValue,
                             type: iconType,
                         };
                         break;
@@ -445,6 +441,7 @@ const CustomForm = ({
                             page_id: pageSettings["id"],
                             ext: response.extension,
                             folder_id: folderID,
+                            description: descValue,
                             type: iconType,
                         };
                         break;
@@ -456,6 +453,7 @@ const CustomForm = ({
                             page_id: pageSettings["id"],
                             ext: response.extension,
                             folder_id: folderID,
+                            description: descValue,
                             type: iconType,
                         };
                         break;
@@ -506,6 +504,7 @@ const CustomForm = ({
                                     mailchimp_list_id: currentLink.mailchimp_list_id,
                                     shopify_products: currentLink.shopify_products,
                                     shopify_id: currentLink.shopify_id,
+                                    description: currentLink.description,
                                     type: iconType,
                                     icon: iconPath,
                                     position: data.position,
@@ -560,6 +559,7 @@ const CustomForm = ({
                                     url: URL,
                                     email: currentLink.email,
                                     phone: currentLink.phone,
+                                    description: currentLink.description,
                                     type: iconType,
                                     icon: iconPath,
                                     position: data.position,
@@ -740,8 +740,6 @@ const CustomForm = ({
                 setCurrentLink={setCurrentLink}
                 descChecked={descChecked}
                 setDescChecked={setDescChecked}
-                showTiny={showTiny}
-                setShowTiny={setShowTiny}
             />
 
             <div className="my_row button_row mt-4">

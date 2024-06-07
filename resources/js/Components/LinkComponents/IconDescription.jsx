@@ -3,6 +3,7 @@ import isJSON from 'validator/es/lib/isJSON';
 import draftToHtml from 'draftjs-to-html';
 import DOMPurify from 'dompurify';
 import { TbExternalLink } from "react-icons/tb";
+import {convertText} from '@/Services/CreatorServices.jsx';
 
 const IconDescription = ({
                              dataRow,
@@ -16,30 +17,24 @@ const IconDescription = ({
     const divRef = useRef();
 
     useEffect(() => {
-
-        if(description !== "") {
-            if (description && isJSON(description)) {
-                const allContent = JSON.parse(description);
-                allContent["blocks"] = allContent["blocks"].map((block) => {
-                    if (!block.text) {
-                        block.text = ""
-                    }
-
-                    return block;
-                })
-
-                setTextValue(draftToHtml(allContent));
-
+        if (description && isJSON(description)) {
+            const content = convertText(description);
+            if (content.type === "blocks") {
+                setTextValue(draftToHtml(content.text));
             } else {
-                setTextValue(description);
+                setTextValue(content.text);
             }
+        } else if (description) {
+            setTextValue(description)
         }
+
+
 
     },[description])
 
-    const createMarkup = (text) => {
+    const createMarkup = (convertText) => {
         return {
-            __html: DOMPurify.sanitize(text)
+            __html: DOMPurify.sanitize(convertText)
         }
     }
 

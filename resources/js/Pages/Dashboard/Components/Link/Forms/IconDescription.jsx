@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import TextComponent from './TextComponent';
@@ -8,9 +8,10 @@ const IconDescription = ({
                              setCurrentLink,
                              descChecked,
                              setDescChecked,
-                             showTiny,
-                             setShowTiny
 }) => {
+
+    const [showTiny, setShowTiny] = useState(false);
+
     return (
         <div className="row">
             <div className="col-12">

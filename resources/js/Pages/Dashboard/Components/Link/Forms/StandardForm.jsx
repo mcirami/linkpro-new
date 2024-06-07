@@ -25,7 +25,7 @@ import {
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 import {acceptTerms} from '@/Services/UserService.jsx';
 import IconDescription from './IconDescription.jsx';
-import {getTextValue} from '@/Services/IconRequests.jsx';
+import {getJsonValue} from '@/Services/IconRequests.jsx';
 
 const StandardForm = ({
                           accordionValue,
@@ -40,8 +40,6 @@ const StandardForm = ({
                           folderID,
                           affiliateStatus = null,
                           setAffiliateStatus = null,
-                          showTiny,
-                          setShowTiny
 
 }) => {
 
@@ -79,12 +77,6 @@ const StandardForm = ({
         ));
 
     const [charactersLeft, setCharactersLeft] = useState(11);
-
-    useEffect(() => {
-        if(setShowTiny) {
-            setShowTiny(true);
-        }
-    },[accordionValue])
 
     useEffect(() => {
         if(currentLink.name) {
@@ -156,7 +148,7 @@ const StandardForm = ({
                 if(descChecked) {
                     iconType = "advanced";
                 }
-                descValue = getTextValue(currentLink.description);
+                descValue = getJsonValue(currentLink.description);
             }
 
             switch (inputType) {
@@ -499,8 +491,6 @@ const StandardForm = ({
                     setCurrentLink={setCurrentLink}
                     descChecked={descChecked}
                     setDescChecked={setDescChecked}
-                    showTiny={showTiny}
-                    setShowTiny={setShowTiny}
                 />
 
                 <div className="button_row w-full mt-4">

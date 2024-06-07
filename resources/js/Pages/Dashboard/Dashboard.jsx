@@ -102,8 +102,6 @@ function Dashboard({
     const pageHeaderRef = useRef();
     const leftColWrap = useRef();
 
-    const [showTiny, setShowTiny] = useState(false);
-
     const subStatus = useMemo(
         () => {
             return checkSubStatus(userSub)
@@ -478,7 +476,6 @@ function Dashboard({
                                                                         setAccordionValue={setAccordionValue}
                                                                         linkText="Standard Icon"
                                                                         type="standard"
-                                                                        setShowTiny={setShowTiny}
                                                                     />
                                                                     {accordionValue === "standard" &&
                                                                         <div className={`inner_wrap ${accordionValue ===
@@ -495,8 +492,6 @@ function Dashboard({
                                                                                 setEditID={setEditID}
                                                                                 setShowUpgradePopup={setShowUpgradePopup}
                                                                                 folderID={editFolderID}
-                                                                                showTiny={showTiny}
-                                                                                setShowTiny={setShowTiny}
                                                                             />
 
                                                                         </div>
@@ -510,7 +505,6 @@ function Dashboard({
                                                                         setAccordionValue={setAccordionValue}
                                                                         linkText="Affiliate Offers"
                                                                         type="offer"
-                                                                        setShowTiny={setShowTiny}
                                                                     />
                                                                     {accordionValue === "offer" &&
                                                                         <div className={`inner_wrap ${accordionValue} ${accordionValue ===
@@ -529,8 +523,6 @@ function Dashboard({
                                                                                 folderID={editFolderID}
                                                                                 affiliateStatus={affiliateStatus}
                                                                                 setAffiliateStatus={setAffiliateStatus}
-                                                                                showTiny={showTiny}
-                                                                                setShowTiny={setShowTiny}
                                                                             />
 
                                                                         </div>
@@ -545,7 +537,6 @@ function Dashboard({
                                                                         setAccordionValue={setAccordionValue}
                                                                         linkText="Custom Icon"
                                                                         type="custom"
-                                                                        setShowTiny={setShowTiny}
                                                                     />
                                                                     {accordionValue === "custom" &&
                                                                         <div className={`inner_wrap ${accordionValue ===
@@ -561,8 +552,6 @@ function Dashboard({
                                                                                 setEditID={setEditID}
                                                                                 setShowLoader={setShowLoader}
                                                                                 folderID={editFolderID}
-                                                                                showTiny={showTiny}
-                                                                                setShowTiny={setShowTiny}
                                                                             />
 
                                                                         </div>
@@ -578,7 +567,6 @@ function Dashboard({
                                                                             setAccordionValue={setAccordionValue}
                                                                             linkText="Integrations"
                                                                             type="integration"
-                                                                            setShowTiny={setShowTiny}
                                                                         />
                                                                         {accordionValue ===
                                                                             "integration" &&
