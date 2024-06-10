@@ -33,8 +33,6 @@ const EditorComponent = ({
 
         const textToConvert = data && data.hasOwnProperty('intro_text') ?
             data["intro_text"] :
-            currentSection.hasOwnProperty('section_text') ?
-                currentSection["section_text"] :
             currentSection["text"];
         const convertedText = convertText(textToConvert);
 
@@ -48,7 +46,7 @@ const EditorComponent = ({
 
     useEffect(() => {
         if (currentSection) {
-            if ((currentSection["text"] || currentSection["section_text"])) {
+            if (currentSection["text"]) {
                 setIsValid(true)
             }
         } else {

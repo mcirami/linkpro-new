@@ -20,9 +20,7 @@ const PreviewSection = ({
     const {
         type,
         background_color,
-        text_color,
         text,
-        section_text,
         video_title,
         title_color,
         title_size,
@@ -48,14 +46,18 @@ const PreviewSection = ({
 
     },[button_color, button_text_color, button_size])
 
-    const Button = ({buttonText}) => {
+    const Button = () => {
+
+        const buttonUrl = type === "file" ? file : "#";
+
         return (
             <div className={`button_wrap my_row ${button_position ? button_position : "above"}`}>
-                <a href={`${url}/checkout`}
+                <a href={buttonUrl}
+                   download={type === "file"}
                    target="_blank"
                    className="button"
                    style={buttonStyle}
-                >{buttonText || "Get Course"}</a>
+                >{button_text || (type === "file" ? "Download File" : "Get Course")}</a>
             </div>
         )
     }
@@ -67,22 +69,22 @@ const PreviewSection = ({
         >
             <div className={type}
                  style={{ background: background_color || 'rgba(255,255,255,1)'}} >
-                {( !!button && button_position === "above") &&
-                    <Button
-                        buttonText={button_text}
-                    />
+                {( !!button && button_position === "above") || type === "file" ?
+                    <Button />
+                    :
+                    ""
                 }
                 {{
                     "text":
                         <SectionText
-                            text={section_text}
+                            text={text}
                         />
                         ,
                     "video":
                         <SectionVideo
                             title={video_title}
                             link={video_link}
-                            text={section_text}
+                            text={text}
                             titleColor={title_color}
                             titleSize={title_size}
                             index={index}
@@ -95,15 +97,13 @@ const PreviewSection = ({
                             elementName={"section_"+ position + "_" + type}
                             imgUrl={image}
                         />,
-                    "file":
+                    /*"file":
                         <SectionFile
                             file={file}
-                        />,
+                        />,*/
                 }[type]}
                 {( !!button && button_position === "below") &&
-                    <Button
-                        buttonText={button_text}
-                    />
+                    <Button />
                 }
             </div>
         </section>

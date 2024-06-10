@@ -6,7 +6,7 @@ import isJSON from 'validator/es/lib/isJSON.js';
 import {convertText} from '@/Services/CreatorServices.jsx';
 import draftToHtml from 'draftjs-to-html';
 import DOMPurify from 'dompurify';
-
+import Button from '@/Pages/SingleCourse/Components/Button.jsx';
 const ColumnComponent = ({
                              section,
                              dataRow,
@@ -24,37 +24,27 @@ const ColumnComponent = ({
     const {
         type,
         text,
-        section_text,
-        text_color,
         video_title,
         video_link,
         title_color,
         background_color,
         button,
         button_position,
-        button_text,
-        button_text_color,
-        button_color,
-        button_size,
         lock_video,
         image,
-        file
     } = section;
 
     const {header_color, header_text_color} = course;
 
     const [imagePlaceholder, setImagePlaceholder] = useState(null);
     const [mobileVideo, setMobileVideo] = useState(null);
-    const [buttonStyle, setButtonStyle] = useState(null);
     const [bgStyle, setBgStyle] = useState(null);
-    const [fileName, setFileName] = useState("");
-    const [textValue, setTextValue] = useState(section_text)
-
+    const [textValue, setTextValue] = useState(text)
 
     useEffect(() => {
 
-        if (section_text && isJSON(section_text)) {
-            const content = convertText(section_text);
+        if (text && isJSON(text)) {
+            const content = convertText(text);
             if (content.type === "blocks") {
                 setTextValue(draftToHtml(content.text));
             } else {
@@ -106,13 +96,6 @@ const ColumnComponent = ({
     }, []);
 
     useEffect(() => {
-        if (type === "file" && file) {
-            const fileArray = getFileParts(file);
-            setFileName(fileArray.name + " " + fileArray.type);
-        }
-    }, []);
-
-    useEffect(() => {
 
         function handleResize() {
 
@@ -127,25 +110,6 @@ const ColumnComponent = ({
 
         return () => {
             window.removeEventListener('resize', handleResize);
-        }
-
-    },[])
-
-    useEffect(() => {
-
-        if(button) {
-
-            let maxWidth = 'auto';
-            if(window.innerWidth > 550) {
-                maxWidth = '250px';
-            }
-
-            setButtonStyle({
-                background: button_color,
-                color: button_text_color,
-                width: button_size + "%",
-                maxWidth: maxWidth
-            })
         }
 
     },[])
@@ -183,20 +147,6 @@ const ColumnComponent = ({
             show: true,
         }));
     },[])
-
-    const Button = () => {
-        return (
-            <div className={`button_wrap ${button_position ? button_position : "above"}`}>
-                <a href={!userAuth ? buttonUrl : "#"}
-                   target="_blank"
-                   className="button"
-                   style={buttonStyle}
-                   onClick={!userAuth ? "" : handleButtonClick}>
-                    {button_text || "Get Course"}
-                </a>
-            </div>
-        )
-    }
 
     return (
 
@@ -252,7 +202,12 @@ const ColumnComponent = ({
 
                     { (!hasCourseAccess || page === "lander") &&
                         (button && button_position === "above") ?
-                            <Button />
+                            <Button
+                                section={section}
+                                handleButtonClick={handleButtonClick}
+                                buttonUrl={buttonUrl}
+                                userAuth={userAuth}
+                            />
                             :
                             ""
                     }
@@ -260,7 +215,12 @@ const ColumnComponent = ({
                     </div>
                     {(!hasCourseAccess || page === 'lander') &&
                     (button && button_position === "below") ?
-                                <Button />
+                                <Button
+                                    section={section}
+                                    handleClick={handleButtonClick}
+                                    buttonUrl={buttonUrl}
+                                    userAuth={userAuth}
+                                />
                             :
                             ""
                     }
@@ -272,7 +232,12 @@ const ColumnComponent = ({
             {type === "image" ?
                 <section className={`my_row text_wrap ${type}`} style={bgStyle}>
                     { (!hasCourseAccess || page === "lander") && button ?
-                        <Button />
+                        <Button
+                            section={section}
+                            handleButtonClick={handleButtonClick}
+                            buttonUrl={buttonUrl}
+                            userAuth={userAuth}
+                        />
                         :
                         ""
                     }
@@ -283,11 +248,22 @@ const ColumnComponent = ({
             }
 
             {type === "file" ?
-                <section className={`my_row text_wrap text-center ${type}`}>
-                    <a download={file} target="_blank" href={file}>
-                        Download <span className="underline">{fileName}</span>
+                <Button
+                    section={section}
+                    handleButtonClick={handleButtonClick}
+                    buttonUrl={buttonUrl}
+                    userAuth={userAuth}
+                />
+                /*<section className={`my_row text_wrap text-center ${type}`}>
+                    <a className="button"
+                       download={file}
+                       target="_blank"
+                       href={file}
+                       style={{ color: button_text_color, background: button_color, width: button_size + "%" }}
+                    >
+                        {button_text || "Download File"}
                     </a>
-                </section>
+                </section>*/
                 :
                 ""
             }

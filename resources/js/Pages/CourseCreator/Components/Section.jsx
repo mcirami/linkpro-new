@@ -15,6 +15,8 @@ import IOSSwitch from '@/Utils/IOSSwitch';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import SliderComponent
     from '@/Components/CreatorComponents/SliderComponent.jsx';
+import isJSON from 'validator/es/lib/isJSON.js';
+import {convertText} from '@/Services/CreatorServices.jsx';
 
 const Section = ({
                      section,
@@ -40,7 +42,6 @@ const Section = ({
     const {
         id,
         type,
-        section_text,
         text,
         video_title,
         title_size,
@@ -111,11 +112,26 @@ const Section = ({
                         type  + " " + videoCount
                 )
             case 'text':
-                return (
-                    section.text ?
-                        section.text.slice(0, 20) + "..." :
-                        type  + " " + textCount
-                )
+                const regex = /(<([^>]+)>)/gi;
+                let parsedText = "";
+                if (section.text && isJSON(section.text)) {
+                    const convertedText = convertText(section.text);
+                    parsedText = convertedText.text;
+                    const result = parsedText.replace(regex, "");
+                    parsedText = result.length > 20 ?
+                        result.slice(0, 20) + '...' :
+                        result;
+                } else if (section.text) {
+                    const result = section.text.replace(regex, "");
+                    parsedText = result.length > 20 ?
+                        result.slice(0,20) + "..." :
+                        result;
+
+                } else {
+                    parsedText = type + ' ' + textCount;
+                }
+
+                return parsedText;
             case 'image' :
                 return (
                     section.image ?
@@ -128,9 +144,13 @@ const Section = ({
                 if(section.file) {
                     const fileNameObj = getFileParts(section.file)
                     content = fileNameObj.name + "." + fileNameObj.type
+                    content = content.length > 20 ?
+                        content.slice(0, 20) + '...' :
+                        content;
                 } else {
                     content = type  + " " + fileCount
                 }
+
                 return (
                     content
                 )
@@ -174,8 +194,8 @@ const Section = ({
                                         placeholder="Add Text"
                                         type="wysiwyg"
                                         hoverText="Add Text to Section"
-                                        elementName={`section_${index + 1}_section_text`}
-                                        value={section_text}
+                                        elementName={`section_${index + 1}_text`}
+                                        value={text}
                                         currentSection={section}
                                         sections={sections}
                                         setSections={setSections}
@@ -197,6 +217,7 @@ const Section = ({
                                         setSections={setSections}
                                         currentSection={section}
                                         id={id}
+                                        buttonType="purchase"
                                         saveTo="course"
                                     />
                                </>
@@ -223,7 +244,7 @@ const Section = ({
                                         sections={sections}
                                         setSections={setSections}
                                         value={title_size}
-                                        elementName={`section_${index + 1}_title_size`}
+                                        elementName={`title_size`}
                                         sliderValues={{
                                             step: .1,
                                             min: .1,
@@ -255,8 +276,8 @@ const Section = ({
                                         placeholder="Video Text Blurb (optional)"
                                         type="wysiwyg"
                                         hoverText={`Submit Text Blurb`}
-                                        elementName={`section_${index + 1}_section_text`}
-                                        value={section_text || ""}
+                                        elementName={`section_${index + 1}_text`}
+                                        value={text || ""}
                                         currentSection={section}
                                         sections={sections}
                                         setSections={setSections}
@@ -312,12 +333,14 @@ const Section = ({
                                         setSections={setSections}
                                         currentSection={section}
                                         id={id}
+                                        buttonType="purchase"
                                         saveTo="course"
                                     />
                                 </>
                             )
                         case 'file' :
                             return (
+                                <>
                                 <FileComponent
                                     elementName={`section_${index + 1}_file`}
                                     setShowLoader={setShowLoader}
@@ -325,6 +348,16 @@ const Section = ({
                                     sections={sections}
                                     setSections={setSections}
                                 />
+                                <SectionButtonOptions
+                                    sectionPosition={index + 1}
+                                    sections={sections}
+                                    setSections={setSections}
+                                    currentSection={section}
+                                    id={id}
+                                    buttonType="download"
+                                    saveTo="course"
+                                />
+                                </>
                             )
                     }
 

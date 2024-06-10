@@ -109,18 +109,18 @@ const InputComponent = ({
 
             if (sections) {
 
-                let element = elementName.split(/(\d+)/);
+               /* let element = elementName.split(/(\d+)/);
                 if (elementName.includes("video")) {
                     element = element[0] + element[2].replace('_', '');
                 } else {
                     element = element[2].replace('_', '');
-                }
+                }*/
 
                 setSections && setSections(sections.map((section) => {
                     if (section.id === currentSection.id) {
                         return {
                             ...section,
-                            [`${element}`]: value,
+                            [`${elementName}`]: value,
                         }
                     }
                     return section;

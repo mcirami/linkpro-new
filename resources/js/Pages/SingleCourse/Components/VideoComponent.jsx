@@ -6,19 +6,19 @@ import DOMPurify from 'dompurify';
 
 const VideoComponent = ({indexValue, sections}) => {
 
-    const [textValue, setTextValue] = useState(sections[indexValue].section_text)
+    const [textValue, setTextValue] = useState(sections[indexValue].text)
 
     useEffect(() => {
 
-        if (sections[indexValue].section_text && isJSON(sections[indexValue].section_text)) {
-            const content = convertText(sections[indexValue].section_text);
+        if (sections[indexValue].text && isJSON(sections[indexValue].text)) {
+            const content = convertText(sections[indexValue].text);
             if (content.type === "blocks") {
                 setTextValue(draftToHtml(content.text));
             } else {
                 setTextValue(content.text);
             }
-        } else if (sections[indexValue].section_text) {
-            setTextValue(sections[indexValue].section_text)
+        } else if (sections[indexValue].text) {
+            setTextValue(sections[indexValue].text)
         }
 
 

@@ -22,6 +22,7 @@ const SectionButtonOptions = ({
                                   id,
                                   courses = null,
                                   buttonCourseId = null,
+                                  buttonType,
                                   saveTo
 }) => {
 
@@ -36,7 +37,7 @@ const SectionButtonOptions = ({
     const [buttonPositionValue, setButtonPositionValue] = useState("above");
 
     useEffect(() => {
-        setIncludeButtonValue(button)
+        setIncludeButtonValue(button || buttonType === "download")
     },[])
 
     useEffect(() => {
@@ -95,51 +96,60 @@ const SectionButtonOptions = ({
 
     return (
         <>
-            <div className={`switch_wrap page_settings border_wrap ${!button ? "mb-4" : "" }`}>
-                <label>Include Button</label>
-                <IOSSwitch
-                    onChange={handleSwitchChange}
-                    checked={Boolean(includeButtonValue)}
-                />
-            </div>
-            <div className={`button_options ${includeButtonValue ? "open" : ""}`}>
-                <article className="page_settings border_wrap">
-                    <div className="radios_wrap">
-                        <FormControl>
-                            <FormLabel
-                                id={`section_${sectionPosition}_above`}
-                                sx={{
-                                    color: '#000'
-                                }}
-                            >
-                                <label>Button Location</label>
-                            </FormLabel>
-                            <RadioGroup
-                                row
-                                aria-labelledby={`section_${sectionPosition}_above`}
-                                name={`section_${sectionPosition}_above`}
-                                onChange={(e) => {handleRadioChange(e.target.value)}}
-                            >
-                                <FormControlLabel
-                                    value="above"
-                                    control={
-                                        <Radio
-                                            checked={ (buttonPositionValue === "above" || !buttonPositionValue) && true}
-                                        />}
-                                    label="Above"
-                                />
-                                <FormControlLabel
-                                    value="below"
-                                    control={
-                                        <Radio
-                                            checked={buttonPositionValue === "below" && true}
-                                        />}
-                                    label="Below"
-                                />
-                            </RadioGroup>
-                        </FormControl>
-                    </div>
-                </article>
+            {buttonType === "purchase" ?
+                <div className={`switch_wrap page_settings border_wrap ${!button ? "mb-4" : "" }`}>
+                    <label>Include Button</label>
+                    <IOSSwitch
+                        onChange={handleSwitchChange}
+                        checked={Boolean(includeButtonValue)}
+                    />
+                </div>
+                :
+                ""
+            }
+            <div className={`button_options ${ (includeButtonValue || buttonType === "download") ? "open" : ""} ${buttonType === "download" ? "!border-0" : ""}`}>
+                {buttonType === "purchase" ?
+                    <article className="page_settings border_wrap">
+                        <div className="radios_wrap">
+                            <FormControl>
+                                <FormLabel
+                                    id={`section_${sectionPosition}_above`}
+                                    sx={{
+                                        color: '#000'
+                                    }}
+                                >
+                                    <label>Button Location</label>
+                                </FormLabel>
+                                <RadioGroup
+                                    row
+                                    aria-labelledby={`section_${sectionPosition}_above`}
+                                    name={`section_${sectionPosition}_above`}
+                                    onChange={(e) => {handleRadioChange(e.target.value)}}
+                                >
+                                    <FormControlLabel
+                                        value="above"
+                                        control={
+                                            <Radio
+                                                checked={ (buttonPositionValue === "above" || !buttonPositionValue) && true}
+                                            />}
+                                        label="Above"
+                                    />
+                                    <FormControlLabel
+                                        value="below"
+                                        control={
+                                            <Radio
+                                                checked={buttonPositionValue === "below" && true}
+                                            />}
+                                        label="Below"
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                        </div>
+
+                    </article>
+                    :
+                    ""
+                }
                 <SliderComponent
                     label="Button Size"
                     id={id}
@@ -172,16 +182,16 @@ const SectionButtonOptions = ({
                     saveTo={saveTo}
                 />
                 <InputComponent
-                    placeholder="Update Button Text (optional)"
+                    placeholder="Update Button Text"
                     type="text"
-                    maxChar={15}
+                    maxChar={20}
                     hoverText="Submit Button Text"
-                    elementName={`section_${sectionPosition}_button_text`}
+                    elementName={`button_text`}
                     sections={sections}
                     setSections={setSections}
                     currentSection={currentSection}
-                    value={button_text}
-                    submitType={saveTo}
+                    value={button_text || (buttonType === "purchase" ? "Get Course" : "Download File") }
+                    saveTo={saveTo}
                 />
                 {courses &&
                     <DropdownComponent

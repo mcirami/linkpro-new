@@ -167,6 +167,7 @@ class CourseService {
            'user_id'    => $userID,
            'type'       => $request->type,
            'position'   => $position,
+           'button'     => $request->type === "file" ? 1 : 0,
            'lock_video' => $request->type === "video" ? true : null
         ])->fresh();
     }

@@ -209,6 +209,7 @@ const Section = ({
                         buttonCourseId={button_course_id}
                         courses={courses}
                         id={id}
+                        buttonType="purchase"
                         saveTo="landingPage"
                     />
                 </div>

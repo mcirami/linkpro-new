@@ -33,13 +33,11 @@ const SliderComponent = ({
         }
 
         if (sections && setSections) {
-            let element = elementName.split(/(\d+)/);
-            element = element[2].replace('_', '');
 
             setSections(
                 sections.map((section) => {
                     if(section.id === id) {
-                        section[element] = e.target.value;
+                        section[elementName] = e.target.value;
                     }
 
                     return section;
@@ -49,26 +47,19 @@ const SliderComponent = ({
 
     }
     const handleSubmit = (e) => {
-        let element = "";
-        if (elementName.includes('section')) {
-            element = elementName.split(/(\d+)/);
-            element = element[2].replace('_', '');
-        } else {
-            element = elementName;
-        }
 
         const packets = {
-            [`${element}`]: value,
+            [`${elementName}`]: value,
         };
 
         if(sections) {
             saveTo === "course" ?
-                updateSectionData(packets, id) :
-                updateLPSectionData(packets, id);
+                updateSectionData(packets, id, elementName) :
+                updateLPSectionData(packets, id, elementName);
         } else {
             saveTo === "course" ?
-                updateCourseData(packets, id, element) :
-                updateLpData(packets, id, element)
+                updateCourseData(packets, id, elementName) :
+                updateLpData(packets, id, elementName)
         }
 
     }
