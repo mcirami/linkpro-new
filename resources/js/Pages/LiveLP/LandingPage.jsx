@@ -6,38 +6,43 @@ function LandingPage({page, sections}) {
 
     return (
 
-        <div id="links_page" className="live_page">
+        <div id="links_page" className="live_page landing_page">
             <Head title={page.title} />
             <div className="creator_wrap my_row">
                 <div id="live_landing_page">
-                    <section className="header">
+                    <header className="header">
                         <div className="top_section" style={{ background: page.header_color }}>
                             <div className="container">
                                 <div className="logo">
-                                    <img src={ page.logo || Vapor.asset('images/logo.png') } alt="" />
+                                    <img src={page.logo ||
+                                        Vapor.asset('images/logo.png')} alt=""/>
                                 </div>
                                 <div className="text_wrap">
-                                    <p style={{ color: page.header_text_color }}>{page.slogan}</p>
+                                    <p style={{color: page.header_text_color}}>{page.slogan}</p>
                                 </div>
                             </div>
                         </div>
-                        <div className="header_image my_row"
-                         style={{
-                             background: "url(" + page.hero  + ") no-repeat",
-                             backgroundPosition: "center",
-                             backgroundSize: "cover"
-                         }}
-                        >
+                        <div className="container">
+                            <div className="header_image my_row"
+                                 style={{
+                                     background: 'url(' + page.hero +
+                                         ') no-repeat',
+                                     backgroundPosition: 'center',
+                                     backgroundSize: 'cover',
+                                 }}
+                            >
+                            </div>
                         </div>
-                    </section>
+                    </header>
                     <div className="sections">
-                        {sections?.map(( (section, index) => {
+                        <div className="container">
+                            {sections?.map(((section, index) => {
 
-                            return (
-                                <SectionComponent section={section} key={index}/>
-                            )
-                        }))}
-
+                                return (
+                                    <SectionComponent section={section} key={index}/>
+                                )
+                            }))}
+                        </div>
                     </div>
                 </div>
             </div>

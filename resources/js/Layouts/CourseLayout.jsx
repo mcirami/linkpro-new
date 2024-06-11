@@ -5,7 +5,7 @@ import {isEmpty} from 'lodash';
 const CourseLayout = ({auth, children, course}) => {
 
     return (
-        <div id="app_wrap" className={`my_row ${!isEmpty(auth.user.userInfo) ? "member" : ""} course_page`}>
+        <div id="app_wrap" className={`my_row ${!isEmpty(auth.user.userInfo) ? "member" : ""} landing_page`}>
             <div className="page_content my_row">
                 <header className="my_row nav_row" style={{background: course.header_color }}>
                     <nav>
@@ -24,7 +24,6 @@ const CourseLayout = ({auth, children, course}) => {
                     {children}
                 </main>
             </div>
-            <AuthenticatedFooter />
         </div>
     )
 }

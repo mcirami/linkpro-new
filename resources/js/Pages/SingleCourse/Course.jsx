@@ -139,7 +139,7 @@ function Course({
             <SetFlash />
             <div className="creator course_creator">
                 <div id="links_page" className="live_page course">
-                    <div id="single_course" className="my_row">
+                    <div className="my_row">
                         <div className="single_course_content my_row">
                             <div className="container">
                                 {showPaymentButtons.show ?

@@ -253,7 +253,7 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
     };
 
     return (
-        <article className="my_row page_settings icon">
+        <article className={`my_row page_settings ${elementName} `}>
             <div className="column_wrap">
                 <form onSubmit={handleSubmit} className={`${elementName}_form`}>
                     {!completedCrop[elementName] && (

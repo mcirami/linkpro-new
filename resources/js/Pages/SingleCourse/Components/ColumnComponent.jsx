@@ -6,7 +6,7 @@ import isJSON from 'validator/es/lib/isJSON.js';
 import {convertText} from '@/Services/CreatorServices.jsx';
 import draftToHtml from 'draftjs-to-html';
 import DOMPurify from 'dompurify';
-import Button from '@/Pages/SingleCourse/Components/Button.jsx';
+import Button from '@/Components/CreatorComponents/Button.jsx';
 const ColumnComponent = ({
                              section,
                              dataRow,

@@ -1,4 +1,4 @@
-.course_page {
+.landing_page {
 
     main {
         @include query(mobile) {
@@ -307,8 +307,7 @@
 }
 
 
-.course_page:not(.member) {
-    text-align: center;
+.course_page {
 
     .container {
         padding: 0;
@@ -316,8 +315,6 @@
 
     .page_content {
         @include boxShadow;
-        max-width: 475px;
-        margin: 20px auto;
         float: none;
         display: inline-block;
         text-align: initial;

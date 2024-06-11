@@ -1,10 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 const Button = ({
                     section,
-                    handleButtonClick,
+                    handleButtonClick = null,
                     buttonUrl,
-                    userAuth
+                    userAuth = null
 }) => {
 
 
@@ -70,10 +70,10 @@ const Button = ({
                 </a>
                 :
                 !file &&
-                <a href={!userAuth ? buttonUrl : "#"}
+                <a href={userAuth ? "#" : buttonUrl }
                     className="button"
                     style={buttonStyle}
-                    onClick={!userAuth ? "" : handleButtonClick}>
+                    onClick={userAuth ? handleButtonClick : undefined}>
                     {button_text || "Get Course"}
                 </a>
             }
