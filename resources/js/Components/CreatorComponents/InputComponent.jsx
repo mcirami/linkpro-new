@@ -63,6 +63,8 @@ const InputComponent = ({
         }
     },[])
 
+    console.log("elementName: ", elementName)
+
     const handleCurrencyChange = (value, _) => {
         if (Number.isNaN(Number(value)) || Number(value) > limit) {
             setIsValid(false);
@@ -149,15 +151,15 @@ const InputComponent = ({
             if (sections) {
 
                 //remove section_number from element name to save in section data
-                let element = elementName.split(/(\d+)/);
+              /*  let element = elementName.split(/(\d+)/);
                 if (elementName.includes("video")) {
                     element = element[0] + element[2].replace('_', '');
                 } else {
                     element = element[2].replace('_', '');
-                }
+                }*/
 
                 const packets = {
-                    [`${element}`]: e.target.value,
+                    [`${elementName}`]: e.target.value,
                 };
 
                 saveTo === "course" ?

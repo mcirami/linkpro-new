@@ -14,9 +14,7 @@ import Vapor from 'laravel-vapor';
 Vapor.withBaseAssetUrl(import.meta.env.VITE_VAPOR_ASSET_URL);
 window.Vapor = Vapor;
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
-
-const PayPalClientId = import.meta.env.PAYPAL_SANDBOX_CLIENT_ID;
+const appName = import.meta.env.VITE_APP_NAME || 'LinkPro';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

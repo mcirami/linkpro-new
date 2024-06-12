@@ -12,7 +12,9 @@ const AddLink = ({
     const handleClick = (e) => {
         e.preventDefault();
 
-        const newUserLinks = userLinks.filter(element => !element.type);
+        const newUserLinks = userLinks.filter( (element) =>
+            element.type !== "folder" && element.type !== "mailchimp" && element.type !== "shopify"
+        );
         const count = newUserLinks.length;
 
         if (count < 8 || subStatus ) {

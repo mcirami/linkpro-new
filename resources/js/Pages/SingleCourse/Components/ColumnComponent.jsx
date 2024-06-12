@@ -7,6 +7,7 @@ import {convertText} from '@/Services/CreatorServices.jsx';
 import draftToHtml from 'draftjs-to-html';
 import DOMPurify from 'dompurify';
 import Button from '@/Components/CreatorComponents/Button.jsx';
+import {getVideoScreenshot} from '@/Services/VideoService.jsx';
 const ColumnComponent = ({
                              section,
                              dataRow,
@@ -64,15 +65,7 @@ const ColumnComponent = ({
 
     useEffect(() => {
         if (type === "video" && video_link) {
-            let split;
-            if (video_link.includes('youtube')) {
-                split = video_link.split("/embed/");
-                setImagePlaceholder("https://img.youtube.com/vi/" + split[1] +
-                    "/mqdefault.jpg");
-            } else {
-                split = video_link.split("/video/");
-                setImagePlaceholder("https://vumbnail.com/" + split[1] + ".jpg")
-            }
+            setImagePlaceholder(getVideoScreenshot(video_link));
         }
     },[])
 

@@ -18,6 +18,7 @@ const Preview = ({
                      nodesRef,
                      imgRef,
                      completedCrop,
+                     setShowMessageAlertPopup
 }) => {
 
 
@@ -82,6 +83,7 @@ const Preview = ({
                                         completedCrop={completedCrop}
                                         position={index + 1}
                                         hoverSection={hoverSection}
+                                        setShowMessageAlertPopup={setShowMessageAlertPopup}
                                     />
                                 )
                             })}

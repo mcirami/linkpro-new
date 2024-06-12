@@ -104,7 +104,11 @@ const Links = ({
         } else if(currentLink.icon.includes("offer-images")) {
             setAccordionValue("offer")
         } else if (currentLink.icon.includes("custom-icons")){
-            setAccordionValue("custom")
+            if(subStatus) {
+                setAccordionValue("custom")
+            } else {
+                setAccordionValue("standard")
+            }
         } else {
             setAccordionValue("standard")
         }

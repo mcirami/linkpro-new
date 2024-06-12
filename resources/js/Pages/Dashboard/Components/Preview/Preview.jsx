@@ -25,6 +25,7 @@ const Preview = ({
                      setRow,
                      value,
                      setValue,
+                     userSub,
                      subStatus,
                      pageHeaderRef,
                      showPreview,
@@ -36,15 +37,15 @@ const Preview = ({
     const {pageSettings} = useContext(PageContext);
     const loadPreviewHeight = UseLoadPreviewHeight();
     const resizePreviewHeight = UseResizePreviewHeight();
-    const [iconCount, setIconCount] = useState(null);
+    const [iconCount, setIconCount] = useState(userLinks.length);
     const [clickType, setClickType] = useState(null);
 
     useEffect(() => {
 
-        if (subStatus) {
-            setIconCount(userLinks.length)
+        if(userSub && !subStatus) {
+            setIconCount(8)
         } else {
-            setIconCount(8);
+            setIconCount(userLinks.length)
         }
 
     }, [userLinks]);
@@ -73,10 +74,10 @@ const Preview = ({
         setShowPreview(false);
     }
 
-    const accordionLinks = value.index ? userLinks[value.index].links : null;
-    const mailchimpListId = value.index ? userLinks[value.index].mailchimp_list_id : null;
-    const storeProducts = value.index ? userLinks[value.index].shopify_products : null;
-    const description = value.index ? userLinks[value.index].description : null;
+    const accordionLinks = value.index !== null ? userLinks[value.index].links : null;
+    const mailchimpListId = value.index !== null ? userLinks[value.index].mailchimp_list_id : null;
+    const storeProducts = value.index !== null ? userLinks[value.index].shopify_products : null;
+    const description = value.index !== null ? userLinks[value.index].description : null;
 
     return (
 
@@ -112,7 +113,6 @@ const Preview = ({
                                 map((linkItem, index) => {
 
                                     let {
-                                        id,
                                         type,
                                         name,
                                         url,
@@ -136,8 +136,7 @@ const Preview = ({
 
                                     let displayIcon = null;
                                     if (type !== "folder") {
-                                        displayIcon = checkIcon(icon, "preview",
-                                            subStatus);
+                                        displayIcon = checkIcon(icon, "preview", subStatus);
                                     }
 
                                     let colClasses = "";
@@ -184,25 +183,16 @@ const Preview = ({
                                                             <div className={` ${colClasses} `}>
                                                                 {active_status ?
                                                                     <>
-                                                                        <a className={!url ||
-                                                                        !displayIcon ?
-                                                                            "default" :
-                                                                            ""}
+                                                                        <a className={ (!url || !displayIcon) ? "default" : ""}
                                                                            target="_blank"
-                                                                           href={url ||
-                                                                               "#"}>
+                                                                           href={url || "#"}>
                                                                             <img src={displayIcon} alt=""/>
                                                                         </a>
                                                                         <p>
-                                                                            {name?.length >
-                                                                            11 ?
-                                                                                name.substring(
-                                                                                    0,
-                                                                                    11) +
-                                                                                "..."
+                                                                            {name?.length > 11 ?
+                                                                                name.substring(0, 11) + "..."
                                                                                 :
-                                                                                name ||
-                                                                                "Link Name"
+                                                                                name || "Link Name"
                                                                             }
                                                                         </p>
                                                                     </>
@@ -235,9 +225,7 @@ const Preview = ({
                                                 }
                                             })()}
 
-                                            {subStatus &&
-                                            ((index + 1) % 4 === 0 || index +
-                                                1 === iconCount) ?
+                                            { ( (index + 1) % 4 === 0) || index + 1 === iconCount ?
                                                 (() => {
                                                     switch (clickType) {
                                                         case "mailchimp":

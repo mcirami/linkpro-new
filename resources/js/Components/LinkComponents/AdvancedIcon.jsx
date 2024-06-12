@@ -46,7 +46,7 @@ const AdvancedIcon = ({
     }
 
     return (
-        <div className={ ` ${colClasses} ${mainIndex == value.index && clickType === type ? " open" : "" }`}
+        <div className={ `${colClasses} ${mainIndex == value.index && clickType === type ? "open" : "" }`}
              data-row={ dataRow }
              onClick={(e) => {handleClick(e)} }
         >

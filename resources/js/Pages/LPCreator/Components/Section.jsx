@@ -159,7 +159,7 @@ const Section = ({
                             placeholder="Add Text"
                             type="wysiwyg"
                             hoverText={`Add Text to Section ${index + 1}`}
-                            elementName={`section_${index + 1}_text`}
+                            elementName={`text`}
                             value={text}
                             currentSection={section}
                             sections={sections}
@@ -174,7 +174,7 @@ const Section = ({
                             currentSection={section}
                             sections={sections}
                             setSections={setSections}
-                            elementName={`section_${index + 1}_bg_color`}
+                            elementName={`bg_color`}
                             saveTo="landingPage"
                         />
                     </>
@@ -189,7 +189,7 @@ const Section = ({
                         sections={sections}
                         setSections={setSections}
                         previewType="external"
-                        elementName={`section_${index + 1}_image`}
+                        elementName={`image`}
                         saveTo="landingPage"
                         cropArray={{
                             unit: "%",

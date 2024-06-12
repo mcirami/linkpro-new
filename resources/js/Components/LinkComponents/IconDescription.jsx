@@ -27,9 +27,6 @@ const IconDescription = ({
         } else if (description) {
             setTextValue(description)
         }
-
-
-
     },[description])
 
     const createMarkup = (convertText) => {

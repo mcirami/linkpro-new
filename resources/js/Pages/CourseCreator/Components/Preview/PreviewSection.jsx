@@ -2,8 +2,6 @@ import React, {useEffect, useState} from 'react';
 import SectionVideo from './SectionVideo';
 import SectionImage
     from '@/Pages/CourseCreator/Components/Preview/SectionImage.jsx';
-import SectionFile
-    from '@/Pages/CourseCreator/Components/Preview/SectionFile.jsx';
 import SectionText
     from '@/Pages/CourseCreator/Components/Preview/SectionText.jsx';
 
@@ -15,6 +13,7 @@ const PreviewSection = ({
                             completedCrop,
                             position,
                             hoverSection,
+                            setShowMessageAlertPopup
 }) => {
 
     const {
@@ -46,6 +45,15 @@ const PreviewSection = ({
 
     },[button_color, button_text_color, button_size])
 
+    const handleButtonClick = (e) => {
+        e.preventDefault();
+        setShowMessageAlertPopup({
+            show: true,
+            text: "To preview checkout, go to the course landing page:",
+            url: url,
+            buttonText: "Follow Link"
+        })
+    }
     const Button = () => {
 
         const buttonUrl = type === "file" ? file : "#";
@@ -57,6 +65,7 @@ const PreviewSection = ({
                    target="_blank"
                    className="button"
                    style={buttonStyle}
+                   onClick={type !== "file" ? handleButtonClick : undefined}
                 >{button_text || (type === "file" ? "Download File" : "Get Course")}</a>
             </div>
         )
@@ -97,10 +106,6 @@ const PreviewSection = ({
                             elementName={"section_"+ position + "_" + type}
                             imgUrl={image}
                         />,
-                    /*"file":
-                        <SectionFile
-                            file={file}
-                        />,*/
                 }[type]}
                 {( !!button && button_position === "below") &&
                     <Button />

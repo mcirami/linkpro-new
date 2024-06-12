@@ -47,16 +47,16 @@ const ColorPicker = ({
     useEffect(() => {
 
         if(currentSection) {
-            let element = elementName.split(/(\d+)/);
-            element = element[2].replace('_', '');
+            /*let element = elementName.split(/(\d+)/);
+            element = element[2].replace('_', '');*/
 
             let color;
-            if(element === "title_color" && !currentSection[element]) {
+            if(elementName === "title_color" && !currentSection[elementName]) {
                 color = 'rgba(0,0,0,1)';
-            } else if (element === "bg_color" && !currentSection[element]) {
+            } else if (elementName === "bg_color" && !currentSection[elementName]) {
                 color = 'rgba(255,255,255,1)';
             } else {
-                color = currentSection[element];
+                color = currentSection[elementName];
             }
 
             setPickerBg({background: color});
@@ -108,14 +108,14 @@ const ColorPicker = ({
 
         if(sections) {
 
-            let element = elementName.split(/(\d+)/);
-            element = element[2].replace('_', '');
+            /*let element = elementName.split(/(\d+)/);
+            element = element[2].replace('_', '');*/
 
             setSections(sections.map((section) => {
                 if (section.id === currentSection.id) {
                     return {
                         ...section,
-                        [`${element}`]: value,
+                        [`${elementName}`]: value,
                     }
                 }
                 return section;
@@ -143,11 +143,11 @@ const ColorPicker = ({
 
         if (sections) {
 
-            let element = elementName.split(/(\d+)/);
-            element = element[2].replace('_', '');
+            /*let element = elementName.split(/(\d+)/);
+            element = element[2].replace('_', '');*/
 
             const packets = {
-                [`${element}`]: colorValues.current,
+                [`${elementName}`]: colorValues.current,
             };
 
             const method = saveTo === "course" ?
@@ -189,14 +189,14 @@ const ColorPicker = ({
 
         if(sections) {
 
-            let element = elementName.split(/(\d+)/);
-            element = element[2].replace('_', '');
+            /*let element = elementName.split(/(\d+)/);
+            element = element[2].replace('_', '');*/
 
             setSections(sections.map((section) => {
                 if (section.id === currentSection.id) {
                     return {
                         ...section,
-                        [`${element}`]: colorValues.previous,
+                        [`${elementName}`]: colorValues.previous,
                     }
                 }
                 return section;
@@ -232,7 +232,6 @@ const ColorPicker = ({
 
         if(!showPicker) {
             const pickerBox = pickerRef.current;
-            const windowWidth = window.innerWidth
 
             const rect = e.target.getBoundingClientRect();
             const left = ((rect.right + rect.left) / 2) - 340 ;

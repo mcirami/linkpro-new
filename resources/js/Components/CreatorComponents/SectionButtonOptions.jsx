@@ -170,7 +170,7 @@ const SectionButtonOptions = ({
                     sections={sections}
                     setSections={setSections}
                     currentSection={currentSection}
-                    elementName={`section_${sectionPosition}_button_text_color`}
+                    elementName={`button_text_color`}
                     saveTo={saveTo}
                 />
                 <ColorPicker
@@ -178,7 +178,7 @@ const SectionButtonOptions = ({
                     sections={sections}
                     setSections={setSections}
                     currentSection={currentSection}
-                    elementName={`section_${sectionPosition}_button_color`}
+                    elementName={`button_color`}
                     saveTo={saveTo}
                 />
                 <InputComponent

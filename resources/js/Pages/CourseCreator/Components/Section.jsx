@@ -194,7 +194,7 @@ const Section = ({
                                         placeholder="Add Text"
                                         type="wysiwyg"
                                         hoverText="Add Text to Section"
-                                        elementName={`section_${index + 1}_text`}
+                                        elementName={`text`}
                                         value={text}
                                         currentSection={section}
                                         sections={sections}
@@ -208,7 +208,7 @@ const Section = ({
                                         currentSection={section}
                                         sections={sections}
                                         setSections={setSections}
-                                        elementName={`section_${index + 1}_background_color`}
+                                        elementName={`background_color`}
                                         saveTo="course"
                                     />
                                     <SectionButtonOptions
@@ -230,7 +230,7 @@ const Section = ({
                                         type="text"
                                         maxChar={65}
                                         hoverText="Add Video Title"
-                                        elementName={`video_${index + 1}_title`}
+                                        elementName={`video_title`}
                                         value={video_title || ""}
                                         currentSection={section}
                                         sections={sections}
@@ -258,14 +258,14 @@ const Section = ({
                                         currentSection={section}
                                         sections={sections}
                                         setSections={setSections}
-                                        elementName={`section_${index + 1}_title_color`}
+                                        elementName={`title_color`}
                                         saveTo="course"
                                     />
                                     <InputComponent
                                         placeholder="YouTube or Vimeo Link"
                                         type="url"
                                         hoverText="Add Embed Link"
-                                        elementName={`video_${index + 1}_link`}
+                                        elementName={`video_link`}
                                         value={video_link || ""}
                                         currentSection={section}
                                         sections={sections}
@@ -276,7 +276,7 @@ const Section = ({
                                         placeholder="Video Text Blurb (optional)"
                                         type="wysiwyg"
                                         hoverText={`Submit Text Blurb`}
-                                        elementName={`section_${index + 1}_text`}
+                                        elementName={`text`}
                                         value={text || ""}
                                         currentSection={section}
                                         sections={sections}
@@ -290,7 +290,7 @@ const Section = ({
                                         currentSection={section}
                                         sections={sections}
                                         setSections={setSections}
-                                        elementName={`section_${index + 1}_background_color`}
+                                        elementName={`background_color`}
                                         saveTo="course"
                                     />
                                     <div className="switch_wrap two_columns">
@@ -316,7 +316,7 @@ const Section = ({
                                         currentSection={section}
                                         sections={sections}
                                         setSections={setSections}
-                                        elementName={`section_${index + 1}_image`}
+                                        elementName={`image`}
                                         previewType="external"
                                         saveTo="course"
                                         cropArray={{
@@ -342,7 +342,7 @@ const Section = ({
                             return (
                                 <>
                                 <FileComponent
-                                    elementName={`section_${index + 1}_file`}
+                                    elementName={`file`}
                                     setShowLoader={setShowLoader}
                                     currentSection={section}
                                     sections={sections}

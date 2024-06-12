@@ -63,14 +63,14 @@ const EditorComponent = ({
 
             if (sections) {
 
-                let element = elementName.split(/(\d+)/);
-                element = element[2].replace('_', '');
+                /*let element = elementName.split(/(\d+)/);
+                element = element[2].replace('_', '');*/
 
                 setSections(sections.map((section) => {
                     if (section.id === currentSection.id) {
                         return {
                             ...section,
-                            [`${element}`]: value,
+                            [`${elementName}`]: value,
                         }
                     }
                     return section;
@@ -96,11 +96,11 @@ const EditorComponent = ({
 
             if (sections) {
 
-                let element = elementName.split(/(\d+)/);
-                element = element[2].replace('_', '');
+                /*let element = elementName.split(/(\d+)/);
+                element = element[2].replace('_', '');*/
 
                 const packets = {
-                    [`${element}`]: content,
+                    [`${elementName}`]: content,
                 };
 
                saveTo === "course" ?

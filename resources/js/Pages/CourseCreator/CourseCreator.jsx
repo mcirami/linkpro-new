@@ -43,6 +43,7 @@ import {
 } from '../../Services/CourseRequests';
 import {Head, usePage} from '@inertiajs/react';
 import SliderComponent from '@/Components/CreatorComponents/SliderComponent.jsx';
+import {MessageAlertPopup} from '@/Utils/Popups/MessageAlertPopup.jsx';
 
 function CourseCreator({courseArray, offerArray, categories}) {
 
@@ -70,6 +71,13 @@ function CourseCreator({courseArray, offerArray, categories}) {
     const initialRender = useRef(true);
     const divRef = useRef(null);
     const columnRef = useRef(null);
+
+    const [showMessageAlertPopup, setShowMessageAlertPopup] = useState({
+        show: false,
+        text: "",
+        url: null,
+        buttonText: ""
+    });
 
     const [showLoader, setShowLoader] = useState({
         show: false,
@@ -211,6 +219,12 @@ function CourseCreator({courseArray, offerArray, categories}) {
                 setTriangleRef,
                 triangleRef,
             }}>
+                {showMessageAlertPopup.show &&
+                    <MessageAlertPopup
+                        showMessageAlertPopup={showMessageAlertPopup}
+                        setShowMessageAlertPopup={setShowMessageAlertPopup}
+                    />
+                }
                 <div className="container">
                     <h2 className="page_title">Course Creator</h2>
                     <section className="card edit_page creator course_creator">
@@ -547,6 +561,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                             hoverSection={hoverSection}
                                             nodesRef={nodesRef}
                                             completedCrop={completedCrop}
+                                            setShowMessageAlertPopup={setShowMessageAlertPopup}
                                         />
                                     </div>
                                 </div>

@@ -1,12 +1,17 @@
 import React from 'react';
 import {IoMdAlert} from 'react-icons/io';
-export const MessageAlertPopup = ({showMessageAlertPopup, setShowMessageAlertPopup}) => {
+export const MessageAlertPopup = ({
+                                      showMessageAlertPopup,
+                                      setShowMessageAlertPopup,
+}) => {
 
     const handleClose = e => {
         e.preventDefault();
         setShowMessageAlertPopup({
             show: false,
-            text: ""
+            text: "",
+            url: null,
+            buttonText: ""
         })
     }
 
@@ -24,9 +29,18 @@ export const MessageAlertPopup = ({showMessageAlertPopup, setShowMessageAlertPop
                     <IoMdAlert />
                 </div>
                 <h3><span className="option_text">{ showMessageAlertPopup.text }</span></h3>
-                <a className="blue button" href="#" onClick={handleClose}>
-                    Ok
-                </a>
+                {showMessageAlertPopup.url ?
+                    <a className="blue button"
+                       target="_blank"
+                       href={showMessageAlertPopup.url}
+                    >
+                        {showMessageAlertPopup.buttonText}
+                    </a>
+                    :
+                    <a className="blue button" href="#" onClick={handleClose}>
+                        Ok
+                    </a>
+                }
             </div>
         </div>
 

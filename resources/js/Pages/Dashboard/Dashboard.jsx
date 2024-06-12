@@ -636,6 +636,7 @@ function Dashboard({
                                                 row={row}
                                                 setRow={setRow}
                                                 value={value}
+                                                userSub={userSub}
                                                 setValue={setValue}
                                                 subStatus={subStatus}
                                                 pageHeaderRef={pageHeaderRef}
