@@ -68,7 +68,7 @@ const SectionComponent = ({section}) => {
     const url = window.location.protocol + "//" + window.location.host + "/" + username + "/course-page/" + slug;
 
     return (
-        <section className={type} style={ type === "text" ? { background: bg_color } : bgStyle }>
+        <section className={` ${type} sm:mb-5`} style={ type === "text" ? { background: bg_color } : bgStyle }>
             {type === "text" &&
                 <article className="section_content">
                     { (button && button_position === "above") ?

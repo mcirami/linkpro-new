@@ -1,6 +1,6 @@
 import React from 'react';
 import {updateSectionData} from '@/Services/LandingPageRequests.jsx';
-//import {HandleFocus} from '@/Utils/InputAnimations.jsx';
+import {HandleFocus} from '@/Utils/InputAnimations.jsx';
 
 const DropdownComponent = ({
                                courses,

@@ -11,27 +11,23 @@ function LandingPage({page, sections}) {
             <div className="creator_wrap my_row">
                 <div id="live_landing_page">
                     <header className="header">
-                        <div className="top_section" style={{ background: page.header_color }}>
-                            <div className="container">
-                                <div className="logo">
-                                    <img src={page.logo ||
-                                        Vapor.asset('images/logo.png')} alt=""/>
-                                </div>
-                                <div className="text_wrap">
-                                    <p style={{color: page.header_text_color}}>{page.slogan}</p>
-                                </div>
+                        <div className="top_section" style={{background: page.header_color}}>
+                            <div className="logo">
+                                <img src={page.logo ||
+                                    Vapor.asset('images/logo.png')} alt=""/>
+                            </div>
+                            <div className="text_wrap">
+                                <p style={{color: page.header_text_color}}>{page.slogan}</p>
                             </div>
                         </div>
-                        <div className="container">
-                            <div className="header_image my_row"
-                                 style={{
-                                     background: 'url(' + page.hero +
-                                         ') no-repeat',
-                                     backgroundPosition: 'center',
-                                     backgroundSize: 'cover',
-                                 }}
-                            >
-                            </div>
+                        <div className="header_image my_row sm:mb-5"
+                             style={{
+                                 background: 'url(' + page.hero +
+                                     ') no-repeat',
+                                 backgroundPosition: 'center',
+                                 backgroundSize: 'cover',
+                             }}
+                        >
                         </div>
                     </header>
                     <div className="sections">
@@ -40,7 +36,7 @@ function LandingPage({page, sections}) {
 
                                 return (
                                     <SectionComponent section={section} key={index}/>
-                                )
+                                );
                             }))}
                         </div>
                     </div>

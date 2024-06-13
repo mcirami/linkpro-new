@@ -1,5 +1,10 @@
 #links_page.live_page {
 
+    .container {
+        @include query(smallMobile) {
+            padding: 0;
+        }
+    }
     .creator_wrap {
 
         /*#live_landing_page {
@@ -51,6 +56,18 @@
         }
     }
 
+    &.landing_page {
+        .header {
+            .header_image {
+                min-height: 440px;
+
+                @include query(tablet) {
+                    min-height: 240px;
+                }
+            }
+        }
+    }
+
     .sections {
         width: 100%;
         float: left;
@@ -60,6 +77,15 @@
         border-bottom-left-radius: 20px;
         -webkit-border-bottom-left-radius: 20px;
         -moz-border-radius-bottomleft: 20px;
+
+        @include query(smallMobile) {
+            border-bottom-right-radius: 0;
+            -webkit-border-bottom-right-radius: 0;
+            -moz-border-radius-bottomright: 0;
+            border-bottom-left-radius: 0;
+            -webkit-border-bottom-left-radius: 0;
+            -moz-border-radius-bottomleft: 0;
+        }
 
         .section_content {
             padding: 30px;

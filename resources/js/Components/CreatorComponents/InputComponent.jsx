@@ -63,8 +63,6 @@ const InputComponent = ({
         }
     },[])
 
-    console.log("elementName: ", elementName)
-
     const handleCurrencyChange = (value, _) => {
         if (Number.isNaN(Number(value)) || Number(value) > limit) {
             setIsValid(false);

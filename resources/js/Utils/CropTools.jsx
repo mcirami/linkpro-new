@@ -27,7 +27,7 @@ const CropTools = ({
                         value={scale}
                         onChange={(e) => setScale(Number(e.target.value))}
                     />
-                    <label htmlFor="scale-input">Scale</label>
+                    <label className="crop" htmlFor="scale-input">Scale</label>
                 </div>
                 <a href="#" className="number_control" onClick={(e) => handleScaleChange(e, scale, setScale, "increase")}>
                     <HiPlus />
@@ -47,7 +47,7 @@ const CropTools = ({
                             setRotate(Math.min(180, Math.max(-180, Number(e.target.value))))
                         }
                     />
-                    <label htmlFor="rotate-input">Rotate</label>
+                    <label className="crop" htmlFor="rotate-input">Rotate</label>
                 </div>
                 <a href="#" className="number_control" onClick={(e) => handleRotateChange(e, rotate, setRotate, "increase")}>
                     <HiPlus />

@@ -94,7 +94,7 @@ const PreviewSection = ({
                         <SectionImage
                             nodesRef={nodesRef}
                             completedCrop={completedCrop}
-                            elementName={"section_"+ position + "_" + type}
+                            elementName={"image"}
                             imgUrl={image}
                         />,
                 }[type]}

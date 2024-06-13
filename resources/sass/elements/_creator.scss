@@ -80,7 +80,7 @@
                     padding: 20px;
                 }
 
-                .page_settings:not(.icon) label {
+                .page_settings:not(.icon) label:not(.crop) {
                     @include osbold;
                     font-size: 1.2rem;
                     margin: 0;

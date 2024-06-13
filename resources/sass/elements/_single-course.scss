@@ -4,6 +4,10 @@
         @include query(mobile) {
             padding: 40px 0 40px;
         }
+
+        @include query(smallMobile) {
+            padding: 0;
+        }
     }
 
     header {
@@ -149,8 +153,11 @@
 
     .intro_video {
         max-width: 1000px;
-        margin: 0 auto;
-        margin-bottom: 40px;
+        margin: 0 auto 40px;
+
+        @include query(smallMobile) {
+            margin: 0 auto;
+        }
     }
 
     .intro_text {
@@ -168,6 +175,12 @@
         padding: 40px 0;
         justify-content: center;
 
+        @include query(smallMobile) {
+            padding: 0;
+            grid-column-gap: 0;
+            grid-row-gap: 0;
+        }
+
         section:last-child.image {
             border-bottom-right-radius: 0 !important;
             -webkit-border-bottom-right-radius: 0 !important;
@@ -184,6 +197,12 @@
             -webkit-border-radius: 6px;
             -moz-border-radius: 6px;
             z-index: 1;
+
+            @include query(smallMobile) {
+                border-radius: 0;
+                -webkit-border-radius: 0;
+                -moz-border-radius: 0;
+            }
 
             &.text, &.image, &.file {
                 grid-column: 1 / -1;
