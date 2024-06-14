@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {isEmpty} from 'lodash';
 import {ImPlus} from 'react-icons/im';
 import {
@@ -15,14 +15,22 @@ const StoreDropdown = ({
                            storeID
 }) => {
 
+    useEffect(() => {
+        if(storeID) {
+            setCurrentLink((prev) => ({
+                ...prev,
+                shopify_id: storeID,
+            }))
+        }
+    }, []);
     const handleStoreChange = (e) => {
         e.preventDefault();
 
-        setCurrentLink({
-            ...currentLink,
+        setCurrentLink((prev) => ({
+            ...prev,
             shopify_id: e.target.value,
             shopify_products: null,
-        })
+        }))
         setSelectedProducts([]);
     }
 
@@ -34,14 +42,14 @@ const StoreDropdown = ({
     return (
         <div className="my_row relative">
             <select
-                className={currentLink.shopify_id || storeID ? "active" : ""}
+                className={"active"}
                 name="shopify_store"
                 onChange={(e) => handleStoreChange(e)}
                 onBlur={(e) => HandleBlur(e.target)}
                 onFocus={(e) => HandleFocus(e.target)}
-                value={currentLink.shopify_id || storeID || undefined}
+                value={currentLink.shopify_id || storeID || 0}
             >
-                <option value=""></option>
+                <option value={0}>Select Your Store</option>
                 {!isEmpty(shopifyStores) && shopifyStores?.map((store) => {
                     return (
                         <option

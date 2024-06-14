@@ -588,6 +588,7 @@ function Dashboard({
                                                                                     shopifyStores={shopifyStores}
                                                                                     setShopifyStores={setShopifyStores}
                                                                                     redirectedType={redirectedType}
+                                                                                    setStoreID={setStoreID}
                                                                                     storeID={storeID}
                                                                                 />
 

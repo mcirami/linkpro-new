@@ -47,6 +47,7 @@ const IntegrationForm = ({
                              shopifyStores,
                              setShopifyStores,
                              redirectedType,
+                             setStoreID,
                              storeID
 }) => {
 
@@ -249,6 +250,7 @@ const IntegrationForm = ({
                         setShowLinkForm(false);
                         setIntegrationType(null);
                         setEditID(null);
+                        setStoreID(0);
                     }
                 })
             }
@@ -394,8 +396,8 @@ const IntegrationForm = ({
         let value = e.target.value;
         setCharactersLeft(11 - value.length);
 
-        setCurrentLink(() => ({
-            ...currentLink,
+        setCurrentLink((prevState) => ({
+            ...prevState,
             name: value
         }))
     },[])
@@ -521,6 +523,7 @@ const IntegrationForm = ({
                                         editID={editID}
                                         customIconArray={customIconArray}
                                         setCustomIconArray={setCustomIconArray}
+                                        redirectedType={redirectedType}
                                     />
 
                                 </div>
@@ -566,7 +569,6 @@ const IntegrationForm = ({
                                 setLists={setLists}
                                 currentLink={currentLink}
                                 setCurrentLink={setCurrentLink}
-                                /*inputKey={key}*/
                                 setIntegrationType={setIntegrationType}
                             />
                             :
@@ -581,10 +583,7 @@ const IntegrationForm = ({
                                         setSelectedProducts={setSelectedProducts}
                                         allProducts={allProducts}
                                         setDisplayAllProducts={setDisplayAllProducts}
-                                        /*handleChange={handleChange}*/
                                         setCurrentLink={setCurrentLink}
-                                        /*inputKey={key}*/
-                                        name={name}
                                     />
 
                                     :

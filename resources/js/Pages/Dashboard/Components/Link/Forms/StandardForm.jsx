@@ -486,12 +486,14 @@ const StandardForm = ({
                     }
                 </div>
 
-                <IconDescription
-                    currentLink={currentLink}
-                    setCurrentLink={setCurrentLink}
-                    descChecked={descChecked}
-                    setDescChecked={setDescChecked}
-                />
+                {!folderID &&
+                    <IconDescription
+                        currentLink={currentLink}
+                        setCurrentLink={setCurrentLink}
+                        descChecked={descChecked}
+                        setDescChecked={setDescChecked}
+                    />
+                }
 
                 <div className="button_row w-full mt-4">
                     <button className="button green" type="submit">

@@ -734,14 +734,14 @@ const CustomForm = ({
                     setCurrentLink={setCurrentLink}
                 />
             </div>
-
-            <IconDescription
-                currentLink={currentLink}
-                setCurrentLink={setCurrentLink}
-                descChecked={descChecked}
-                setDescChecked={setDescChecked}
-            />
-
+            {!folderID &&
+                <IconDescription
+                    currentLink={currentLink}
+                    setCurrentLink={setCurrentLink}
+                    descChecked={descChecked}
+                    setDescChecked={setDescChecked}
+                />
+            }
             <div className="my_row button_row mt-4">
                 <button className="button green" type="submit">
                     Save

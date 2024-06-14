@@ -39,7 +39,8 @@ return [
         'client_id'     => env('SHOPIFY_CLIENT_ID'),
         'client_secret' => env('SHOPIFY_CLIENT_SECRET'),
         'redirect'      => env('SHOPIFY_REDIRECT_URI'),
-        'scopes'        => env('SHOPIFY_APP_SCOPES')
+        'scopes'        => env('SHOPIFY_APP_SCOPES'),
+        'api_version'   => env('SHOPIFY_API_VERSION'),
     ],
     'stripe' => [
         'key'            => env('STRIPE_KEY'),

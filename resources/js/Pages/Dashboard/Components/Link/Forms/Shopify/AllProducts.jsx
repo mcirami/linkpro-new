@@ -9,13 +9,11 @@ const AllProducts = ({
                              setSelectedProducts,
                              allProducts,
                              setDisplayAllProducts,
-                             /*handleChange,*/
                              setCurrentLink
 }) => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        /*handleChange(selectedProducts)*/
         setCurrentLink((prev) => ({
             ...prev,
             shopify_products: selectedProducts

@@ -30,7 +30,7 @@ export const addLink = (packets) => {
         })
     .catch(error => {
         if (error.response) {
-            /*if (error.response.data.errors.icon !== undefined) {
+            if (error.response.data.errors.icon !== undefined) {
                 EventBus.dispatch("error", { message: error.response.data.errors.icon[0] });
             } else if (error.response.data.errors.name !== undefined) {
                 EventBus.dispatch("error", { message: error.response.data.errors.name[0] });
@@ -42,9 +42,9 @@ export const addLink = (packets) => {
                 EventBus.dispatch("error", { message: "Mailchimp List Is Required" });
             } else if (error.response.data.errors.shopify_products !== undefined) {
                 EventBus.dispatch("error", { message: "Shopify Products Are Required" });
-            } else {*/
+            } else {
                 console.error(error.response);
-            /*}*/
+            }
         } else {
             console.error("ERROR:: ", error);
         }

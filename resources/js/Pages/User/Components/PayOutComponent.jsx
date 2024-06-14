@@ -7,7 +7,7 @@ const PayOutComponent = ({setShowLoader, total, setShowMessageAlertPopup}) => {
     const handleClick = (e) => {
         e.preventDefault();
 
-        if (total < 100) {
+        if (total > 100) {
             setShowLoader({
                 show: true,
                 position: 'fixed',
