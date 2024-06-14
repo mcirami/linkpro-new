@@ -17,15 +17,16 @@ const LinkStats = ({
                        setLinkStatsDate,
                        linkDropdownValue,
                        setLinkDropdownValue,
+                       isLoading,
+                       setIsLoading,
                        tab
 }) => {
 
-    const [isLoading, setIsLoading] = useState(true);
     const [animate, setAnimate] = useState(true);
 
     useEffect(() => {
-
         if (isEmpty(linkStats)) {
+            setIsLoading(true);
             const packets = {
                 currentDay: true
             }
@@ -131,14 +132,13 @@ const LinkStats = ({
                 setTimeout(() => {
                     setLinkStats(data["linkStats"])
                     setDeletedStats(data["deletedStats"]);
-                    setAnimate(false)
-                    setIsLoading(false);
+
 
                 }, 500)
-            } else {
-                setAnimate(false)
-                setIsLoading(false);
             }
+
+            setAnimate(false)
+            setIsLoading(false);
         });
 
     }, [linkStatsDate])
@@ -158,7 +158,6 @@ const LinkStats = ({
                 <Table
                     isLoading={isLoading}
                     animate={animate}
-                    /*totals={totals}*/
                     data={linkStats}
                     columns={columns}
                 />
@@ -167,7 +166,6 @@ const LinkStats = ({
                 <Table
                     isLoading={isLoading}
                     animate={animate}
-                    /*totals={totals}*/
                     data={deletedStats}
                     columns={deletedColumns}
                 />

@@ -15,15 +15,16 @@ const FolderStats = ({
                          setFolderStatsDate,
                          folderDropdownValue,
                          setFolderDropdownValue,
+                         isLoading,
+                         setIsLoading,
                          tab
 }) => {
 
-    const [isLoading, setIsLoading] = useState(true);
     const [animate, setAnimate] = useState(true);
 
     useEffect(() => {
-
         if (isEmpty(folderStats)) {
+            setIsLoading(true);
             const packets = {
                 currentDay: true
             }
@@ -105,17 +106,13 @@ const FolderStats = ({
         setAnimate(true);
         getFolderStats(packets)
         .then((data) => {
-
             if (data["success"]) {
                 setTimeout(() => {
                     setFolderStats(data["currentData"]);
-                    setAnimate(false)
-                    setIsLoading(false);
                 }, 500)
-            } else {
-                setAnimate(false)
-                setIsLoading(false);
             }
+            setAnimate(false)
+            setIsLoading(false);
         });
 
     }, [folderStatsDate])
@@ -130,13 +127,6 @@ const FolderStats = ({
                      getStats={folderStatsCall}
                      tab={tab}
             />
-            {isLoading &&
-                <div className="my_row">
-                    <div id="loading_spinner" className="active">
-                        <img src={Vapor.asset('images/spinner.svg')} alt="" />
-                    </div>
-                </div>
-            }
             {folderStats.length < 1 ?
                 <div className="my_row">
                     <div className="my_row labels">
@@ -169,7 +159,6 @@ const FolderStats = ({
                                         <Table
                                             isLoading={isLoading}
                                             animate={animate}
-                                            /*totals={totals}*/
                                             data={links}
                                             columns={columns}
                                         />

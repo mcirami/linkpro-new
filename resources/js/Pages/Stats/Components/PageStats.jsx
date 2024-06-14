@@ -11,15 +11,17 @@ const PageStats = ({
                        setPageStatsDate,
                        pageDropdownValue,
                        setPageDropdownValue,
+                       isLoading,
+                       setIsLoading,
                        tab
 }) => {
 
-    const [isLoading, setIsLoading] = useState(true);
     const [animate, setAnimate] = useState(true);
 
     useEffect(() => {
 
         if (isEmpty(pageStats)) {
+            setIsLoading(true);
             const packets = {
                 currentDay: true
             }
@@ -102,15 +104,12 @@ const PageStats = ({
             if (data["success"]) {
                 setTimeout(() => {
                     setPageStats(data["data"]);
-                    setAnimate(false)
-                    setIsLoading(false);
                 }, 500)
-            } else {
-                setAnimate(false)
-                setIsLoading(false);
             }
-
+            setIsLoading(false);
+            setAnimate(false)
         });
+
     }, [pageStatsDate])
 
     return (
@@ -128,7 +127,6 @@ const PageStats = ({
                 <Table
                     isLoading={isLoading}
                     animate={animate}
-                    /*totals={totals}*/
                     data={pageStats}
                     columns={columns}
                 />

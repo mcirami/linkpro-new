@@ -23,15 +23,17 @@ const AffiliateStats = ({
                             setDropdownValue,
                             filterByValue,
                             setFilterByValue,
+                            isLoading,
+                            setIsLoading,
                             tab
 }) => {
 
-    const [isLoading, setIsLoading] = useState(true);
     const [animate, setAnimate] = useState(true);
 
     useEffect(() => {
 
         if (isEmpty(affiliateStats)) {
+            setIsLoading(true);
             const packets = {
                 currentDay: true
             }
@@ -168,14 +170,11 @@ const AffiliateStats = ({
                 setTimeout(() => {
                     setAffiliateStats(data["affiliateData"])
                     setTotals(data["totals"]);
-                    setAnimate(false)
-                    setIsLoading(false);
-
                 }, 500)
-            } else {
-                setAnimate(false)
-                setIsLoading(false);
             }
+
+            setAnimate(false)
+            setIsLoading(false);
         });
 
     },[statsDate]);

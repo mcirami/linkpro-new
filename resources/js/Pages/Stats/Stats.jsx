@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import PageStats from './Components/PageStats';
 import LinkStats from './Components/LinkStats';
@@ -9,8 +9,8 @@ import {Head} from '@inertiajs/react';
 
 function Stats() {
 
+    const [isLoading, setIsLoading] = useState(true);
     const [tab, setTab] = useState("page");
-
     const [pageStats, setPageStats] = useState([])
     const [linkStats, setLinkStats] = useState([])
     const [deletedStats, setDeletedStats] = useState([]);
@@ -76,7 +76,14 @@ function Stats() {
 
                 <div className="my_row form_page stats">
                     <h2 className="page_title text-center">Stats</h2>
-                    <div className="card flex">
+                    <div className="card flex relative">
+                        {isLoading &&
+                            <div id="loading_spinner" className="active">
+                                <div >
+                                    <img src={Vapor.asset('images/spinner.svg')} alt="" />
+                                </div>
+                            </div>
+                        }
                         <div id="stats" className="my_row">
                             <div className="tabs_wrap">
                                 <div className="my_row tab_nav">
@@ -92,6 +99,8 @@ function Stats() {
                                                 setPageStatsDate={setPageStatsDate}
                                                 pageDropdownValue={pageDropdownValue}
                                                 setPageDropdownValue={setPageDropdownValue}
+                                                isLoading={isLoading}
+                                                setIsLoading={setIsLoading}
                                                 tab={tab}
                                             />
                                             :
@@ -112,6 +121,8 @@ function Stats() {
                                                 setLinkStatsDate={setLinkStatsDate}
                                                 linkDropdownValue={linkDropdownValue}
                                                 setLinkDropdownValue={setLinkDropdownValue}
+                                                isLoading={isLoading}
+                                                setIsLoading={setIsLoading}
                                                 tab={tab}
                                             />
                                             :
@@ -130,6 +141,8 @@ function Stats() {
                                                 setFolderStatsDate={setFolderStatsDate}
                                                 folderDropdownValue={folderDropdownValue}
                                                 setFolderDropdownValue={setFolderDropdownValue}
+                                                isLoading={isLoading}
+                                                setIsLoading={setIsLoading}
                                                 tab={tab}
                                             />
                                             :
@@ -152,6 +165,8 @@ function Stats() {
                                                 setDropdownValue={setAffiliateDropdownValue}
                                                 filterByValue={filterByValue}
                                                 setFilterByValue={setFilterByValue}
+                                                isLoading={isLoading}
+                                                setIsLoading={setIsLoading}
                                                 tab={tab}
                                             />
                                             :
@@ -170,6 +185,8 @@ function Stats() {
                                                 setPageStatsDate={setPageStatsDate}
                                                 pageDropdownValue={pageDropdownValue}
                                                 setPageDropdownValue={setPageDropdownValue}
+                                                isLoading={isLoading}
+                                                setIsLoading={setIsLoading}
                                                 tab={tab}
                                             />
                                         }
@@ -183,6 +200,8 @@ function Stats() {
                                                 setLinkStatsDate={setLinkStatsDate}
                                                 linkDropdownValue={linkDropdownValue}
                                                 setLinkDropdownValue={setLinkDropdownValue}
+                                                isLoading={isLoading}
+                                                setIsLoading={setIsLoading}
                                                 tab={tab}
                                             />
                                         }
@@ -195,6 +214,8 @@ function Stats() {
                                                 setFolderStatsDate={setFolderStatsDate}
                                                 folderDropdownValue={folderDropdownValue}
                                                 setFolderDropdownValue={setFolderDropdownValue}
+                                                isLoading={isLoading}
+                                                setIsLoading={setIsLoading}
                                                 tab={tab}
                                             />
                                         }
@@ -211,6 +232,8 @@ function Stats() {
                                                 setDropdownValue={setAffiliateDropdownValue}
                                                 filterByValue={filterByValue}
                                                 setFilterByValue={setFilterByValue}
+                                                isLoading={isLoading}
+                                                setIsLoading={setIsLoading}
                                                 tab={tab}
                                             />
                                         }
