@@ -4,12 +4,15 @@ import draftToHtml from 'draftjs-to-html';
 import DOMPurify from 'dompurify';
 import { TbExternalLink } from "react-icons/tb";
 import {convertText} from '@/Services/CreatorServices.jsx';
+import {TrackIconClick} from '@/Services/TrackClicks.jsx';
 
 const IconDescription = ({
+                             id,
                              dataRow,
                              row,
                              description,
-                             url
+                             url,
+                             viewType
                          }) => {
 
     const [textValue, setTextValue] = useState(description)
@@ -48,7 +51,10 @@ const IconDescription = ({
         >
             {dataRow == row &&
                 <div className="folder_content description relative">
-                    <a target="_blank" href={url}>
+                    <a target="_blank"
+                       href={url}
+                       onClick={(e) => viewType === "live" && TrackIconClick(id)}
+                    >
                         <div dangerouslySetInnerHTML={createMarkup(textValue)}></div>
                         {hoverSection === divRef &&
                             <div className="hover_content">

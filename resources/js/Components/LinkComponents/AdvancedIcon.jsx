@@ -1,6 +1,8 @@
 import React from 'react';
+import {TrackIconClick} from '@/Services/TrackClicks.jsx';
 
 const AdvancedIcon = ({
+                          id,
                           colClasses,
                           displayIcon,
                           name,
@@ -14,7 +16,8 @@ const AdvancedIcon = ({
                           index,
                           setClickType,
                           clickType,
-                          type
+                          type,
+                          viewType
                       }) => {
 
     const handleClick = (e) => {
@@ -35,6 +38,9 @@ const AdvancedIcon = ({
                 url: url
             });
             setClickType(type);
+
+            (viewType === "live" && type!== "advanced") && TrackIconClick(id)
+
             setTimeout(function(){
                 document.querySelector('.folder.open .folder_content').scrollIntoView({
                     behavior: 'smooth',

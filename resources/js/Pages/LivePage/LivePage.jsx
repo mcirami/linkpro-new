@@ -127,7 +127,7 @@ function LivePage({links, page, subscribed}) {
                                                                     clickType={clickType}
                                                                     setClickType={setClickType}
                                                                     subStatus={subscribed}
-                                                                    type="live"
+                                                                    viewType="live"
                                                                 />
                                                                 :
                                                                 subscribed &&
@@ -166,6 +166,7 @@ function LivePage({links, page, subscribed}) {
                                                         case "advanced":
                                                             return (
                                                                 <AdvancedIcon
+                                                                    id={id}
                                                                     colClasses={colClasses}
                                                                     displayIcon={displayIcon}
                                                                     name={name}
@@ -180,6 +181,7 @@ function LivePage({links, page, subscribed}) {
                                                                     setClickType={setClickType}
                                                                     clickType={clickType}
                                                                     type={type}
+                                                                    viewType="live"
                                                                 />
                                                             )
                                                     }
@@ -208,10 +210,12 @@ function LivePage({links, page, subscribed}) {
                                                             case "advanced":
                                                                 return (
                                                                     <IconDescription
+                                                                        id={id}
                                                                         dataRow={dataRow}
                                                                         row={row}
                                                                         description={description}
                                                                         url={value.url}
+                                                                        viewType="live"
                                                                     />
                                                                 )
                                                             case "folder":
@@ -225,6 +229,7 @@ function LivePage({links, page, subscribed}) {
                                                                                         key={index}
                                                                                         icons={innerLinkFull}
                                                                                         subStatus={subscribed}
+                                                                                        viewType="live"
                                                                                     />
                                                                                 )
                                                                             })

@@ -1,7 +1,11 @@
 import React from 'react';
 import {checkIcon} from '@/Services/UserService.jsx';
 
-const FolderLinks = ({icons, subStatus, type}) => {
+const FolderLinks = ({
+                         icons,
+                         subStatus,
+                         viewType
+}) => {
 
     const {name, icon, active_status} = icons
 
@@ -9,7 +13,7 @@ const FolderLinks = ({icons, subStatus, type}) => {
 
         <div className="image_col">
             {active_status ?
-                <img src={checkIcon(icon, type, subStatus)} alt={name} title={name}/>
+                <img src={checkIcon(icon, viewType, subStatus)} alt={name} title={name}/>
                 :
                 ""
             }

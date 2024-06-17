@@ -113,6 +113,7 @@ const Preview = ({
                                 map((linkItem, index) => {
 
                                     let {
+                                        id,
                                         type,
                                         name,
                                         url,
@@ -167,7 +168,7 @@ const Preview = ({
                                                                     clickType={clickType}
                                                                     setClickType={setClickType}
                                                                     subStatus={subStatus}
-                                                                    type="preview"
+                                                                    viewType="preview"
                                                                 />
                                                                 :
                                                                 subStatus &&
@@ -220,6 +221,7 @@ const Preview = ({
                                                                 setClickType={setClickType}
                                                                 clickType={clickType}
                                                                 type={type}
+                                                                viewType="preview"
                                                             />
                                                         )
                                                 }
@@ -247,10 +249,12 @@ const Preview = ({
                                                         case "advanced":
                                                             return (
                                                                 <IconDescription
+                                                                    id={id}
                                                                     dataRow={dataRow}
                                                                     row={row}
                                                                     description={description}
                                                                     url={value.url}
+                                                                    viewType="preview"
                                                                 />
                                                             )
                                                         case "folder":
@@ -265,7 +269,11 @@ const Preview = ({
                                                                                 innerLinkFull,
                                                                                 index) => {
                                                                                 return (
-                                                                                    <AccordionLinks key={index} icons={innerLinkFull}/>
+                                                                                    <AccordionLinks
+                                                                                        key={index}
+                                                                                        icons={innerLinkFull}
+                                                                                        viewType="preview"
+                                                                                    />
                                                                                 )
                                                                             })
                                                                         }

@@ -15,10 +15,10 @@ const Folder = ({
                     clickType,
                     setClickType,
                     subStatus,
-                    type
+                    viewType
 }) => {
 
-    const folderClick = (e, index) => {
+    const folderClick = (e, index, viewType) => {
         e.preventDefault();
 
         const clickedDiv = e.currentTarget.parentNode;
@@ -45,14 +45,20 @@ const Folder = ({
 
             }, 300)
 
-            TrackFolderClick(id);
+            viewType === "live" && TrackFolderClick(id);
         }
     }
 
     return (
 
         <div className={ ` ${colClasses} ${mainIndex == value.index && clickType === "folder" ? " open" : "" } `}>
-            <a className="inner_icon_wrap" href="#" data-row={ dataRow } onClick={(e) => {folderClick(e, mainIndex)} }>
+            <a className="inner_icon_wrap"
+               href="#"
+               data-row={ dataRow }
+               onClick={(e) => {
+                   folderClick(e, mainIndex, viewType)
+               }
+            }>
                 <img className="bg_image" src={Vapor.asset('images/blank-folder-square.jpg')} alt=""/>
                 <div className="folder_icons preview">
                     {links.slice(0, 9).map(( innerLinkIcons, index ) => {
@@ -61,7 +67,7 @@ const Folder = ({
                                 key={index}
                                 icons={innerLinkIcons}
                                 subStatus={subStatus}
-                                type={type}
+                                viewType={viewType}
                             />
                         )
                     })}

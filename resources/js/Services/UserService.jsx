@@ -31,10 +31,10 @@ export const checkSubStatus = (userSub) => {
     return false;
 }
 
-export const checkIcon = (icon, type, subStatus) => {
+export const checkIcon = (icon, viewType, subStatus) => {
     let asset;
 
-    if(type === "preview") {
+    if(viewType === "preview") {
         asset = Vapor.asset('images/icon-placeholder-preview.png')
     } else {
         asset = Vapor.asset('images/icon-placeholder.png');
