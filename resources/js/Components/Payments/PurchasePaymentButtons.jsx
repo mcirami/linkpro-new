@@ -20,8 +20,8 @@ const PurchasePaymentButtons = ({showPaymentButtons}) => {
 
     useEffect(() => {
         getClientId().then((response) => {
-            if(response.success) {
 
+            if(response.success) {
                 setInitialOptions({
                     clientId : response.client,
                     intent: "capture",

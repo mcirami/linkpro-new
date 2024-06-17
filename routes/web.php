@@ -106,6 +106,16 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/get-course-categories', [CourseController::class, 'getCourseCategories']);
+
+    Route::group(['prefix' => 'subscribe'], function() {
+        Route::post( '/get-paypal-client', [ SubscriptionController::class, 'getPayPalClient' ] );
+        Route::get( '/stripe-success',
+            [ SubscriptionController::class, 'stripeSubscribeSuccess' ] )->name( 'stripe.subscribe.success' );
+        Route::post( '/paypal-success',
+            [ SubscriptionController::class, 'payPalSubscribeSuccess' ] )->name( 'paypal.subscribe.success' );
+        Route::get( '/success',
+            [ SubscriptionController::class, 'showSuccessPage' ] )->name( 'show.subscribe.success' );
+    });
 });
 
 
@@ -176,12 +186,8 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], funct
         Route::post( '/resume', [ SubscriptionController::class, 'resume' ] )->name( 'subscribe.resume' );
         Route::post( '/change-plan', [ SubscriptionController::class, 'changePlan' ] )->name( 'subscribe.change.plan' );
         Route::get('/', [SubscriptionController::class, 'showPurchasePage'])->name('subscribe.get');
-        Route::get( '/stripe-success', [ SubscriptionController::class, 'stripeSubscribeSuccess' ] )->name( 'stripe.subscribe.success' );
         Route::get( '/cancel-checkout', [ SubscriptionController::class, 'cancelCheckout' ] )->name( 'cancel.checkout' );
-        Route::post( '/paypal-success', [ SubscriptionController::class, 'payPalSubscribeSuccess' ] )->name( 'paypal.subscribe.success' );
         Route::post( '/paypal-payment-method', [ SubscriptionController::class, 'changePaymentMethodToPaypal' ] )->name( 'paypal.payment.method' );
-        Route::get('/success',[ SubscriptionController::class, 'showSuccessPage' ] )->name( 'show.subscribe.success' );
-        Route::post('/get-paypal-client', [ SubscriptionController::class, 'getPayPalClient' ]);
         Route::post('/get-stripe-billing-date', [ SubscriptionController::class, 'getStripeBillingDate' ]);
     });
 

@@ -15,7 +15,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 use App\Http\Traits\PermissionTrait;
 use Symfony\Component\HttpFoundation\Response;
 

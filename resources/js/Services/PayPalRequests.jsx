@@ -94,9 +94,8 @@ export const getClientId = () => {
 
     return axios.post('/subscribe/get-paypal-client').then(
         (response) => {
-
             return {
-                success: true,
+                success: response.data.success,
                 client : response.data.payPalClient,
             }
         },
