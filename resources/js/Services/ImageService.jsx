@@ -1,6 +1,7 @@
 import {toLower} from 'lodash';
 import React, {useEffect} from 'react';
 import {centerCrop, makeAspectCrop} from 'react-image-crop';
+import Resizer from 'react-image-file-resizer';
 
 const socialArray = [
     "facebook",
@@ -92,6 +93,23 @@ export const createImage = (
     });
     reader.readAsDataURL(file);
 };
+
+export const resizeFile = (file) => new Promise(resolve => {
+    Resizer.imageFileResizer(
+        file,
+        600,
+        400,
+        "PNG",
+        100,
+        0,
+        (uri) => {
+            resolve(uri);
+        },
+        "blob",
+        400,
+        200
+    )
+})
 
 export const getIconPaths = (iconPaths) => {
 

@@ -109,7 +109,7 @@ const CustomForm = ({
                 previewCanvasRef.current
             ) {
                 // We use canvasPreview as it's much faster than imgPreview.
-                canvasPreview(
+                await canvasPreview(
                     imgRef.current,
                     previewCanvasRef.current,
                     completedIconCrop,
@@ -138,14 +138,14 @@ const CustomForm = ({
     }, [customIcon]);
 
     const selectCustomIcon = e => {
-        let files = e.target.files || e.dataTransfer.files;
+        let files = e.target.files[0];
         if (!files.length) {
             return;
         }
         setCrop(undefined)
         setIconSelected(true);
 
-        createImage(files[0], setUpImg);
+        createImage(files, setUpImg);
     }
 
     const handleSubmit = (e) => {

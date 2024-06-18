@@ -39,7 +39,7 @@ const Preview = ({
     },[hoverSection])
 
     const ClosePreview = () => {
-        document.querySelector('body').classList.remove('fixed');
+        document.querySelector('body').classList.remove('stop_scroll');
         setShowPreview(false);
     }
 

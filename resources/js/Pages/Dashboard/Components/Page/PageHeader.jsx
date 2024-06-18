@@ -18,6 +18,7 @@ import {
 import ToolTipIcon from '../../../../Utils/ToolTips/ToolTipIcon';
 import CropTools from '../../../../Utils/CropTools';
 import EventBus from '../../../../Utils/Bus';
+import {resizeFile} from '@/Services/ImageService.jsx';
 
 const PageHeader = forwardRef(function PageHeader(props, ref) {
 
@@ -49,7 +50,7 @@ const PageHeader = forwardRef(function PageHeader(props, ref) {
                 previewCanvasRef?.current[elementName]
             ) {
                 // We use canvasPreview as it's much faster than imgPreview.
-                canvasPreview(
+                await canvasPreview(
                     imgRef.current,
                     previewCanvasRef?.current[elementName],
                     completedCrop[elementName]?.isCompleted,
@@ -62,20 +63,26 @@ const PageHeader = forwardRef(function PageHeader(props, ref) {
         [completedCrop[elementName]?.isCompleted, scale, rotate],
     )
 
-    const onSelectFile = (e) => {
-        let files = e.target.files || e.dataTransfer.files;
-        if (!files.length) {
+    const onSelectFile = async (e) => {
+        let file = e.target.files || e.dataTransfer.files;
+
+        if (!file.length) {
             return;
         }
-        setCrop(undefined);
-        setDisableButton(false);
-        document.querySelector("form.header_img_form .bottom_section").classList.remove("hidden");
-        if (window.innerWidth < 993) {
-            document.querySelector(".header_img_form").scrollIntoView({
-                behavior: "smooth",
-            });
-        }
-        createImage(files[0], setUpImg);
+
+        await resizeFile(file[0]).then((image) => {
+            createImage(image, setUpImg);
+
+            setCrop(undefined);
+            setDisableButton(false);
+            document.querySelector("form.header_img_form .bottom_section").classList.remove("hidden");
+            if (window.innerWidth < 993) {
+                document.querySelector(".header_img_form").scrollIntoView({
+                    behavior: "smooth",
+                });
+            }
+        })
+
     };
 
     const handleSubmit = (e) => {

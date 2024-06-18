@@ -48,7 +48,7 @@ const PageProfile = forwardRef(function PageProfile(props, ref) {
                 previewCanvasRef.current[elementName]
             ) {
                 // We use canvasPreview as it's much faster than imgPreview.
-                canvasPreview(
+                await canvasPreview(
                     imgRef.current,
                     previewCanvasRef.current[elementName],
                     completedCrop[elementName].isCompleted,

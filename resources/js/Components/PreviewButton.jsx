@@ -6,7 +6,7 @@ const PreviewButton = ({setShowPreview}) => {
     const ShowPreview = (e) => {
         e.preventDefault();
         setShowPreview(true);
-        document.querySelector('body').classList.add('fixed');
+        document.querySelector('body').classList.add('stop_scroll');
     }
 
     return (
