@@ -189,7 +189,7 @@ const Section = ({
                         sections={sections}
                         setSections={setSections}
                         previewType="external"
-                        elementName={`image`}
+                        elementName={`section_${index + 1}_image`}
                         saveTo="landingPage"
                         cropArray={{
                             unit: "%",

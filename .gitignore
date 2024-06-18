@@ -43,3 +43,4 @@ staging.Dockerfile
 .env.staging-new
 .env.prod
 .env.production-new
+.env.newStaging

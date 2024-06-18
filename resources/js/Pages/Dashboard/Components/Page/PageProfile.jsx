@@ -13,7 +13,7 @@ import {
     canvasPreview,
     useDebounceEffect,
     onImageLoad,
-    createImage, getFileToUpload,
+    createImage, getFileToUpload, resizeFile,
 } from '@/Services/ImageService.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import CropTools from '@/Utils/CropTools';
@@ -40,41 +40,34 @@ const PageProfile = forwardRef(function PageProfile(props, ref) {
     const [aspect, setAspect] = useState(1)
 
     useDebounceEffect(
-        async () => {
-            if (
-                completedCrop[elementName]?.isCompleted.width &&
-                completedCrop[elementName]?.isCompleted.height &&
-                imgRef.current &&
-                previewCanvasRef.current[elementName]
-            ) {
-                // We use canvasPreview as it's much faster than imgPreview.
-                await canvasPreview(
-                    imgRef.current,
-                    previewCanvasRef.current[elementName],
-                    completedCrop[elementName].isCompleted,
-                    scale,
-                    rotate,
-                )
-            }
-        },
-        100,
-        [completedCrop[elementName]?.isCompleted, scale, rotate],
+        completedCrop,
+        null,
+        elementName,
+        imgRef,
+        previewCanvasRef,
+        scale,
+        rotate
     )
 
-    const onSelectFile = e => {
+    const onSelectFile = async (e) => {
         let files = e.target.files || e.dataTransfer.files;
         if (!files.length) {
             return;
         }
-        setCrop(undefined);
-        setDisableButton(false);
-        document.querySelector('form.profile_img_form .bottom_section').classList.remove('hidden');
-        if (window.innerWidth < 993) {
-            document.querySelector('.profile_img_form').scrollIntoView({
-                behavior: 'smooth',
-            });
-        }
-        createImage(files[0], setUpImg);
+
+        await resizeFile(files[0]).then((image) => {
+            createImage(image, setUpImg);
+            setCrop(undefined);
+            setDisableButton(false);
+            document.querySelector('form.profile_img_form .bottom_section').
+                classList.
+                remove('hidden');
+            if (window.innerWidth < 993) {
+                document.querySelector('.profile_img_form').scrollIntoView({
+                    behavior: 'smooth',
+                });
+            }
+        })
     }
 
     const handleSubmit = (e) => {

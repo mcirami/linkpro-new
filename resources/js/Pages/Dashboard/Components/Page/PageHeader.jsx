@@ -13,7 +13,8 @@ import {
     canvasPreview,
     useDebounceEffect,
     onImageLoad,
-    createImage, getFileToUpload,
+    createImage,
+    getFileToUpload,
 } from '@/Services/ImageService.jsx';
 import ToolTipIcon from '../../../../Utils/ToolTips/ToolTipIcon';
 import CropTools from '../../../../Utils/CropTools';
@@ -42,25 +43,13 @@ const PageHeader = forwardRef(function PageHeader(props, ref) {
     const [aspect, setAspect] = useState(16 / 9)
 
     useDebounceEffect(
-        async () => {
-            if (
-                completedCrop[elementName]?.isCompleted.width &&
-                completedCrop[elementName]?.isCompleted.height &&
-                imgRef.current &&
-                previewCanvasRef?.current[elementName]
-            ) {
-                // We use canvasPreview as it's much faster than imgPreview.
-                await canvasPreview(
-                    imgRef.current,
-                    previewCanvasRef?.current[elementName],
-                    completedCrop[elementName]?.isCompleted,
-                    scale,
-                    rotate,
-                )
-            }
-        },
-        100,
-        [completedCrop[elementName]?.isCompleted, scale, rotate],
+        completedCrop,
+        null,
+        elementName,
+        imgRef,
+        previewCanvasRef,
+        scale,
+        rotate
     )
 
     const onSelectFile = async (e) => {

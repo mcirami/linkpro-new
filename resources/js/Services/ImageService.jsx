@@ -138,19 +138,65 @@ export const getIconPaths = (iconPaths) => {
 }
 
 export function useDebounceEffect(
-    fn,
-    waitTime,
-    deps
+    completedCrop,
+    completedIconCrop,
+    elementName,
+    imgRef,
+    previewCanvasRef,
+    scale,
+    rotate
 ) {
+
+    const useEffectDeps = completedCrop && elementName ?
+        [completedCrop[elementName]?.isCompleted, scale, rotate] :
+        [completedIconCrop, scale, rotate]
+
     useEffect(() => {
         const t = setTimeout(() => {
-            fn.apply(undefined, deps)
-        }, waitTime)
+            if(elementName && completedCrop) {
+                (async () => {
+                    if (
+                        completedCrop[elementName]?.isCompleted.width &&
+                        completedCrop[elementName]?.isCompleted.height &&
+                        imgRef.current &&
+                        previewCanvasRef?.current[elementName]
+                    ) {
+                        // We use canvasPreview as it's much faster than imgPreview.
+                        await canvasPreview(
+                            imgRef.current,
+                            previewCanvasRef?.current[elementName],
+                            completedCrop[elementName]?.isCompleted,
+                            scale,
+                            rotate,
+                        )
+                    }
+                }).apply(undefined, [completedCrop[elementName]?.isCompleted, scale, rotate])
+            } else {
+                (async () => {
+                    if (
+                        completedIconCrop?.width &&
+                        completedIconCrop?.height &&
+                        imgRef.current &&
+                        previewCanvasRef.current
+                    ) {
+                        // We use canvasPreview as it's much faster than imgPreview.
+                        await canvasPreview(
+                            imgRef.current,
+                            previewCanvasRef.current,
+                            completedIconCrop,
+                            scale,
+                            rotate,
+                        )
+                    }
+                }).apply(undefined, [completedIconCrop, scale, rotate])
+            }
+
+        }, 100)
 
         return () => {
             clearTimeout(t)
         }
-    }, deps)
+    }, useEffectDeps)
 }
 
 export function centerAspectCrop(

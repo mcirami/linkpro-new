@@ -13,7 +13,7 @@ import {
     useDebounceEffect,
     onImageLoad,
     createImage,
-    getFileToUpload
+    getFileToUpload, resizeFile,
 } from '@/Services/ImageService.jsx';
 import {
     FolderLinksContext,
@@ -101,25 +101,13 @@ const CustomForm = ({
         ));
 
     useDebounceEffect(
-        async () => {
-            if (
-                completedIconCrop?.width &&
-                completedIconCrop?.height &&
-                imgRef.current &&
-                previewCanvasRef.current
-            ) {
-                // We use canvasPreview as it's much faster than imgPreview.
-                await canvasPreview(
-                    imgRef.current,
-                    previewCanvasRef.current,
-                    completedIconCrop,
-                    scale,
-                    rotate,
-                )
-            }
-        },
-        100,
-        [completedIconCrop, scale, rotate],
+        null,
+        completedIconCrop,
+        null,
+        imgRef,
+        previewCanvasRef,
+        scale,
+        rotate
     )
 
     useEffect(() => {
@@ -137,15 +125,17 @@ const CustomForm = ({
         return () => URL.revokeObjectURL(objectUrl)
     }, [customIcon]);
 
-    const selectCustomIcon = e => {
-        let files = e.target.files[0];
+    const selectCustomIcon = async (e) => {
+        let files = e.target.files || e.dataTransfer.files;
         if (!files.length) {
             return;
         }
-        setCrop(undefined)
-        setIconSelected(true);
 
-        createImage(files, setUpImg);
+        await resizeFile(files[0]).then((image) => {
+            createImage(image, setUpImg);
+            setCrop(undefined)
+            setIconSelected(true);
+        })
     }
 
     const handleSubmit = (e) => {

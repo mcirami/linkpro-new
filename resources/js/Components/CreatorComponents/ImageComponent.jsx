@@ -13,7 +13,7 @@ import {
     createImage,
     useDebounceEffect,
     onImageLoad,
-    getFileToUpload,
+    getFileToUpload, resizeFile,
 } from '@/Services/ImageService.jsx';
 import {
     updateImage,
@@ -63,54 +63,44 @@ const ImageComponent = forwardRef(function ImageComponent(props, ref) {
     },[elementName])
 
     useDebounceEffect(
-        async () => {
-            if (
-                completedCrop[elementName]?.isCompleted.width &&
-                completedCrop[elementName]?.isCompleted.height &&
-                imgRef.current &&
-                previewCanvasRef?.current[elementName]
-            ) {
-                // We use canvasPreview as it's much faster than imgPreview.
-                await canvasPreview(
-                    imgRef.current,
-                    previewCanvasRef?.current[elementName],
-                    completedCrop[elementName]?.isCompleted,
-                    scale,
-                    rotate,
-                )
-            }
-        },
-        100,
-        [completedCrop[elementName]?.isCompleted, scale, rotate],
+        completedCrop,
+        null,
+        elementName,
+        imgRef,
+        previewCanvasRef,
+        scale,
+        rotate
     )
 
-    const onSelectFile = (e) => {
+    const onSelectFile = async (e) => {
         let files = e.target.files || e.dataTransfer.files;
         if (!files.length) {
             return;
         }
 
-        if (aspect) {
-            setCrop(undefined)
-        }
-        setDisableButton(false);
-        document.querySelector("." + CSS.escape(elementName) + "_form .bottom_section").classList.remove("hidden");
-        if (window.innerWidth < 993) {
-            document.querySelector("." + CSS.escape(elementName) + "_form").scrollIntoView({
-                behavior: "smooth",
+        await resizeFile(files[0]).then((image) => {
+
+            new Compressor(image, {
+                quality: 0.6,
+                success(result) {
+                    /*const formData = new FormData();
+                    formData.append('file', result, result.name);*/
+                    createImage(result, setUpImg);
+                }
             });
-        }
 
-        new Compressor(files[0], {
-            quality: 0.6,
-            success(result) {
-                /*const formData = new FormData();
-                formData.append('file', result, result.name);*/
-                createImage(result, setUpImg);
+            if (aspect) {
+                setCrop(undefined)
             }
-        });
 
-
+            setDisableButton(false);
+            document.querySelector("." + CSS.escape(elementName) + "_form .bottom_section").classList.remove("hidden");
+            if (window.innerWidth < 993) {
+                document.querySelector("." + CSS.escape(elementName) + "_form").scrollIntoView({
+                    behavior: "smooth",
+                });
+            }
+        })
     };
 
     const handleSubmit = (e) => {
