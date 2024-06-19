@@ -204,6 +204,12 @@
                 -moz-border-radius: 0;
             }
 
+            &.file {
+                @include query(smallMobile) {
+                    padding: 20px;
+                }
+            }
+
             &.text, &.image, &.file {
                 grid-column: 1 / -1;
             }
