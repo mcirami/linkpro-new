@@ -1,6 +1,11 @@
 import React from 'react';
 
-const MailchimpIntegration = ({connectionError, integrationType, editID}) => {
+const MailchimpIntegration = ({
+                                  connectionError,
+                                  integrationType,
+                                  editID,
+                                  pageID
+}) => {
 
     const handleMailchimpClick = (e) => {
         e.preventDefault();
@@ -13,6 +18,12 @@ const MailchimpIntegration = ({connectionError, integrationType, editID}) => {
         }
 
         localStorage.setItem('integrationType', integrationType);
+
+        //set cookie to grab page ID in controller
+        const date = new Date();
+        date.setTime(date.getTime() + (24*60*60*1000));
+        const expires = "; expires=" + date.toUTCString();
+        document.cookie = 'pageId=' + pageID + expires;
 
         window.location.href = url;
     }

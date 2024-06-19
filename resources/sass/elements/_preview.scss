@@ -515,9 +515,20 @@
             }
         }
 
-        .form form h3 {
-            font-size: .9rem;
+        form {
+            input {
+                height: 40px;
+            }
+            h3 {
+                font-size: .9rem;
+            }
+
+            button {
+                font-size: .9rem;
+            }
         }
+
+
     }
 
     .view_live_link {

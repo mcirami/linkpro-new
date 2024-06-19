@@ -5,7 +5,8 @@ const ShopifyIntegration = ({
                                 integrationType,
                                 editID,
                                 showAddStore,
-                                setShowAddStore
+                                setShowAddStore,
+                                pageID
 }) => {
 
     const [domain, setDomain] = useState(null);
@@ -23,6 +24,10 @@ const ShopifyIntegration = ({
             }
 
             localStorage.setItem('integrationType', integrationType);
+            const date = new Date();
+            date.setTime(date.getTime() + (24*60*60*1000));
+            const expires = "; expires=" + date.toUTCString();
+            document.cookie = 'pageId=' + pageID + expires;
 
             window.location.href = url;
         }

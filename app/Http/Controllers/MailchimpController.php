@@ -54,7 +54,12 @@ class MailchimpController extends Controller
                 'mailchimp_lists' => json_encode($listArray)
             ]);
 
-            return redirect()->route('dashboard', ['redirected' => "mailchimp"]);
+            $pageId = "";
+            if(isset($_COOKIE['pageId'])) {
+                $pageId = $_COOKIE['pageId'];
+            }
+
+            return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "mailchimp"]);
 
         } catch (\Throwable $th) {
 
@@ -66,7 +71,12 @@ class MailchimpController extends Controller
                                                 $th->getMessage()
             );
 
-            return redirect()->route('dashboard', ['redirected' => "mailchimp", "connection_error" => 'Something went wrong connecting to Mailchimp! Please try again.']);
+            $pageId = "";
+            if(isset($_COOKIE['pageId'])) {
+                $pageId = $_COOKIE['pageId'];
+            }
+
+            return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "mailchimp", "connection_error" => 'Something went wrong connecting to Mailchimp! Please try again.']);
         }
     }
 

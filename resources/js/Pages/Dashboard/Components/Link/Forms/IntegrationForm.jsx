@@ -434,6 +434,7 @@ const IntegrationForm = ({
                     connectionError={connectionError}
                     integrationType={integrationType}
                     editID={editID}
+                    pageID={pageSettings["id"]}
                 />
             }
             {( (integrationType === "shopify" && isEmpty(shopifyStores)) || showAddStore ) &&
@@ -443,6 +444,7 @@ const IntegrationForm = ({
                     editID={editID}
                     showAddStore={showAddStore}
                     setShowAddStore={setShowAddStore}
+                    pageID={pageSettings["id"]}
                 />
             }
             {   (integrationType === "mailchimp" && !isEmpty(lists)) ||
