@@ -17,7 +17,6 @@
         "laravel/tinker": "^2.8",
         "laravel/vapor-cli": "^1.59",
         "laravel/vapor-core": "^2.33",
-        "laravel/vapor-ui": "^1.7",
         "league/flysystem-aws-s3-v3": "^3.16",
         "mailchimp/marketing": "^3.0",
         "shopify/shopify-api": "^v5.0.0",

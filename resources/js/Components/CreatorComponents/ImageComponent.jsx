@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import Compressor from 'compressorjs';
 import {MdEdit} from 'react-icons/md';
-import ReactCrop, {centerCrop, makeAspectCrop} from 'react-image-crop';
+import ReactCrop from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
 import {
     canvasPreview,
