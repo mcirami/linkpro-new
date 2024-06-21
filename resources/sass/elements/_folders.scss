@@ -49,6 +49,10 @@
         max-height: 1000px;
         z-index: unset;
         animation: opacity 50ms forwards;
+
+        &.shop {
+            max-height: unset;
+        }
     }
 
     @keyframes opacity {

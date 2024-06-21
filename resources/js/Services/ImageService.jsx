@@ -6,7 +6,7 @@ import Resizer from 'react-image-file-resizer';
 const socialArray = [
     "facebook",
     "instagram",
-    "twitter",
+    "x",
     "tiktok",
     "snapchat",
     "youtube",
@@ -97,8 +97,8 @@ export const createImage = (
 export const resizeFile = (file) => new Promise(resolve => {
     Resizer.imageFileResizer(
         file,
-        600,
-        400,
+        1500,
+        1300,
         "PNG",
         100,
         0,
@@ -106,8 +106,8 @@ export const resizeFile = (file) => new Promise(resolve => {
             resolve(uri);
         },
         "blob",
-        400,
-        200
+        1200,
+        1000
     )
 })
 

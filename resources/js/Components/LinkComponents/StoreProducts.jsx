@@ -10,7 +10,7 @@ const StoreProducts = ({
     return (
         <>
             {storeProducts &&
-                <div className={`my_row folder ${dataRow == row ? "open" : ""}`}>
+                <div className={`my_row folder shop ${dataRow == row ? "open" : ""}`}>
                     {dataRow == row &&
                         <div className="folder_content">
                             <div className="products_grid folder">

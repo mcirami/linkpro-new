@@ -55,8 +55,8 @@ class MailchimpController extends Controller
             ]);
 
             $pageId = "";
-            if(isset($_COOKIE['pageId'])) {
-                $pageId = $_COOKIE['pageId'];
+            if(isset($_COOKIE['lp_pageId'])) {
+                $pageId = $_COOKIE['lp_pageId'];
             }
 
             return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "mailchimp"]);
@@ -72,8 +72,8 @@ class MailchimpController extends Controller
             );
 
             $pageId = "";
-            if(isset($_COOKIE['pageId'])) {
-                $pageId = $_COOKIE['pageId'];
+            if(isset($_COOKIE['lp_pageId'])) {
+                $pageId = $_COOKIE['lp_pageId'];
             }
 
             return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "mailchimp", "connection_error" => 'Something went wrong connecting to Mailchimp! Please try again.']);

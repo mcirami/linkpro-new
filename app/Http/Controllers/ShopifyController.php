@@ -71,7 +71,12 @@ class ShopifyController extends Controller
             ];
             $shopifyStore = $this->createShopifyStore($dataObject);
 
-            return redirect()->route('dashboard', ['redirected' => "shopify", 'store' => $shopifyStore->id]);
+            $pageId = "";
+            if(isset($_COOKIE['lp_pageId'])) {
+                $pageId = $_COOKIE['lp_pageId'];
+            }
+
+            return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "shopify", 'store' => $shopifyStore->id]);
 
         } catch (\Throwable $th) {
 
@@ -82,8 +87,12 @@ class ShopifyController extends Controller
                                                 "-- Error Message -- " .
                                                 $th->getMessage()
             );
+            $pageId = "";
+            if(isset($_COOKIE['lp_pageId'])) {
+                $pageId = $_COOKIE['lp_pageId'];
+            }
 
-            return redirect()->route('dashboard', ['redirected' => "shopify", "connection_error" => 'Something went wrong connecting to Shopify! Please try again.']);
+            return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "shopify", "connection_error" => 'Something went wrong connecting to Shopify! Please try again.']);
         }
     }
 

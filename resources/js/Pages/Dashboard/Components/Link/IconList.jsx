@@ -20,7 +20,6 @@ const IconList = ({
                       editID,
                       customIconArray = null,
                       setCustomIconArray = null,
-                      redirectedType
 }) => {
 
     const { auth } = usePage().props;

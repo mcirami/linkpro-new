@@ -23,7 +23,7 @@ const MailchimpIntegration = ({
         const date = new Date();
         date.setTime(date.getTime() + (24*60*60*1000));
         const expires = "; expires=" + date.toUTCString();
-        document.cookie = 'pageId=' + pageID + expires;
+        document.cookie = 'lp_pageId=' + pageID + expires;
 
         window.location.href = url;
     }
