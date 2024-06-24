@@ -14,10 +14,10 @@ const MailchimpLists = ({
 
     const handleChange = (e) => {
 
-        setCurrentLink({
-            ...currentLink,
+        setCurrentLink((prev) => ({
+            ...prev,
             mailchimp_list_id: e.target.value,
-        })
+        }));
     }
 
     const handleClick = (e) => {
@@ -27,10 +27,10 @@ const MailchimpLists = ({
             (data) => {
                 if (data.success) {
                     setLists([]);
-                    setCurrentLink({
-                        ...currentLink,
+                    setCurrentLink((prev) => ({
+                        ...prev,
                         active_status: 0,
-                    })
+                    }))
                 }
             }
         )
@@ -43,8 +43,7 @@ const MailchimpLists = ({
                 name={name}
                 onChange={(e) => handleChange(e)}
                 required
-                value={currentLink.mailchimp_list_id ||
-                    undefined}
+                value={currentLink.mailchimp_list_id || undefined}
             >
                 <option>Select Your List</option>
                 {!isEmpty(lists) && lists?.map((list) => {
@@ -58,8 +57,7 @@ const MailchimpLists = ({
             </select>
             {!isEmpty(lists) &&
                 <div className="my_row remove_link">
-                    <a href="#" onClick={(e) => handleClick(
-                        e)}>
+                    <a href="#" onClick={(e) => handleClick(e)}>
                         Remove Connection
                     </a>
                 </div>

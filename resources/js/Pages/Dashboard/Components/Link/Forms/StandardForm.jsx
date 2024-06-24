@@ -106,13 +106,13 @@ const StandardForm = ({
 
             setCharactersLeft(11 - value.length);
 
-            setCurrentLink(() => ({
-                ...currentLink,
+            setCurrentLink((prev) => ({
+                ...prev,
                 name: value
             }))
         },[]);
 
-    const handleOnClick = e => {
+    const handleOnClick = () => {
 
         if (!subStatus) {
             setShowUpgradePopup({
@@ -348,8 +348,8 @@ const StandardForm = ({
         setShowLinkForm(false);
         setInputType(null);
         setAccordionValue(null);
-        document.getElementById(
-            'left_col_wrap').style.minHeight = "unset";
+        setCurrentLink({});
+        document.getElementById('left_col_wrap').style.minHeight = "unset";
     }
 
     const handleSubmitTerms = (e) => {
@@ -439,7 +439,6 @@ const StandardForm = ({
                         <label>Icon Name</label>
                         {!subStatus &&
                             <span className="disabled_wrap"
-                                  data-type="name"
                                   onClick={(e) => handleOnClick(e)}>
                             </span>
                         }

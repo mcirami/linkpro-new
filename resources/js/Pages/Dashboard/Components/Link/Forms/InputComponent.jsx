@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {HandleBlur, HandleFocus} from '@/Utils/InputAnimations.jsx';
 
 const InputComponent = ({
@@ -33,8 +33,8 @@ const InputComponent = ({
         }
 
         setInputType(currentInputType)
-        setCurrentLink((link) => ({
-            ...link,
+        setCurrentLink((prev) => ({
+            ...prev,
             type:currentInputType
         }));
 
@@ -89,8 +89,6 @@ const InputComponent = ({
 
         let key2;
         let key3;
-        /*let key4;
-        let key5;*/
         let iconType;
 
         //based on what is being submitted, set the key for current link, all other keys need to be null.
@@ -99,20 +97,14 @@ const InputComponent = ({
         if (key === "phone") {
             key2 = "email"
             key3 = "url"
-            /*key4 = "mailchimp_list_id"
-            key5 = "shopify_products"*/
             iconType = "phone"
         } else if (key.includes("email")) {
             key2 = "phone"
             key3 = "url"
-            /*key4 = "mailchimp_list_id"
-            key5 = "shopify_products"*/
             iconType = "email"
         } else {
             key2 = "phone"
             key3 = "email"
-            /*key4 = "mailchimp_list_id"
-            key5 = "shopify_products"*/
             iconType = "url"
         }
 
@@ -121,8 +113,6 @@ const InputComponent = ({
             [`${key}`]: e.target?.value || e,
             [`${key2}`]: null,
             [`${key3}`]: null,
-            /*[`${key4}`]: null,
-            [`${key5}`]: null,*/
             type: iconType
         })
     }

@@ -324,4 +324,20 @@ export const getColWidth = (type) => {
     return colWidth;
 }
 
+export const setStorage = (editID, integrationType, pageID) => {
+
+    if (editID) {
+        localStorage.setItem('editID', editID);
+    } else {
+        localStorage.setItem('showLinkForm', true);
+    }
+
+    localStorage.setItem('integrationType', integrationType);
+
+    const date = new Date();
+    date.setTime(date.getTime() + (24*60*60*1000));
+    const expires = "; expires=" + date.toUTCString();
+    document.cookie = 'lp_page_id=' + pageID + expires + ";path=/";
+}
+
 export default addLink;

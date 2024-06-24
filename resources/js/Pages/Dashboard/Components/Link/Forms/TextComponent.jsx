@@ -35,8 +35,8 @@ const TextComponent = ({
 
     const handleEditorChange = (value) => {
 
-        setCurrentLink(() => ({
-            ...currentLink,
+        setCurrentLink((prev) => ({
+            ...prev,
             description: value
         }))
     }

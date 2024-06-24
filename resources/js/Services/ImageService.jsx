@@ -97,8 +97,8 @@ export const createImage = (
 export const resizeFile = (file) => new Promise(resolve => {
     Resizer.imageFileResizer(
         file,
-        1500,
-        1300,
+        2500,
+        2300,
         "PNG",
         100,
         0,
@@ -106,8 +106,8 @@ export const resizeFile = (file) => new Promise(resolve => {
             resolve(uri);
         },
         "blob",
-        1200,
-        1000
+        1500,
+        1300
     )
 })
 

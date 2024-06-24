@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {setStorage} from '@/Services/LinksRequest.jsx';
 
 const ShopifyIntegration = ({
                                 connectionError,
@@ -13,24 +14,24 @@ const ShopifyIntegration = ({
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const url = "/auth/shopify?domain=" + domain;
 
         if (domain) {
 
-            if (editID) {
-                localStorage.setItem('editID', editID);
-            } else {
-                localStorage.setItem('showLinkForm', true);
-            }
+            const url = "/auth/shopify?domain=" + domain;
+            let myPromise = new Promise((resolve, reject) => {
+                setStorage(editID, integrationType, pageID);
+                resolve(url);
+                reject("Error");
+            })
 
-            localStorage.setItem('integrationType', integrationType);
-
-            const date = new Date();
-            date.setTime(date.getTime() + (24*60*60*1000));
-            const expires = "; expires=" + date.toUTCString();
-            document.cookie = 'lp_pageId=' + pageID + expires;
-
-            window.location.href = url;
+            myPromise.then(
+                function (value) {
+                    window.location.href = value
+                },
+                function(error) {
+                    console.error(error);
+                }
+            )
         }
     }
 

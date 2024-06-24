@@ -359,16 +359,8 @@ const IntegrationForm = ({
                         setAccordionValue(null);
                         setEditID(null)
                         setIntegrationType(null);
-                        setCurrentLink({
-                            icon: null,
-                            name: null,
-                            url: null,
-                            email: null,
-                            phone: null,
-                            mailchimp_list_id: null,
-                            shopify_products: null,
-                            type: null
-                        })
+                        setCurrentLink({})
+
                     }
                     setShowLoader({show: false, icon: null, progress: null});
                 })
@@ -415,6 +407,7 @@ const IntegrationForm = ({
         setCustomIcon(null)
         setIconSelected(false);
         setUpImg(null);
+        setCurrentLink({});
         document.getElementById('left_col_wrap').style.minHeight = "unset";
     }
 

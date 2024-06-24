@@ -22,7 +22,6 @@ class ShopifyController extends Controller
         $domain = $request->query('domain');
         $clientId = config('services.shopify.client_id');
         $clientSecret = config('services.shopify.client_secret');
-        $redirectUrl = config('services.shopify.redirect');
         $scopes = config('services.shopify.scopes');
         $additionalProviderConfig = ['subdomain' => $domain];
         $config = new Config($clientId, $clientSecret, "/auth/shopify/callback", $additionalProviderConfig);
@@ -72,8 +71,8 @@ class ShopifyController extends Controller
             $shopifyStore = $this->createShopifyStore($dataObject);
 
             $pageId = "";
-            if(isset($_COOKIE['lp_pageId'])) {
-                $pageId = $_COOKIE['lp_pageId'];
+            if(isset($_COOKIE['lp_page_id'])) {
+                $pageId = $_COOKIE['lp_page_id'];
             }
 
             return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "shopify", 'store' => $shopifyStore->id]);
@@ -88,8 +87,8 @@ class ShopifyController extends Controller
                                                 $th->getMessage()
             );
             $pageId = "";
-            if(isset($_COOKIE['lp_pageId'])) {
-                $pageId = $_COOKIE['lp_pageId'];
+            if(isset($_COOKIE['lp_page_id'])) {
+                $pageId = $_COOKIE['lp_page_id'];
             }
 
             return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "shopify", "connection_error" => 'Something went wrong connecting to Shopify! Please try again.']);

@@ -9,7 +9,6 @@ import IconList from '../IconList';
 import InputTypeRadio from './InputTypeRadio';
 import InputComponent from './InputComponent';
 import {
-    canvasPreview,
     useDebounceEffect,
     onImageLoad,
     createImage,
@@ -349,8 +348,11 @@ const CustomForm = ({
 
                         }
 
-                        setShowLinkForm(false);
                         setEditID(null);
+                        setShowLinkForm(false);
+                        setAccordionValue(null);
+                        setInputType(null);
+                        setCompletedIconCrop({});
                         setCurrentLink({})
                     }
                 })
@@ -597,6 +599,7 @@ const CustomForm = ({
         setAccordionValue(null);
         setInputType(null);
         setCompletedIconCrop({});
+        setCurrentLink({})
         document.getElementById('left_col_wrap').style.minHeight = "unset";
     }
 
@@ -605,8 +608,8 @@ const CustomForm = ({
 
         setCharactersLeft(11 - value.length);
 
-        setCurrentLink(() => ({
-            ...currentLink,
+        setCurrentLink((prev) => ({
+            ...prev,
             name: value
         }))
     },[]);

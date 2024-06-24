@@ -1,4 +1,5 @@
 import React from 'react';
+import {setStorage} from '@/Services/LinksRequest.jsx';
 
 const MailchimpIntegration = ({
                                   connectionError,
@@ -9,23 +10,22 @@ const MailchimpIntegration = ({
 
     const handleMailchimpClick = (e) => {
         e.preventDefault();
+
         const url = "/auth/mailchimp";
+        let myPromise = new Promise((resolve, reject) => {
+            setStorage(editID, integrationType, pageID);
+            resolve(url);
+            reject("Error");
+        })
 
-        if (editID) {
-            localStorage.setItem('editID', editID);
-        } else {
-            localStorage.setItem('showLinkForm', true);
-        }
-
-        localStorage.setItem('integrationType', integrationType);
-
-        //set cookie to grab page ID in controller
-        const date = new Date();
-        date.setTime(date.getTime() + (24*60*60*1000));
-        const expires = "; expires=" + date.toUTCString();
-        document.cookie = 'lp_pageId=' + pageID + expires;
-
-        window.location.href = url;
+        myPromise.then(
+            function (value) {
+                window.location.href = value
+            },
+            function(error) {
+                console.error(error);
+            }
+        )
     }
 
     return (

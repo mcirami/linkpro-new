@@ -287,9 +287,9 @@ export const icons = [
         "prefix" : "https://www.twitch.tv/"
     },
     {
-        "name" : "Twitter",
-        "required_in_url": "twitter",
-        "prefix" : "https://twitter.com/"
+        "name" : "X",
+        "required_in_url": "x",
+        "prefix" : "https://x.com/"
     },
     {
         "name" : "UberEats",
