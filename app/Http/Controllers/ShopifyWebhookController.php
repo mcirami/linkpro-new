@@ -6,12 +6,11 @@ use Illuminate\Http\Request;
 
 class ShopifyWebhookController extends Controller
 {
-    public function shopifyCustomerRequest(Request $request): void {
+    public function shopifyCustomerRequest(Request $request): \Illuminate\Http\JsonResponse {
         $data = $this->getShopifyWebhookInstance();
         if(hash_equals($data['hmac_header'], $data['computed_hmac'])) {
             // HMAC validation passed
-            http_response_code(200);
-            echo 'Webhook validated successfully.';
+            return response()->json([], 200);
 
             // Process your webhook payload here
             //$data = json_decode($request_body, true);
@@ -19,17 +18,15 @@ class ShopifyWebhookController extends Controller
 
         } else {
             // HMAC validation failed
-            http_response_code(403);
-            echo 'HMAC validation failed.';
+            return response()->json([], 401);
         }
     }
 
-    public function shopifyCustomerErasure(Request $request): void {
+    public function shopifyCustomerErasure(Request $request): \Illuminate\Http\JsonResponse {
         $data = $this->getShopifyWebhookInstance();
         if(hash_equals($data['hmac_header'], $data['computed_hmac'])) {
             // HMAC validation passed
-            http_response_code(200);
-            echo 'Webhook validated successfully.';
+            return response()->json([], 200);
 
             // Process your webhook payload here
             //$data = json_decode($request_body, true);
@@ -37,17 +34,15 @@ class ShopifyWebhookController extends Controller
 
         } else {
             // HMAC validation failed
-            http_response_code(403);
-            echo 'HMAC validation failed.';
+            return response()->json([], 401);
         }
     }
 
-    public function shopifyShopErasure(Request $request): void {
+    public function shopifyShopErasure(Request $request): \Illuminate\Http\JsonResponse {
         $data = $this->getShopifyWebhookInstance();
         if(hash_equals($data['hmac_header'], $data['computed_hmac'])) {
             // HMAC validation passed
-            http_response_code(200);
-            echo 'Webhook validated successfully.';
+            return response()->json([], 200);
 
             // Process your webhook payload here
             //$data = json_decode($request_body, true);
@@ -55,8 +50,7 @@ class ShopifyWebhookController extends Controller
 
         } else {
             // HMAC validation failed
-            http_response_code(403);
-            echo 'HMAC validation failed.';
+            return response()->json([], 401);
         }
     }
 
