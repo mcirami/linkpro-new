@@ -181,16 +181,4 @@ class WebhookController extends Controller
             exit();
         }
     }
-
-    public function shopifyCustomerRequest(Request $request): \Illuminate\Http\JsonResponse {
-        return response()->json([], 200);
-    }
-
-    public function shopifyCustomerErasure(Request $request): \Illuminate\Http\JsonResponse {
-        return response()->json([], 200);
-    }
-
-    public function shopifyShopErasure(Request $request): \Illuminate\Http\JsonResponse {
-        return response()->json([], 200);
-    }
 }
