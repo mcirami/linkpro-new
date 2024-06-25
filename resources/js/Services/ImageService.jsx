@@ -40,8 +40,8 @@ export async function canvasPreview(
     // at the expense of slightly slower render times and needing to
     // size the image back down if you want to download/upload and be
     // true to the images natural size.
-    const pixelRatio = window.devicePixelRatio
-    // const pixelRatio = 1
+    //const pixelRatio = window.devicePixelRatio
+    const pixelRatio = 2
 
     canvas.width = Math.floor(crop.width * scaleX * pixelRatio)
     canvas.height = Math.floor(crop.height * scaleY * pixelRatio)
@@ -98,7 +98,7 @@ export const resizeFile = (file) => new Promise(resolve => {
     Resizer.imageFileResizer(
         file,
         2500,
-        2300,
+        2000,
         "PNG",
         100,
         0,
@@ -106,8 +106,8 @@ export const resizeFile = (file) => new Promise(resolve => {
             resolve(uri);
         },
         "blob",
-        1500,
-        1300
+        1800,
+        1500
     )
 })
 

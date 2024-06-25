@@ -10,7 +10,6 @@ import ReactCrop from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
 import {headerImage} from '@/Services/PageRequests.jsx';
 import {
-    canvasPreview,
     useDebounceEffect,
     onImageLoad,
     createImage,

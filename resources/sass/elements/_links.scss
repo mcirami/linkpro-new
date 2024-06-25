@@ -775,7 +775,8 @@
         flex-wrap: nowrap;
         justify-content: space-between;
         -webkit-justify-content: space-between;
-        margin-bottom: 20px;
+        margin: 20px 0;
+        width: 100%;
 
         @include query(smallMobile) {
             flex-wrap: wrap;
