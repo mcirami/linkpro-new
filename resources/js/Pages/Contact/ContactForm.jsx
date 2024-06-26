@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-//import {SubmitContactForm} from '@/Services/ContactRequests.js';
+import React, {useEffect, useState} from 'react';
 import {BiMailSend} from 'react-icons/bi';
 import {useForm} from '@inertiajs/react';
 import TextInput from '@/Components/TextInput.jsx';
 import InputLabel from '@/Components/InputLabel.jsx';
 import InputError from '@/Components/InputError.jsx';
+import {useGoogleRecaptchaV3, checkRecaptcha} from '@/Utils/useGoogleRecaptchaV3.jsx';
 
 const ContactForm = () => {
 
@@ -15,10 +15,16 @@ const ContactForm = () => {
         message: '',
     });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const executeRecaptcha = useGoogleRecaptchaV3('6LdSIQIqAAAAAGFozc4ox2BuzOaVUrW6EqjDkvHT')
 
-        post(route('contact.send'))
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const token = await executeRecaptcha('register');
+        checkRecaptcha(token).then((response)=> {
+            if (response.valid) {
+                post(route('contact.send'))
+            }
+        })
     }
 
     return (
@@ -58,7 +64,6 @@ const ContactForm = () => {
                             name="email"
                             value={data.email}
                             className="block w-full animate"
-                            isFocused={true}
                             onChange={(e) => setData('email', e.target.value)}
                         />
                         <InputLabel htmlFor="email" value="E-mail Address" />

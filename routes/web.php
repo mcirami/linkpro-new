@@ -238,10 +238,6 @@ Route::post('/stripe-webhook', [WebhookController::class, 'receiveWebhookRespons
 Route::post('/stripe-products-webhook', [WebhookController::class, 'receiveProductWebhookResponse'])->name('stripe.products.webhook');
 Route::post('/paypal-webhook', [WebhookController::class, 'receivePaypalWebhookResponse'])->name('paypal.webhook');
 
-Route::post('/shopify/customer/request', [ShopifyWebhookController::class, 'shopifyCustomerRequest'])->name('shopify.customer.request');
-Route::post('/shopify/customer/erasure', [ShopifyWebhookController::class, 'shopifyCustomerErasure'])->name('shopify.customer.erasure');
-Route::post('/shopify/shop/erasure', [ShopifyWebhookController::class, 'shopifyShopErasure'])->name('shopify.shop.erasure');
-
 Route::get('/get-icons', [IconController::class, 'getIcons']);
 
 Route::get('/terms-and-conditions', function () {

@@ -8,58 +8,8 @@ use Illuminate\Support\Facades\Log;
 
 class ShopifyWebhookController extends Controller
 {
-    public function shopifyCustomerRequest(): void {
+    public function shopifyWebhook(): void {
         $data = $this->getShopifyWebhookInstance();
-        if(hash_equals($data['hmac_header'], $data['computed_hmac'])) {
-            // HMAC validation passed
-            http_response_code(200);
-            echo 'Webhook validated successfully.';
-
-            // Process your webhook payload here
-            //$data = json_decode($request_body, true);
-            // Your processing code...
-
-        } else {
-            // HMAC validation failed
-            http_response_code(401);
-            echo 'HMAC validation failed.';
-        }
-    }
-
-    public function shopifyCustomerErasure(): void {
-        $data = $this->getShopifyWebhookInstance();
-        if(hash_equals($data['hmac_header'], $data['computed_hmac'])) {
-            // HMAC validation passed
-            http_response_code(200);
-            echo 'Webhook validated successfully.';
-
-            // Process your webhook payload here
-            //$data = json_decode($request_body, true);
-            // Your processing code...
-
-        } else {
-            // HMAC validation failed
-            http_response_code(401);
-            echo 'HMAC validation failed.';
-        }
-    }
-
-    public function shopifyShopErasure(): void {
-        $data = $this->getShopifyWebhookInstance();
-        if (hash_equals($data['hmac_header'], $data['computed_hmac'])) {
-            // HMAC validation passed
-            http_response_code(200);
-            echo 'Webhook validated successfully.';
-
-            // Process your webhook payload here
-            //$data = json_decode($request_body, true);
-            // Your processing code...
-
-        } else {
-            // HMAC validation failed
-            http_response_code(401);
-            echo 'HMAC validation failed.';
-        }
     }
 
     private function getShopifyWebhookInstance(): array {
