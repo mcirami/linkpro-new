@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\ShopifyWebhookController;
+use App\Http\Controllers\UserVerificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -233,6 +233,8 @@ Route::post('/mailchimp/subscribe', [MailchimpController::class, 'subscribeToLis
 
 Route::get('/contact', [ContactMailController::class, 'index'])->name('contact');
 Route::post('/contact/send', [ContactMailController::class, 'contactSendMail'])->name('contact.send');
+
+Route::post('/check-recaptcha', [UserVerificationController::class, 'checkRecaptcha'])->name('check.recaptcha');
 
 Route::post('/stripe-webhook', [WebhookController::class, 'receiveWebhookResponse'])->name('stripe.webhook');
 Route::post('/stripe-products-webhook', [WebhookController::class, 'receiveProductWebhookResponse'])->name('stripe.products.webhook');

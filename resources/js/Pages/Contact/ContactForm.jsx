@@ -15,12 +15,13 @@ const ContactForm = () => {
         message: '',
     });
 
-    const executeRecaptcha = useGoogleRecaptchaV3('6LdSIQIqAAAAAGFozc4ox2BuzOaVUrW6EqjDkvHT')
+    const executeRecaptcha = useGoogleRecaptchaV3()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const token = await executeRecaptcha('register');
-        checkRecaptcha(token).then((response)=> {
+        const action = 'contact'
+        const token = await executeRecaptcha(action);
+        checkRecaptcha(token, action).then((response)=> {
             if (response.valid) {
                 post(route('contact.send'))
             }
@@ -43,8 +44,6 @@ const ContactForm = () => {
                 <p className="form_text mb-5 px-5">Got questions? Need Support? Want to inquire about business opportunities? Send us a message and we'll respond as soon as possible</p>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group relative p-0 mb-5">
-                        {/*<InputLabel htmlFor="email" value="Email" />*/}
-
                         <TextInput
                             id="name"
                             type="text"

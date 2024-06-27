@@ -3,22 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ContactMail;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\ContactRequest;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
-use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
+use App\Http\Traits\BillingTrait;
+use Inertia\Response;
 
 class ContactMailController extends Controller
 {
-    public function index() {
-
-        Javascript::put([]);
+    use BillingTrait;
+    public function index(): Response {
         return Inertia::render('Contact/Contact');
     }
 
-    public function contactSendMail(ContactRequest $request) {
+    /**
+     * @param ContactRequest $request
+     *
+     * @return RedirectResponse
+     */
+    public function contactSendMail(ContactRequest $request): RedirectResponse {
 
         $reason = $request->reason;
 

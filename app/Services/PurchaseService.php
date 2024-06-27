@@ -130,8 +130,4 @@ class PurchaseService {
 
         return $data;
     }
-
-    public function savePayPalPurchase() {
-
-    }
 }

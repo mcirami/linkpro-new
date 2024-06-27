@@ -19,7 +19,7 @@ class LinkService {
      *
      * @return array|mixed
      */
-    public function getAllLinks($page) {
+    public function getAllLinks($page): mixed {
 
 
         $allLinks = $page->links()->where('folder_id', null)
@@ -33,12 +33,6 @@ class LinkService {
             usort($allLinks, array($this, "sortArray" ));
         }
 
-        /*foreach($allLinks as $link) {
-            if($link->shopify_products) {
-
-            }
-        }*/
-
         return $allLinks;
     }
 
@@ -47,7 +41,7 @@ class LinkService {
      *
      * @return array
      */
-    public function addLink($request) {
+    public function addLink($request): array {
 
         $page = Page::findOrFail($request->page_id);
 
@@ -197,7 +191,7 @@ class LinkService {
      *
      * @return string
      */
-    public function updateLinkStatus($request, $link) {
+    public function updateLinkStatus($request, $link): string {
 
         $link->update($request->only(['active_status']));
         if ($request->active_status == true ) {
@@ -212,7 +206,7 @@ class LinkService {
     /**
      * @param $request
      */
-    public function updateLinksPositions($request) {
+    public function updateLinksPositions($request): void {
 
         if (array_key_exists("userLinks", $request) && !empty($request['userLinks']) ) {
             foreach ( $request["userLinks"] as $index => $link ) {
@@ -247,7 +241,7 @@ class LinkService {
     /**
      * @param $link
      */
-    public function deleteLink($link) {
+    public function deleteLink($link): void {
 
         if ($link->icon && $link->url) {
             $newLink = $link->replicate([
@@ -285,7 +279,7 @@ class LinkService {
      *
      * @return int
      */
-    public function sortArray($a, $b) {
+    public function sortArray($a, $b): int {
 
         return ($a["position"] > $b["position"] ? +1 : -1);
     }

@@ -1,8 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
+import axios from 'axios';
 
-export const useGoogleRecaptchaV3 = (siteKey) => {
+export const useGoogleRecaptchaV3 = () => {
 
     const [isRecaptchaReady, setIsRecaptchaReady] = useState(false);
+    const siteKey = '6LdSIQIqAAAAAGFozc4ox2BuzOaVUrW6EqjDkvHT';
 
     useEffect(() => {
         if(window.grecaptcha) {
@@ -26,25 +28,31 @@ export const useGoogleRecaptchaV3 = (siteKey) => {
     },[siteKey, isRecaptchaReady])
 };
 
-export const checkRecaptcha = async (token) => {
+export const checkRecaptcha = async (token, action) => {
 
-    try {
-        let success = true;
-        const SECRET_KEY_V3 = '6LdSIQIqAAAAAL18SkTssKUTDoTu7Km3WrEqQ2ro'
-        const recaptchaResponse = await axios.post(
-            `https://www.google.com/recaptcha/api/siteverify?secret=${SECRET_KEY_V3}&response=${token}`);
-        console.log("captcha response: ", recaptchaResponse.data)
-        if (!recaptchaResponse.data.success || recaptchaResponse.data.score <
-            0.5 || recaptchaResponse.data.action !== 'register') {
-            success = false
+    const packets = {
+        token: token,
+        action: action
+    }
+    return axios.post('/check-recaptcha', packets).then(
+        (response) => {
+            const valid = response.data.valid;
+
+            return {
+                valid : valid,
+            }
+        }
+
+    ).catch(error => {
+        if (error.response) {
+            console.error(error.response);
+        } else {
+            console.error("ERROR:: ", error);
         }
 
         return {
-            valid: success
+            valid : false,
         }
-
-    } catch (e) {
-        console.error("Error calling function: ", error);
-    }
+    });
 }
 

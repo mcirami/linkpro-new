@@ -6,6 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import Checkbox from '@/Components/Checkbox.jsx';
+import {useGoogleRecaptchaV3, checkRecaptcha} from '@/Utils/useGoogleRecaptchaV3.jsx';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -21,10 +22,17 @@ export default function Register() {
         };
     }, []);
 
-    const submit = (e) => {
-        e.preventDefault();
+    const executeRecaptcha = useGoogleRecaptchaV3()
 
-        post(route('register'));
+    const submit = async (e) => {
+        e.preventDefault();
+        const action = 'register'
+        const token = await executeRecaptcha(action);
+        checkRecaptcha(token, action).then((response)=> {
+            if (response.valid) {
+                post(route('register'));
+            }
+        })
     };
 
     return (
