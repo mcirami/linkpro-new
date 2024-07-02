@@ -30,7 +30,14 @@ class CourseRegisterService {
      */
     public function verify($request) : array {
 
-        $validator = Validator::make($request->all(),[
+        $validateData = [
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => $request->password,
+            'password_confirmation' => $request->password_confirmation
+        ];
+
+        $validator = Validator::make($validateData,[
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],

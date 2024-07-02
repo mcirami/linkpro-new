@@ -9,12 +9,15 @@ use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use App\Http\Traits\BillingTrait;
 use Inertia\Response;
+use Spatie\Honeypot\Honeypot;
 
 class ContactMailController extends Controller
 {
     use BillingTrait;
-    public function index(): Response {
-        return Inertia::render('Contact/Contact');
+    public function index(Honeypot $honeypot): Response {
+        return Inertia::render('Contact/Contact', [
+            'honeypot' => $honeypot,
+        ]);
     }
 
     /**
@@ -24,7 +27,7 @@ class ContactMailController extends Controller
      */
     public function contactSendMail(ContactRequest $request): RedirectResponse {
 
-        $reason = $request->reason;
+        $reason = $request->get('reason');
 
         if ($reason == "general" || $reason == "support") {
             $email = 'matteo@link.pro';//'support@link.pro';

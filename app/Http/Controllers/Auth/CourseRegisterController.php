@@ -5,17 +5,14 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\User;
-//use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Notifications\WelcomeCourseNotification;
 use App\Services\CourseRegisterService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Honeypot\Honeypot;
 
 class CourseRegisterController extends Controller
 {
@@ -34,14 +31,20 @@ class CourseRegisterController extends Controller
      * @param Request $request
      * @param User $user
      * @param Course $course
+     * @param Honeypot $honeypot
      *
      * @return Response
      */
-    public function show(Request $request, User $user, Course $course): Response {
+    public function show(Request $request, User $user, Course $course, Honeypot $honeypot): Response {
 
         $clickInfo = $request->all();
 
-        return Inertia::render( 'Register/CourseRegister' )->with( [ 'course' => $course, 'clickInfo' => $clickInfo, 'creator' => $user->username] );
+        return Inertia::render( 'Register/CourseRegister' )->with( [
+            'course'    => $course,
+            'clickInfo' => $clickInfo,
+            'creator'   => $user->username,
+            'honeypot'  => $honeypot,
+        ]);
     }
 
 
@@ -49,9 +52,9 @@ class CourseRegisterController extends Controller
      * @param Request $request
      * @param CourseRegisterService $courseRegisterService
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse
      */
-    public function store(Request $request, CourseRegisterService $courseRegisterService): \Symfony\Component\HttpFoundation\Response {
+    public function store(Request $request, CourseRegisterService $courseRegisterService): JsonResponse {
 
         $response = $courseRegisterService->verify($request);
 
@@ -78,13 +81,12 @@ class CourseRegisterController extends Controller
                 'success'   => $response['success'],
                 'url'       => $checkoutUrl
             ] );
-            //return Inertia::location( $checkoutUrl );
-        } else {
-            return response()->json( [
-                'success' => $response['success'],
-                'errors'  => $response['errors']
-            ] );
         }
+
+        return response()->json( [
+            'success' => $response['success'],
+            'errors'  => $response['errors']
+        ] );
     }
 
 }

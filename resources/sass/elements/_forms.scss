@@ -848,322 +848,6 @@ form .bottom_row a {
     }
 }
 
-
-.form_page.checkout {
-
-    .page_title {
-        margin-bottom :0;
-    }
-
-    .pricing {
-        margin: 0;
-    }
-
-    .zoid-outlet {
-        width: 100% !important;
-    }
-
-    .my_row.three_columns .column {
-        width: 100%;
-    }
-
-    .payment_form_wrap {
-        position: relative;
-        padding-left: 40px;
-
-        @include query(tablet){
-            padding: 0;
-        }
-    }
-    .discount_wrap {
-        margin-bottom: 20px;
-        max-height: 0;
-        transition: .5s all linear;
-        -webkit-transition: .5s all linear;
-        -moz-transition: .5s all linear;
-        -o-transition: .5s all linear;
-
-        a {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-orient: horizontal;
-            -webkit-box-direction: normal;
-            -ms-flex-direction: row;
-            flex-direction: row;
-            -ms-flex-wrap: nowrap;
-            flex-wrap: nowrap;
-            justify-content: center;
-            -webkit-justify-content: center;
-            align-items: center;
-            -webkit-align-items: center;
-            height: 0;
-            padding: 0;
-            width: 20%;
-            float: left;
-            transition: .5s all linear;
-            -webkit-transition: .5s all linear;
-            -moz-transition: .5s all linear;
-            -o-transition: .5s all linear;
-        }
-
-        input {
-            width: 79%;
-            float: left;
-            margin-right: 1%;
-            padding: 0;
-            border: none;
-            transition: .5s all linear;
-            -webkit-transition: .5s all linear;
-            -moz-transition: .5s all linear;
-            -o-transition: .5s all linear;
-            height: 0;
-        }
-
-        &.open {
-            max-height: 1000px;
-            margin-bottom: 20px;
-
-            a {
-                height: 40px;
-            }
-
-            input {
-                height: 40px;
-                padding: 10px;
-                border: 1px solid $borderGray;
-            }
-        }
-
-        #promo_response {
-
-            p {
-                padding-top: 5px;
-                margin-bottom: 0;
-
-                &.success {
-                    @include osbold;
-                    color: $blue;
-                }
-
-                &.error {
-                    @include osbold;
-                    color: $red;
-                }
-
-                span {
-                    @include osbold;
-                }
-            }
-        }
-    }
-
-    .credit_card_form {
-        @media all and (max-width: 768px) {
-            padding: 0;
-        }
-    }
-
-    .card-body {
-        /*overflow: hidden;
-        min-height: 42vh;*/
-        position: relative;
-        padding: 0;
-    }
-
-    #course_register {
-        transition: .5s all ease-in-out;
-        -webkit-transition: .5s all ease-in-out;
-        -moz-transition: .5s all ease-in-out;
-        -o-transition: .5s all ease-in-out;
-        left: 0;
-        position: relative;
-
-        &.offscreen {
-            left: -150%;
-            opacity: 0;
-            position: absolute;
-        }
-    }
-
-    /*#payment-form {
-        margin-top: 0;
-        transition: .5s all ease-in-out;
-        -webkit-transition: .5s all ease-in-out;
-        -moz-transition: .5s all ease-in-out;
-        -o-transition: .5s all ease-in-out;
-
-        @media all and (max-width: 992px) {
-            margin-bottom: 40px;
-        }
-
-        a:not(.button) {
-            color: $blue;
-        }
-
-        .braintree-sheet__content--form .braintree-form__field-group label, svg {
-            width: 100%;
-        }
-
-        &.offscreen {
-            right: -150%;
-            opacity: 0;
-            position: absolute;
-
-            &.active {
-                right: 0;
-                opacity: 1;
-                position: relative;
-            }
-        }
-    }*/
-
-    h3 {
-        margin-bottom: 40px;
-
-        @media all and (max-width: 768px) {
-            margin-bottom: 20px;
-        }
-    }
-    .card {
-        max-width: 800px;
-
-        &.guest {
-            max-width: 1200px;
-        }
-    }
-
-
-
-    ul {
-        list-style: none;
-        padding-left: 0;
-
-        img {
-            width: 20px;
-            margin-right: 5px;
-        }
-
-        p {
-            @include ossemibold;
-            font-size: 18px;
-        }
-    }
-
-    .plan_details {
-        padding-right: 40px;
-        border-right: 1px solid $gray;
-
-        @include query(tablet) {
-            padding: 0;
-            border: none;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-        }
-
-        .column {
-            @include query(tablet) {
-                max-width: unset !important;
-            }
-        }
-    }
-
-    /*.braintree-options-list {
-        padding-bottom: 0;
-    }
-
-    .braintree-option {
-        background: $white;
-        border: 1px solid $borderGray;
-        margin-bottom: 22px;
-        border-radius: 6px;
-        -webkit-border-radius: 6px;
-        -moz-border-radius: 6px;
-    }
-
-    .braintree-upper-container:before {
-        background-color: transparent;
-    }
-
-    .braintree-sheet {
-        @include boxShadow;
-        border: none;
-    }*/
-
-    &.course_purchase {
-
-        .card {
-            padding: 0;
-
-            h4 {
-                color: $black;
-                margin-bottom: 15px;
-            }
-
-            .button {
-                width: 150px;
-                float: right;
-            }
-        }
-
-        form {
-            padding: 20px;
-
-            &#payment-form {
-                @include query(tablet) {
-                    margin-bottom: 0;
-                }
-            }
-        }
-
-        .course_banner {
-            padding: 10px;
-            border-top-right-radius: 20px;
-            -webkit-border-top-right-radius: 20px;
-            -moz-border-radius-topright: 20px;
-            border-top-left-radius: 20px;
-            -webkit-border-top-left-radius: 20px;
-            -moz-border-radius-topleft: 20px;
-
-            .image_wrap {
-                max-width: 250px;
-
-                @include query(mobile) {
-                    max-width: 175px;
-                }
-            }
-        }
-
-        .column_wrap {
-            min-height: 300px;
-
-            section {
-                padding: 20px;
-            }
-
-            section#account_register {
-                border-right: 1px solid $borderGray;
-
-                @include query(mobile) {
-                    border-right: none;
-                    border-bottom: 1px solid $borderGray;
-                }
-            }
-        }
-
-        .invalid-feedback {
-            color: $red;
-            font-size: 12px;
-
-            &.active {
-                display: block;
-            }
-        }
-    }
-}
-
 .form_page.course_register {
     a:not(.button) {
         color: $blue;
@@ -1171,6 +855,63 @@ form .bottom_row a {
 
     h3 {
         font-size: 1.4em;
+    }
+
+    .card {
+        padding: 0;
+    }
+
+    .course_banner {
+        padding: 10px;
+        border-top-right-radius: 20px;
+        -webkit-border-top-right-radius: 20px;
+        -moz-border-radius-topright: 20px;
+        border-top-left-radius: 20px;
+        -webkit-border-top-left-radius: 20px;
+        -moz-border-radius-topleft: 20px;
+
+        .image_wrap {
+            max-width: 250px;
+
+            @include query(mobile) {
+                max-width: 175px;
+            }
+        }
+    }
+
+    form {
+        padding: 20px;
+    }
+
+    .warning_message {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+        justify-content: center;
+        -webkit-justify-content: center;
+        min-height: 200px;
+        margin-top: 20px;
+        padding: 20px 20px 40px;
+
+        .icon_wrap {
+
+            svg {
+                width: 5em;
+                height: 5em;
+                margin: 0 auto 20px;
+
+            }
+
+            &.red {
+                color: $red;
+            }
+        }
     }
 }
 
@@ -1401,7 +1142,7 @@ form .bottom_row a {
         }
     }
 
-    .success_message {
+    .success_message, .warning_message {
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -1414,6 +1155,8 @@ form .bottom_row a {
         justify-content: center;
         -webkit-justify-content: center;
         min-height: 200px;
+        margin-top: 20px;
+        padding: 20px 20px 40px;
 
         h3 {
             margin: 10px 0 15px;
@@ -1425,11 +1168,22 @@ form .bottom_row a {
         }
     }
 
-    svg {
-        width: 5em;
-        height: 5em;
-        margin: 0 auto;
-        color: $blue;
+    .icon_wrap {
+
+        svg {
+            width: 5em;
+            height: 5em;
+            margin: 0 auto 20px;
+
+        }
+
+        &.blue {
+            color: $blue;
+        }
+
+        &.red {
+            color: $red;
+        }
     }
 }
 

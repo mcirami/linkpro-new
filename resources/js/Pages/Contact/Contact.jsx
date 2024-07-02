@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ContactLayout from '@/Pages/Contact/ContactLayout.jsx';
 import {Head} from '@inertiajs/react';
 import {isEmpty} from 'lodash';
-function Contact({auth}) {
+function Contact({auth, honeypot = null, spamDetected = false}) {
 
     return (
         <>
@@ -11,14 +11,20 @@ function Contact({auth}) {
 
                 <GuestLayout>
                     <Head title="Contact Us" />
-                    <ContactLayout />
+                    <ContactLayout
+                        honeypot={honeypot}
+                        spamDetected={spamDetected}
+                    />
                 </GuestLayout>
 
                 :
 
                 <AuthenticatedLayout>
                     <Head title="Contact Us" />
-                    <ContactLayout />
+                    <ContactLayout
+                        honeypot={honeypot}
+                        spamDetected={spamDetected}
+                    />
                 </AuthenticatedLayout>
 
             }

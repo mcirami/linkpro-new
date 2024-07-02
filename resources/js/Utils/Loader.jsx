@@ -3,7 +3,10 @@ import React from 'react';
 export const Loader = ({showLoader}) => {
 
     return (
-        <div className="loader_popup" style={{ position:`${showLoader.position}`}}>
+        <div className="loader_popup" style={{
+            position: `${showLoader.position}`,
+            borderRadius: 8 + 'px'
+        }}>
             <div className="loader_wrap">
                 {showLoader.icon === "upload" ?
                     <>

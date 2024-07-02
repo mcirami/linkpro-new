@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,6 +30,8 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\UserVerificationController;
+use Spatie\Honeypot\ProtectAgainstSpam;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -227,12 +230,16 @@ Route::post('/reset-password-submit', [NewPasswordController::class, 'store'])->
 
 Route::get('/{user:username}/{landing_page:slug}', [LandingPageController::class, 'show'])->name('live.landing.page');
 Route::get('/{user:username}/course/{course:slug}/register', [CourseRegisterController::class, 'show'])->name('course.register.show');
-Route::post('/course-register', [CourseRegisterController::class, 'store'])->name('course.register.store');
 
 Route::post('/mailchimp/subscribe', [MailchimpController::class, 'subscribeToList'])->name('mailchimp.subscribe');
 
 Route::get('/contact', [ContactMailController::class, 'index'])->name('contact');
-Route::post('/contact/send', [ContactMailController::class, 'contactSendMail'])->name('contact.send');
+
+Route::group(['middleware' => [ProtectAgainstSpam::class]], function() {
+    Route::post('/contact/send', [ContactMailController::class, 'contactSendMail'])->name('contact.send');
+    Route::post('/course-register', [CourseRegisterController::class, 'store'])->name('course.register.store');
+    Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.user.store');
+});
 
 Route::post('/check-recaptcha', [UserVerificationController::class, 'checkRecaptcha'])->name('check.recaptcha');
 

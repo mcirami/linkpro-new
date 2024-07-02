@@ -15,6 +15,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\Cookie;
 use App\Http\Traits\PageTrait;
+use Spatie\Honeypot\Honeypot;
 
 
 class RegisteredUserController extends Controller
@@ -25,9 +26,11 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): Response
+    public function create(Honeypot $honeypot): Response
     {
-        return Inertia::render('Auth/Register');
+        return Inertia::render('Auth/Register', [
+            'honeypot' => $honeypot,
+        ]);
     }
 
     /**

@@ -256,19 +256,26 @@ export const registerUser = (packets) => {
 
     return axios.post('/course-register', packets).then(
         (response) => {
-            const url = response.data.url;
-            const errors = response.data.errors;
 
-            return {
-                success : true,
-                url: url
+            if(!response.data.success && response.data.spamDetected) {
+                return {
+                    success : response.data.success,
+                    spamDetected: response.data.spamDetected
+                }
+            } else {
+                const url = response.data.url;
+                const errors = response.data.errors;
+                return {
+                    success : response.data.success,
+                    url: url
+                }
             }
-
         },
 
     ).catch(error => {
         if (error.response) {
-            console.error(error.response);
+            console.error("ERROR-RESPONSE-data:: ", error.response.data);
+            console.error("ERROR:: ", error);
         } else {
             console.error("ERROR:: ", error);
         }

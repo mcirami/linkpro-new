@@ -77,7 +77,7 @@ class PageController extends Controller
      *
      * @return JsonResponse
      */
-    public function store(PageNameRequest $request, PageService $pageService): \Illuminate\Http\JsonResponse {
+    public function store(PageNameRequest $request, PageService $pageService): JsonResponse {
 
         $page = $pageService->createNewPage($request);
 
