@@ -13,6 +13,7 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
+        'admin_permission'             => 'browse_admin',
         'default_avatar'               => 'https://lp-production-images.s3.us-east-2.amazonaws.com/settings/December2021/cool-skull.jpg',
         'redirect'                     => '/admin',
     ],
