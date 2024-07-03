@@ -20,6 +20,7 @@
         "laravel/vapor-core": "^2.33",
         "league/flysystem-aws-s3-v3": "^3.16",
         "mailchimp/marketing": "^3.0",
+        "mchev/banhammer": "^2.3",
         "shopify/shopify-api": "^v5.0.0",
         "signifly/laravel-shopify": "^1.2",
         "socialiteproviders/mailchimp": "^4.1",

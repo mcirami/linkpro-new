@@ -14,10 +14,11 @@ use App\Models\Page as Page;
 use App\Models\Referral as Referral;
 use Spatie\Permission\Traits\HasRoles;
 use TCG\Voyager\Models\User as VoyagerUser;
+use Mchev\Banhammer\Traits\Bannable;
 
 class User extends \TCG\Voyager\Models\User
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, Bannable;
 
     /**
      * The attributes that are not mass assignable.
