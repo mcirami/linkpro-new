@@ -3,7 +3,7 @@ import { useTable, useSortBy } from 'react-table';
 import {FaSort, FaSortDown, FaSortUp} from 'react-icons/fa';
 import {isEmpty} from 'lodash';
 
-const Table = ({
+export const Table = ({
                    isLoading,
                    animate,
                    data,

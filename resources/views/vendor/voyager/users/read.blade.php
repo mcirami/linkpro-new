@@ -1,11 +1,11 @@
 @extends('voyager::master')
-
+@viteReactRefresh
+@vite('resources/js/Admin/admin.jsx')
 @section('page_title', __('voyager::generic.view').' '.$dataType->getTranslatedAttribute('display_name_singular'))
 
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ __('voyager::generic.viewing') }} {{ ucfirst($dataType->getTranslatedAttribute('display_name_singular')) }} &nbsp;
-
         @can('edit', $dataTypeContent)
             <a href="{{ route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->getKey()) }}" class="btn btn-info">
                 <i class="glyphicon glyphicon-pencil"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.edit') }}</span>
@@ -27,6 +27,7 @@
                 <i class="glyphicon glyphicon-list"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.return_to_list') }}</span>
             </a>
         @endcan
+
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop

@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
@@ -90,7 +91,7 @@ class UserController extends Controller
     /**
      * @return JsonResponse
      */
-    public function getAllUserPages(): \Illuminate\Http\JsonResponse {
+    public function getAllUserPages(): JsonResponse {
         $user = Auth::user();
 
         $pages = $this->getUserPages($user);
@@ -152,5 +153,21 @@ class UserController extends Controller
         ]);
 
         return Inertia::render('Onboarding/Success');
+    }
+
+    public function banUser(Request $request, User $user) {
+        $user->ban();
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
+    public function unBanUser(Request $request, User $user) {
+        $user->unban();
+
+        return response()->json([
+            'success' => true,
+        ]);
     }
 }

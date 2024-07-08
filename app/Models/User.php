@@ -12,6 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Link as Link;
 use App\Models\Page as Page;
 use App\Models\Referral as Referral;
+use Mchev\Banhammer\Models\Ban;
 use Spatie\Permission\Traits\HasRoles;
 use TCG\Voyager\Models\User as VoyagerUser;
 use Mchev\Banhammer\Traits\Bannable;
@@ -112,6 +113,10 @@ class User extends \TCG\Voyager\Models\User
 
     public function Affiliates() {
         return $this->hasOne(Affiliate::class);
+    }
+
+    public function Banned() {
+        return $this->hasOne(Ban::class);
     }
 
     /** Other Functions **/

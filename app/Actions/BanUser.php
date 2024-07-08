@@ -1,0 +1,55 @@
+<?php
+
+namespace App\Actions;
+use App\Models\User;
+use TCG\Voyager\Actions\AbstractAction;
+
+class BanUser extends AbstractAction {
+
+    private $isBanned = false;
+
+    public function __construct( $dataType, $data ) {
+        parent::__construct( $dataType, $data );
+        $this->isBanned = User::where('id', $this->data->{$this->data->getKeyName()})->banned()->first();
+    }
+
+    public function getTitle() {
+        $text = "Ban User";
+        if($this->isBanned) {
+            $text = 'Unban User';
+        }
+
+        return $text;
+    }
+
+    public function getIcon() {
+        return 'voyager-skull';
+    }
+
+    public function getPolicy() {
+        return 'edit';
+    }
+
+    public function getAttributes() {
+
+        $classes = 'btn btn-sm btn-danger pull-right ban_user';
+        if($this->isBanned) {
+            $classes = 'btn btn-sm btn-dark pull-right un_ban_user';
+        }
+
+        return [
+            'class' => $classes,
+            'data-id' => $this->data->{$this->data->getKeyName()},
+            'id'      => 'ban-'.$this->data->{$this->data->getKeyName()},
+        ];
+    }
+
+    public function getDefaultRoute() {
+        return 'javascript:;';
+    }
+
+    public function shouldActionDisplayOnDataType()
+    {
+        return $this->dataType->slug == 'users';
+    }
+}

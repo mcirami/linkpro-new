@@ -127,6 +127,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/affiliate-stats', [AdminStatsController::class, 'show'])->name('adminAffStats');
     Route::post('/stats/get/offer', [AdminStatsController::class, 'getOfferStats']);
     Route::post('/stats/get/publisher', [AdminStatsController::class, 'getPublisherStats']);
+    Route::post('/ban-user/{user}', [UserController::class, 'banUser'])->name('ban.user');
+    Route::post('/unban-user/{user}', [UserController::class, 'unBanUser'])->name('unban.user');
+
     /*Route::post('/subscriptions', [App\Http\Controllers\VoyagerFilterController::class, 'index']);
     Route::post('/users', [App\Http\Controllers\VoyagerFilterController::class, 'index']);
     Route::post('/pages', [App\Http\Controllers\VoyagerFilterController::class, 'index']);
