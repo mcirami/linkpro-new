@@ -2,24 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Affiliate;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 
 class AffiliateController extends Controller
 {
-    public function show() {
-
-        Javascript::put([
-            'user_info' => Auth::user(),
-        ]);
-
-        return view('affiliate.show');
-    }
-
-    public function store() {
+    /**
+     * @return RedirectResponse
+     */
+    public function store(): RedirectResponse {
 
         $user = Auth::user();
 

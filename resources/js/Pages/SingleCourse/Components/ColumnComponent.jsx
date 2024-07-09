@@ -247,16 +247,6 @@ const ColumnComponent = ({
                     buttonUrl={buttonUrl}
                     userAuth={userAuth}
                 />
-                /*<section className={`my_row text_wrap text-center ${type}`}>
-                    <a className="button"
-                       download={file}
-                       target="_blank"
-                       href={file}
-                       style={{ color: button_text_color, background: button_color, width: button_size + "%" }}
-                    >
-                        {button_text || "Download File"}
-                    </a>
-                </section>*/
                 :
                 ""
             }

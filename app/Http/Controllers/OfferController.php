@@ -5,13 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Offer;
 use App\Models\User;
 use App\Services\OfferService;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 
 class OfferController extends Controller
 {
 
-    public function updateOfferIcon(Offer $offer, Request $request, OfferService $offerService) {
+    /**
+     * @param Offer $offer
+     * @param Request $request
+     * @param OfferService $offerService
+     *
+     * @return JsonResponse
+     */
+    public function updateOfferIcon(Offer $offer, Request $request, OfferService $offerService): \Illuminate\Http\JsonResponse {
         $userID = Auth::id();
 
         if ($offer->user_id != $userID) {
@@ -24,7 +35,14 @@ class OfferController extends Controller
 
     }
 
-    public function updateOfferData(Offer $offer, Request $request, OfferService $offerService) {
+    /**
+     * @param Offer $offer
+     * @param Request $request
+     * @param OfferService $offerService
+     *
+     * @return JsonResponse
+     */
+    public function updateOfferData(Offer $offer, Request $request, OfferService $offerService): JsonResponse {
 
         $userID = Auth::id();
 
@@ -38,7 +56,13 @@ class OfferController extends Controller
 
     }
 
-    public function publishOffer(Offer $offer,  OfferService $offerService) {
+    /**
+     * @param Offer $offer
+     * @param OfferService $offerService
+     *
+     * @return JsonResponse
+     */
+    public function publishOffer(Offer $offer,  OfferService $offerService): JsonResponse {
         $userID = Auth::id();
 
         if ($offer->user_id != $userID) {
@@ -64,7 +88,13 @@ class OfferController extends Controller
         }
     }
 
-    public function redirectToLandingPage(Offer $offer, User $user) {
+    /**
+     * @param Offer $offer
+     * @param User $user
+     *
+     * @return Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
+     */
+    public function redirectToLandingPage(Offer $offer, User $user): Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse {
         $creator = $offer->user()->pluck('username')->first();
         $slug = $offer->Course()->pluck('slug')->first();
         $url = config('app.url') . "/" . $creator . "/course-page/" . $slug . "?a=" . $user->id;

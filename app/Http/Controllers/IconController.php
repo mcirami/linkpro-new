@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Offer;
 use App\Services\IconService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -12,7 +13,10 @@ use Illuminate\Support\Facades\Storage;
 class IconController extends Controller
 {
 
-    public function getAffIcons() {
+    /**
+     * @return JsonResponse
+     */
+    public function getAffIcons(): \Illuminate\Http\JsonResponse {
 
         $iconData = DB::table('offers')
                       ->where('offers.public', '=', true)
@@ -47,7 +51,10 @@ class IconController extends Controller
         ]);
     }
 
-    public function getStandardIcons() {
+    /**
+     * @return JsonResponse
+     */
+    public function getStandardIcons(): JsonResponse {
 
         $standardIcons = [];
         $iconNames = Storage::disk('s3')->allFiles("icons/");
@@ -61,7 +68,10 @@ class IconController extends Controller
         ]);
     }
 
-    public function getCustomIcons() {
+    /**
+     * @return JsonResponse
+     */
+    public function getCustomIcons(): JsonResponse {
 
         $userID = Auth::id();
 

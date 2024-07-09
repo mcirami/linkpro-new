@@ -6,7 +6,14 @@ use Illuminate\Support\Facades\Cookie;
 
 class TrackingServices {
 
-    public function storeOfferClick($offer, $request, $user) {
+    /**
+     * @param $offer
+     * @param $request
+     * @param $user
+     *
+     * @return array
+     */
+    public function storeOfferClick($offer, $request, $user): array {
 
         $affRef    = $request->get('a') ? $request->get('a') : $user->id;
         $ip        = $request->ip();

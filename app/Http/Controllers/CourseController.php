@@ -191,6 +191,13 @@ class CourseController extends Controller
         return response()->json(['message' => $keys[0] . ' Updated', 'imagePath' => $imagePath]);
     }
 
+    /**
+     * @param Request $request
+     * @param CourseSection $courseSection
+     * @param CourseService $courseService
+     *
+     * @return JsonResponse
+     */
     public function updateSectionImage(Request $request, CourseSection $courseSection, CourseService $courseService): JsonResponse {
         $userID = Auth::id();
 
@@ -205,7 +212,14 @@ class CourseController extends Controller
         return response()->json(['message' => $keys[0] . ' Updated', 'imagePath' => $imagePath]);
     }
 
-    public function addSection(Request $request, Course $course, CourseService $service) {
+    /**
+     * @param Request $request
+     * @param Course $course
+     * @param CourseService $service
+     *
+     * @return JsonResponse
+     */
+    public function addSection(Request $request, Course $course, CourseService $service): JsonResponse {
         $userID = Auth::id();
 
         if ($course->user_id != $userID) {
@@ -236,6 +250,13 @@ class CourseController extends Controller
         return response()->json(['message' => $key .  " Updated"]);
     }
 
+    /**
+     * @param Request $request
+     * @param CourseSection $courseSection
+     * @param CourseService $courseService
+     *
+     * @return JsonResponse
+     */
     public function updateSectionFile(Request $request, CourseSection $courseSection, CourseService $courseService): JsonResponse {
         $userID = Auth::id();
 

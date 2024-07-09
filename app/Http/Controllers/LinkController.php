@@ -21,7 +21,7 @@ class LinkController extends Controller
      *
      * @return JsonResponse
      */
-    public function getPageLinks(Page $page, LinkService $linkService) {
+    public function getPageLinks(Page $page, LinkService $linkService): JsonResponse {
 
         $links = $linkService->getAllLinks($page);
 
@@ -51,9 +51,9 @@ class LinkController extends Controller
      * @param Link $link
      * @param LinkService $linkService
      *
-     * @return JsonResponse|never
+     * @return JsonResponse
      */
-    public function update(UpdateLinkRequest $request, Link $link, LinkService $linkService) {
+    public function update(UpdateLinkRequest $request, Link $link, LinkService $linkService): JsonResponse {
 
         if ($link->user_id != Auth::id()) {
             return abort(403);
@@ -74,9 +74,9 @@ class LinkController extends Controller
      * @param Link $link
      * @param LinkService $linkService
      *
-     * @return JsonResponse|never
+     * @return JsonResponse
      */
-    public function updateStatus(Request $request, Link $link, LinkService $linkService) {
+    public function updateStatus(Request $request, Link $link, LinkService $linkService): JsonResponse {
         if ($link->user_id != Auth::id()) {
             return abort(403);
         }
@@ -93,7 +93,7 @@ class LinkController extends Controller
      *
      * @return JsonResponse
      */
-    public function updatePositions(Request $request, LinkService $linkService) {
+    public function updatePositions(Request $request, LinkService $linkService): JsonResponse {
 
         $allRequest = $request->all();
 
@@ -107,9 +107,9 @@ class LinkController extends Controller
      * @param Link $link
      * @param LinkService $linkService
      *
-     * @return JsonResponse|never
+     * @return JsonResponse
      */
-    public function destroy(Request $request, Link $link, LinkService $linkService) {
+    public function destroy(Request $request, Link $link, LinkService $linkService): JsonResponse {
         if ($link->user_id != Auth::id()) {
             return abort(403);
         }
