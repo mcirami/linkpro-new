@@ -44,3 +44,4 @@ staging.Dockerfile
 .env.prod
 .env.production-new
 .env.newStaging
+database/maxmind/GeoLite2-City.mmdb
