@@ -23,9 +23,9 @@ class LogUserIpAddressLoginListener implements ShouldQueue
         $user = $event->user;
         $roles = $user->getRoleNames();;
         if (!$roles->contains('admin')) {
-            if ($position = Location::get()) {
+            if ($position = Location::get(request()->ip())) {
                 $userIpAddress = new UserIpAddress(
-                    ( new \App\Models\UserIpAddress )->parseData((array) $position)
+                    ( new UserIpAddress )->parseData((array) $position)
                 );
                 $userIpAddress->ip = $position->ip;
                 $userIpAddress->user_id = $user->id;
