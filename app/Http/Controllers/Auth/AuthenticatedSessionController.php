@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Course;
+use App\Models\UserIpAddress;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use Stevebauman\Location\Facades\Location;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -37,7 +40,18 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return auth()->user()->getRedirectRoute();
+        $user = auth()->user();
+       /* if ($user) {
+            if ($position = Location::get()) {
+                $userIpAddress = new UserIpAddress(
+                    UserIpAddress::parseData((array) $position)
+                );
+                $userIpAddress->ip = $position->ip;
+                $userIpAddress->user_id = $user->id;
+                $userIpAddress->save();
+            }
+        }*/
+        return $user->getRedirectRoute();
     }
 
     public function customLoginPost(LoginRequest $request): void {

@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
-use Carbon\Carbon;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -89,13 +90,11 @@ class CustomLoginController extends Controller
     /**
      * Validate the user login request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return void
      *
-     * @throws \Illuminate\Validation\ValidationException
      */
-    protected function validateLogin(Request $request)
-    {
+    protected function validateLogin(Request $request): void {
         $messages = [
             'identity.required' => 'Email or username cannot be empty',
             'email.exists' => 'Email or username already registered',
@@ -117,7 +116,7 @@ class CustomLoginController extends Controller
         return $page;
     }
 
-    protected function authenticated(Request $request, $user) {
+    protected function authenticated(Request $request, $user): Application|int|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse {
 
         $loginURL = url()->previous();
         $roles = $user->getRoleNames();

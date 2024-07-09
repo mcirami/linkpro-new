@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Actions\AbstractAction;
 
 class BanUser extends AbstractAction {
@@ -10,7 +11,17 @@ class BanUser extends AbstractAction {
 
     public function __construct( $dataType, $data ) {
         parent::__construct( $dataType, $data );
-        $this->isBanned = User::where('id', $this->data->{$this->data->getKeyName()})->banned()->first();
+        $user = User::where('id', $this->data->{$this->data->getKeyName()})->first();
+        $banned = $user->isBanned();
+        if($banned) {
+            $this->isBanned = true;
+        } else {
+            $userIP = $user->UserIpAddress()->latest()->pluck('ip')->first();
+            $ipBanned = DB::table('bans')->where('ip', $userIP)->where('bannable_type', NULL)->where('deleted_at', NULL)->first();
+            if($ipBanned) {
+                $this->isBanned = true;
+            }
+        }
     }
 
     public function getTitle() {

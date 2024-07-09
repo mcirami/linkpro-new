@@ -116,7 +116,11 @@ class User extends \TCG\Voyager\Models\User
     }
 
     public function Banned() {
-        return $this->hasOne(Ban::class);
+        return $this->hasMany(Ban::class);
+    }
+
+    public function UserIpAddress() {
+        return $this->hasMany(UserIpAddress::class);
     }
 
     /** Other Functions **/

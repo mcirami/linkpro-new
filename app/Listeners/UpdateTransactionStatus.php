@@ -18,7 +18,7 @@ class UpdateTransactionStatus implements ShouldQueue
      *
      * @var int
      */
-    public $delay = 600;
+    public int $delay = 600;
 
     /**
      * Create the event listener.
@@ -33,10 +33,11 @@ class UpdateTransactionStatus implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  \App\Events\PurchasedItem  $event
-     * @return void
+     * @param PurchasedItem $event
+     *
+     * @return Purchase
      */
-    public function handle(PurchasedItem $event)
+    public function handle(PurchasedItem $event) : Purchase
     {
         $transactionId = $event->purchase->transaction_id;
 

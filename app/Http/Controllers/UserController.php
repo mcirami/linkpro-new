@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
-use App\Models\Course;
-use App\Models\OfferClick;
-use App\Models\Purchase;
 use App\Services\StatsServices;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
@@ -21,6 +18,7 @@ use App\Http\Traits\UserTrait;
 use Inertia\Response;
 use App\Http\Traits\BillingTrait;
 use Stripe\Exception\ApiErrorException;
+use Mchev\Banhammer\IP;
 
 class UserController extends Controller
 {
@@ -156,7 +154,20 @@ class UserController extends Controller
     }
 
     public function banUser(Request $request, User $user) {
-        $user->ban();
+        $userLoginInfo = $user->UserIpAddress()->latest()->first();
+
+        if($userLoginInfo) {
+            $user->ban([
+                'ip'    => $userLoginInfo->ip,
+                'metas' => ['user_agent' => $request->header('user-agent')],
+            ]);
+            /*IP::ban(
+                $userLoginInfo->ip,
+                ['user_agent' => request()->header('user-agent')]
+            );*/
+        } else {
+            $user->ban();
+        }
 
         return response()->json([
             'success' => true,
@@ -164,7 +175,13 @@ class UserController extends Controller
     }
 
     public function unBanUser(Request $request, User $user) {
-        $user->unban();
+        $userLoginInfo = $user->UserIpAddress()->latest()->first();
+
+        if ($user->isBanned()){
+            $user->unban();
+        } else {
+            IP::unban($userLoginInfo->ip);
+        }
 
         return response()->json([
             'success' => true,

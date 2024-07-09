@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class SendPurchaseNotification
+class SendPurchaseNotification implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -23,7 +23,7 @@ class SendPurchaseNotification
 
     /**
      * Handle the event.
-     * @param  \App\Events\PurchasedItem  $event
+     * @param PurchasedItem $event
      *
      * @return void
      */

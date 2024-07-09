@@ -7,12 +7,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use App\Http\Traits\BillingTrait;
 use Stripe\Exception\ApiErrorException;
+use Stripe\StripeClient;
 
 class PurchaseService {
 
     use BillingTrait;
 
-    private $gateway;
+    private StripeClient $gateway;
 
     public function __construct() {
         $this->gateway = $this->createStripeGateway();

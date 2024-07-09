@@ -17,14 +17,15 @@ class PurchasedItem
 
     /**
      * The Purchase Instance
-     * @var \App\Models\Purchase
+     * @var Purchase
      */
-    public $purchase;
+    public Purchase $purchase;
 
     /**
      * Create a new event instance.
      *
-     * @param \App\Models\Purchase
+     * @param Purchase $purchase
+     *
      * @return void
      */
     public function __construct(Purchase $purchase)
@@ -35,10 +36,9 @@ class PurchasedItem
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return Channel|PrivateChannel
      */
-    public function broadcastOn()
-    {
+    public function broadcastOn(): Channel|PrivateChannel {
         return new PrivateChannel('channel-name');
     }
 }

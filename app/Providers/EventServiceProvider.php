@@ -3,8 +3,11 @@
 namespace App\Providers;
 
 use App\Events\PurchasedItem;
+use App\Listeners\LogUserIpAddressLoginListener;
+use App\Listeners\LogUserIpAddressRegisteredListener;
 use App\Listeners\SendPurchaseNotification;
 use App\Listeners\UpdateTransactionStatus;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -21,8 +24,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
+        Login::class => [
+            LogUserIpAddressLoginListener::class
+        ],
         Registered::class => [
             SendEmailVerificationNotification::class,
+            LogUserIpAddressRegisteredListener::class
         ],
         SocialiteWasCalled::class => [
             ShopifyExtendSocialite::class.'@handle',
