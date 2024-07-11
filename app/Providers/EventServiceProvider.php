@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\PurchasedItem;
+use App\Events\UserLoggedIn;
 use App\Listeners\LogUserIpAddressLoginListener;
 use App\Listeners\LogUserIpAddressRegisteredListener;
 use App\Listeners\SendPurchaseNotification;
@@ -11,7 +12,6 @@ use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 use SocialiteProviders\MailChimp\MailChimpExtendSocialite;
 use SocialiteProviders\Manager\SocialiteWasCalled;
 use SocialiteProviders\Shopify\ShopifyExtendSocialite;
@@ -24,7 +24,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        Login::class => [
+        UserLoggedIn::class => [
             LogUserIpAddressLoginListener::class
         ],
         Registered::class => [

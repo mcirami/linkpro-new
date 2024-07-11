@@ -2,12 +2,10 @@
 
 namespace App\Providers;
 
-use App\Listeners\LogUserIpAddressLoginListener;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use TCG\Voyager\Facades\Voyager;
-use Illuminate\Support\Facades\Event;
 
 class AppServiceProvider extends ServiceProvider
 {

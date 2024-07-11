@@ -42,6 +42,7 @@ class UserController extends Controller
      * @return Response
      */
     public function edit(): Response {
+
         $user = Auth::user();
         $hasOffers = $user->offers()->first();
         $isAffiliate = $user->Affiliates()->first();

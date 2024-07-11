@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserLoggedIn;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Course;
@@ -41,16 +42,9 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $user = auth()->user();
-       /* if ($user) {
-            if ($position = Location::get()) {
-                $userIpAddress = new UserIpAddress(
-                    UserIpAddress::parseData((array) $position)
-                );
-                $userIpAddress->ip = $position->ip;
-                $userIpAddress->user_id = $user->id;
-                $userIpAddress->save();
-            }
-        }*/
+
+        UserLoggedIn::dispatch(Location::get(), $user);
+
         return $user->getRedirectRoute();
     }
 
