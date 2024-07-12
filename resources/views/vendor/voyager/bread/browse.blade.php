@@ -345,6 +345,29 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    {{-- Ban user modal --}}
+    <div class="modal modal-danger fade" tabindex="-1" id="ban_user_modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><i class="voyager-skull"></i> Ban User Account or IP?</h4>
+                </div>
+                <div class="modal-body">
+                    <h3>Select Ban Type</h3>
+                    <select name="ban_type" id="ban_type">
+                        <option value="user">User</option>
+                        <option value="ip">IP</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button data-id="" id="ban_user_button" type="button" class="btn btn-danger pull-left" data-dismiss="modal">Ban</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @stop
 
 @section('css')

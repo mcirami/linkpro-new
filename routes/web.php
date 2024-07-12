@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Foundation\Application;
 
+
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
@@ -60,7 +61,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/edit-account', [UserController::class, 'edit'])->name('user.edit');
 
-    Route::get('/register/create-page', [PageController::class, 'showCreatePage'])->name('create.page');
+    Route::get('/register/create-page', [PageController::class, 'showCreatePage'])->middleware('auth.banned')->name('create.page');
     Route::get('/email-test', [MailController::class, 'sendEmail']);
 
     Route::put('/update-account', [UserController::class, 'updateAccountInfo'])->name('user.update.info');
@@ -141,7 +142,7 @@ Route::group(['prefix' => 'admin'], function () {
 
 Auth::routes();
 
-Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], function() {
+Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user', 'auth.banned']], function() {
 
     Route::group(['prefix' => 'dashboard'], function() {
         Route::get('/pages/{page}', [PageController::class, 'edit'])->name('pages.edit');

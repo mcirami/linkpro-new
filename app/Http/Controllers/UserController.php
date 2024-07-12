@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Purchase;
 use App\Services\StatsServices;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
@@ -158,14 +159,23 @@ class UserController extends Controller
         $userLoginInfo = $user->UserIpAddress()->latest()->first();
 
         if($userLoginInfo) {
-            $user->ban([
-                'ip'    => $userLoginInfo->ip,
-                'metas' => ['user_agent' => $request->header('user-agent')],
-            ]);
-            /*IP::ban(
-                $userLoginInfo->ip,
-                ['user_agent' => request()->header('user-agent')]
-            );*/
+            $banType = $request->get("banType");
+
+            if ($banType == "user") {
+                $user->ban([
+                    'ip'    => $userLoginInfo->ip,
+                    'metas' => ['user_agent' => $request->header('user-agent')],
+                ]);
+            }
+
+            if ($banType == "ip") {
+                IP::ban(
+                    $userLoginInfo->ip,
+                    ['user_agent' => request()->header('user-agent')]
+                );
+            }
+
+
         } else {
             $user->ban();
         }

@@ -30,4 +30,8 @@ class UserIpAddress extends Model
 
         return $payload;
     }
+
+    public function Users() {
+        return $this->hasMany(User::class);
+    }
 }
