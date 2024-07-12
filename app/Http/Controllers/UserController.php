@@ -45,6 +45,8 @@ class UserController extends Controller
     public function edit(): Response {
 
         $user = Auth::user();
+        $userLoginInfo = $user->UserIpAddress()->latest()->first();
+        dd($userLoginInfo);
         $hasOffers = $user->offers()->first();
         $isAffiliate = $user->Affiliates()->first();
         $payoutInfoSubmitted = $user->payout_info_submitted;
