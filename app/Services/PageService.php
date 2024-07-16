@@ -3,12 +3,10 @@
 
 namespace App\Services;
 use App\Models\Page;
-use App\Models\ShopifyStore;
 use App\Notifications\WelcomeNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Laracasts\Utilities\JavaScript\JavaScriptFacade as Javascript;
 use App\Http\Traits\UserTrait;
 use App\Http\Traits\LinkTrait;
 
@@ -18,21 +16,30 @@ class PageService {
 
     private $user;
 
-    /**
-     * @param $user
-     */
     public function __construct() {
         $this->user = Auth::user();
 
         return $this->user;
     }
 
-    public function sortArray($a, $b) {
+    /**
+     * @param $a
+     * @param $b
+     *
+     * @return int
+     */
+    public function sortArray($a, $b): int {
 
         return ($a["position"] > $b["position"] ? +1 : -1);
     }
 
-    public function getUserLinks($page, $subscribed) {
+    /**
+     * @param $page
+     * @param $subscribed
+     *
+     * @return array
+     */
+    public function getUserLinks($page, $subscribed): array {
 
         $allLinks = $this->getAllLinks($page);
 
@@ -45,19 +52,19 @@ class PageService {
             }
         }
 
-        $objectArray = array_map(function($array){
+        return array_map(function($array){
             return (object)$array;
         }, $allLinks);
-
-        return $objectArray;
     }
 
     /**
      * Create New Page
      *
-     * @return $page
+     * @param $request
+     *
+     * @return mixed $page
      */
-    public function createNewPage($request) {
+    public function createNewPage($request): mixed {
 
         //$path = $request->session()->get('_previous');
 
@@ -104,7 +111,7 @@ class PageService {
      * @return void
      */
 
-    public function updatePageName($request, $page) {
+    public function updatePageName($request, $page): void {
 
         $page->update(['name' => $request['name']]);
 
@@ -119,7 +126,7 @@ class PageService {
      *
      */
 
-    public function editPage($page) {
+    public function editPage($page): array {
 
         $userPages = $this->getUserPages($this->user);
 
@@ -154,26 +161,16 @@ class PageService {
         ];
     }
 
-    /*
-     *
-     * Show Create Page Name at Register
-     *
-     */
-    public function showCreatePage() {
-
-        $pageNames = Page::all()->pluck('name')->toArray();
-
-        Javascript::put([
-            'pageNames' => $pageNames
-        ]);
-    }
-
     /**
      * Update Page Header Image
      *
-     * @return
+     * @param $request
+     * @param $userID
+     * @param $page
+     *
+     * @return string
      */
-    public function updateHeaderImage($request, $userID, $page) {
+    public function updateHeaderImage($request, $userID, $page): string {
 
         $imgName = time() . '.' . $request->ext;
         $pathToFolder = 'page-images/' . $userID . '/' . $page->id . '/header-img/';
@@ -197,9 +194,13 @@ class PageService {
     /**
      * Update Page Profile Image
      *
-     * @return $newpath
+     * @param $request
+     * @param $userID
+     * @param $page
+     *
+     * @return string $new path
      */
-    public function updateProfileImage($request, $userID, $page) {
+    public function updateProfileImage($request, $userID, $page): string {
 
         $imgName = time() . '.' . $request->ext;
         $pathToFolder = 'page-images/' . $userID . '/' . $page->id . '/profile-img/';
@@ -231,9 +232,12 @@ class PageService {
     /**
      * Update Page Title
      *
+     * @param $request
+     * @param $page
+     *
      * @return void
      */
-    public function updatePageTitle($request, $page) {
+    public function updatePageTitle($request, $page): void {
 
         $page->update(['title' => $request['title']]);
 
@@ -242,15 +246,18 @@ class PageService {
     /**
      * Update Page Bio
      *
+     * @param $request
+     * @param $page
+     *
      * @return void
      */
-    public function updatePageBio($request, $page) {
+    public function updatePageBio($request, $page): void {
 
         $page->update(['bio' => $request['bio']]);
 
     }
 
-    public function updateLayout($request, $page) {
+    public function updateLayout($request, $page): void {
 
         $page->update(['profile_layout' => $request['profileLayout']]);
     }

@@ -156,36 +156,33 @@ class UserController extends Controller
         return Inertia::render('Onboarding/Success');
     }
 
-    public function banUser(Request $request, User $user) {
+    public function banUserByType(Request $request, User $user, UserService $userService): JsonResponse {
         $userLoginInfo = $user->UserIpAddress()->latest()->first();
 
         if($userLoginInfo) {
             $banType = $request->get("banType");
 
             if ($banType == "user") {
-                $user->ban([
-                    'metas' => ['user_agent' => $request->header('user-agent')],
-                ]);
+                $userService->banUser($user, $request);
             }
 
             if ($banType == "ip") {
-                IP::ban(
-                    $userLoginInfo->ip,
-                    ['user_agent' => request()->header('user-agent')]
-                );
+                $userService->banIP($userLoginInfo, $request);
             }
-
 
         } else {
             $user->ban();
         }
+
+        $userService->disableUserPages($user);
+        $userService->disableUserOffers($user);
 
         return response()->json([
             'success' => true,
         ]);
     }
 
-    public function unBanUser(Request $request, User $user) {
+    public function unBanUser(Request $request, User $user, UserService $userService): JsonResponse {
         $userLoginInfo = $user->UserIpAddress()->latest()->first();
 
         if ($user->isBanned()){
@@ -193,6 +190,9 @@ class UserController extends Controller
         } else {
             IP::unban($userLoginInfo->ip);
         }
+
+        $userService->activateUserPages($user);
+        $userService->enableUserOffers($user);
 
         return response()->json([
             'success' => true,

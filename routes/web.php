@@ -128,7 +128,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/affiliate-stats', [AdminStatsController::class, 'show'])->name('adminAffStats');
     Route::post('/stats/get/offer', [AdminStatsController::class, 'getOfferStats']);
     Route::post('/stats/get/publisher', [AdminStatsController::class, 'getPublisherStats']);
-    Route::post('/ban-user/{user}', [UserController::class, 'banUser'])->name('ban.user');
+    Route::post('/ban-user/{user}', [UserController::class, 'banUserByType'])->name('ban.user');
     Route::post('/unban-user/{user}', [UserController::class, 'unBanUser'])->name('unban.user');
 
     /*Route::post('/subscriptions', [App\Http\Controllers\VoyagerFilterController::class, 'index']);
@@ -208,7 +208,7 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user', 'auth.b
     Route::post('/store-affiliate', [AffiliateController::class, 'store'])->name('register.affiliate');
 });
 
-Route::group(['middleware' => ['course.user:course']], function() {
+Route::group(['middleware' => ['course.user:course', 'auth.banned']], function() {
     Route::get('/{user:username}/password/reset/', [CoursePasswordController::class, 'showPasswordUpdate'])->name('show.password.update');
     Route::get('/{user:username}/course/reset-password', [CoursePasswordController::class, 'showResetPassword'])->name('show.reset.password');
     Route::get('/courses', [CourseController::class, 'showAllCourses'])->name('all.courses');

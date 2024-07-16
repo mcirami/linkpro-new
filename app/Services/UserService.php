@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\BillingTrait;
 use App\Http\Traits\UserTrait;
+use Mchev\Banhammer\IP;
 
 class UserService {
 
@@ -26,21 +27,6 @@ class UserService {
         return $this->user;
     }
 
-    /**
-     * @return array
-     */
-    public function getUserInfo(): array {
-
-        $subscription = $this->getUserSubscriptions($this->user) ? : null;
-        $paymentMethod = $this->user->pm_type ? : null;
-
-        return [
-            'user'                  => $this->user,
-            'subscription'          => $subscription,
-            'payment_method'        => $paymentMethod,
-        ];
-    }
-
     /*
      * Update user password and/or email
      *
@@ -48,6 +34,11 @@ class UserService {
      *
      */
 
+    /**
+     * @param $request
+     *
+     * @return void
+     */
     public function updateUserInfo($request): void {
 
         if ($request->password) {
@@ -61,7 +52,12 @@ class UserService {
         $this->user->save();
     }
 
-    public function handleEmailSubscription($user) {
+    /**
+     * @param $user
+     *
+     * @return array
+     */
+    public function handleEmailSubscription($user): array {
 
         $action = $_GET["action"];
 
@@ -92,6 +88,67 @@ class UserService {
        }
 
        return $data;
+    }
 
+    public function banUser($user, $request): void {
+        $user->ban([
+            'metas' => ['user_agent' => $request->header('user-agent')],
+        ]);
+    }
+    public function banIP($userLoginInfo, $request): void {
+        IP::ban(
+            $userLoginInfo->ip,
+            ['user_agent' => $request->header('user-agent')]
+        );
+    }
+
+    public function disableUserPages($user): void {
+        $userPages = $this->getUserPages($user);
+        if($userPages) {
+            foreach($userPages as $page) {
+                $page->disabled = true;
+                $page->save();
+            }
+        }
+    }
+
+    public function activateUserPages($user): void {
+        $userPages = $this->getUserPages($user);
+        if ($userPages) {
+            foreach ( $userPages as $page ) {
+                $page->disabled = false;
+                $page->save();
+            }
+        }
+    }
+
+    /**
+     * @param $user
+     *
+     * @return void
+     */
+    public function disableUserOffers($user): void {
+        $userOffers = $user->Offers()->get();
+        if ($userOffers) {
+            foreach ( $userOffers as $offer) {
+                $offer->active = false;
+                $offer->save();
+            }
+        }
+    }
+
+    /**
+     * @param $user
+     *
+     * @return void
+     */
+    public function enableUserOffers($user): void {
+        $userOffers = $user->Offers()->get();
+        if ($userOffers) {
+            foreach ( $userOffers as $offer) {
+                $offer->active = true;
+                $offer->save();
+            }
+        }
     }
 }
