@@ -18,6 +18,7 @@ use Inertia\Inertia;
 use App\Http\Traits\UserTrait;
 use Inertia\Response;
 use App\Http\Traits\BillingTrait;
+use Stevebauman\Location\Facades\Location;
 use Stripe\Exception\ApiErrorException;
 use Mchev\Banhammer\IP;
 
@@ -45,8 +46,6 @@ class UserController extends Controller
     public function edit(): Response {
 
         $user = Auth::user();
-        $userLoginInfo = $user->UserIpAddress()->latest()->first();
-        dd($userLoginInfo);
         $hasOffers = $user->offers()->first();
         $isAffiliate = $user->Affiliates()->first();
         $payoutInfoSubmitted = $user->payout_info_submitted;
@@ -165,7 +164,6 @@ class UserController extends Controller
 
             if ($banType == "user") {
                 $user->ban([
-                    'ip'    => $userLoginInfo->ip,
                     'metas' => ['user_agent' => $request->header('user-agent')],
                 ]);
             }
