@@ -371,15 +371,15 @@ const CustomForm = ({
         ) {
 
             setShowLoader({show: true, icon: "upload", position: "fixed"})
-            window.Vapor.store(
+            Vapor.store(
                 image,
                 {
                     visibility: "public-read",
                     progress: progress => {
-                        setShowLoader(prev => ({
+                        /*setShowLoader(prev => ({
                             ...prev,
                             progress: Math.round(progress * 100)
-                        }))
+                        }))*/
                     }
                 }
             ).then(response => {

@@ -6,8 +6,7 @@ use App\Events\UserLoggedIn;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Course;
-use App\Models\UserIpAddress;
-use Illuminate\Auth\Events\Login;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +47,14 @@ class AuthenticatedSessionController extends Controller
         return $user->getRedirectRoute();
     }
 
+    /**
+     * @param LoginRequest $request
+     *
+     * @return void
+     * @throws ValidationException
+     */
+
+    // TODO: dispatch UserLoggedIn
     public function customLoginPost(LoginRequest $request): void {
 
         $credentials = $request->except(['_token']);
@@ -65,7 +72,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): \Illuminate\Http\JsonResponse {
+    public function destroy(Request $request): JsonResponse {
         $courseSlug = isset($_GET['course']) && $_GET['course'] !== "" ? $_GET['course'] : null;
 
         Auth::guard('web')->logout();
