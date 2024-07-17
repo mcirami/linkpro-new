@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react';
+import {useState} from 'react';
 import {RiLogoutBoxRLine, RiInstagramLine} from 'react-icons/ri';
 import HoverText from '../Utils/HoverText';
 import MenuData from './MenuData';

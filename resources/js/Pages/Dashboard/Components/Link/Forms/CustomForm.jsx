@@ -376,10 +376,10 @@ const CustomForm = ({
                 {
                     visibility: "public-read",
                     progress: progress => {
-                        /*setShowLoader(prev => ({
+                        setShowLoader(prev => ({
                             ...prev,
                             progress: Math.round(progress * 100)
-                        }))*/
+                        }))
                     }
                 }
             ).then(response => {
@@ -584,7 +584,7 @@ const CustomForm = ({
 
             }).catch(error => {
                 EventBus.dispatch("error", { message: "There was a problem uploading your image." });
-                console.error(error);
+                console.error("Vapor.store: catch", error);
                 setShowLoader({show: false, icon: null, progress: null});
             });
         } else {

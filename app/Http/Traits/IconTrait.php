@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\Storage;
 
 trait IconTrait {
 
-    public function iconArray() {
+    /**
+     * @return string[]
+     */
+    public function iconArray(): array {
 
         return array(
             "Airbnb",
@@ -95,7 +98,12 @@ trait IconTrait {
         );
     }
 
-    public function saveCustomIcon($request) {
+    /**
+     * @param $request
+     *
+     * @return string
+     */
+    public function saveCustomIcon($request): string {
 
         $userID = Auth::id();
         $imgName = $userID . '-' . time() . '.' . $request->ext;

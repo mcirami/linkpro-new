@@ -19,20 +19,30 @@ export default defineConfig({
             ]
         })*/
     ],
-   /* build : {
+    build : {
         rollupOptions: {
-            input: {
+            /*input: {
                 admin: 'resources/js/admin/admin.jsx'
-            },
+            },*/
             output:
+
                 {
-                    format: 'es',
+                    manualChunks(id) {
+                        if(id.includes('node_modules')) {
+                            return id.toString().split('node_modules/')[1].split('/')[0].toString();
+                        }
+                    }
+                    /*format: 'es',
                     strict: true,
-                    entryFileNames: "admin.js",
-                    dir: 'public/js/admin'
+                    entryFileNames: "admin.jsx",
+                    dir: 'public/js/admin'*/
                 }
         },
-    },*/
+        manualChunks: {
+            lodash: ['lodash']
+        }
+    },
+
     resolve: {
         alias: {
             '$': 'jQuery'
