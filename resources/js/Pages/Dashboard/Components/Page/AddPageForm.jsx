@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {FiThumbsDown, FiThumbsUp} from 'react-icons/Fi';
+import {FiThumbsDown, FiThumbsUp} from 'react-icons/fi';
 import {addPage} from '@/Services/PageRequests.jsx';
 
 const AddPageForm = ({setIsEditing, setAllUserPages, allUserPages, pageNames}) => {

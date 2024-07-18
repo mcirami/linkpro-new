@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FiThumbsDown, FiThumbsUp} from 'react-icons/Fi';
+import {FiThumbsDown, FiThumbsUp} from 'react-icons/fi';
 import CurrencyInput from 'react-currency-input-field';
 import validator from 'validator/es';
 import {

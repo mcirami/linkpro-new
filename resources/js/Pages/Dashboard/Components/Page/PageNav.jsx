@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {MdAddCircleOutline} from 'react-icons/md';
-import {FiChevronDown} from 'react-icons/Fi';
+import {FiChevronDown} from 'react-icons/fi';
 import {PageContext} from '../../Dashboard.jsx';
 import AddPageForm from './AddPageForm';
 import {Link} from '@inertiajs/react';
