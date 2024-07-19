@@ -32,10 +32,6 @@ export default function Register({honeypot, spamDetected = false}) {
         };
     }, []);
 
-    /*useEffect(() => {
-        setData(honeypot.nameFieldName, 'fuckface');
-    }, []);*/
-
     const executeRecaptcha = useGoogleRecaptchaV3()
 
     const submit = async (e) => {

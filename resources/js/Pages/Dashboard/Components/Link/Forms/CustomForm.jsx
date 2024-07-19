@@ -371,7 +371,7 @@ const CustomForm = ({
         ) {
 
             setShowLoader({show: true, icon: "upload", position: "fixed"})
-            Vapor.store(
+            window.Vapor.store(
                 image,
                 {
                     visibility: "public-read",
@@ -384,6 +384,7 @@ const CustomForm = ({
                 }
             ).then(response => {
 
+                console.log("Vapor Response: ", response);
                 let URL = currentLink.url;
                 if (URL) {
                     URL = checkURL(currentLink.url, null, true);
@@ -455,6 +456,7 @@ const CustomForm = ({
 
                 func.then((data) => {
 
+                    console.log("data: ", data);
                     if (data.success) {
 
                         const iconPath = data.iconPath;
@@ -580,6 +582,8 @@ const CustomForm = ({
                     }
 
                     setShowLoader({show: false, icon: null, progress: null});
+                }).catch(error => {
+                    console.error("Post: catch", error);
                 })
 
             }).catch(error => {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserLoggedIn;
 use App\Http\Controllers\Controller;
 use App\Models\Referral;
 use App\Models\User;
@@ -16,6 +17,7 @@ use Inertia\Response;
 use Illuminate\Support\Facades\Cookie;
 use App\Http\Traits\PageTrait;
 use Spatie\Honeypot\Honeypot;
+use Stevebauman\Location\Facades\Location;
 
 
 class RegisteredUserController extends Controller
@@ -62,6 +64,8 @@ class RegisteredUserController extends Controller
         }
 
         Auth::login($user);
+
+        UserLoggedIn::dispatch(Location::get(), $user);
 
         $pages = $this->getAllPages();
 

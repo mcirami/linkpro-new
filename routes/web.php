@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/edit-account', [UserController::class, 'edit'])->name('user.edit');
 
-    Route::get('/register/create-page', [PageController::class, 'showCreatePage'])->name('create.page');
+    Route::get('/register/create-page', [PageController::class, 'showCreatePage'])->middleware('auth.banned')->name('create.page');
     Route::get('/email-test', [MailController::class, 'sendEmail']);
 
     Route::put('/update-account', [UserController::class, 'updateAccountInfo'])->name('user.update.info');
@@ -142,7 +142,7 @@ Route::group(['prefix' => 'admin'], function () {
 
 Auth::routes();
 
-Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], function() {
+Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user', 'auth.banned']], function() {
 
     Route::group(['prefix' => 'dashboard'], function() {
         Route::get('/pages/{page}', [PageController::class, 'edit'])->name('pages.edit');
@@ -208,7 +208,7 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user']], funct
     Route::post('/store-affiliate', [AffiliateController::class, 'store'])->name('register.affiliate');
 });
 
-Route::group(['middleware' => ['course.user:course']], function() {
+Route::group(['middleware' => ['course.user:course', 'auth.banned']], function() {
     Route::get('/{user:username}/password/reset/', [CoursePasswordController::class, 'showPasswordUpdate'])->name('show.password.update');
     Route::get('/{user:username}/course/reset-password', [CoursePasswordController::class, 'showResetPassword'])->name('show.reset.password');
     Route::get('/courses', [CourseController::class, 'showAllCourses'])->name('all.courses');

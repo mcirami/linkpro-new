@@ -18,7 +18,6 @@ use Inertia\Inertia;
 use App\Http\Traits\UserTrait;
 use Inertia\Response;
 use App\Http\Traits\BillingTrait;
-use Stevebauman\Location\Facades\Location;
 use Stripe\Exception\ApiErrorException;
 use Mchev\Banhammer\IP;
 

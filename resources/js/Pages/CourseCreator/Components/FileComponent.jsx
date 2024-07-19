@@ -9,7 +9,8 @@ const FileComponent = ({
                            setShowLoader,
                            currentSection,
                            sections,
-                           setSections
+                           setSections,
+                           index
 }) => {
 
     const [disableButton, setDisableButton] = useState(true);
@@ -31,9 +32,9 @@ const FileComponent = ({
             return;
         }
         setDisableButton(false);
-        document.querySelector("." + CSS.escape(elementName) + "_form .bottom_section").classList.remove("hidden");
+        document.querySelector("." + CSS.escape(elementName) + "_" + index + "_form .bottom_section").classList.remove("hidden");
         if (window.innerWidth < 993) {
-            document.querySelector("." + CSS.escape(elementName) + "_form").scrollIntoView({
+            document.querySelector("." + CSS.escape(elementName)  + "_" + index + "_form").scrollIntoView({
                 behavior: "smooth",
             });
         }
@@ -48,7 +49,7 @@ const FileComponent = ({
             icon: 'upload',
             position: 'fixed'
         });
-        window.Vapor.store(
+        Vapor.store(
             upFile,
             {
                 visibility: "public-read",
@@ -81,7 +82,7 @@ const FileComponent = ({
 
                     setUpFile(null);
                     document.querySelector(
-                        "." + CSS.escape(elementName) +
+                        "." + CSS.escape(elementName)  + "_" + index +
                         "_form .bottom_section").
                         classList.
                         add("hidden");
@@ -90,7 +91,7 @@ const FileComponent = ({
                 setShowLoader({show: false, icon: null, position: "", progress: null})
             }).catch((error) => {
                 console.error(error);
-                EventBus.dispatch("error", { message: "There was an error saving your image." });
+                EventBus.dispatch("error", { message: "There was an error saving your file." });
                 setShowLoader({show: false, icon: null, position: "", progress: null})
             });
         });
@@ -106,10 +107,10 @@ const FileComponent = ({
     return (
         <article className="my_row page_settings">
             <div className="column_wrap">
-                <form onSubmit={handleSubmit} className={`${elementName}_form`}>
+                <form onSubmit={handleSubmit} className={`${elementName}_${index}_form`}>
                     <div className="top_section">
                         <label
-                            htmlFor={`${elementName}_file_upload`}
+                            htmlFor={`${elementName}_${index}_upload`}
                             className="custom"
                         >
                             {
@@ -125,7 +126,7 @@ const FileComponent = ({
 
                         <input
                             className={`custom`}
-                            id={`${elementName}_file_upload`}
+                            id={`${elementName}_${index}_upload`}
                             type="file"
                             accept=".doc,.docx,application/msword,application/pdf,.mp4,.mp3"
                             onChange={onSelectFile}

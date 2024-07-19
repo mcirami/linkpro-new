@@ -347,6 +347,7 @@ const Section = ({
                                     currentSection={section}
                                     sections={sections}
                                     setSections={setSections}
+                                    index={index}
                                 />
                                 <SectionButtonOptions
                                     sectionPosition={index + 1}

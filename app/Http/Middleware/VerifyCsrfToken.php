@@ -17,6 +17,7 @@ class VerifyCsrfToken extends Middleware
         '/paypal-webhook',
         '*.stripe.com',
         '/payment-onboarding',
-        '/onboarding-success'
+        '/onboarding-success',
+        '/vapor/signed-storage-url'
     ];
 }
