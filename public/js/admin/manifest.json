@@ -1,14 +1,112 @@
 {
-  "resources/js/admin/admin.css": {
-    "file": "assets/admin-2b83cae9.css",
-    "src": "resources/js/admin/admin.css"
+  "_@floating-ui-B4nMepu_.js": {
+    "file": "assets/@floating-ui-B4nMepu_.js",
+    "name": "@floating-ui",
+    "imports": [
+      "_react-C5qdKvk_.js",
+      "_react-dom-CB1LTWp1.js"
+    ]
   },
-  "resources/js/admin/admin.jsx": {
-    "css": [
-      "assets/admin-2b83cae9.css"
+  "_axios-_lsJg-3Y.js": {
+    "file": "assets/axios-_lsJg-3Y.js",
+    "name": "axios"
+  },
+  "_clsx-B-dksMZM.js": {
+    "file": "assets/clsx-B-dksMZM.js",
+    "name": "clsx"
+  },
+  "_date-fns-Crri_o3n.js": {
+    "file": "assets/date-fns-Crri_o3n.js",
+    "name": "date-fns"
+  },
+  "_lodash-grLx7Bpj.js": {
+    "file": "assets/lodash-grLx7Bpj.js",
+    "name": "lodash"
+  },
+  "_react-C5qdKvk_.js": {
+    "file": "assets/react-C5qdKvk_.js",
+    "name": "react",
+    "imports": [
+      "_lodash-grLx7Bpj.js"
+    ]
+  },
+  "_react-datepicker-!~{008}~.js": {
+    "file": "assets/react-datepicker-Pzuu2TiO.css",
+    "src": "_react-datepicker-!~{008}~.js"
+  },
+  "_react-datepicker-DV9tePJh.js": {
+    "file": "assets/react-datepicker-DV9tePJh.js",
+    "name": "react-datepicker",
+    "imports": [
+      "_clsx-B-dksMZM.js",
+      "_react-C5qdKvk_.js",
+      "_react-onclickoutside-CREQk6_T.js",
+      "_date-fns-Crri_o3n.js",
+      "_@floating-ui-B4nMepu_.js",
+      "_react-dom-CB1LTWp1.js"
     ],
+    "css": [
+      "assets/react-datepicker-Pzuu2TiO.css"
+    ]
+  },
+  "_react-dom-CB1LTWp1.js": {
+    "file": "assets/react-dom-CB1LTWp1.js",
+    "name": "react-dom",
+    "imports": [
+      "_lodash-grLx7Bpj.js",
+      "_react-C5qdKvk_.js",
+      "_scheduler-CzFDRTuY.js"
+    ]
+  },
+  "_react-icons-iMiqqjRZ.js": {
+    "file": "assets/react-icons-iMiqqjRZ.js",
+    "name": "react-icons",
+    "imports": [
+      "_react-C5qdKvk_.js"
+    ]
+  },
+  "_react-onclickoutside-CREQk6_T.js": {
+    "file": "assets/react-onclickoutside-CREQk6_T.js",
+    "name": "react-onclickoutside",
+    "imports": [
+      "_react-C5qdKvk_.js",
+      "_react-dom-CB1LTWp1.js"
+    ]
+  },
+  "_react-table-C8DmCTwF.js": {
+    "file": "assets/react-table-C8DmCTwF.js",
+    "name": "react-table",
+    "imports": [
+      "_lodash-grLx7Bpj.js",
+      "_react-C5qdKvk_.js"
+    ]
+  },
+  "_scheduler-CzFDRTuY.js": {
+    "file": "assets/scheduler-CzFDRTuY.js",
+    "name": "scheduler"
+  },
+  "_tabbable-l0sNRNKZ.js": {
+    "file": "assets/tabbable-l0sNRNKZ.js",
+    "name": "tabbable"
+  },
+  "resources/js/Admin/admin.jsx": {
     "file": "admin.jsx",
+    "name": "admin",
+    "src": "resources/js/Admin/admin.jsx",
     "isEntry": true,
-    "src": "resources/js/admin/admin.jsx"
+    "imports": [
+      "_react-C5qdKvk_.js",
+      "_axios-_lsJg-3Y.js",
+      "_react-table-C8DmCTwF.js",
+      "_react-icons-iMiqqjRZ.js",
+      "_lodash-grLx7Bpj.js",
+      "_react-datepicker-DV9tePJh.js",
+      "_react-dom-CB1LTWp1.js",
+      "_clsx-B-dksMZM.js",
+      "_react-onclickoutside-CREQk6_T.js",
+      "_date-fns-Crri_o3n.js",
+      "_@floating-ui-B4nMepu_.js",
+      "_scheduler-CzFDRTuY.js"
+    ]
   }
 }

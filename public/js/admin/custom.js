@@ -1,7 +1,7 @@
 'use strict'
 import axios from 'axios';
 
-document.addEventListener("DOMContentLoaded", function(event) {
+jQuery(document).ready(function($) {
 
     const refPopup = document.querySelector('#ref_popup');
 
