@@ -33,9 +33,8 @@ class JobDowngradeExpiredSubs implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
-    {
-        /*foreach($this->data as $subscription) {
+    public function handle(): void {
+        foreach($this->data as $subscription) {
 
             $user      = User::findOrFail( $subscription->user_id );
             $userPages = $user->pages()->get();
@@ -81,6 +80,6 @@ class JobDowngradeExpiredSubs implements ShouldQueue
                                                 $subscription->braintree_id
             );
 
-        }*/
+        }
     }
 }

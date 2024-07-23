@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Jobs\JobDowngradeExpiredSubs;
 use App\Models\Subscription;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Console\Command;
 
 class DowngradeExpiredSubs extends Command
@@ -37,6 +38,7 @@ class DowngradeExpiredSubs extends Command
      * Execute the console command.
      *
      * @return int
+     * @throws Exception
      */
     public function handle()
     {

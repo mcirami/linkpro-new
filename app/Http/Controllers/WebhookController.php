@@ -23,7 +23,6 @@ class WebhookController extends Controller
     public function receiveWebhookResponse(WebhookService $webhook_service): void {
 
         $event = $this->getStripeWebhookInstance('customer');
-
         switch($event->type) {
             case 'customer.subscription.updated':
                 $subId      = $event->data->object->id;
@@ -41,7 +40,7 @@ class WebhookController extends Controller
             case 'customer.subscription.deleted':
                 $subId      = $event->data->object->id;
                 $productId  = $event->data->object->plan->product;
-                $webhook_service->handleSubscriptionEnded($subId, $productId);
+                $webhook_service->handleSubscriptionEnded($subId, $productId, null);
 
                 $response = "customer.subscription.deleted: " . $event->data->object;
                 break;
@@ -60,15 +59,15 @@ class WebhookController extends Controller
                 break;
             default:
                 $response = 'Received unknown event type ' . $event->type . '---object---' . $event->data->object;
-                Log::channel( 'cloudwatch' )->info( "--timestamp--" .
-                                                    Carbon::now() .
-                                                    "-- kind --"
-                                                    . "receiveWebhookResponse" .
-                                                    "-- default switch response -- " .
-                                                    $response );
                 break;
         }
         http_response_code(200);
+        Log::channel( 'cloudwatch' )->info( "--timestamp--" .
+                                            Carbon::now() .
+                                            "-- kind --"
+                                            . $event->type .
+                                            "-- switch response -- " .
+                                            $response );
         /*if ($response) {
             Log::channel( 'webhooks' )->info( " --- object --- " . $response );
             Log::channel( 'cloudwatch' )->info( "--timestamp--" .
@@ -104,15 +103,15 @@ class WebhookController extends Controller
                 break;
             default:
                 $response = 'Received unknown event type ' . $event->type . '---object---' . $event->data->object;
-                Log::channel( 'cloudwatch' )->info( "--timestamp--" .
-                                                    Carbon::now() .
-                                                    "-- kind --"
-                                                    . "receiveProductWebhookResponse" .
-                                                    "-- default switch response -- " .
-                                                    $response );
                 break;
         }
         http_response_code(200);
+        Log::channel( 'cloudwatch' )->info( "--timestamp--" .
+                                            Carbon::now() .
+                                            "-- kind --"
+                                            . "receiveProductWebhookResponse" .
+                                            $event->type .
+                                            $response );
         /*if ($response) {
             Log::channel( 'webhooks' )->info( " --- object --- " . $response );
             Log::channel( 'cloudwatch' )->info( "--timestamp--" .
@@ -129,11 +128,24 @@ class WebhookController extends Controller
         $event_type = $webhookData["event_type"];
         $subscription_id = $webhookData['resource']['id'];
         $endDate = $webhookData['resource']['start_time'];
+        $plan_id = $webhookData['resource']['plan_id'];
+
+        if (App::environment() === "production") {
+            $planName = $plan_id == "P-6MH1893903516972EMX5QADY" ? "pro" : "premier";
+        } else {
+            $planName = $plan_id == "P-5XM03253A6686724NMYGYLEQ" ? "pro" : "premier";
+        }
+
         Log::channel( 'webhooks' )->info( " --- PayPal event type --- " . print_r($webhookData, true ) );
 
         //TODO: event of payment failure
-        if ($event_type == "BILLING.SUBSCRIPTION.CANCELLED") {
-            $webhook_service->cancelSubscription($subscription_id, $endDate);
+        switch($event_type) {
+            case "BILLING.SUBSCRIPTION.CANCELLED":
+                $webhook_service->cancelSubscription($subscription_id, $endDate);
+                break;
+            case "BILLING.SUBSCRIPTION.EXPIRED":
+                $webhook_service->handleSubscriptionEnded($subscription_id, null, $planName);
+                break;
         }
     }
 

@@ -116,12 +116,15 @@ class WebhookService {
     /**
      * @param $subId
      * @param $productId
+     * @param $productName
      *
      * @return void
-     *
      */
-    public function handleSubscriptionEnded($subId, $productId): void {
-        $productName = $this->getProductName($productId);
+    public function handleSubscriptionEnded($subId, $productId, $productName): void {
+        if ($productId) {
+            $productName = $this->getProductName($productId);
+        }
+
         $subscription = Subscription::where('sub_id', '=', $subId)->first();
 
         if($productName == "premier") {
@@ -154,7 +157,7 @@ class WebhookService {
             'name'          => "free",
             'ends_at'       => null,
             'sub_id'        => null,
-            'downgraded'    => $productName == "pro"
+            'downgraded'    => true
         ]);
     }
 

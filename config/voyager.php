@@ -192,8 +192,8 @@ return [
     ],
 
     'additional_js' => [
-       /* 'js/admin/admin.jsx',*/
-       /*'js/admin/custom.js',*/
+        /*'js/admin/admin.jsx',*/
+        /*'js/admin/custom.js',*/
     ],
 
     'googlemaps' => [
