@@ -33,7 +33,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\UserVerificationController;
 use Spatie\Honeypot\ProtectAgainstSpam;
-
+use TCG\Voyager\Facades\Voyager;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -86,7 +86,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/payment-onboarding', [UserController::class, 'paymentOnboarding'])->name('payment.onboarding');
     Route::get('/onboarding-success', [UserController::class, 'onboardingSuccess'])->name('onboarding.success');
 
-    Route::group(['prefix' => 'dashboard'], function() {
+    Route::group(['prefix' => 'dashboard'], function () {
         Route::post('/links/new', [LinkController::class, 'store']);
         Route::put('/links/update/{link}', [LinkController::class, 'update']);
         Route::patch('/links/status/{link}', [LinkController::class, 'updateStatus']);
@@ -111,14 +111,20 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/get-course-categories', [CourseController::class, 'getCourseCategories']);
 
-    Route::group(['prefix' => 'subscribe'], function() {
-        Route::post( '/get-paypal-client', [ SubscriptionController::class, 'getPayPalClient' ] );
-        Route::get( '/stripe-success',
-            [ SubscriptionController::class, 'stripeSubscribeSuccess' ] )->name( 'stripe.subscribe.success' );
-        Route::post( '/paypal-success',
-            [ SubscriptionController::class, 'payPalSubscribeSuccess' ] )->name( 'paypal.subscribe.success' );
-        Route::get( '/success',
-            [ SubscriptionController::class, 'showSuccessPage' ] )->name( 'show.subscribe.success' );
+    Route::group(['prefix' => 'subscribe'], function () {
+        Route::post('/get-paypal-client', [SubscriptionController::class, 'getPayPalClient']);
+        Route::get(
+            '/stripe-success',
+            [SubscriptionController::class, 'stripeSubscribeSuccess']
+        )->name('stripe.subscribe.success');
+        Route::post(
+            '/paypal-success',
+            [SubscriptionController::class, 'payPalSubscribeSuccess']
+        )->name('paypal.subscribe.success');
+        Route::get(
+            '/success',
+            [SubscriptionController::class, 'showSuccessPage']
+        )->name('show.subscribe.success');
     });
 });
 
@@ -142,21 +148,21 @@ Route::group(['prefix' => 'admin'], function () {
 
 Auth::routes();
 
-Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user', 'auth.banned']], function() {
+Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user', 'auth.banned']], function () {
 
-    Route::group(['prefix' => 'dashboard'], function() {
+    Route::group(['prefix' => 'dashboard'], function () {
         Route::get('/pages/{page}', [PageController::class, 'edit'])->name('pages.edit');
         Route::get('/pages', [PageController::class, 'redirect']);
         Route::get('/', [PageController::class, 'redirect'])->name('dashboard');
     });
 
-    Route::group(['prefix' => 'creator-center'], function() {
+    Route::group(['prefix' => 'creator-center'], function () {
         Route::get('/add-landing-page', [LandingPageController::class, 'store'])->name('add.landing.page');
         Route::get('/add-course', [CourseController::class, 'store'])->name('add.course');
         Route::get('/', [CourseController::class, 'showCreatorCenter'])->name('creator.center');
         Route::get('/landing-page/{landing_page}', [LandingPageController::class, 'edit'])->name('edit.landing.page');
 
-        Route::group(['prefix' => 'landing-page'], function() {
+        Route::group(['prefix' => 'landing-page'], function () {
             Route::patch('/save-image/{landing_page}', [LandingPageController::class, 'saveImage'])->name('lp.save.image');
             Route::patch('/save-data/{landing_page}', [LandingPageController::class, 'saveLandingPageData'])->name('lp.save.data');
             Route::post('/add-section/{landing_page}', [LandingPageController::class, 'addSection'])->name('lp.add.section');
@@ -168,7 +174,7 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user', 'auth.b
             Route::patch('/update-sections-positions', [LandingPageController::class, 'updateSectionsPositions']);
         });
 
-        Route::group(['prefix' => 'course'], function() {
+        Route::group(['prefix' => 'course'], function () {
             Route::get('/{course}', [CourseController::class, 'edit'])->name('edit.course');
             Route::patch('/save-data/{course}', [CourseController::class, 'saveCourseData'])->name('course.save.data');
             Route::patch('/save-image/{course}', [CourseController::class, 'saveImage'])->name('course.save.image');
@@ -180,7 +186,7 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user', 'auth.b
             Route::patch('/update-section-file/{course_section}', [CourseController::class, 'updateSectionFile'])->name('update.course.section.file');
         });
 
-        Route::group(['prefix' => 'offer'], function() {
+        Route::group(['prefix' => 'offer'], function () {
             Route::patch('/update-icon/{offer}', [OfferController::class, 'updateOfferIcon'])->name('update.offer.icon');
             Route::patch('/update-data/{offer}', [OfferController::class, 'updateOfferData'])->name('update.offer.data');
             Route::patch('/publish/{offer}', [OfferController::class, 'publishOffer'])->name('publish.offer');
@@ -188,14 +194,14 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user', 'auth.b
     });
 
     Route::get('/plans', [SubscriptionController::class, 'showPlans'])->name('plans.get');
-    Route::group(['prefix' => 'subscribe'], function() {
-        Route::put( '/cancel', [ SubscriptionController::class, 'cancel' ] )->name( 'subscribe.cancel' );
-        Route::post( '/resume', [ SubscriptionController::class, 'resume' ] )->name( 'subscribe.resume' );
-        Route::post( '/change-plan', [ SubscriptionController::class, 'changePlan' ] )->name( 'subscribe.change.plan' );
+    Route::group(['prefix' => 'subscribe'], function () {
+        Route::put('/cancel', [SubscriptionController::class, 'cancel'])->name('subscribe.cancel');
+        Route::post('/resume', [SubscriptionController::class, 'resume'])->name('subscribe.resume');
+        Route::post('/change-plan', [SubscriptionController::class, 'changePlan'])->name('subscribe.change.plan');
         Route::get('/', [SubscriptionController::class, 'showPurchasePage'])->name('subscribe.get');
-        Route::get( '/cancel-checkout', [ SubscriptionController::class, 'cancelCheckout' ] )->name( 'cancel.checkout' );
-        Route::post( '/paypal-payment-method', [ SubscriptionController::class, 'changePaymentMethodToPaypal' ] )->name( 'paypal.payment.method' );
-        Route::post('/get-stripe-billing-date', [ SubscriptionController::class, 'getStripeBillingDate' ]);
+        Route::get('/cancel-checkout', [SubscriptionController::class, 'cancelCheckout'])->name('cancel.checkout');
+        Route::post('/paypal-payment-method', [SubscriptionController::class, 'changePaymentMethodToPaypal'])->name('paypal.payment.method');
+        Route::post('/get-stripe-billing-date', [SubscriptionController::class, 'getStripeBillingDate']);
     });
 
     Route::post('/stats/link', [StatsController::class, 'getLinkStats']);
@@ -208,7 +214,7 @@ Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user', 'auth.b
     Route::post('/store-affiliate', [AffiliateController::class, 'store'])->name('register.affiliate');
 });
 
-Route::group(['middleware' => ['course.user:course', 'auth.banned']], function() {
+Route::group(['middleware' => ['course.user:course', 'auth.banned']], function () {
     Route::get('/{user:username}/password/reset/', [CoursePasswordController::class, 'showPasswordUpdate'])->name('show.password.update');
     Route::get('/{user:username}/course/reset-password', [CoursePasswordController::class, 'showResetPassword'])->name('show.reset.password');
     Route::get('/courses', [CourseController::class, 'showAllCourses'])->name('all.courses');
@@ -216,8 +222,8 @@ Route::group(['middleware' => ['course.user:course', 'auth.banned']], function()
     Route::get('/{user:username}/course-page/{course:slug}', [CourseController::class, 'showCourseLander'])->name('live.course.lander');
     Route::get('/{user:username}/course/{course:slug}/checkout', [PurchaseController::class, 'show'])->name('course.checkout');
     Route::get('/pre-register-link-pro', [PageController::class, 'showPreRegister'])->name('pre.register');
-    Route::get( '/purchase/cancel-checkout', [ PurchaseController::class, 'cancelCheckout' ] )->name( 'cancel.course.checkout' );
-    Route::get( '/purchase/success', [ PurchaseController::class, 'success' ] )->name( 'course.purchase.success' );
+    Route::get('/purchase/cancel-checkout', [PurchaseController::class, 'cancelCheckout'])->name('cancel.course.checkout');
+    Route::get('/purchase/success', [PurchaseController::class, 'success'])->name('course.purchase.success');
 });
 
 Route::get('/{course:slug?}/login', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -238,7 +244,7 @@ Route::post('/mailchimp/subscribe', [MailchimpController::class, 'subscribeToLis
 
 Route::get('/contact', [ContactMailController::class, 'index'])->name('contact');
 
-Route::group(['middleware' => [ProtectAgainstSpam::class]], function() {
+Route::group(['middleware' => [ProtectAgainstSpam::class]], function () {
     Route::post('/contact/send', [ContactMailController::class, 'contactSendMail'])->name('contact.send');
     Route::post('/course-register', [CourseRegisterController::class, 'store'])->name('course.register.store');
     Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.user.store');
@@ -255,7 +261,7 @@ Route::get('/get-icons', [IconController::class, 'getIcons']);
 Route::get('/terms-and-conditions', function () {
     return Inertia::render('Utilities/Terms');
 })->name('terms');
-Route::get('/privacy-policy', function() {
+Route::get('/privacy-policy', function () {
     return Inertia::render('Utilities/Privacy');
 })->name('privacy');
 
@@ -277,4 +283,4 @@ Route::get('/{page}', [PageController::class, 'show'])->name('show.live.page');
 
 Route::get('/offers/{offer}/{user}', [OfferController::class, 'redirectToLandingPage'])->name('show.offer.page');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

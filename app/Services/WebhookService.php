@@ -10,7 +10,8 @@ use App\Http\Traits\BillingTrait;
 use Illuminate\Support\Facades\DB;
 use Stripe\Exception\ApiErrorException;
 
-class WebhookService {
+class WebhookService
+{
 
     use BillingTrait;
 
@@ -20,14 +21,15 @@ class WebhookService {
      *
      * @return void
      */
-    public function updateSubscription($subId, $productId): void {
+    public function updateSubscription($subId, $productId): void
+    {
         $productName = $this->getProductName($productId);
-        $subscription = Subscription::where('sub_id', $subId )->first();
+        $subscription = Subscription::where('sub_id', $subId)->first();
 
-        if($subscription) {
-            $user                = User::findOrFail( $subscription->user_id );
-            $subscriptionService = new SubscriptionService( $user );
-            $subscriptionService->updateSubscription( $productName );
+        if ($subscription) {
+            $user                = User::findOrFail($subscription->user_id);
+            $subscriptionService = new SubscriptionService($user);
+            $subscriptionService->updateSubscription($productName);
         }
     }
 
@@ -37,16 +39,17 @@ class WebhookService {
      *
      * @return void
      */
-    public function cancelSubscription($subId, $endDate): void {
-        $subscription = Subscription::where('sub_id', $subId )->first();
+    public function cancelSubscription($subId, $endDate): void
+    {
+        $subscription = Subscription::where('sub_id', $subId)->first();
         $billingEndDate = Carbon::parse($endDate);
         $endDateDB = $billingEndDate->endOfDay();
 
         if ($subscription != null) {
-            $subscription->update( [
+            $subscription->update([
                 'status'    => 'canceled',
                 'ends_at'   => $endDateDB
-            ] );
+            ]);
         }
     }
 
@@ -56,7 +59,8 @@ class WebhookService {
      * @return void
      *
      */
-    public function checkDefaultPaymentMethod($customer): void {
+    public function checkDefaultPaymentMethod($customer): void
+    {
 
         $stripe = $this->createStripeGateway();
         $defaultPmId = null;
@@ -66,7 +70,7 @@ class WebhookService {
                 ['expand' => ['customer', 'payment_intent.payment_method']]
             );
             $defaultPmId = $stripeCustomer->invoice_settings->default_payment_method;
-        } catch ( ApiErrorException $e ) {
+        } catch (ApiErrorException $e) {
             http_response_code(500);
             $this->saveErrors($e);
         }
@@ -83,31 +87,32 @@ class WebhookService {
      *
      *
      */
-    public function updateDefaultPaymentMethod($defaultPmId, $customer): void {
+    public function updateDefaultPaymentMethod($defaultPmId, $customer): void
+    {
 
         $stripe = $this->createStripeGateway();
         $user = User::where('billing_id', '=', $customer)->first();
-        if($user) {
+        if ($user) {
             $customerPm = null;
             try {
                 $customerPm = $stripe->customers->retrievePaymentMethod(
                     $customer,
                     $defaultPmId
                 );
-            } catch ( ApiErrorException $e ) {
+            } catch (ApiErrorException $e) {
                 http_response_code(500);
                 $this->saveErrors($e);
             }
-            if($customerPm) {
+            if ($customerPm) {
                 $pmType = $customerPm->type;
                 $last4  = $pmType == "card" ? $customerPm->card->last4 : null;
 
-                if ( ( $user->pm_id && $user->pm_id != $defaultPmId ) || ! $user->pm_id ) {
-                    $user->update( [
+                if (($user->pm_id && $user->pm_id != $defaultPmId) || !$user->pm_id) {
+                    $user->update([
                         'pm_id'        => $defaultPmId,
                         'pm_last_four' => $last4,
                         'pm_type'      => $pmType
-                    ] );
+                    ]);
                 }
             }
         }
@@ -120,31 +125,31 @@ class WebhookService {
      *
      * @return void
      */
-    public function handleSubscriptionEnded($subId, $productId, $productName): void {
+    public function handleSubscriptionEnded($subId, $productId, $productName): void
+    {
         if ($productId) {
             $productName = $this->getProductName($productId);
         }
 
         $subscription = Subscription::where('sub_id', '=', $subId)->first();
 
-        if($productName == "premier") {
-            $user      = User::findOrFail( $subscription->user_id );
+        if ($productName == "premier") {
+            $user      = User::findOrFail($subscription->user_id);
             $userPages = $user->pages()->get();
 
-            foreach ( $userPages as $userPage ) {
+            foreach ($userPages as $userPage) {
 
-                if ( $userPage->default ) {
+                if ($userPage->default) {
 
-                    $folders = Folder::where( 'page_id', $userPage->id )->get();
-                    if ( $folders->isNotEmpty() ) {
-                        foreach ( $folders as $folder ) {
-                            if ( $folder->active_status ) {
+                    $folders = Folder::where('page_id', $userPage->id)->get();
+                    if ($folders->isNotEmpty()) {
+                        foreach ($folders as $folder) {
+                            if ($folder->active_status) {
                                 $folder->active_status = false;
                                 $folder->save();
                             }
                         }
                     }
-
                 } else {
                     $userPage->disabled = true;
                 }
@@ -155,7 +160,6 @@ class WebhookService {
 
         $subscription->update([
             'name'          => "free",
-            'ends_at'       => null,
             'sub_id'        => null,
             'downgraded'    => true
         ]);
@@ -166,7 +170,8 @@ class WebhookService {
      *
      * @return void
      */
-    public function addPlan($object): void {
+    public function addPlan($object): void
+    {
 
         $name = strtolower(explode(" ", $object->name)[0]);
 
@@ -190,11 +195,12 @@ class WebhookService {
      * @return void
      *
      */
-    public function updatePlan($object): void {
+    public function updatePlan($object): void
+    {
 
         $stripe = $this->createStripeGateway();
         try {
-            $product            = $stripe->products->retrieve( $object->id );
+            $product            = $stripe->products->retrieve($object->id);
             $unconvertedPrice   = $stripe->prices->retrieve($product->default_price);
             $price              = ($unconvertedPrice->unit_amount / 10) / 10;
             $name               = strtolower(explode(" ", $product->name)[0]);
@@ -206,14 +212,10 @@ class WebhookService {
                 'description'   => $object->description,
                 'updated_at'    => Carbon::now()->format('Y-m-d H:i:s')
             ]);
-
-        } catch ( ApiErrorException $e ) {
+        } catch (ApiErrorException $e) {
             http_response_code(500);
             $this->saveErrors($e);
         }
-
-
-
     }
 
     /**
@@ -221,7 +223,8 @@ class WebhookService {
      *
      * @return void
      */
-    public function deletePlan($object): void {
+    public function deletePlan($object): void
+    {
         DB::table('plans')->where('product_id', '=', $object->id)->delete();
     }
 
@@ -230,7 +233,8 @@ class WebhookService {
      *
      * @return string|null
      */
-    private function getProductName($productId): ?string {
+    private function getProductName($productId): ?string
+    {
 
         return DB::table('plans')->where('product_id', '=', $productId)->pluck('name')->first();
     }

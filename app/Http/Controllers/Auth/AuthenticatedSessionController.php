@@ -34,7 +34,8 @@ class AuthenticatedSessionController extends Controller
      * @return mixed
      * @throws ValidationException
      */
-    public function store(LoginRequest $request): mixed {
+    public function store(LoginRequest $request): mixed
+    {
 
         $request->authenticate();
 
@@ -55,7 +56,8 @@ class AuthenticatedSessionController extends Controller
      */
 
     // TODO: dispatch UserLoggedIn
-    public function customLoginPost(LoginRequest $request): void {
+    public function customLoginPost(LoginRequest $request): void
+    {
 
         $credentials = $request->except(['_token']);
         $login = request()->input('identity');
@@ -72,7 +74,8 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): JsonResponse {
+    public function destroy(Request $request): JsonResponse
+    {
         $courseSlug = isset($_GET['course']) && $_GET['course'] !== "" ? $_GET['course'] : null;
 
         Auth::guard('web')->logout();
@@ -81,7 +84,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        $path = $courseSlug ? "/". $courseSlug . "/login" : "/login";
+        $path = $courseSlug ? "/" . $courseSlug . "/login" : "/login";
 
         return response()->json(['path' => $path]);
     }
