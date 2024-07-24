@@ -1,8 +1,0 @@
-{
-  "resources/js/Admin/admin.jsx": {
-    "file": "admin.jsx",
-    "name": "admin",
-    "src": "resources/js/Admin/admin.jsx",
-    "isEntry": true
-  }
-}

@@ -15,7 +15,10 @@ trait LinkTrait {
 
         if (!empty($folders)) {
             foreach ( $folders as $folder ) {
-                $mylinks = json_decode( $folder->link_ids );
+                $mylinks = [];
+                if($folder->link_ids && !empty($folder->link_ids)) {
+                    $mylinks = json_decode( $folder->link_ids );
+                }
 
                 $linksArray = [];
 

@@ -192,7 +192,7 @@ return [
     ],
 
     'additional_js' => [
-        /*'js/admin/admin.jsx',*/
+        'js/admin/admin.jsx',
         /*'js/admin/custom.js',*/
     ],
 

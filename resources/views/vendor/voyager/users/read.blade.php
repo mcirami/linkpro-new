@@ -1,6 +1,5 @@
 @extends('voyager::master')
-<!-- @viteReactRefresh
-@vite('resources/js/Admin/admin.jsx') -->
+
 @section('page_title', __('voyager::generic.view').' '.$dataType->getTranslatedAttribute('display_name_singular'))
 
 @section('page_header')
