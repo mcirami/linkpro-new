@@ -49,7 +49,7 @@ class PurchaseController extends Controller
             $username = $offer->user()->pluck('username')->first();
             $url = config('app.url') . "/" . $username . "/course/" . $data["courseSlug"];
         }
-
+        
         return Inertia::render('Checkout/Success')->with([
             'type'          => 'purchase',
             'name'          => $data["customerName"],

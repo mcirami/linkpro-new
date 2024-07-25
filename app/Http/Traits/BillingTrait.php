@@ -56,7 +56,7 @@ trait BillingTrait {
             $paymentMethod = $stripe->customers->allPaymentMethods( $customer->id, [ 'limit' => 1 ] );
 
             $last4  = null;
-            $pmType = null;
+            $pmType = "card/na";
             $pmId = null;
             if ( !empty($paymentMethod->data) ) {
                 $type = $paymentMethod->data[0]["type"];
@@ -74,7 +74,7 @@ trait BillingTrait {
                 'last4'     => $last4,
                 'pmType'    => $pmType,
                 'pmId'      => $pmId,
-                'invoice'   => $session->invoice,
+                'invoice'   => $session->invoice ?: 'n/a',
                 'status'    => $session->status == "complete" ? "active" : $session->status,
                 'subId'     => $session->subscription
             ];
