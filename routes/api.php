@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\api\RegisterController;
+use App\Http\Controllers\api\ShopifyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function() {
+    
 });
+
+Route::controller(RegisterController::class)->group(function(){
+    
+});
+
+Route::post('login', [RegisterController::class,'login']);
+
+Route::get('connect-shopify-store', [ShopifyController::class, 'store']);
+Route::get('auth/shopify/callback', [ShopifyController::class, 'apiCallback']);
+
+Route::post('/tokens/create', function (Request $request) {
+    $token = $request->user()->createToken($request->token_name);
+ 
+    return ['token' => $token->plainTextToken];
+});
+
+

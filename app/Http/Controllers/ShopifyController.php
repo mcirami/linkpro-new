@@ -14,9 +14,13 @@ use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Signifly\Shopify\Shopify;
 use SocialiteProviders\Manager\Config;
+use App\Http\Traits\ShopifyTrait;
 
 class ShopifyController extends Controller
 {
+
+    use ShopifyTrait;
+
     public function auth(Request $request) {
 
         $domain = $request->query('domain');
@@ -108,30 +112,6 @@ class ShopifyController extends Controller
         $stores = $user->ShopifyStores()->get();
         return response()->json([
             'stores' => $stores
-        ]);
-    }
-
-    private function createShopifyStore($data) {
-
-        $userId = Auth::id();
-        $domain = $data['domain'];
-
-        //unique:shopify,user_id,' . $userId
-        Validator::make($data,
-            [
-                'access_token'  => 'required|string|max:255|' . Rule::unique('shopify')->where(fn (Builder $query) => $query->where('user_id', $userId)),
-                'domain'        => [
-                    'required', 'string', 'max:255',
-                    Rule::unique('shopify', 'domain')->where('user_id', $userId)
-                ],
-                'products'      => 'required|json'
-            ]
-        );
-
-        return Auth::user()->ShopifyStores()->create([
-            'access_token' => $data['access_token'],
-            'domain' => $domain,
-            'products' => $data['products']
         ]);
     }
 }

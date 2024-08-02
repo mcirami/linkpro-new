@@ -86,7 +86,8 @@ class FolderService {
                     'shopify_products',
                     'shopify_id',
                     'type',
-                    'course_id'
+                    'course_id',
+                    'description'
                 ]);
                 $newLink->setTable( 'deleted_links' );
                 $newLink->link_id = $link->id;
