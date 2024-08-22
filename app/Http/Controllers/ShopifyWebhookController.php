@@ -30,4 +30,24 @@ class ShopifyWebhookController extends Controller
             'computed_hmac' => $computed_hmac,
         ];
     }
+
+    public function addProduct(Request $request) {
+        return response()->json(['sucess' => 'U did it'], 204);
+        // Log the incoming webhook payload
+        Log::channel( 'webhooks' )->info('Product changes webhook received:', $request->all());
+
+        // Process the webhook data (e.g., update your database)
+        // ...
+
+        // Respond with a 204 No Content status
+        return response()->json(['sucess' => 'U did it'], 204);
+    }
+
+    public function updateProduct(Request $request) {
+
+    }
+
+    public function deleteProduct(Request $request) {
+
+    }
 }

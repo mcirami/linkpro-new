@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -10,23 +11,23 @@ use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-class RegisterController extends BaseController
+class AuthController extends BaseController
 {
     /**
      * Login api
      *
      * @return Response
      */
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse | Response
     {
-       /*  if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
             $user = Auth::user(); 
-            $success['token'] =  $user->createToken('MyApp')->plainTextToken; 
-            $success['name'] =  $user->name;
+            $success['token'] =  $user->createToken('API token of ' . $user->username)->plainTextToken; 
+            $success['name'] =  $user->username;
             return $this->sendResponse($success, 'User login successfully.');
         }else{ 
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
-        }  */
+        } 
 
         //$storeDomain = $request->get('storeDomain');
 
@@ -35,9 +36,15 @@ class RegisterController extends BaseController
             'status' => session('status'),
         ])->with(['course' => null, 'storeDomain' => null]); */
 
-        $response = [
-            'loginUrl'  => 'https://up-hare-rightly.ngrok-free.app/api/login'
-        ];
-        return response()->json($response, 200);
+
+        return response()->json("login method", 200);
+    }
+
+    public function register(Request $request): JsonResponse {
+        return response()->json("register method", 200);
+    }
+
+    public function logout(Request $request): JsonResponse {
+        return response()->json("logout method", 200);
     }
 }

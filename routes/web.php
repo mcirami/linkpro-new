@@ -3,7 +3,6 @@
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Foundation\Application;
 
-
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
@@ -31,6 +30,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\ShopifyWebhookController;
 use App\Http\Controllers\UserVerificationController;
 use Spatie\Honeypot\ProtectAgainstSpam;
 use TCG\Voyager\Facades\Voyager;
@@ -69,10 +69,15 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/folder/new', [FolderController::class, 'store'])->name('add.folder');
 
-    Route::get('/auth/shopify', [ShopifyController::class, 'auth'])->name('shopify.auth');
-    Route::get('/auth/shopify/callback', [ShopifyController::class, 'callback']);
-    Route::get('/shopify/get-products/{id}', [ShopifyController::class, 'getAllProducts'])->name('shopify.get.products');
-    Route::get('/shopify/get-stores', [ShopifyController::class, 'getStores'])->name('shopify.get.stores');
+    Route::get('/connect-shopify-store', [ShopifyController::class, 'showConnect'])->name('connect.shopify');
+   Route::get('/test-cors', function(){
+    return response()->json((["message" => 'Corst Work']));
+   });
+
+   Route::get('/auth/shopify', [ShopifyController::class, 'auth'])->name('shopify.auth');
+   Route::get('/auth/shopify/callback', [ShopifyController::class, 'callback']);
+   Route::get('/shopify/get-products/{id}', [ShopifyController::class, 'getAllProducts'])->name('shopify.get.products');
+   Route::get('/shopify/get-stores', [ShopifyController::class, 'getStores'])->name('shopify.get.stores');
 
     Route::get('/auth/mailchimp', [MailchimpController::class, 'auth'])->name('mailchimp.auth');
     Route::get('/auth/mailchimp/callback', [MailchimpController::class, 'callback']);
@@ -255,6 +260,10 @@ Route::post('/check-recaptcha', [UserVerificationController::class, 'checkRecapt
 Route::post('/stripe-webhook', [WebhookController::class, 'receiveWebhookResponse'])->name('stripe.webhook');
 Route::post('/stripe-products-webhook', [WebhookController::class, 'receiveProductWebhookResponse'])->name('stripe.products.webhook');
 Route::post('/paypal-webhook', [WebhookController::class, 'receivePaypalWebhookResponse'])->name('paypal.webhook');
+
+Route::post('/shopify-webhook/add-product', [ShopifyWebhookController::class, 'addProduct'])->name('shopify.add.product');
+Route::post('/shopify-webhook/delete-product', [ShopifyWebhookController::class, 'updateProduct'])->name('shopify.delete.product');
+Route::post('/shopify-webhook/update-product', [ShopifyWebhookController::class, 'deleteProduct'])->name('shopify.update.product');
 
 Route::get('/get-icons', [IconController::class, 'getIcons']);
 

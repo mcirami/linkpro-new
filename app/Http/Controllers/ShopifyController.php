@@ -4,16 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\ShopifyStore;
 use Carbon\Carbon;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Signifly\Shopify\Shopify;
-use SocialiteProviders\Manager\Config;
 use App\Http\Traits\ShopifyTrait;
 
 class ShopifyController extends Controller
@@ -24,11 +20,9 @@ class ShopifyController extends Controller
     public function auth(Request $request) {
 
         $domain = $request->query('domain');
-        $clientId = config('services.shopify.client_id');
-        $clientSecret = config('services.shopify.client_secret');
         $scopes = config('services.shopify.scopes');
-        $additionalProviderConfig = ['subdomain' => $domain];
-        $config = new Config($clientId, $clientSecret, "/auth/shopify/callback", $additionalProviderConfig);
+
+        $config = $this->getShopifyConfig($domain, 'https://up-hare-rightly.ngrok-free.app/auth/shopify/callback');
 
         return Socialite::driver('shopify')->setConfig($config)->setScopes([$scopes])->redirect();
     }
@@ -73,13 +67,12 @@ class ShopifyController extends Controller
                 'products' => $productsArray
             ];
             $shopifyStore = $this->createShopifyStore($dataObject);
-
             $pageId = "";
             if(isset($_COOKIE['lp_page_id'])) {
                 $pageId = $_COOKIE['lp_page_id'];
             }
 
-            return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "shopify", 'store' => $shopifyStore->id]);
+            return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "shopify", 'store' => $shopifyStore["store"]->id]);
 
         } catch (\Throwable $th) {
 

@@ -1,12 +1,11 @@
 <?
 
 namespace App\Http\Traits;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Query\Builder;
+use SocialiteProviders\Manager\Config;
 
 trait ShopifyTrait {
 
@@ -15,10 +14,9 @@ trait ShopifyTrait {
         $userId = Auth::id();
         $domain = $data['domain'];
 
-        //unique:shopify,user_id,' . $userId
-        Validator::make($data,
+        $validator = Validator::make($data,
             [
-                'access_token'  => 'required|string|max:255|' . Rule::unique('shopify')->where(fn (Builder $query) => $query->where('user_id', $userId)),
+                'access_token'  => 'required|string|' . Rule::unique('shopify')->where(fn (Builder $query) => $query->where('user_id', $userId)),
                 'domain'        => [
                     'required', 'string', 'max:255',
                     Rule::unique('shopify', 'domain')->where('user_id', $userId)
@@ -32,6 +30,13 @@ trait ShopifyTrait {
             'domain' => $domain,
             'products' => $data['products']
         ]);
+    }
+
+    public function getShopifyConfig($domain, $callbackUrl) {
+        $clientId = config('services.shopify.client_id');
+        $clientSecret = config('services.shopify.client_secret');
+        $additionalProviderConfig = ['subdomain' => $domain];
+        return new Config($clientId, $clientSecret, $callbackUrl, $additionalProviderConfig);
     }
 }
 

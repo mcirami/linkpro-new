@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\api\RegisterController;
+use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\ShopifyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,23 +16,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function() {
-    
-});
 
-Route::controller(RegisterController::class)->group(function(){
-    
-});
 
-Route::post('login', [RegisterController::class,'login']);
-
-Route::get('connect-shopify-store', [ShopifyController::class, 'store']);
+//Public Routes
+Route::post('login', [AuthController::class,'login']);
+Route::post('register', [AuthController::class,'register']);
+Route::get('connect-shopify-store', [ShopifyController::class, 'showConnect'])->middleware('auth')->name('api.show.connect');
+Route::get('auth/shopify', [ShopifyController::class, 'auth']);
 Route::get('auth/shopify/callback', [ShopifyController::class, 'apiCallback']);
+// Protected Routes
 
-Route::post('/tokens/create', function (Request $request) {
-    $token = $request->user()->createToken($request->token_name);
- 
-    return ['token' => $token->plainTextToken];
+Route::middleware('auth:sanctum')->group(function() {
+    Route::post('logout', [AuthController::class,'logout']);
+    Route::resource('shopify', ShopifyController::class);
+    Route::get('auth/shopify/disconnect', [ShopifyController::class, 'disconnect']);
 });
-
-
