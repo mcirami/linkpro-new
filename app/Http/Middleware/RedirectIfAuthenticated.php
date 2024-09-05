@@ -32,7 +32,7 @@ class RedirectIfAuthenticated
                 return to_route( 'dashboard' );
             }
         }
-
+        
         return $next($request);
     }
 }

@@ -1,40 +1,48 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
-use App\Models\ShopifyStore;
-use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
+use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 use Laravel\Socialite\Facades\Socialite;
 use Signifly\Shopify\Shopify;
 use App\Http\Traits\ShopifyTrait;
+use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Log;
+use App\Models\ShopifyStore;
+use Illuminate\Support\Facades\Crypt;
 
-class ShopifyController extends Controller
+class ShopifyController extends BaseController
 {
-
     use ShopifyTrait;
+
+/**
+    * Store a newly created resource in storage.
+    *
+    * @param  Request  $request
+    * @return InertiaResponse
+    */
+
+    public function showConnect(Request $request): InertiaResponse
+    {
+        $storeDomain = str_replace('.myshopify.com', '', $request->get('domain'));
+        return Inertia::render('ConnectShopify/ConnectShopify')->with(['domain' => $storeDomain]);
+    }
 
     public function auth(Request $request) {
 
         $domain = $request->query('domain');
         $scopes = config('services.shopify.scopes');
         $hostUrl = config('app.url');
-        $config = $this->getShopifyConfig($domain, $hostUrl . '/auth/shopify/callback');
+        $config = $this->getShopifyConfig($domain, $hostUrl . '/api/auth/shopify/callback');
 
         return Socialite::driver('shopify')->setConfig($config)->setScopes([$scopes])->redirect();
     }
 
-
-    /**
-     * @return RedirectResponse
-     *
-     * @var ShopifyStore $shopifyStore
-     */
-    public function callback() {
+    public function apiCallback() {
 
         try {
             $shopifyUser = Socialite::driver('shopify')->user();
@@ -63,53 +71,31 @@ class ShopifyController extends Controller
             }
 
             $dataObject = [
-                'access_token' => $accessToken,
+                'access_token' => Crypt::encryptString($accessToken),
                 'domain' => $domain,
                 'products' => $productsArray
             ];
+
             Log::channel( 'webhooks' )->info( " --- object --- " . print_r($dataObject, true) );
+            $storeName = str_replace('.myshopify.com', '', $domain);
             $shopifyStore = $this->createShopifyStore($dataObject);
             if($shopifyStore["success"]) {
                 $this->postToShopify($domain);
-                $pageId = "";
-                if(isset($_COOKIE['lp_page_id'])) {
-                    $pageId = $_COOKIE['lp_page_id'];
-                }
-
-                return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "shopify", 'store' => $shopifyStore["store"]->id]);
+                return Inertia::location('https://admin.shopify.com/store/' . $storeName . '/apps/link-pro');
             }
 
         } catch (Exception $e) {
-
-            Log::channel( 'cloudwatch' )->info( "--timestamp--" .
-                                                Carbon::now() .
-                                                "-- kind --"
-                                                . "Shopify Connection" .
-                                                "-- Error Message -- " .
-                                                $e->getMessage()
-            );
-            $pageId = "";
-            if(isset($_COOKIE['lp_page_id'])) {
-                $pageId = $_COOKIE['lp_page_id'];
-            }
-
-            return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "shopify", "connection_error" => 'Something went wrong connecting to Shopify! Please try again.']);
+            Log::channel( 'cloudwatch' )->info( "--timestamp--" . Carbon::now() . "-- Shopify error connecting store-- " . $e->getMessage() );
         }
     }
 
-    public function getAllProducts($id) {
+    public function disconnect(Request $request){
+        $domain = $request->get('domain');
+        //Log::channel( 'webhooks' )->info( " --- request --- " . $domain );
+        ShopifyStore::where('domain', $domain)->delete();
 
-        $store = ShopifyStore::findOrFail($id);
-        return response()->json([
-            'products' => $store->products
-        ]);
-    }
+        Log::channel( 'cloudwatch' )->info( "--timestamp--" . Carbon::now() . "-- Shopify disconnect store-- " . print_r($domain, true ) );
 
-    public function getStores() {
-        $user = Auth::user();
-        $stores = $user->ShopifyStores()->get();
-        return response()->json([
-            'stores' => $stores
-        ]);
+        return response()->json(["success" => true], 200);
     }
 }

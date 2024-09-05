@@ -128,7 +128,7 @@ class User extends \TCG\Voyager\Models\User
     public function getRedirectRoute(): \Symfony\Component\HttpFoundation\Response|\Illuminate\Http\RedirectResponse {
         $loginURL = url()->previous();
         $roles = $this->getRoleNames();
-        $previousURL = Session::get( 'url.intended' );
+        $previousURL = Session::get('url.intended');
 
         $courseID = isset($_GET['course']) ? $_GET['course'] : null;
         $course = null;
@@ -172,7 +172,7 @@ class User extends \TCG\Voyager\Models\User
             }
         }
 
-        $pageID = $this->pages()->where('default', '=', 1)->pluck('id')->first();
+        $pageID = $this->pages()->where('default', '=', true)->pluck('id')->first();
         return Inertia::location('/dashboard/pages/' . $pageID);
         //return to_route( 'dashboard' );
     }

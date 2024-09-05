@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\ShopifyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+
+//Public Routes
+Route::post('login', [AuthController::class,'login']);
+Route::post('register', [AuthController::class,'register']);
+Route::get('connect-shopify-store', [ShopifyController::class, 'showConnect'])->middleware('auth')->name('api.show.connect');
+Route::get('auth/shopify', [ShopifyController::class, 'auth']);
+Route::get('auth/shopify/callback', [ShopifyController::class, 'apiCallback']);
+// Protected Routes
+
+Route::middleware('auth:sanctum')->group(function() {
+    Route::post('logout', [AuthController::class,'logout']);
+    Route::resource('shopify', ShopifyController::class);
+    Route::get('auth/shopify/disconnect', [ShopifyController::class, 'disconnect']);
 });

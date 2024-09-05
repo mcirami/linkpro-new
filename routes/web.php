@@ -3,7 +3,6 @@
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Foundation\Application;
 
-
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
@@ -31,6 +30,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\ShopifyWebhookController;
 use App\Http\Controllers\UserVerificationController;
 use Spatie\Honeypot\ProtectAgainstSpam;
 use TCG\Voyager\Facades\Voyager;
@@ -57,6 +57,10 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::post('/shopify/webhook/update-product', [ShopifyWebhookController::class, 'updateProduct'])->name('shopify.update.product');
+Route::post('/shopify/webhook/add-product', [ShopifyWebhookController::class, 'addProduct'])->name('shopify.add.product');
+Route::post('/shopify/webhook/delete-product', [ShopifyWebhookController::class, 'deleteProduct'])->name('shopify.delete.product');
+
 Route::middleware('auth')->group(function () {
 
     Route::get('/edit-account', [UserController::class, 'edit'])->name('user.edit');
@@ -68,6 +72,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-user-pages', [UserController::class, 'getAllUserPages'])->name('user.get.pages');
 
     Route::post('/folder/new', [FolderController::class, 'store'])->name('add.folder');
+
+    Route::get('/connect-shopify-store', [ShopifyController::class, 'showConnect'])->name('connect.shopify');
 
     Route::get('/auth/shopify', [ShopifyController::class, 'auth'])->name('shopify.auth');
     Route::get('/auth/shopify/callback', [ShopifyController::class, 'callback']);
