@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 use Signifly\Shopify\Shopify;
 use App\Http\Traits\ShopifyTrait;
+use Exception;
 
 class ShopifyController extends Controller
 {
@@ -21,8 +22,8 @@ class ShopifyController extends Controller
 
         $domain = $request->query('domain');
         $scopes = config('services.shopify.scopes');
-
-        $config = $this->getShopifyConfig($domain, 'https://up-hare-rightly.ngrok-free.app/auth/shopify/callback');
+        $hostUrl = config('app.url');
+        $config = $this->getShopifyConfig($domain, $hostUrl . '/auth/shopify/callback');
 
         return Socialite::driver('shopify')->setConfig($config)->setScopes([$scopes])->redirect();
     }
@@ -58,7 +59,7 @@ class ShopifyController extends Controller
                     "image_url"     => $product["image"] ? $product["image"]["src"] : null
                 ];
 
-                array_push($productsArray, $productObject);
+                $productsArray[] = $productObject;
             }
 
             $dataObject = [
@@ -66,22 +67,26 @@ class ShopifyController extends Controller
                 'domain' => $domain,
                 'products' => $productsArray
             ];
+            Log::channel( 'webhooks' )->info( " --- object --- " . print_r($dataObject, true) );
             $shopifyStore = $this->createShopifyStore($dataObject);
-            $pageId = "";
-            if(isset($_COOKIE['lp_page_id'])) {
-                $pageId = $_COOKIE['lp_page_id'];
+            if($shopifyStore["success"]) {
+                $this->postToShopify($domain);
+                $pageId = "";
+                if(isset($_COOKIE['lp_page_id'])) {
+                    $pageId = $_COOKIE['lp_page_id'];
+                }
+
+                return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "shopify", 'store' => $shopifyStore["store"]->id]);
             }
 
-            return redirect()->route('pages.edit', ['page' => $pageId, 'redirected' => "shopify", 'store' => $shopifyStore["store"]->id]);
-
-        } catch (\Throwable $th) {
+        } catch (Exception $e) {
 
             Log::channel( 'cloudwatch' )->info( "--timestamp--" .
                                                 Carbon::now() .
                                                 "-- kind --"
                                                 . "Shopify Connection" .
                                                 "-- Error Message -- " .
-                                                $th->getMessage()
+                                                $e->getMessage()
             );
             $pageId = "";
             if(isset($_COOKIE['lp_page_id'])) {

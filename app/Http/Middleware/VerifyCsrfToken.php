@@ -18,6 +18,10 @@ class VerifyCsrfToken extends Middleware
         '*.stripe.com',
         '/payment-onboarding',
         '/onboarding-success',
-        '/vapor/signed-storage-url'
+        '/vapor/signed-storage-url',
+        '/shopify/webhook/update-product',
+        '/shopify/webhook/add-product',
+        '/shopify/webhook/delete-product',
+        '/api/auth/shopify/disconnect'
     ];
 }

@@ -20,14 +20,14 @@ class AuthController extends BaseController
      */
     public function login(LoginRequest $request): JsonResponse | Response
     {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
-            $user = Auth::user(); 
-            $success['token'] =  $user->createToken('API token of ' . $user->username)->plainTextToken; 
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+            $user = Auth::user();
+            $success['token'] =  $user->createToken('API token of ' . $user->username);
             $success['name'] =  $user->username;
             return $this->sendResponse($success, 'User login successfully.');
-        }else{ 
+        }else{
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
-        } 
+        }
 
         //$storeDomain = $request->get('storeDomain');
 

@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\API\BaseController as BaseController;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 use Laravel\Socialite\Facades\Socialite;
@@ -15,32 +13,11 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use App\Models\ShopifyStore;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
 class ShopifyController extends BaseController
 {
     use ShopifyTrait;
-
-    public function __construct() {
-        // apply auth middleware to store
-        // $this->middleware('auth')->only(['store']);
-        // redirect the user to the login page
-        // http://linkpro-new.test/login?isShopify=true&callback=<CallBackUrl>
-        // redirection
-    }
-
-     /**
-    * Display a listing of the resource.
-    *
-    * @return Response
-    */
-    public function index(): JsonResponse | Response
-    {
-
-        /* $products = ShopifyStore::all(); */
-        return $this->sendResponse("got stuff", 'Stores retrieved successfully.');
-    }
 
 /**
     * Store a newly created resource in storage.
@@ -90,7 +67,7 @@ class ShopifyController extends BaseController
                     "image_url"     => $product["image"] ? $product["image"]["src"] : null
                 ];
 
-                array_push($productsArray, $productObject);
+                $productsArray[] = $productObject;
             }
 
             $dataObject = [
@@ -99,30 +76,26 @@ class ShopifyController extends BaseController
                 'products' => $productsArray
             ];
 
-            //Log::channel( 'webhooks' )->info( " --- object --- " . print_r($dataObject) );
-            $shopifyStore = $this->createShopifyStore($dataObject);
+            Log::channel( 'webhooks' )->info( " --- object --- " . print_r($dataObject, true) );
             $storeName = str_replace('.myshopify.com', '', $domain);
-            $personalAccessToken = Auth::user()->createToken('shopify');
-            return Inertia::location('https://admin.shopify.com/store/' . $storeName . '/apps/link-pro?connected=true&token=' . $personalAccessToken->plainTextToken);
+            $shopifyStore = $this->createShopifyStore($dataObject);
+            if($shopifyStore["success"]) {
+                $this->postToShopify($domain);
+                return Inertia::location('https://admin.shopify.com/store/' . $storeName . '/apps/link-pro');
+            }
 
         } catch (Exception $e) {
-            return redirect()->route('api.show.connect', ['errors' => $e]);
-            /* Log::channel( 'cloudwatch' )->info( "--timestamp--" .
-                                                Carbon::now() .
-                                                "-- kind --"
-                                                . "Shopify Connection" .
-                                                "-- Error Message -- " .
-                                                print_r($e->getMessage())
-            ); */
-            Log::channel( 'webhooks' )->info( " --- error --- " . print_r($e) );
+            Log::channel( 'cloudwatch' )->info( "--timestamp--" . Carbon::now() . "-- Shopify error connecting store-- " . $e->getMessage() );
         }
     }
 
     public function disconnect(Request $request){
         $domain = $request->get('domain');
-        Log::channel( 'webhooks' )->info( " --- request --- " . $domain );
+        //Log::channel( 'webhooks' )->info( " --- request --- " . $domain );
         ShopifyStore::where('domain', $domain)->delete();
-        //\Log::info('Received webhook:', $domain);
+
+        Log::channel( 'cloudwatch' )->info( "--timestamp--" . Carbon::now() . "-- Shopify disconnect store-- " . print_r($domain, true ) );
+
         return response()->json(["success" => true], 200);
     }
 }
