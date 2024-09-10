@@ -21,9 +21,6 @@ export default function Login({
         remember: false,
     });
 
-    console.log("storeDomain: ", storeDomain);
-    console.log("cousres: ", course);
-
     useEffect(() => {
         return () => {
             reset("password");
