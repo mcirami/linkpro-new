@@ -8,6 +8,7 @@ use App\Http\Requests\ContactRequest;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use App\Http\Traits\BillingTrait;
+use Illuminate\Support\Facades\App;
 use Inertia\Response;
 use Spatie\Honeypot\Honeypot;
 
@@ -29,10 +30,12 @@ class ContactMailController extends Controller
 
         $reason = $request->get('reason');
 
-        if ($reason == "general" || $reason == "support") {
-            $email = 'matteo@link.pro';//'support@link.pro';
+        if ( ($reason == "general" || $reason == "support") && App::environment() == 'production') {
+            $email = 'support@link.pro';
+        } else if (App::environment() == 'production') {
+            $email = 'partners@link.pro';
         } else {
-            $email = 'matteo@link.pro'; //'partners@link.pro';
+            $email = 'matteo@link.pro';
         }
 
         Mail::to($email)->send(new ContactMail($request));

@@ -7,12 +7,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 
-export default function Login({
-    status,
-    canResetPassword,
-    course = null,
-    storeDomain = null,
-}) {
+export default function Login({ status, canResetPassword, course = null }) {
     const { auth } = usePage().props;
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -30,11 +25,7 @@ export default function Login({
     const submit = (e) => {
         e.preventDefault();
 
-        let parameter = course
-            ? "?course=" + course.id
-            : storeDomain
-              ? "?storeDomain=" + storeDomain
-              : "";
+        let parameter = course ? "?course=" + course.id : "";
         post(route("login") + parameter);
     };
 
