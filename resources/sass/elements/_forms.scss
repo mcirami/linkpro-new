@@ -575,7 +575,7 @@ form .bottom_row a {
 
                 .accordion_row {
                     display: block;
-                    padding: 10px;
+                    padding: 20px;
                     border: 1px solid $borderGray;
                     border-radius: 8px;
                     -webkit-border-radius: 8px;
@@ -1188,6 +1188,7 @@ form .bottom_row a {
         border-bottom: 1px solid $borderGray;
         padding-bottom: 10px;
         font-size: 20px;
+        text-shadow: 1px 0.02em $borderGray;
     }
 
     p {
@@ -1198,11 +1199,33 @@ form .bottom_row a {
         }
     }
 
+    h4 {
+        @include ossemibold;
+        color: $darkGray;
+        text-shadow: 1px 0.02em $borderGray;
+    }
+
     .input_wrap {
         margin-bottom: 10px;
 
         p {
             margin-bottom: 0;
+        }
+    }
+
+    ol {
+        list-style: decimal;
+        margin-left: 20px;
+        color: $darkGray;
+        margin: 10px 0 20px 20px;
+        font-size: 1rem;
+        font-style: italic;
+
+        li {
+            p {
+                font-size: 1rem;
+                line-height: 2;
+            }
         }
     }
 

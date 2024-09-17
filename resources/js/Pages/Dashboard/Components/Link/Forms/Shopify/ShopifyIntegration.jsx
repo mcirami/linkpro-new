@@ -36,15 +36,10 @@ const ShopifyIntegration = ({
     return (
         <div className="integration_wrap">
             <h3>Add your Shopify products as a LinkPro button!</h3>
-            <p className="mb-4">
+            {/* <p className="mb-4">
                 In connecting Shopify, you are sharing your Shopify store name
                 and Product details with LinkPro.
-            </p>
-            <p className="small my-4">
-                Note: You will be redirected away from LinkPro to log into
-                Shopify. You will need to either already have or create a a
-                Shopify store of your own to use this integration.
-            </p>
+            </p> */}
 
             <div
                 id="scrollTo"
@@ -62,11 +57,11 @@ const ShopifyIntegration = ({
                     <p>.myshopify.com</p>
                 </div> */}
                 <div className="text_wrap">
-                    <p>
+                    <h4>
                         In order to connect your Shopify store to LinkPro, you
                         will need to install the LinkPro app from the Shopify
-                        App Marketplace.
-                    </p>
+                        App Marketplace:
+                    </h4>
                     <ol>
                         <li>
                             <p>
@@ -76,7 +71,7 @@ const ShopifyIntegration = ({
                         </li>
                         <li>
                             <p>
-                                Open the LinkPro app in your Shopy store admin
+                                Open the LinkPro app in your Shopify store admin
                             </p>
                         </li>
                         <li>
@@ -91,10 +86,12 @@ const ShopifyIntegration = ({
                     <a
                         href="https://apps.shopify.com/linkpro"
                         className="button blue"
+                        target="_blank"
                     >
                         Go To Shopify App Marketplace
                     </a>
                 </div>
+
                 {showAddStore && (
                     <div className="button_wrap mt-3">
                         <a
@@ -114,6 +111,11 @@ const ShopifyIntegration = ({
                     LinkPro will not receive any sales data. All transactions
                     will occur on your Shopify Store.
                 </small>
+                <p className="small my-4">
+                    Note: You will be redirected away from LinkPro to log into
+                    Shopify. You will need to either already have or create a a
+                    Shopify store of your own to use this integration.
+                </p>
             </div>
             {/* <div className="connection_error">
                 <p>{connectionError}</p>
