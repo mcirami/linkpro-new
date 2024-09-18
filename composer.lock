@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e1dfa8eea92bb434fce3c7cdafad493",
+    "content-hash": "b0ca65965b99d64c2d9a2e6ff8e541a4",
     "packages": [
         {
             "name": "arrilot/laravel-widgets",
@@ -4325,6 +4325,66 @@
                 "source": "https://github.com/paragonie/random_compat"
             },
             "time": "2020-10-15T08:29:30+00:00"
+        },
+        {
+            "name": "phpnexus/cwh",
+            "version": "v3.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpnexus/cwh.git",
+                "reference": "cad54f4d3342112188fe660e6c8df9638e2ae2e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpnexus/cwh/zipball/cad54f4d3342112188fe660e6c8df9638e2ae2e4",
+                "reference": "cad54f4d3342112188fe660e6c8df9638e2ae2e4",
+                "shasum": ""
+            },
+            "require": {
+                "aws/aws-sdk-php": "^3.2",
+                "monolog/monolog": "^3.0",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.7"
+            },
+            "suggest": {
+                "maxbanton/dd": "Minimalistic dump-and-die function for easy debugging"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpNexus\\Cwh\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maksym Leonov",
+                    "email": "hi@maxleonov.pw",
+                    "homepage": "https://github.com/maxbanton"
+                },
+                {
+                    "name": "Mark",
+                    "homepage": "https://github.com/markinjapan"
+                }
+            ],
+            "description": "AWS CloudWatch Handler for Monolog library",
+            "homepage": "https://github.com/phpnexus/cwh",
+            "keywords": [
+                "aws",
+                "cloudwatch",
+                "monolog"
+            ],
+            "support": {
+                "issues": "https://github.com/phpnexus/cwh/issues",
+                "source": "https://github.com/phpnexus/cwh"
+            },
+            "time": "2024-08-02T08:48:28+00:00"
         },
         {
             "name": "phpoption/phpoption",

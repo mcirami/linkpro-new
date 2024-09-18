@@ -3,7 +3,7 @@
 namespace App\Logging;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
-use Maxbanton\Cwh\Handler\CloudWatch;
+use PhpNexus\Cwh\Handler\CloudWatch;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Logger;
 

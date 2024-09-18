@@ -1,6 +1,8 @@
 <?
 
 namespace App\Http\Traits;
+
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -29,10 +31,12 @@ trait ShopifyTrait {
         );
 
         if($validator->fails()) {
-            Log::channel( 'webhooks' )->info( " --- posted to shopify --- " . print_r($validator->errors(), true) );
+            //Log::channel( 'webhooks' )->info( " --- posted to shopify --- " . print_r($validator->errors(), true) );
             if($validator->errors()->has('domain')) {
-                if ($validator->errors()->get('domain') == "The domain has already been taken." ) {
-                    Auth::user()->ShopifyStores()->update([
+
+                if ($validator->errors()->get('domain')[0] == "The domain has already been taken." ) {
+                    //Log::channel( 'webhooks' )->info( " --- get domain error? --- " . print_r($validator->errors()->get('domain')[0], true) );
+                    Auth::user()->ShopifyStores()->where('domain', $domain)->update([
                         'access_token'  => $data['access_token'],
                         'products'      => $data['products']
                     ]);
@@ -43,7 +47,7 @@ trait ShopifyTrait {
             }
         }
 
-        $shopifyStore =  Auth::user()->ShopifyStores()->create([
+        $shopifyStore =  User::where('id', $userId)->ShopifyStores()->create([
             'access_token'  => $data['access_token'],
             'domain'        => $domain,
             'products'      => $data['products']
@@ -70,7 +74,9 @@ trait ShopifyTrait {
                     'token'         => $personalAccessToken->plainTextToken
                 ]
             ]);
-        Log::channel( 'webhooks' )->info( " --- posted to shopify --- " . print_r($res, true) );
+        Log::channel( 'cloudwatch' )->debug("-- postToShopifyFunc-- " . print_r($res, true ) );
+
+        //Log::channel( 'webhooks' )->info( " --- posted to shopify --- " . print_r($res, true) );
     }
 }
 

@@ -139,8 +139,8 @@ return [
                 'region' => 'us-east-2',
                 'version' => 'latest',
                 'credentials' => [
-                    'key' => env('AWS_CW_ACCESS'),
-                    'secret' => env('AWS_CW_SECRET')
+                    'key' => env('AWS_ACCESS_KEY_ID'),
+                    'secret' => env('AWS_SECRET_ACCESS_KEY')
                 ]
             ],
             'retention' => 730,

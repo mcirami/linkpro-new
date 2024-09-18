@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Controllers\Api\BaseController as BaseController;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
@@ -76,16 +76,19 @@ class ShopifyController extends BaseController
                 'products' => $productsArray
             ];
 
-            Log::channel( 'webhooks' )->info( " --- object --- " . print_r($dataObject, true) );
+            //Log::channel( 'webhooks' )->info( " --- object --- " . print_r($dataObject, true) );
             $storeName = str_replace('.myshopify.com', '', $domain);
             $shopifyStore = $this->createShopifyStore($dataObject);
             if($shopifyStore["success"]) {
+                Log::channel( 'cloudwatch' )->info( "--timestamp--" . Carbon::now() . "-- shopifyStore[success]-- " );
+
                 $this->postToShopify($domain);
+
                 return Inertia::location('https://admin.shopify.com/store/' . $storeName . '/apps/link-pro');
             }
 
         } catch (Exception $e) {
-            Log::channel( 'cloudwatch' )->info( "--timestamp--" . Carbon::now() . "-- Shopify error connecting store-- " . $e->getMessage() );
+            Log::channel( 'cloudwatch' )->debug( "--timestamp--" . Carbon::now() . "-- Shopify error connecting store-- " . $e->getMessage() );
         }
     }
 
@@ -94,7 +97,7 @@ class ShopifyController extends BaseController
         //Log::channel( 'webhooks' )->info( " --- request --- " . $domain );
         ShopifyStore::where('domain', $domain)->delete();
 
-        Log::channel( 'cloudwatch' )->info( "--timestamp--" . Carbon::now() . "-- Shopify disconnect store-- " . print_r($domain, true ) );
+        Log::channel( 'cloudwatch' )->debug( "--timestamp--" . Carbon::now() . "-- Shopify disconnect store-- " . print_r($domain, true ) );
 
         return response()->json(["success" => true], 200);
     }
