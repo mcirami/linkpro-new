@@ -13,7 +13,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use App\Models\ShopifyStore;
-use Illuminate\Support\Facades\Crypt;
+ 
 
 class ShopifyController extends BaseController
 {
@@ -80,7 +80,7 @@ class ShopifyController extends BaseController
             $storeName = str_replace('.myshopify.com', '', $domain);
             $shopifyStore = $this->createShopifyStore($dataObject);
             if($shopifyStore["success"]) {
-                Log::channel( 'cloudwatch' )->info( "--timestamp--" . Carbon::now() . "-- shopifyStore[success]-- " );
+                Log::channel( 'cloudwatch' )->debug( "--timestamp--" . Carbon::now() . "-- shopifyStore[success]-- " );
 
                 $this->postToShopify($domain);
 

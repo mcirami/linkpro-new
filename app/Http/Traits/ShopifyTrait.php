@@ -18,6 +18,7 @@ trait ShopifyTrait {
 
         $userId = Auth::id();
         $domain = $data['domain'];
+        $user = User::find($userId);
 
         $validator = Validator::make($data,
             [
@@ -36,7 +37,7 @@ trait ShopifyTrait {
 
                 if ($validator->errors()->get('domain')[0] == "The domain has already been taken." ) {
                     //Log::channel( 'webhooks' )->info( " --- get domain error? --- " . print_r($validator->errors()->get('domain')[0], true) );
-                    Auth::user()->ShopifyStores()->where('domain', $domain)->update([
+                    $user->ShopifyStores()->where('domain', $domain)->update([
                         'access_token'  => $data['access_token'],
                         'products'      => $data['products']
                     ]);
@@ -46,12 +47,15 @@ trait ShopifyTrait {
                 throw new \Exception("Error Processing Request", 1);
             }
         }
+        Log::channel( 'cloudwatch' )->debug( "-- before shopifyStore create -- " );
 
-        $shopifyStore =  User::where('id', $userId)->ShopifyStores()->create([
+        $shopifyStore =  $user->ShopifyStores()->create([
             'access_token'  => $data['access_token'],
             'domain'        => $domain,
             'products'      => $data['products']
         ]);
+
+        Log::channel( 'cloudwatch' )->debug( "-- shopifyStore create -- " . print_r($shopifyStore, true) );
 
         return ['success' => true, 'store' => $shopifyStore];
     }
@@ -64,7 +68,9 @@ trait ShopifyTrait {
     }
 
     public function postToShopify($domain) {
-        $personalAccessToken = Auth::user()->createToken('shopify');
+        $userId = Auth::id();
+        $user = User::find($userId);
+        $personalAccessToken = $user->createToken('shopify');
 
         $urlHost = App::environment() == 'production' ? 'https://linkpro.gadget.app' : 'https://linkpro--development.gadget.app';
         $client = new Client();

@@ -21,9 +21,9 @@ use Illuminate\Support\Facades\Route;
 //Public Routes
 Route::post('login', [AuthController::class,'login']);
 Route::post('register', [AuthController::class,'register']);
-Route::get('connect-shopify-store', [ShopifyController::class, 'showConnect'])->middleware('auth')->name('api.show.connect');
+/* Route::get('connect-shopify-store', [ShopifyController::class, 'showConnect'])->middleware('auth')->name('api.show.connect');
 Route::get('auth/shopify', [ShopifyController::class, 'auth']);
-Route::get('auth/shopify/callback', [ShopifyController::class, 'apiCallback']);
+Route::get('auth/shopify/callback', [ShopifyController::class, 'apiCallback']); */
 // Protected Routes
 
 Route::middleware('auth:sanctum')->group(function() {

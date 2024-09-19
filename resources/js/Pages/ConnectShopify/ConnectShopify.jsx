@@ -7,7 +7,7 @@ import { func } from "prop-types";
 function ConnectShopify({ domain, errors = null }) {
     const handleConnect = () => {
         let myPromise = new Promise((resolve, reject) => {
-            resolve("/api/auth/shopify?domain=" + domain);
+            resolve("/auth/shopify?domain=" + domain);
             reject("Error");
         });
 

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
-use App\Models\Purchase;
 use App\Services\StatsServices;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
@@ -43,7 +42,6 @@ class UserController extends Controller
      * @return Response
      */
     public function edit(): Response {
-
         $user = Auth::user();
         $hasOffers = $user->offers()->first();
         $isAffiliate = $user->Affiliates()->first();

@@ -90,6 +90,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/payment-onboarding', [UserController::class, 'paymentOnboarding'])->name('payment.onboarding');
     Route::get('/onboarding-success', [UserController::class, 'onboardingSuccess'])->name('onboarding.success');
 
+    Route::get('connect-shopify-store', [ShopifyController::class, 'showConnect'])->name('api.show.connect');
+    Route::get('auth/shopify', [ShopifyController::class, 'auth']);
+    Route::get('auth/shopify/callback', [ShopifyController::class, 'apiCallback']);
+
     Route::group(['prefix' => 'dashboard'], function () {
         Route::post('/links/new', [LinkController::class, 'store']);
         Route::put('/links/update/{link}', [LinkController::class, 'update']);
