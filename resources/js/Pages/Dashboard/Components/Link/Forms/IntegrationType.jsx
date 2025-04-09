@@ -102,10 +102,10 @@ const IntegrationType = ({
                     value="mailchimp">
                     MailChimp
                 </option>
-                <option
+                {/*<option
                     value="shopify">
                     Shopify
-                </option>
+                </option>*/}
             </select>
             <label htmlFor="mailchimp_list_id">Select Integration Type</label>
         </div>

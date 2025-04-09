@@ -89,7 +89,7 @@ class VoyagerFilterController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
                 if ($dataType->name == 'referrals') {
                     $query = $model::select($dataType->name.'.*')->whereBetween('updated_at', [ $getData['startDate'], $getData['endDate'] ]);
                 } else if($dataType->name == 'users') {
-                    $query = $model::select($dataType->name.'.*');
+                    $query = $model::select($dataType->name.'.*');;
                 } else {
                     $query = $model::select($dataType->name.'.*')->whereBetween('created_at', [ $getData['startDate'], $getData['endDate'] ]);
                 }
@@ -102,7 +102,6 @@ class VoyagerFilterController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
             if ($model && in_array(SoftDeletes::class, class_uses_recursive($model)) && Auth::user()->can('delete', app($dataType->model_name))) {
                 $usesSoftDeletes = true;
-
                 if ($request->get('showSoftDeleted')) {
                     $showSoftDeleted = true;
                     $query = $query->withTrashed();
@@ -130,6 +129,7 @@ class VoyagerFilterController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
             }
 
             $row = $dataType->rows->where('field', $orderBy)->firstWhere('type', 'relationship');
+
             if ($orderBy && (in_array($orderBy, $dataType->fields()) || !empty($row))) {
                 $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'desc';
                 if (!empty($row)) {

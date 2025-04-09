@@ -9,7 +9,19 @@ export default defineConfig({
         }),
         react(),
     ],
-
+    server: {
+        host: 'linkpro-new.test', // <- this is the key
+        port: 5173,
+        cors: true, // Add this
+        https: false, // or true, if you want to try again with SSL later
+        origin: 'http://linkpro-new.test:5173',
+        headers: {
+            'Access-Control-Allow-Origin': '*', // Allow from all origins
+        },
+        hmr: {
+            host: 'linkpro-new.test',
+        },
+    },
     build: {
         rollupOptions: {
             /* input: {

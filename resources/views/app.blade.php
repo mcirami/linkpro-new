@@ -11,10 +11,11 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     @if(isset($page['props']['event']))
-    <meta head-key="title" property="og:title" content="{{ isset($page['props']['event']['title']) ?? ''}}" />
-    <meta head-key="image" property="og:image" content="{{ isset($page['props']['event']['image']) ?? ''}}" />
-    <meta head-key="description" property="og:description" content="{{ isset($page['props']['event']['description']) ?? ''}}" />
+        <meta head-key="title" property="og:title" content="{{ isset($page['props']['event']['title']) ?? ''}}" />
+        <meta head-key="image" property="og:image" content="{{ isset($page['props']['event']['image']) ?? ''}}" />
+        <meta head-key="description" property="og:description" content="{{ isset($page['props']['event']['description']) ?? ''}}" />
     @endif
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Scripts -->
     @routes
     @viteReactRefresh

@@ -130,7 +130,7 @@ class User extends \TCG\Voyager\Models\User
         $roles = $this->getRoleNames();
         $previousURL = Session::get('url.intended');
 
-        $courseID = isset($_GET['course']) ? $_GET['course'] : null;
+        $courseID = $_GET['course'] ?? null;
         $course = null;
         if ($courseID) {
             $course = Course::findOrFail($courseID);
