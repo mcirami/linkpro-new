@@ -10,22 +10,14 @@ class Page extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are not mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'user_id',
-        'name',
-        'header_img',
-        'profile_img',
-        'title',
-        'bio',
-        'is_protected',
-        'password',
-        'default',
-        'disabled',
-        'profile_layout',
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at'
     ];
 
     public function user() {

@@ -19,9 +19,10 @@ import {
 } from '@/Services/Reducer.jsx';
 import {
     FolderLinksContext,
-    PageContext,
     UserLinksContext,
 } from '../../../Dashboard.jsx';
+import {usePageContext} from '@/Context/PageContext.jsx';
+
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 import {acceptTerms} from '@/Services/UserService.jsx';
 import IconDescription from './IconDescription.jsx';
@@ -45,14 +46,16 @@ const StandardForm = ({
 
     const { userLinks, dispatch } = useContext(UserLinksContext);
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
-    const  { pageSettings } = useContext(PageContext);
+    const  { pageSettings } = usePageContext();
     const [ showTerms, setShowTerms ] = useState(false);
+
+    const [id, type] = useState(editID);
 
     const [currentLink, setCurrentLink] = useState(
         userLinks.find(function(e) {
-            return e.id === editID
+            return e.id === id
         }) || folderLinks.find(function(e) {
-            return e.id === editID
+            return e.id === id
         }) ||
         {
             icon: null,
@@ -144,12 +147,12 @@ const StandardForm = ({
             let descValue = null;
             let iconType = inputType;
 
-            if (currentLink.description && currentLink.description !== "") {
+            /*if (currentLink.description && currentLink.description !== "") {
                 if(descChecked) {
                     iconType = "advanced";
                 }
                 descValue = getJsonValue(currentLink.description);
-            }
+            }*/
 
             switch (inputType) {
                 case "url":
@@ -210,7 +213,7 @@ const StandardForm = ({
                     break;
             }
 
-            const func = editID ? updateLink(packets, editID) : addLink(packets);
+            const func = id ? updateLink(packets, id) : addLink(packets);
 
             func.then((data) => {
 
@@ -218,11 +221,11 @@ const StandardForm = ({
 
                     if (folderID) {
 
-                        if (editID) {
+                        if (id) {
                             dispatchFolderLinks({
                                 type: FOLDER_LINKS_ACTIONS.UPDATE_FOLDER_LINKS,
                                 payload: {
-                                    editID: editID,
+                                    editID: id,
                                     currentLink: currentLink,
                                     url: URL,
                                     type: iconType,
@@ -234,7 +237,7 @@ const StandardForm = ({
                                 type: LINKS_ACTIONS.UPDATE_LINK_IN_FOLDER,
                                 payload: {
                                     folderID: folderID,
-                                    editID: editID,
+                                    editID: id,
                                     currentLink: currentLink,
                                     url: URL,
                                     type: iconType,
@@ -294,11 +297,11 @@ const StandardForm = ({
 
                     } else {
 
-                        if (editID) {
+                        if (id) {
                             dispatch({
                                 type: LINKS_ACTIONS.UPDATE_LINK,
                                 payload: {
-                                    editID: editID,
+                                    editID: id,
                                     currentLink: currentLink,
                                     url: URL,
                                     type: iconType,
@@ -415,7 +418,7 @@ const StandardForm = ({
                             setCharactersLeft={setCharactersLeft}
                             inputType={inputType}
                             setInputType={setInputType}
-                            editID={editID}
+                            editID={id}
                         />
 
                     </div>
@@ -485,14 +488,14 @@ const StandardForm = ({
                     }
                 </div>
 
-                {!folderID &&
+                {/*{!folderID &&
                     <IconDescription
                         currentLink={currentLink}
                         setCurrentLink={setCurrentLink}
                         descChecked={descChecked}
                         setDescChecked={setDescChecked}
                     />
-                }
+                }*/}
 
                 <div className="button_row w-full mt-4">
                     <button className="button green" type="submit">

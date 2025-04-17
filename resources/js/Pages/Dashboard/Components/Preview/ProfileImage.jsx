@@ -1,12 +1,12 @@
 import React, {useContext} from 'react';
-import {PageContext} from '../../Dashboard.jsx';
+import {usePageContext} from '@/Context/PageContext.jsx';
 
 const ProfileImage = ({
                           completedCrop,
                           nodesRef,
                       }) => {
 
-    const {pageSettings} = useContext(PageContext);
+    const {pageSettings} = usePageContext();
 
     return (
 

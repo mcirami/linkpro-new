@@ -3,7 +3,8 @@ import React, {
     useState,
     useEffect,
 } from 'react';
-import {PageContext, UserLinksContext} from '../../Dashboard.jsx';
+import {UserLinksContext} from '../../Dashboard.jsx';
+import {usePageContext} from '@/Context/PageContext.jsx';
 import {IoIosCloseCircleOutline} from 'react-icons/io';
 import AccordionLinks from '@/Components/LinkComponents/AccordionLinks.jsx';
 import {checkIcon} from '@/Services/UserService.jsx';
@@ -15,7 +16,7 @@ import SubscribeForm from '@/Components/LinkComponents/SubscribeForm.jsx';
 import StoreProducts from '@/Components/LinkComponents/StoreProducts.jsx';
 import {UseLoadPreviewHeight, UseResizePreviewHeight} from '@/Services/PreviewHooks.jsx';
 import AdvancedIcon from '@/Components/LinkComponents/AdvancedIcon.jsx';
-import IconDescription from '@/Components/LinkComponents/IconDescription.jsx';
+//import IconDescription from '@/Components/LinkComponents/IconDescription.jsx';
 import LivePageButton from '@/Pages/Dashboard/Components/LivePageButton.jsx';
 
 const Preview = ({
@@ -27,14 +28,13 @@ const Preview = ({
                      setValue,
                      userSub,
                      subStatus,
-                     pageHeaderRef,
                      showPreview,
                      setShowPreview,
                      pageName
 }) => {
 
     const { userLinks } = useContext(UserLinksContext);
-    const {pageSettings} = useContext(PageContext);
+    const {pageSettings} = usePageContext();
     const loadPreviewHeight = UseLoadPreviewHeight();
     const resizePreviewHeight = UseResizePreviewHeight();
     const [iconCount, setIconCount] = useState(userLinks.length);
@@ -77,7 +77,7 @@ const Preview = ({
     const accordionLinks = value.index !== null ? userLinks[value.index].links : null;
     const mailchimpListId = value.index !== null ? userLinks[value.index].mailchimp_list_id : null;
     const storeProducts = value.index !== null ? userLinks[value.index].shopify_products : null;
-    const description = value.index !== null ? userLinks[value.index].description : null;
+    //const description = value.index !== null ? userLinks[value.index].description : null;
 
     return (
 
@@ -100,14 +100,14 @@ const Preview = ({
                             completedCrop={completedCrop}
                         />
 
-                        <div id={pageSettings['profile_layout']} className="profile_content" ref={pageHeaderRef}>
+                        <div id={pageSettings['profile_layout']} className="profile_content">
                             <ProfileImage
                                 completedCrop={completedCrop}
                                 nodesRef={nodesRef}
                             />
                             <ProfileText/>
                         </div>
-                        <div className="icons_wrap main">
+                        <div className={`icons_wrap main ${pageSettings.page_layout} `}>
 
                             {userLinks?.slice(0, iconCount).
                                 map((linkItem, index) => {
@@ -133,7 +133,7 @@ const Preview = ({
                                         }
                                     }
 
-                                    const dataRow = Math.ceil((index + 1) / 4);
+                                    const dataRow = pageSettings.page_layout === "layout_one" ? Math.ceil((index + 1) / 4) : index + 1;
 
                                     let displayIcon = null;
                                     if (type !== "folder") {
@@ -183,20 +183,28 @@ const Preview = ({
                                                         return (
                                                             <div className={` ${colClasses} `}>
                                                                 {active_status ?
-                                                                    <>
-                                                                        <a className={ (!url || !displayIcon) ? "default" : ""}
+                                                                    pageSettings.page_layout === "layout_one" ?
+                                                                        <>
+                                                                            <a className={`${ (!url || !displayIcon) ? "default" : ""}`}
+                                                                               target="_blank"
+                                                                               href={url || "#"}>
+                                                                                <img src={displayIcon} alt=""/>
+                                                                            </a>
+                                                                            <p>
+                                                                                {name?.length > 11 ?
+                                                                                    name.substring(0, 11) + "..."
+                                                                                    :
+                                                                                    name || "Link Name"
+                                                                                }
+                                                                            </p>
+                                                                        </>
+                                                                        :
+                                                                        <a className={`icon_wrap ${ (!url || !displayIcon) ? "default" : ""}`}
                                                                            target="_blank"
                                                                            href={url || "#"}>
                                                                             <img src={displayIcon} alt=""/>
+                                                                            <h3>{name || "Link Name"}</h3>
                                                                         </a>
-                                                                        <p>
-                                                                            {name?.length > 11 ?
-                                                                                name.substring(0, 11) + "..."
-                                                                                :
-                                                                                name || "Link Name"
-                                                                            }
-                                                                        </p>
-                                                                    </>
                                                                     :
                                                                     ""
                                                                 }
@@ -222,12 +230,14 @@ const Preview = ({
                                                                 clickType={clickType}
                                                                 type={type}
                                                                 viewType="preview"
+                                                                pageLayout={pageSettings.page_layout}
                                                             />
                                                         )
                                                 }
                                             })()}
 
-                                            { ( (index + 1) % 4 === 0) || index + 1 === iconCount ?
+                                            { (( (index + 1) % 4 === 0) || index + 1 === iconCount) ||
+                                            (pageSettings.page_layout === "layout_two" && index + 1  === dataRow) ?
                                                 (() => {
                                                     switch (clickType) {
                                                         case "mailchimp":
@@ -246,7 +256,7 @@ const Preview = ({
                                                                     storeProducts={storeProducts}
                                                                 />
                                                             )
-                                                        case "advanced":
+                                                        /*case "advanced":
                                                             return (
                                                                 <IconDescription
                                                                     id={id}
@@ -256,10 +266,10 @@ const Preview = ({
                                                                     url={value.url}
                                                                     viewType="preview"
                                                                 />
-                                                            )
+                                                            )*/
                                                         case "folder":
                                                             return (
-                                                                <div className={`my_row folder ${dataRow == row ?
+                                                                <div className={`my_row folder ${dataRow === row ?
                                                                     "open" :
                                                                     ""}`}>
                                                                     <div className="icons_wrap inner">

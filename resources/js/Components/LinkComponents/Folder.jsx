@@ -1,6 +1,7 @@
 import FolderLinks from './FolderLinks.jsx';
 import React from 'react';
 import {TrackFolderClick} from '@/Services/TrackClicks.jsx';
+import {toInteger} from 'lodash';
 
 const Folder = ({
                     id,
@@ -30,7 +31,7 @@ const Folder = ({
                 url: null
             });
         } else {
-            setRow(clickedDiv.firstChild.dataset.row);
+            setRow(toInteger(clickedDiv.firstChild.dataset.row));
             setValue((prev) => ({
                 ...prev,
                 index: index
@@ -51,7 +52,7 @@ const Folder = ({
 
     return (
 
-        <div className={ ` ${colClasses} ${mainIndex == value.index && clickType === "folder" ? " open" : "" } `}>
+        <div className={ ` ${colClasses} ${mainIndex === value.index && clickType === "folder" ? " open" : "" } `}>
             <a className="inner_icon_wrap"
                href="#"
                data-row={ dataRow }

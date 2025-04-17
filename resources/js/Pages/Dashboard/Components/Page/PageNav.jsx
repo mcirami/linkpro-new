@@ -1,7 +1,7 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {MdAddCircleOutline} from 'react-icons/md';
 import {FiChevronDown} from 'react-icons/fi';
-import {PageContext} from '../../Dashboard.jsx';
+import {usePageContext} from '@/Context/PageContext.jsx';
 import AddPageForm from './AddPageForm';
 import {Link} from '@inertiajs/react';
 
@@ -15,7 +15,7 @@ const PageNav = ({
 }) => {
 
     const [isEditing, setIsEditing] = useState(false);
-    const { pageSettings, setPageSettings } = useContext(PageContext);
+    const { pageSettings } = usePageContext();
 
     const pageList = allUserPages.filter(element => element.id !== pageSettings["id"]);
 

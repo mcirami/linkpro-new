@@ -98,6 +98,16 @@ select {
     }
 }
 
+.layout_label {
+    background: $white;
+    color: rgba(155, 155, 155, 0.6);
+    position: absolute;
+    line-height: 1;
+    top: -17px;
+    left: 15px;
+    font-size: 12px;
+    z-index: 3;
+}
 #card_number {
     padding: 10px 40px 10px 15px;
 }

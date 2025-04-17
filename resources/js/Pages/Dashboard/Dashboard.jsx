@@ -45,15 +45,16 @@ import AccordionLink from './Components/Link/Forms/AccordionLink';
 import CustomForm from './Components/Link/Forms/CustomForm';
 import IntegrationForm from './Components/Link/Forms/IntegrationForm';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-
-export const UserLinksContext = createContext();
-export const FolderLinksContext = createContext();
-export const PageContext = createContext();
+import PageContext from '@/Context/PageContext.jsx';
+export const UserLinksContext = createContext(undefined);
+export const FolderLinksContext = createContext(undefined);
+//export const PageContext = createContext(undefined);
 
 import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext.jsx';
 import {Head} from '@inertiajs/react';
 import SetFlash from '@/Utils/SetFlash.jsx';
 import EventBus from '@/Utils/Bus.jsx';
+import PageLayout from '@/Pages/Dashboard/Components/Page/PageLayout.jsx';
 
 function Dashboard({
                        message = null,
@@ -74,14 +75,20 @@ function Dashboard({
     const [triangleRef, setTriangleRef] = useState(null);
 
     const [allUserPages, setAllUserPages] = useState(userPages);
-    const [editFolderID, setEditFolderID] = useState(null);
 
-    const [editID, setEditID] = useState(null);
+    const [editFolderID, setEditFolderID] = useState(null);
+    const [inputType, setInputType] = useState(null);
+    const [editID, setEditID] = useState({
+        id: null,
+        type: null,
+    });
+
     const [showLinkForm, setShowLinkForm] = useState(false);
 
     const [accordionValue, setAccordionValue] = useState(null);
-    const [inputType, setInputType] = useState(null);
-    const [integrationType, setIntegrationType] = useState(null);
+
+    const [integrationType, setIntegrationType] = useState("mailchimp");
+
     const [storeID, setStoreID] = useState(null);
     const [shopifyStores, setShopifyStores] = useState([]);
 
@@ -99,7 +106,7 @@ function Dashboard({
     const nodesRef = useRef({});
     const [completedCrop, setCompletedCrop] = useState({});
 
-    const pageHeaderRef = useRef();
+    const pageLayoutRef = useRef();
     const leftColWrap = useRef();
 
     const subStatus = useMemo(
@@ -310,7 +317,7 @@ function Dashboard({
                                         />
                                     }
 
-                                    {showConfirmFolderDelete &&
+                                   {/* {showConfirmFolderDelete &&
                                         <ConfirmFolderDelete
                                             showConfirmFolderDelete={showConfirmFolderDelete}
                                             setShowConfirmFolderDelete={setShowConfirmFolderDelete}
@@ -318,7 +325,7 @@ function Dashboard({
                                             setEditFolderID={setEditFolderID}
                                             setAccordionValue={setAccordionValue}
                                         />
-                                    }
+                                    }*/}
 
                                     <PageContext.Provider value={{
                                         pageSettings,
@@ -372,8 +379,11 @@ function Dashboard({
                                                         <PageTitle />
                                                         <PageBio />
 
-                                                        <PageHeaderLayout
-                                                            pageHeaderRef={pageHeaderRef} />
+                                                        <div className="layouts_wrap">
+                                                            <PageLayout
+                                                                pageLayoutRef={pageLayoutRef}
+                                                            />
+                                                        </div>
 
                                                         <InfoText
                                                             divRef={leftColWrap}
@@ -414,7 +424,6 @@ function Dashboard({
                                                                             setShowConfirmPopup={setShowConfirmPopup}
                                                                             editFolderID={editFolderID}
                                                                             editID={editID}
-                                                                            setAccordionValue={setAccordionValue}
                                                                         />
                                                                     </div>
                                                                 }
@@ -625,6 +634,11 @@ function Dashboard({
                                                                     setValue={setValue}
                                                                     setShowUpgradePopup={setShowUpgradePopup}
                                                                     setAccordionValue={setAccordionValue}
+                                                                    pageLayoutRef={pageLayoutRef}
+                                                                    setShowConfirmFolderDelete={setShowConfirmFolderDelete}
+                                                                    setShowConfirmPopup={setShowConfirmPopup}
+                                                                    editFolderID={editFolderID}
+                                                                    editID={editID}
                                                                 />
                                                             </ErrorBoundary>
                                                     }
@@ -640,7 +654,7 @@ function Dashboard({
                                                 userSub={userSub}
                                                 setValue={setValue}
                                                 subStatus={subStatus}
-                                                pageHeaderRef={pageHeaderRef}
+                                                pageLayoutRef={pageLayoutRef}
                                                 showPreview={showPreview}
                                                 setShowPreview={setShowPreview}
                                                 pageName={pageSettings['name']}

@@ -1,12 +1,12 @@
 import React, {useContext, useState} from 'react';
 import {FiThumbsDown, FiThumbsUp} from 'react-icons/fi';
-import {PageContext} from '../../Dashboard.jsx';
+import {usePageContext} from '@/Context/PageContext.jsx';
 import {updatePageName} from '@/Services/PageRequests.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 
 const PageName = ({pageNames}) => {
 
-    const { pageSettings, setPageSettings } = useContext(PageContext);
+    const { pageSettings, setPageSettings } = usePageContext();
 
     const [userPageNames, setUserPageNames] = useState(pageNames);
 

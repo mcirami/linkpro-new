@@ -7,11 +7,11 @@ import StoreProducts from '@/Components/LinkComponents/StoreProducts.jsx';
 import AccordionLinks from '@/Components/LinkComponents/AccordionLinks.jsx';
 import {TrackIconClick} from '@/Services/TrackClicks.jsx';
 import AdvancedIcon from '@/Components/LinkComponents/AdvancedIcon.jsx';
-import IconDescription from '@/Components/LinkComponents/IconDescription.jsx';
+//import IconDescription from '@/Components/LinkComponents/IconDescription.jsx';
 
 function LivePage({links, page, subscribed}) {
 
-    const {user_id, header_img, profile_layout, profile_img, title, bio, name} = page;
+    const {user_id, header_img, profile_layout, page_layout, profile_img, title, bio, name} = page;
 
     const [headerStyle, setHeaderStyle] = useState({});
     const [iconCount, setIconCount] = useState(null);
@@ -45,7 +45,7 @@ function LivePage({links, page, subscribed}) {
     const accordionLinks = value.index ? links[value.index].links : null;
     const mailchimpListId = value.index ? links[value.index].mailchimp_list_id : null;
     const storeProducts = value.index ? links[value.index].shopify_products : null;
-    const description = value.index ? links[value.index].description : null;
+    //const description = value.index ? links[value.index].description : null;
 
     return (
         <main className="py-4">
@@ -71,183 +71,194 @@ function LivePage({links, page, subscribed}) {
                                     {title && <h2>{title}</h2>}
                                     {bio && <p>{bio}</p>}
                                 </div>
-                                <div className="icons_wrap main">
-                                    {links.slice(0, iconCount).map((linkItem, index) => {
-                                        let {
-                                            id,
-                                            type,
-                                            name,
-                                            url,
-                                            email,
-                                            phone,
-                                            icon,
-                                            active_status,
-                                            links
-                                        } = linkItem;
+                            </div>
+                            <div className={`icons_wrap main ${page_layout}`}>
+                                {links.slice(0, iconCount).map((linkItem, index) => {
+                                    let {
+                                        id,
+                                        type,
+                                        name,
+                                        url,
+                                        email,
+                                        phone,
+                                        icon,
+                                        active_status,
+                                        links
+                                    } = linkItem;
 
-                                        if (email) {
-                                            url = "mailto:" + email;
-                                        } else if (phone) {
-                                            url = "tel:" + phone;
-                                            if(icon.includes("Facetime")) {
-                                                url = 'facetime:' + phone;
-                                            }
+                                    if (email) {
+                                        url = "mailto:" + email;
+                                    } else if (phone) {
+                                        url = "tel:" + phone;
+                                        if(icon.includes("Facetime")) {
+                                            url = 'facetime:' + phone;
                                         }
+                                    }
 
-                                        const dataRow = Math.ceil((index + 1) / 4);
+                                    const dataRow = page_layout === "layout_one" ? Math.ceil((index + 1) / 4) : Math.ceil(index + 1);
 
-                                        let displayIcon = null;
-                                        if(type !== "folder") {
-                                            displayIcon = checkIcon(icon, "preview", subscribed);
-                                        }
+                                    let displayIcon = null;
+                                    if(type !== "folder") {
+                                        displayIcon = checkIcon(icon, "preview", subscribed);
+                                    }
 
-                                        let colClasses = "";
-                                        if (type === "folder" || type === "mailchimp" || type === "shopify" || type === "advanced") {
-                                            colClasses = "icon_col folder";
-                                        } else {
-                                            colClasses = "icon_col";
-                                        }
+                                    let colClasses = "";
+                                    if (type === "folder" || type === "mailchimp" || type === "shopify" || type === "advanced") {
+                                        colClasses = "icon_col folder";
+                                    } else {
+                                        colClasses = "icon_col";
+                                    }
 
-                                        return (
-                                            <React.Fragment key={index}>
-                                                {(() => {
-                                                    switch (type) {
-                                                        case "folder":
-                                                            return ( active_status && subscribed ?
-                                                                <Folder
-                                                                    id={id}
-                                                                    colClasses={colClasses}
-                                                                    mainIndex={index}
-                                                                    links={links}
-                                                                    setRow={setRow}
-                                                                    value={value}
-                                                                    setValue={setValue}
-                                                                    dataRow={dataRow}
-                                                                    name={name}
-                                                                    clickType={clickType}
-                                                                    setClickType={setClickType}
-                                                                    subStatus={subscribed}
-                                                                    viewType="live"
-                                                                />
-                                                                :
-                                                                subscribed &&
-                                                                <div className={` ${colClasses} `}>
-                                                                </div>
-                                                            )
-                                                        case "standard":
-                                                        case "offer":
-                                                        case "url":
-                                                        case "email":
-                                                        case "phone":
-                                                            return (
-                                                                <div className={` ${colClasses} `}>
-                                                                    {active_status ?
-                                                                        <>
-                                                                            <a className={!url || !displayIcon ? "default" : ""}
-                                                                               target="_blank"
-                                                                               href={url || "#"}
-                                                                               onClick={(e) => TrackIconClick(id)}
-                                                                            >
-                                                                                <img src={displayIcon} alt=""/>
-                                                                            </a>
-                                                                            <p>
-                                                                                {name?.length > 11 ? name.substring(0, 11) + "..."
-                                                                                    : name || "Link Name"
-                                                                                }
-                                                                            </p>
-                                                                        </>
-                                                                        :
-                                                                        ""
-                                                                    }
-                                                                </div>
-                                                            )
+                                    return (
+                                        <React.Fragment key={index}>
+                                            {(() => {
+                                                switch (type) {
+                                                    case "folder":
+                                                        return ( active_status && subscribed ?
+                                                            <Folder
+                                                                id={id}
+                                                                colClasses={colClasses}
+                                                                mainIndex={index}
+                                                                links={links}
+                                                                setRow={setRow}
+                                                                value={value}
+                                                                setValue={setValue}
+                                                                dataRow={dataRow}
+                                                                name={name}
+                                                                clickType={clickType}
+                                                                setClickType={setClickType}
+                                                                subStatus={subscribed}
+                                                                viewType="live"
+                                                            />
+                                                            :
+                                                            subscribed &&
+                                                            <div className={` ${colClasses} `}>
+                                                            </div>
+                                                        )
+                                                    case "standard":
+                                                    case "offer":
+                                                    case "url":
+                                                    case "email":
+                                                    case "phone":
+                                                        return (
+                                                            <div className={` ${colClasses} `}>
+                                                                {active_status ? page_layout === "layout_one" ?
+                                                                    <>
+                                                                        <a className={!url || !displayIcon ? "default" : ""}
+                                                                           target="_blank"
+                                                                           href={url || "#"}
+                                                                           onClick={(e) => TrackIconClick(id)}
+                                                                        >
+                                                                            <img src={displayIcon} alt=""/>
+                                                                        </a>
+                                                                        <p>
+                                                                            {name?.length > 11 ? name.substring(0, 11) + "..."
+                                                                                : name || "Link Name"
+                                                                            }
+                                                                        </p>
+                                                                    </>
+                                                                    :
+                                                                        <a className={`icon_wrap ${ (!url || !displayIcon) ? "default" : ""}`}
+                                                                           target="_blank"
+                                                                           href={url || "#"}>
+                                                                            <img src={displayIcon} alt=""/>
+                                                                            <h3>{name || "Link Name"}</h3>
+                                                                        </a>
+                                                                    :
+                                                                    ""
+                                                                }
+                                                            </div>
+                                                        )
+                                                    case "mailchimp":
+                                                    case "shopify":
+                                                    case "advanced":
+                                                        return (
+                                                            <AdvancedIcon
+                                                                id={id}
+                                                                colClasses={colClasses}
+                                                                displayIcon={displayIcon}
+                                                                name={name}
+                                                                active_status={active_status}
+                                                                dataRow={dataRow}
+                                                                mainIndex={index}
+                                                                setRow={setRow}
+                                                                value={value}
+                                                                setValue={setValue}
+                                                                url={url}
+                                                                index={index}
+                                                                setClickType={setClickType}
+                                                                clickType={clickType}
+                                                                type={type}
+                                                                viewType="live"
+                                                                pageLayout={page_layout}
+                                                            />
+                                                        )
+                                                }
+                                            })()}
+
+                                            {subscribed &&
+                                            ( (index + 1) % 4 === 0 || index + 1 === iconCount) ||
+                                            (index + 1 === dataRow && page_layout === "layout_two") ?
+                                                (() => {
+                                                    switch (clickType) {
                                                         case "mailchimp":
-                                                        case "shopify":
-                                                        case "advanced":
                                                             return (
-                                                                <AdvancedIcon
-                                                                    id={id}
-                                                                    colClasses={colClasses}
-                                                                    displayIcon={displayIcon}
-                                                                    name={name}
-                                                                    active_status={active_status}
+                                                                <SubscribeForm
                                                                     dataRow={dataRow}
-                                                                    mainIndex={index}
-                                                                    setRow={setRow}
-                                                                    value={value}
-                                                                    setValue={setValue}
-                                                                    url={url}
-                                                                    index={index}
-                                                                    setClickType={setClickType}
-                                                                    clickType={clickType}
-                                                                    type={type}
+                                                                    row={row}
+                                                                    mailchimpListId={mailchimpListId}
+                                                                    userId={user_id}
+                                                                />
+                                                            )
+                                                        case "shopify":
+                                                            return (
+                                                                <StoreProducts
+                                                                    dataRow={dataRow}
+                                                                    row={row}
+                                                                    storeProducts={storeProducts}
+                                                                />
+                                                            )
+                                                        /*case "advanced":
+                                                            return (
+                                                                <IconDescription
+                                                                    id={id}
+                                                                    dataRow={dataRow}
+                                                                    row={row}
+                                                                    description={description}
+                                                                    url={value.url}
                                                                     viewType="live"
                                                                 />
+                                                            )*/
+                                                        case "folder":
+                                                            return (
+                                                                <div className={`my_row folder ${dataRow === row ? "open" : ""}`}>
+                                                                    <div className="icons_wrap inner">
+
+                                                                        {accordionLinks?.map((innerLinkFull, index) => {
+                                                                            return (
+                                                                                <AccordionLinks
+                                                                                    key={index}
+                                                                                    icons={innerLinkFull}
+                                                                                    subStatus={subscribed}
+                                                                                    viewType="live"
+                                                                                />
+                                                                            )
+                                                                        })
+                                                                        }
+                                                                    </div>
+                                                                </div>
                                                             )
                                                     }
-                                                })()}
+                                                })()
+                                                :
+                                                ""
+                                            }
 
-                                                {subscribed && ( (index + 1) % 4 === 0 || index + 1 === iconCount) ?
-                                                    (() => {
-                                                        switch (clickType) {
-                                                            case "mailchimp":
-                                                                return (
-                                                                    <SubscribeForm
-                                                                        dataRow={dataRow}
-                                                                        row={row}
-                                                                        mailchimpListId={mailchimpListId}
-                                                                        userId={user_id}
-                                                                    />
-                                                                )
-                                                            case "shopify":
-                                                                return (
-                                                                    <StoreProducts
-                                                                        dataRow={dataRow}
-                                                                        row={row}
-                                                                        storeProducts={storeProducts}
-                                                                    />
-                                                                )
-                                                            case "advanced":
-                                                                return (
-                                                                    <IconDescription
-                                                                        id={id}
-                                                                        dataRow={dataRow}
-                                                                        row={row}
-                                                                        description={description}
-                                                                        url={value.url}
-                                                                        viewType="live"
-                                                                    />
-                                                                )
-                                                            case "folder":
-                                                                return (
-                                                                    <div className={`my_row folder ${dataRow == row ? "open" : ""}`}>
-                                                                        <div className="icons_wrap inner">
-
-                                                                            {accordionLinks?.map((innerLinkFull, index) => {
-                                                                                return (
-                                                                                    <AccordionLinks
-                                                                                        key={index}
-                                                                                        icons={innerLinkFull}
-                                                                                        subStatus={subscribed}
-                                                                                        viewType="live"
-                                                                                    />
-                                                                                )
-                                                                            })
-                                                                            }
-                                                                        </div>
-                                                                    </div>
-                                                                )
-                                                        }
-                                                    })()
-                                                    :
-                                                    ""
-                                                }
-
-                                            </React.Fragment>
-                                        )
-                                    })}
-                                </div>
+                                        </React.Fragment>
+                                    )
+                                })}
                             </div>
+
                         </div>
                     </div>
                 </div>

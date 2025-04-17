@@ -1,12 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {PageContext} from '../../Dashboard.jsx';
+import {usePageContext} from '@/Context/PageContext.jsx';
 
 const Header = ({
                     nodesRef,
                     completedCrop,
                 }) => {
 
-    const {pageSettings} = useContext(PageContext);
+    const {pageSettings} = usePageContext();
 
     const myStyle = {
         backgroundImage: "url(" + pageSettings["header_img"] + ")",

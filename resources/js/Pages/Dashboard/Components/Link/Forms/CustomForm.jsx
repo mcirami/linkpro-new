@@ -16,9 +16,9 @@ import {
 } from '@/Services/ImageService.jsx';
 import {
     FolderLinksContext,
-    PageContext,
     UserLinksContext,
 } from '../../../Dashboard.jsx';
+import {usePageContext} from '@/Context/PageContext.jsx';
 import {
     addLink,
     checkURL,
@@ -52,7 +52,7 @@ const CustomForm = ({
     const [customIconArray, setCustomIconArray] = useState([]);
     const { userLinks, dispatch } = useContext(UserLinksContext);
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
-    const  { pageSettings } = useContext(PageContext);
+    const  { pageSettings } = usePageContext();
 
     //const iconRef = useRef(null)
     const [completedIconCrop, setCompletedIconCrop] = useState({});
@@ -92,12 +92,12 @@ const CustomForm = ({
         }
     );
 
-    const [descChecked, setDescChecked] = useState(
+    /*const [descChecked, setDescChecked] = useState(
         Boolean(
             currentLink.description &&
             currentLink.description !== "" &&
             currentLink.type === "advanced"
-        ));
+        ));*/
 
     useDebounceEffect(
         null,
@@ -166,12 +166,12 @@ const CustomForm = ({
                 let descValue = null;
                 let iconType = inputType;
 
-                if (currentLink.description && currentLink.description !== "") {
+               /* if (currentLink.description && currentLink.description !== "") {
                     if(descChecked) {
                         iconType = "advanced";
                     }
                     descValue = getJsonValue(currentLink.description);
-                }
+                }*/
 
                 switch (inputType) {
                     case "url":
@@ -394,12 +394,12 @@ const CustomForm = ({
                 let descValue = null;
                 let iconType = inputType;
 
-                if (currentLink.description && currentLink.description !== "") {
+                /*if (currentLink.description && currentLink.description !== "") {
                     if(descChecked) {
                         iconType = "advanced";
                     }
                     descValue = getJsonValue(currentLink.description);
-                }
+                }*/
 
                 switch (inputType) {
                     case "url":
@@ -731,14 +731,14 @@ const CustomForm = ({
                     setCurrentLink={setCurrentLink}
                 />
             </div>
-            {!folderID &&
+            {/*{!folderID &&
                 <IconDescription
                     currentLink={currentLink}
                     setCurrentLink={setCurrentLink}
                     descChecked={descChecked}
                     setDescChecked={setDescChecked}
                 />
-            }
+            }*/}
             <div className="my_row button_row mt-4">
                 <button className="button green" type="submit">
                     Save

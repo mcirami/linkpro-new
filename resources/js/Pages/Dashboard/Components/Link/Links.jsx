@@ -1,12 +1,12 @@
 import React, {
-    useRef,
-    useContext,
+    useContext
 } from 'react';
 import Link from './Link';
 import {
     UserLinksContext,
     FolderLinksContext,
 } from '../../Dashboard.jsx';
+import {usePageContext} from '@/Context/PageContext.jsx';
 import {
     updateLinksPositions,
     updateLinkStatus,
@@ -40,13 +40,19 @@ const Links = ({
                    setValue,
                    setShowUpgradePopup,
                    subStatus,
-                   setAccordionValue
+                   setAccordionValue,
+                   pageLayoutRef,
+                   setShowConfirmFolderDelete,
+                   setShowConfirmPopup,
+                   editFolderID,
+                   editID
 }) => {
 
     const { userLinks, dispatch } = useContext(UserLinksContext);
     const { dispatchFolderLinks } = useContext(FolderLinksContext);
+    const {pageSettings} = usePageContext();
 
-    const targetRef = useRef(null);
+    //const targetRef = useRef(null);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -94,14 +100,18 @@ const Links = ({
 
     const handleOnClick = (linkID) => {
 
-        setEditID(linkID);
         const currentLink = userLinks.find(function(e) {
             return e.id === linkID
         });
 
+        setEditID({
+            id: linkID,
+            type: currentLink.type || 'standard'
+        });
+
         if(currentLink.type === "shopify" || currentLink.type === "mailchimp") {
             setAccordionValue("integration")
-        } else if(currentLink.icon.includes("offer-images")) {
+        } else if (currentLink.icon.includes("offer-images")) {
             setAccordionValue("offer")
         } else if (currentLink.icon.includes("custom-icons")){
             if(subStatus) {
@@ -180,7 +190,7 @@ const Links = ({
     }
 
     return (
-        <section ref={targetRef} className={`icons_wrap add_icons icons ${userLinks.length === 0 ? "no_icons" : ""} `}>
+        <section id={pageSettings['page_layout']} ref={pageLayoutRef} className={`icons_wrap add_icons icons ${userLinks.length === 0 ? "no_icons" : ""} `}>
 
             {userLinks.length === 0 ?
                 <div className="info_message">
@@ -209,6 +219,8 @@ const Links = ({
                                     fetchFolderLinks={fetchFolderLinks}
                                     handleChange={handleChange}
                                     subStatus={subStatus}
+                                    setShowConfirmFolderDelete={setShowConfirmFolderDelete}
+                                    setShowConfirmPopup={setShowConfirmPopup}
                                 />
                             )
                         })}

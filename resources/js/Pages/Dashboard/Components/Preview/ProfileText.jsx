@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
-import {PageContext} from '../../Dashboard.jsx';
+import {usePageContext} from '@/Context/PageContext.jsx';
 
 const ProfileText = () => {
 
-    const {pageSettings} = useContext(PageContext);
+    const {pageSettings} = usePageContext();
 
     return (
         <div className="profile_text">

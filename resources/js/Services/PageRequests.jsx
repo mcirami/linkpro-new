@@ -187,6 +187,28 @@ export const updateProfileLayout = (packets, pageID) => {
 
 }
 
+export const updatePageLayout = (packets, pageID) => {
+    return axios.patch('/dashboard/page/update-page-layout/' + pageID,
+        packets).then(
+        (response) => {
+            const returnMessage = JSON.stringify(response.data.message);
+
+            return {
+                message: returnMessage
+            }
+        }
+    ).catch(error => {
+        //console.error("ERROR:: ", error.response.data.errors.bio[0]);
+
+        if (error.response) {
+            EventBus.dispatch("error", {message: "Something went wrong"});
+            console.error(error.response);
+        } else {
+            console.error("ERROR:: ", error);
+        }
+    });
+}
+
 export const previewButtonRequest = (setShowPreviewButton, setShowPreview) => {
 
     if (window.innerWidth < 993) {

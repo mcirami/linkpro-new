@@ -216,7 +216,25 @@ class PageController extends Controller
             return abort(404);
         }
 
-        $pageService->updateLayout($request, $page);
+        $pageService->updateProfileLayout($request, $page);
+
+        return response()->json(['message' => 'Profile Updated']);
+    }
+
+    /**
+     * @param Request $request
+     * @param Page $page
+     * @param PageService $pageService
+     *
+     * @return JsonResponse
+     */
+    public function updatePageLayout(Request $request, Page $page, PageService $pageService): JsonResponse {
+
+        if ($page->user_id != Auth::id()) {
+            return abort(404);
+        }
+
+        $pageService->updatePageLayout($request, $page);
 
         return response()->json(['message' => 'Layout Updated']);
     }

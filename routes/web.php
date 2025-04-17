@@ -108,6 +108,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('/page/update-title/{page}', [PageController::class, 'updateTitle'])->name('page.title.update');
         Route::patch('/page/update-bio/{page}', [PageController::class, 'updateBio'])->name('page.bio.update');
         Route::patch('/page/update-profile-layout/{page}', [PageController::class, 'updateProfileLayout'])->name('profile.layout.update');
+        Route::patch('/page/update-page-layout/{page}', [PageController::class, 'updatePageLayout'])->name('page.layout.update');
 
         Route::get('/page/get-links/{page}', [LinkController::class, 'getPageLinks'])->name('page.get.links');
 

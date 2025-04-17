@@ -1,12 +1,12 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {PageContext} from '../../Dashboard.jsx';
+import {usePageContext} from '@/Context/PageContext.jsx';
 import {FiThumbsDown, FiThumbsUp} from 'react-icons/fi';
 import {pageBio} from '@/Services/PageRequests.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 
 const PageBio = () => {
 
-    const {pageSettings, setPageSettings} = useContext(PageContext);
+    const {pageSettings, setPageSettings} = usePageContext();
     const [charactersLeft, setCharactersLeft] = useState();
 
     useEffect(() => {
@@ -43,7 +43,8 @@ const PageBio = () => {
         <div className="edit_form">
             <form onSubmit={handleSubmit}>
                 <div className="form_content">
-                    <textarea maxLength="65" name="bio" id="" rows="5"
+                    <textarea className="active"
+                              maxLength="65" name="bio" id="" rows="5"
                               placeholder="Add Bio or Slogan (Optional)"
                               defaultValue={pageSettings["bio"] || ""}
                               onChange={(e) => handleChange(e) }
@@ -56,6 +57,7 @@ const PageBio = () => {
                               onBlur={(e) => handleSubmit(e)}
                     >
                     </textarea>
+                    <label htmlFor="title" >Page Bio</label>
                     {charactersLeft < 62  ?
                         <a className="submit_circle textarea" href="#"
                            onClick={(e) => handleSubmit(e)}

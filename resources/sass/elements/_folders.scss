@@ -83,6 +83,11 @@
 
         &.description {
             text-align: unset;
+
+            ul, ol {
+                list-style: revert-layer;
+                padding-left: 30px;
+            }
         }
 
         .icon_col {

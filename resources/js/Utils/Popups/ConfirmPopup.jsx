@@ -15,7 +15,7 @@ export const ConfirmPopup = ({
                                  setEditID,
                                  showConfirmPopup,
                                  setShowConfirmPopup,
-                                 folderID,
+                                 /*folderID,*/
                                  setInputType,
                                  setIntegrationType,
                                  setAccordionValue

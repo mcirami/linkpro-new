@@ -1,12 +1,12 @@
-import React, {useContext, useEffect, useState, useRef} from 'react';
-import {PageContext} from '../../Dashboard.jsx';
+import React, {useEffect, useState} from 'react';
+import {usePageContext} from '@/Context/PageContext.jsx';
 import {FiThumbsDown, FiThumbsUp} from 'react-icons/fi';
 import {pageTitle} from '@/Services/PageRequests.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 
 const PageTitle = () => {
 
-    const { pageSettings, setPageSettings } = useContext(PageContext);
+    const { pageSettings, setPageSettings } = usePageContext();
     const [charactersLeft, setCharactersLeft] = useState();
 
     useEffect(() => {
@@ -45,18 +45,23 @@ const PageTitle = () => {
 
         <div className="edit_form">
             <form onSubmit={handleSubmit}>
-                <input maxLength="30" name="title" type="text"
-                       placeholder="Add Title"
-                       defaultValue={pageSettings["title"] || ""}
-                       onChange={(e) => handleChange(e) }
-                       onKeyDown={ event => {
-                               if(event.key === 'Enter') {
-                                   handleSubmit(event);
-                               }
-                           }
-                       }
+                <input
+                    className="active"
+                    maxLength="30"
+                    name="title"
+                    type="text"
+                    placeholder="Add Title"
+                    defaultValue={pageSettings["title"] || ""}
+                    onChange={(e) => handleChange(e) }
+                    onKeyDown={ event => {
+                            if(event.key === 'Enter') {
+                                handleSubmit(event);
+                            }
+                        }
+                    }
                        onBlur={(e) => handleSubmit(e)}
                 />
+                <label htmlFor="title" >Page Title</label>
                 {charactersLeft < 30 ?
                     <a className="submit_circle" href="#"
                        onClick={(e) => handleSubmit(e)}

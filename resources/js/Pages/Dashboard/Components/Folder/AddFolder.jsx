@@ -1,9 +1,8 @@
 import { ImPlus } from "react-icons/im";
 import addFolder from '../../../../Services/FolderRequests';
 import React, {useContext} from 'react';
-
+import {usePageContext} from '@/Context/PageContext.jsx';
 import {
-    PageContext,
     UserLinksContext,
     FolderLinksContext,
 } from '../../Dashboard.jsx';
@@ -19,7 +18,7 @@ const AddFolder = ({
                        subStatus,
 }) => {
 
-    const  { pageSettings } = useContext(PageContext);
+    const  { pageSettings } = usePageContext();
     const { userLinks, dispatch } = useContext(UserLinksContext);
     //const { originalArray, dispatchOrig } = useContext(OriginalArrayContext);
     const { dispatchFolderLinks } = useContext(FolderLinksContext);

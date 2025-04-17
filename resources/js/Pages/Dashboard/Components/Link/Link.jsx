@@ -1,25 +1,32 @@
 import React from 'react';
 import {MdDragHandle} from 'react-icons/md';
+import { FaEdit } from "react-icons/fa";
 import {checkIcon} from '@/Services/UserService.jsx';
 import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
+import DeleteIcon from '@/Pages/Dashboard/Components/Link/Forms/DeleteIcon.jsx';
+import {usePageContext} from '@/Context/PageContext.jsx';
+import {MdEdit} from 'react-icons/md';
 const Link = ({
                   link,
                   handleOnClick,
                   fetchFolderLinks,
                   handleChange,
-                  subStatus
+                  subStatus,
+                  setShowConfirmFolderDelete,
+                  setShowConfirmPopup,
 }) => {
 
-    const type = link.type || null;
-    const linkID = link.id;
+    const {type, id, icon, links, active_status, name, url} = link;
+    const {pageSettings} = usePageContext();
+
     let hasLinks = true;
     let displayIcon;
     if (type === "folder") {
-        hasLinks = link.links.length > 0;
+        hasLinks = links.length > 0;
     } else {
-        displayIcon = checkIcon(link.icon, "", subStatus);
+        displayIcon = checkIcon(icon, "", subStatus);
     }
 
     const {
@@ -28,7 +35,7 @@ const Link = ({
         setNodeRef,
         transform,
         transition,
-    } = useSortable({id: link.id});
+    } = useSortable({id: id});
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -54,13 +61,13 @@ const Link = ({
                     {type === "folder" ?
                         <div className="icon_wrap folder">
                             <div className="inner_icon_wrap" onClick={(e) => {
-                                fetchFolderLinks(linkID)
+                                fetchFolderLinks(id)
                             }}>
                                 <img src={Vapor.asset('images/blank-folder-square.jpg')} alt=""/>
                                 <div className={hasLinks ?
                                     "folder_icons main" :
                                     "folder_icons empty"}>
-                                    {hasLinks && link.links.slice(
+                                    {hasLinks && links.slice(
                                         0, 9).map((innerLink, index) => {
 
                                         const {
@@ -84,26 +91,63 @@ const Link = ({
                         </div>
                         :
                         <div className="icon_wrap" onClick={(e) => {
-                            handleOnClick(linkID)
+                            handleOnClick(id)
                         }}>
                             <div className="image_wrap">
                                 <img src={displayIcon} alt=""/>
                             </div>
                         </div>
                     }
-                    <div className="my_row">
-                        <div className="switch_wrap">
-                            <IOSSwitch
-                                onChange={() => handleChange(link, hasLinks, type)}
-                                checked={Boolean(link.active_status)}
-                            />
-                            <div className="hover_text switch">
-                                <p>
-                                    {Boolean(link.active_status) ? "Disable" : "Enable"}
-                                    {type === "folder" ? "Folder" : "Icon"}
-                                </p>
+                    <div className="link_content">
+                        {pageSettings.page_layout === "layout_two" ?
+                            <div className="left_col">
+                                <h3>{name}</h3>
+                                <p>{url}</p>
                             </div>
+                            :
+                            ""
+                        }
+                        <div className={`right_col ${pageSettings.page_layout === 'layout_one' ? 'w-full block text-center' : ''}`}>
+                           <div className={`${pageSettings.page_layout === 'layout_two' ? 'flex items-center gap-2' : ''}`}>
+                               {pageSettings.page_layout === 'layout_two' ?
+                                <span className="edit_icon" onClick={(e) => {
+                                    handleOnClick(id)
+                                }}>
+                                    <FaEdit />
+                                    <div className="hover_text edit_image">
+                                        <p>Edit Icon</p>
+                                    </div>
+                                </span>
+                                   :
+                                   ""
+                               }
+                               <div className="switch_wrap">
+                                   <IOSSwitch
+                                       onChange={() => handleChange(link, hasLinks, type)}
+                                       checked={Boolean(active_status)}
+                                   />
+                                   <div className="hover_text switch">
+                                       <p>
+                                           {Boolean(active_status) ? "Disable" : "Enable"}
+                                           {type === "folder" ? "Folder" : "Icon"}
+                                       </p>
+                                   </div>
+                               </div>
+                           </div>
+                            {pageSettings.page_layout === "layout_two" ?
+                                <div className="delete_icon mt-auto">
+                                    <DeleteIcon
+                                        setShowConfirmFolderDelete={setShowConfirmFolderDelete}
+                                        setShowConfirmPopup={setShowConfirmPopup}
+                                        type={type}
+                                        editLink={id}
+                                    />
+                                </div>
+                                :
+                                ""
+                            }
                         </div>
+
                     </div>
                 </div>
             </div>

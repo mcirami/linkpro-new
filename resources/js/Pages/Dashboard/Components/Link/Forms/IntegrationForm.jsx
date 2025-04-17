@@ -7,9 +7,9 @@ import ReactCrop from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
 import IconList from '../IconList';
 import {
-    PageContext,
     UserLinksContext,
-} from '../../../Dashboard.jsx';
+} from '@/Pages/Dashboard/Dashboard.jsx';
+import {usePageContext} from '@/Context/PageContext.jsx';
 import {
     canvasPreview,
     useDebounceEffect,
@@ -25,7 +25,7 @@ import {
 import {
     LINKS_ACTIONS,
 } from '@/Services/Reducer.jsx';
-import EventBus from '../../../../../Utils/Bus';
+import EventBus from '@/Utils/Bus';
 import MailchimpLists from './Mailchimp/MailchimpLists';
 import AllProducts from './Shopify/AllProducts';
 import StoreDropdown from './Shopify/StoreDropdown';
@@ -53,8 +53,8 @@ const IntegrationForm = ({
 
     const [customIconArray, setCustomIconArray] = useState([]);
     const { userLinks, dispatch } = useContext(UserLinksContext);
-    const  { pageSettings } = useContext(PageContext);
-    const iconRef = createRef(null)
+    const  { pageSettings } = usePageContext();
+    const iconRef = createRef()
     const [completedIconCrop, setCompletedIconCrop] = useState(null);
     // if a custom icon is selected
     const [iconSelected, setIconSelected] = useState(false);

@@ -257,10 +257,16 @@ class PageService {
 
     }
 
-    public function updateLayout($request, $page): void {
+    public function updateProfileLayout($request, $page): void {
 
         $page->update(['profile_layout' => $request['profileLayout']]);
     }
+
+    public function updatePageLayout($request, $page): void {
+
+        $page->update(['page_layout' => $request['pageLayout']]);
+    }
+
 
     /**
      * Authorize Page
