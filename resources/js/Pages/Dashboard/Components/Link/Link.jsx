@@ -14,7 +14,6 @@ const Link = ({
                   fetchFolderLinks,
                   handleChange,
                   subStatus,
-                  setShowConfirmFolderDelete,
                   setShowConfirmPopup,
 }) => {
 
@@ -60,10 +59,36 @@ const Link = ({
                 <div className="column_content">
                     {type === "folder" ?
                         <div className="icon_wrap folder">
-                            <div className="inner_icon_wrap" onClick={(e) => {
-                                fetchFolderLinks(id)
-                            }}>
-                                <img src={Vapor.asset('images/blank-folder-square.jpg')} alt=""/>
+
+                            {pageSettings.page_layout === 'layout_one' ?
+                                <div className="inner_icon_wrap" onClick={(e) => {
+                                    fetchFolderLinks(id)
+                                }}>
+                                    <img src={Vapor.asset('images/blank-folder-square.jpg')} alt=""/>
+                                    <div className={hasLinks ?
+                                        "folder_icons main" :
+                                        "folder_icons empty"}>
+                                        {hasLinks && links.slice(
+                                            0, 9).map((innerLink, index) => {
+
+                                            const {
+                                                id,
+                                                icon
+                                            } = innerLink;
+
+                                            return (
+                                                <div className="image_col" key={index}>
+                                                    <img src={checkIcon(icon, "", subStatus)} alt=""/>
+                                                </div>
+                                            )
+                                        })}
+                                        {!hasLinks &&
+                                            <p><span>+</span> <br/>Add<br/>Icons
+                                            </p>}
+                                    </div>
+
+                                </div>
+                                :
                                 <div className={hasLinks ?
                                     "folder_icons main" :
                                     "folder_icons empty"}>
@@ -80,14 +105,12 @@ const Link = ({
                                                 <img src={checkIcon(icon, "", subStatus)} alt=""/>
                                             </div>
                                         )
-                                    })
-                                    }
+                                    })}
                                     {!hasLinks &&
                                         <p><span>+</span> <br/>Add<br/>Icons
                                         </p>}
                                 </div>
-
-                            </div>
+                            }
                         </div>
                         :
                         <div className="icon_wrap" onClick={(e) => {
@@ -99,7 +122,7 @@ const Link = ({
                         </div>
                     }
                     <div className="link_content">
-                        {pageSettings.page_layout === "layout_two" ?
+                        {pageSettings.page_layout === "layout_two" && type !== "folder" ?
                             <div className="left_col">
                                 <h3>{name}</h3>
                                 <p>{url}</p>
@@ -111,7 +134,7 @@ const Link = ({
                            <div className={`${pageSettings.page_layout === 'layout_two' ? 'flex items-center gap-2' : ''}`}>
                                {pageSettings.page_layout === 'layout_two' ?
                                 <span className="edit_icon" onClick={(e) => {
-                                    handleOnClick(id)
+                                    fetchFolderLinks(id)
                                 }}>
                                     <FaEdit />
                                     <div className="hover_text edit_image">
@@ -137,10 +160,9 @@ const Link = ({
                             {pageSettings.page_layout === "layout_two" ?
                                 <div className="delete_icon mt-auto">
                                     <DeleteIcon
-                                        setShowConfirmFolderDelete={setShowConfirmFolderDelete}
                                         setShowConfirmPopup={setShowConfirmPopup}
+                                        editId={id}
                                         type={type}
-                                        editLink={id}
                                     />
                                 </div>
                                 :

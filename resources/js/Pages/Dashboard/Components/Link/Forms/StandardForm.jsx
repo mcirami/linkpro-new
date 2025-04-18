@@ -33,12 +33,11 @@ const StandardForm = ({
                           setAccordionValue,
                           inputType,
                           setInputType,
-                          editID,
+                          editIcon,
                           subStatus,
                           setShowLinkForm,
-                          setEditID,
+                          setEditIcon,
                           setShowUpgradePopup,
-                          folderID,
                           affiliateStatus = null,
                           setAffiliateStatus = null,
 
@@ -49,7 +48,7 @@ const StandardForm = ({
     const  { pageSettings } = usePageContext();
     const [ showTerms, setShowTerms ] = useState(false);
 
-    const [id, type] = useState(editID);
+    const {id, folderId} = editIcon;
 
     const [currentLink, setCurrentLink] = useState(
         userLinks.find(function(e) {
@@ -72,12 +71,12 @@ const StandardForm = ({
         }
     );
 
-    const [descChecked, setDescChecked] = useState(
+    /*const [descChecked, setDescChecked] = useState(
         Boolean(
             currentLink.description &&
             currentLink.description !== "" &&
             currentLink.type === "advanced"
-        ));
+        ));*/
 
     const [charactersLeft, setCharactersLeft] = useState(11);
 
@@ -161,7 +160,7 @@ const StandardForm = ({
                         url: URL,
                         icon: currentLink.icon,
                         page_id: pageSettings["id"],
-                        folder_id: folderID,
+                        folder_id: folderId,
                         description: descValue,
                         type: iconType,
                     };
@@ -172,7 +171,7 @@ const StandardForm = ({
                         email: currentLink.email,
                         icon: currentLink.icon,
                         page_id: pageSettings["id"],
-                        folder_id: folderID,
+                        folder_id: folderId,
                         description: descValue,
                         type: iconType,
                     };
@@ -183,7 +182,7 @@ const StandardForm = ({
                         phone: currentLink.phone,
                         icon: currentLink.icon,
                         page_id: pageSettings["id"],
-                        folder_id: folderID,
+                        folder_id: folderId,
                         description: descValue,
                         type: iconType,
                     };
@@ -195,7 +194,7 @@ const StandardForm = ({
                         url: URL,
                         page_id: pageSettings["id"],
                         course_id: currentLink.course_id,
-                        folder_id: folderID,
+                        folder_id: folderId,
                         description: descValue,
                         type: iconType,
                     };
@@ -206,7 +205,7 @@ const StandardForm = ({
                         url: URL,
                         icon: currentLink.icon,
                         page_id: pageSettings["id"],
-                        folder_id: folderID,
+                        folder_id: folderId,
                         description: descValue,
                         type: iconType,
                     };
@@ -219,7 +218,7 @@ const StandardForm = ({
 
                 if (data.success) {
 
-                    if (folderID) {
+                    if (folderId) {
 
                         if (id) {
                             dispatchFolderLinks({
@@ -236,7 +235,7 @@ const StandardForm = ({
                             dispatch({
                                 type: LINKS_ACTIONS.UPDATE_LINK_IN_FOLDER,
                                 payload: {
-                                    folderID: folderID,
+                                    folderID: folderId,
                                     editID: id,
                                     currentLink: currentLink,
                                     url: URL,
@@ -250,7 +249,7 @@ const StandardForm = ({
 
                             const newLinkObject = {
                                 id: data.link_id,
-                                folder_id: folderID,
+                                folder_id: folderId,
                                 name: currentLink.name,
                                 url: URL,
                                 email: currentLink.email,
@@ -281,7 +280,7 @@ const StandardForm = ({
                                     active_status: folderActive,
                                 };
 
-                                updateLinkStatus(packets, folderID, url);
+                                updateLinkStatus(packets, folderId, url);
                             }
 
                             dispatch({
@@ -289,7 +288,7 @@ const StandardForm = ({
                                 payload: {
                                     newLinkObject: newLinkObject,
                                     folderActive: folderActive,
-                                    folderID: folderID
+                                    folderID: folderId
                                 }
                             })
 
@@ -339,7 +338,8 @@ const StandardForm = ({
                     setAccordionValue(null);
                     setShowLinkForm(false);
                     setInputType(null);
-                    setEditID(null);
+                    setEditIcon(prev =>
+                        Object.fromEntries(Object.keys(prev).map(key => [key, null])));
                 }
             })
         }
@@ -347,7 +347,8 @@ const StandardForm = ({
 
     const handleCancel = (e) => {
         e.preventDefault();
-        setEditID(null);
+        setEditIcon(prev =>
+            Object.fromEntries(Object.keys(prev).map(key => [key, null])));
         setShowLinkForm(false);
         setInputType(null);
         setAccordionValue(null);

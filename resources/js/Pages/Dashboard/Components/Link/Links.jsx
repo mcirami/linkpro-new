@@ -1,5 +1,5 @@
 import React, {
-    useContext
+    useContext, useState,
 } from 'react';
 import Link from './Link';
 import {
@@ -34,18 +34,14 @@ import {
 } from '@/Services/Reducer.jsx';
 
 const Links = ({
-                   setEditID,
-                   setEditFolderID,
+                   setEditIcon,
                    setRow,
                    setValue,
                    setShowUpgradePopup,
                    subStatus,
                    setAccordionValue,
                    pageLayoutRef,
-                   setShowConfirmFolderDelete,
                    setShowConfirmPopup,
-                   editFolderID,
-                   editID
 }) => {
 
     const { userLinks, dispatch } = useContext(UserLinksContext);
@@ -104,10 +100,12 @@ const Links = ({
             return e.id === linkID
         });
 
-        setEditID({
+        console.log("currentLink", currentLink);
+        setEditIcon(prev => ({
+            ...prev,
             id: linkID,
             type: currentLink.type || 'standard'
-        });
+        }));
 
         if(currentLink.type === "shopify" || currentLink.type === "mailchimp") {
             setAccordionValue("integration")
@@ -135,14 +133,15 @@ const Links = ({
     }
 
     const fetchFolderLinks = async (linkID) => {
-
         if(subStatus) {
             const url = 'folder/links/' + linkID;
             const response = await fetch(url);
             const folderLinks = await response.json();
 
             dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks["links"]} })
-            setEditFolderID(linkID);
+            setEditIcon(prev => ({...prev, folderId: linkID}));
+            setRow(prev => ({...prev, row: 0}))
+            setValue(prev => ({...prev, index: 0, url: null}));
 
             setTimeout(function(){
                 document.querySelector('#scrollTo').scrollIntoView({
@@ -219,7 +218,6 @@ const Links = ({
                                     fetchFolderLinks={fetchFolderLinks}
                                     handleChange={handleChange}
                                     subStatus={subStatus}
-                                    setShowConfirmFolderDelete={setShowConfirmFolderDelete}
                                     setShowConfirmPopup={setShowConfirmPopup}
                                 />
                             )

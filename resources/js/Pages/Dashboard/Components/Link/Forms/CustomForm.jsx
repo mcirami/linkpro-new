@@ -42,13 +42,13 @@ const CustomForm = ({
                         setAccordionValue,
                         inputType,
                         setInputType,
-                        editID,
+                        editIcon,
                         setShowLinkForm,
-                        setEditID,
-                        folderID,
+                        setEditIcon,
                         setShowLoader,
 }) => {
 
+    const {id, folderId} = editIcon;
     const [customIconArray, setCustomIconArray] = useState([]);
     const { userLinks, dispatch } = useContext(UserLinksContext);
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
@@ -74,9 +74,9 @@ const CustomForm = ({
 
     const [currentLink, setCurrentLink] = useState (
         userLinks.find(function(e) {
-            return e.id === editID
+            return e.id === id
         }) || folderLinks.find(function(e) {
-            return e.id === editID
+            return e.id === id
         }) ||
         {
             icon: null,
@@ -180,7 +180,7 @@ const CustomForm = ({
                             url: URL,
                             icon: currentLink.icon,
                             page_id: pageSettings["id"],
-                            folder_id: folderID,
+                            folder_id: folderId,
                             description: descValue,
                             type: iconType,
                         };
@@ -191,7 +191,7 @@ const CustomForm = ({
                             email: currentLink.email,
                             icon: currentLink.icon,
                             page_id: pageSettings["id"],
-                            folder_id: folderID,
+                            folder_id: folderId,
                             description: descValue,
                             type: iconType,
                         };
@@ -202,7 +202,7 @@ const CustomForm = ({
                             phone: currentLink.phone,
                             icon: currentLink.icon,
                             page_id: pageSettings["id"],
-                            folder_id: folderID,
+                            folder_id: folderId,
                             description: descValue,
                             type: iconType,
                         };
@@ -213,26 +213,26 @@ const CustomForm = ({
                             url: URL,
                             icon: currentLink.icon,
                             page_id: pageSettings["id"],
-                            folder_id: folderID,
+                            folder_id: folderId,
                             description: descValue,
                             type: iconType,
                         };
                         break;
                 }
 
-                const func = editID ? updateLink(packets, editID) : addLink(packets);
+                const func = id ? updateLink(packets, id) : addLink(packets);
 
                 func.then((data) => {
 
                     if (data.success) {
 
-                        if (folderID) {
+                        if (folderId) {
 
-                            if (editID) {
+                            if (id) {
                                 dispatchFolderLinks({
                                     type: FOLDER_LINKS_ACTIONS.UPDATE_FOLDER_LINKS,
                                     payload: {
-                                        editID: editID,
+                                        editID: id,
                                         currentLink: currentLink,
                                         url: URL,
                                         type: iconType,
@@ -243,8 +243,8 @@ const CustomForm = ({
                                 dispatch({
                                     type: LINKS_ACTIONS.UPDATE_LINK_IN_FOLDER,
                                     payload: {
-                                        folderID: folderID,
-                                        editID: editID,
+                                        folderID: folderId,
+                                        editID: id,
                                         currentLink: currentLink,
                                         url: URL,
                                         type: iconType,
@@ -257,7 +257,7 @@ const CustomForm = ({
 
                                 const newLinkObject = {
                                     id: data.link_id,
-                                    folder_id: folderID,
+                                    folder_id: folderId,
                                     name: currentLink.name,
                                     url: URL,
                                     email: currentLink.email,
@@ -290,7 +290,7 @@ const CustomForm = ({
                                         active_status: folderActive,
                                     };
 
-                                    updateLinkStatus(packets, folderID,
+                                    updateLinkStatus(packets, folderId,
                                         url);
                                 }
 
@@ -299,18 +299,18 @@ const CustomForm = ({
                                     payload: {
                                         newLinkObject: newLinkObject,
                                         folderActive: folderActive,
-                                        folderID: folderID
+                                        folderID: folderId
                                     }
                                 })
                             }
 
                         } else {
 
-                            if (editID) {
+                            if (id) {
                                 dispatch({
                                     type: LINKS_ACTIONS.UPDATE_LINK,
                                     payload: {
-                                        editID: editID,
+                                        editID: id,
                                         currentLink: currentLink,
                                         url: URL,
                                         type: iconType,
@@ -348,7 +348,8 @@ const CustomForm = ({
 
                         }
 
-                        setEditID(null);
+                        setEditIcon(prev =>
+                            Object.fromEntries(Object.keys(prev).map(key => [key, null])));
                         setShowLinkForm(false);
                         setAccordionValue(null);
                         setInputType(null);
@@ -409,7 +410,7 @@ const CustomForm = ({
                             icon: response.key,
                             page_id: pageSettings["id"],
                             ext: response.extension,
-                            folder_id: folderID,
+                            folder_id: folderId,
                             description: descValue,
                             type: iconType,
                         };
@@ -421,7 +422,7 @@ const CustomForm = ({
                             icon: response.key,
                             page_id: pageSettings["id"],
                             ext: response.extension,
-                            folder_id: folderID,
+                            folder_id: folderId,
                             description: descValue,
                             type: iconType,
                         };
@@ -433,7 +434,7 @@ const CustomForm = ({
                             icon: response.key,
                             page_id: pageSettings["id"],
                             ext: response.extension,
-                            folder_id: folderID,
+                            folder_id: folderId,
                             description: descValue,
                             type: iconType,
                         };
@@ -445,14 +446,14 @@ const CustomForm = ({
                             icon: response.key,
                             page_id: pageSettings["id"],
                             ext: response.extension,
-                            folder_id: folderID,
+                            folder_id: folderId,
                             description: descValue,
                             type: iconType,
                         };
                         break;
                 }
 
-                const func = editID ? updateLink(packets, editID) : addLink(packets);
+                const func = id ? updateLink(packets, id) : addLink(packets);
 
                 func.then((data) => {
 
@@ -461,13 +462,13 @@ const CustomForm = ({
 
                         const iconPath = data.iconPath;
 
-                        if (folderID) {
+                        if (folderId) {
 
-                            if (editID) {
+                            if (id) {
                                 dispatchFolderLinks({
                                     type: FOLDER_LINKS_ACTIONS.UPDATE_FOLDER_LINKS,
                                     payload: {
-                                        editID: editID,
+                                        editID: id,
                                         currentLink: currentLink,
                                         url: URL,
                                         type: iconType,
@@ -477,8 +478,8 @@ const CustomForm = ({
                                 dispatch({
                                     type: LINKS_ACTIONS.UPDATE_LINK_IN_FOLDER,
                                     payload: {
-                                        folderID: folderID,
-                                        editID: editID,
+                                        folderID: folderId,
+                                        editID: id,
                                         currentLink: currentLink,
                                         url: URL,
                                         type: iconType,
@@ -490,7 +491,7 @@ const CustomForm = ({
 
                                 const newLinkObject = {
                                     id: data.link_id,
-                                    folder_id: folderID,
+                                    folder_id: folderId,
                                     name: currentLink.name,
                                     url: URL,
                                     email: currentLink.email,
@@ -513,7 +514,7 @@ const CustomForm = ({
                                         active_status: folderActive,
                                     };
 
-                                    updateLinkStatus(packets, folderID, url);
+                                    updateLinkStatus(packets, folderId, url);
                                 }
 
                                 dispatch({
@@ -521,7 +522,7 @@ const CustomForm = ({
                                     payload: {
                                         newLinkObject: newLinkObject,
                                         folderActive: folderActive,
-                                        folderID: folderID
+                                        folderID: folderId
                                     }})
 
                                 dispatchFolderLinks({
@@ -533,11 +534,11 @@ const CustomForm = ({
 
                         } else {
 
-                            if (editID) {
+                            if (id) {
                                 dispatch({
                                     type: LINKS_ACTIONS.UPDATE_LINK,
                                     payload: {
-                                        editID: editID,
+                                        editID: id,
                                         currentLink: currentLink,
                                         url: URL,
                                         type: iconType,
@@ -577,7 +578,8 @@ const CustomForm = ({
                         setCurrentLink({});
                         setShowLinkForm(false);
                         setAccordionValue(null);
-                        setEditID(null)
+                        setEditIcon(prev =>
+                            Object.fromEntries(Object.keys(prev).map(key => [key, null])))
                         setInputType(null);
                     }
 
@@ -598,7 +600,8 @@ const CustomForm = ({
 
     const handleCancel = (e) => {
         e.preventDefault();
-        setEditID(null);
+        setEditIcon(prev =>
+            Object.fromEntries(Object.keys(prev).map(key => [key, null])));
         setShowLinkForm(false);
         setAccordionValue(null);
         setInputType(null);
@@ -682,7 +685,7 @@ const CustomForm = ({
                             setInputType={setInputType}
                             customIconArray={customIconArray}
                             setCustomIconArray={setCustomIconArray}
-                            editID={editID}
+                            editID={id}
                         />
                     </div>
                 </div>

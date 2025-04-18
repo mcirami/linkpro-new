@@ -468,6 +468,32 @@
                         .icon_wrap {
                             padding: 0;
                             max-width: 5rem;
+
+                            &.folder {
+                                width: 80%;
+                                max-width: unset;
+                                flex-direction: column;
+                                -webkit-flex-direction: column;
+                                -ms-flex-direction: column;
+
+                                .image_col {
+                                    width: 100%;
+                                    margin-bottom: 1rem;
+                                    border: 1px solid $blue;
+                                    border-radius: 15px;
+                                    -webkit-border-radius: 15px;
+                                    -moz-border-radius: 15px;
+                                    padding: 10px;
+
+                                    img {
+                                        max-width: 4rem;
+                                    }
+                                }
+
+                                .link_content {
+                                    width: 20%;
+                                }
+                            }
                         }
 
                         .edit_icon {

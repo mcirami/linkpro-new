@@ -29,7 +29,7 @@ function PageLayout({pageLayoutRef}) {
                                checked={pageSettings.page_layout === 'layout_one'}
                                onChange={(e) => {setRadioValue(e.target.value) }}
                         />
-                        <img src={Vapor.asset('images/profile-1.png')} alt=""/>
+                        <img src={Vapor.asset('images/layout-tiles.png')} alt=""/>
                     </label>
                 </div>
                 <div className="radio_wrap relative">
@@ -39,7 +39,7 @@ function PageLayout({pageLayoutRef}) {
                                checked={pageSettings.page_layout === 'layout_two'}
                                onChange={(e) => {setRadioValue(e.target.value) }}
                         />
-                        <img src={Vapor.asset('images/profile-2.png')} alt=""/>
+                        <img src={Vapor.asset('images/layout-buttons.png')} alt=""/>
                     </label>
 
                 </div>

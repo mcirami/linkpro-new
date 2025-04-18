@@ -38,7 +38,7 @@ const IntegrationForm = ({
                              accordionValue,
                              editID,
                              setShowLinkForm,
-                             setEditID,
+                             setEditIcon,
                              setShowMessageAlertPopup,
                              setShowLoader,
                              setIntegrationType,
@@ -113,9 +113,10 @@ const IntegrationForm = ({
             setIntegrationType("shopify")
         }
 
-        if (currentLink.mailchimp_list_id) {
+        if (currentLink.mailchimp_list_id || !currentLink.mailchimp_list_id) {
             setIntegrationType("mailchimp")
         }
+
     },[])
 
     useEffect(() => {
@@ -240,7 +241,8 @@ const IntegrationForm = ({
                         setAccordionValue(null);
                         setShowLinkForm(false);
                         setIntegrationType(null);
-                        setEditID(null);
+                        setEditIcon(prev =>
+                            Object.fromEntries(Object.keys(prev).map(key => [key, null])));
                         setStoreID(0);
                     }
                 })
@@ -357,7 +359,8 @@ const IntegrationForm = ({
 
                         setShowLinkForm(false);
                         setAccordionValue(null);
-                        setEditID(null)
+                        setEditID(prev =>
+                            Object.fromEntries(Object.keys(prev).map(key => [key, null])))
                         setIntegrationType(null);
                         setCurrentLink({})
 
@@ -399,7 +402,8 @@ const IntegrationForm = ({
 
     const handleCancel = (e) => {
         e.preventDefault();
-        setEditID(null);
+        setEditID(prev =>
+            Object.fromEntries(Object.keys(prev).map(key => [key, null])));
         setShowLinkForm(false);
         setIntegrationType(null);
         setAccordionValue(null);

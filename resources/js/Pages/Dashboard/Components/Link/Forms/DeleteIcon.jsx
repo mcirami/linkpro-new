@@ -1,28 +1,26 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {MdDeleteForever} from 'react-icons/md';
 
 const DeleteIcon = ({
                         setShowConfirmPopup,
-                        setShowConfirmFolderDelete,
-                        editFolderID = null,
-                        editID,
-                        type = null
+                        editId,
+                        type = null,
 }) => {
 
     const handleDeleteClick = e => {
         e.preventDefault();
-        if(editFolderID && !editID) {
-            setShowConfirmFolderDelete(true);
-        } else {
-            setShowConfirmPopup(true);
-        }
+        setShowConfirmPopup({
+            show: true,
+            id: editId,
+            type: type
+        });
     }
 
     return (
         <a className="delete" href="#"
            onClick={handleDeleteClick}>
             <MdDeleteForever />
-            <div className="hover_text delete_folder"><p>Delete {editID || type !== "folder" ? "Icon" : "Folder"}</p></div>
+            <div className="hover_text delete_folder"><p>Delete {type === "folder" ? "Folder" : "Icon"}</p></div>
         </a>
     );
 };
