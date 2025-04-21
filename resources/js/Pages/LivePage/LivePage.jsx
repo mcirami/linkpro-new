@@ -114,7 +114,7 @@ function LivePage({links, page, subscribed}) {
                                             {(() => {
                                                 switch (type) {
                                                     case "folder":
-                                                        return ( active_status && subscribed ?
+                                                        return ( active_status && subscribed && page_layout !== "layout_two" ?
                                                             <Folder
                                                                 id={id}
                                                                 colClasses={colClasses}
@@ -131,7 +131,7 @@ function LivePage({links, page, subscribed}) {
                                                                 viewType="live"
                                                             />
                                                             :
-                                                            subscribed &&
+                                                            subscribed && page_layout !== "layout_two" &&
                                                             <div className={` ${colClasses} `}>
                                                             </div>
                                                         )

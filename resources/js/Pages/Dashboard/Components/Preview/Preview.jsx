@@ -18,7 +18,7 @@ import {UseLoadPreviewHeight, UseResizePreviewHeight} from '@/Services/PreviewHo
 import AdvancedIcon from '@/Components/LinkComponents/AdvancedIcon.jsx';
 //import IconDescription from '@/Components/LinkComponents/IconDescription.jsx';
 import LivePageButton from '@/Pages/Dashboard/Components/LivePageButton.jsx';
-
+import { IoOpenOutline } from "react-icons/io5";
 const Preview = ({
                      nodesRef,
                      completedCrop,
@@ -154,8 +154,8 @@ const Preview = ({
                                             {(() => {
                                                 switch (type) {
                                                     case "folder":
-                                                        return (active_status &&
-                                                            subStatus ?
+                                                        return (active_status ?
+                                                            subStatus && pageSettings.page_layout !== "layout_two" ?
                                                                 <Folder
                                                                     colClasses={colClasses}
                                                                     mainIndex={index}
@@ -169,11 +169,14 @@ const Preview = ({
                                                                     setClickType={setClickType}
                                                                     subStatus={subStatus}
                                                                     viewType="preview"
+                                                                    layout={pageSettings.page_layout}
                                                                 />
                                                                 :
-                                                                subStatus &&
+                                                                subStatus && pageSettings.page_layout !== "layout_two" &&
                                                                 <div className={` ${colClasses} `}>
                                                                 </div>
+                                                                :
+                                                                ""
                                                         )
                                                     case "standard":
                                                     case "offer":
@@ -199,11 +202,14 @@ const Preview = ({
                                                                             </p>
                                                                         </>
                                                                         :
-                                                                        <a className={`icon_wrap ${ (!url || !displayIcon) ? "default" : ""}`}
+                                                                        <a className={`icon_wrap flex items-center !justify-between ${ (!url || !displayIcon) ? "default" : ""}`}
                                                                            target="_blank"
                                                                            href={url || "#"}>
-                                                                            <img src={displayIcon} alt=""/>
-                                                                            <h3>{name || "Link Name"}</h3>
+                                                                            <span className="flex items-center">
+                                                                                <img src={displayIcon} alt=""/>
+                                                                                <h3>{name || "Link Name"}</h3>
+                                                                            </span>
+                                                                            <IoOpenOutline />
                                                                         </a>
                                                                     :
                                                                     ""

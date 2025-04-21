@@ -16,7 +16,8 @@ const Folder = ({
                     clickType,
                     setClickType,
                     subStatus,
-                    viewType
+                    viewType,
+                    layout
 }) => {
 
     const folderClick = (e, index, viewType) => {
@@ -53,36 +54,59 @@ const Folder = ({
     return (
 
         <div className={ ` ${colClasses} ${mainIndex === value.index && clickType === "folder" ? " open" : "" } `}>
-            <a className="inner_icon_wrap"
-               href="#"
-               data-row={ dataRow }
-               onClick={(e) => {
-                   folderClick(e, mainIndex, viewType)
-               }
-            }>
-                <img className="bg_image" src={Vapor.asset('images/blank-folder-square.jpg')} alt=""/>
-                <div className="folder_icons preview">
-                    {links.slice(0, 9).map(( innerLinkIcons, index ) => {
-                        return (
-                            <FolderLinks
-                                key={index}
-                                icons={innerLinkIcons}
-                                subStatus={subStatus}
-                                viewType={viewType}
-                            />
-                        )
-                    })}
-                </div>
-            </a>
-            <p>
-                {name && name.length >
-                11 ?
-                    name.substring(0,
-                        11) + "..."
-                    :
-                    name || "Folder Name"
-                }
-            </p>
+            {layout === "layout_one" ?
+                <>
+                    <a className="inner_icon_wrap"
+                       href="#"
+                       data-row={ dataRow }
+                       onClick={(e) => {
+                            folderClick(e, mainIndex, viewType);
+                       }}
+                    >
+                        <img className="bg_image" src={Vapor.asset('images/blank-folder-square.jpg')} alt=""/>
+                        <div className="folder_icons preview">
+                            {links.slice(0, 9).map(( innerLinkIcons, index ) => {
+                                return (
+                                    <FolderLinks
+                                        key={index}
+                                        icons={innerLinkIcons}
+                                        subStatus={subStatus}
+                                        viewType={viewType}
+                                        layout={layout}
+                                    />
+                                )
+                            })}
+                        </div>
+                    </a>
+                    <p>
+                        {name && name.length >
+                            11 ?
+                            name.substring(0,
+                            11) + "..."
+                            :
+                            name || "Folder Name"
+                        }
+                    </p>
+                </>
+
+                :
+                <>
+                    <h3 className="mb-2">{name || "Folder Name"}</h3>
+                    <div className="folder_icons preview">
+                        {links.slice(0, 9).map(( innerLinkIcons, index ) => {
+                            return (
+                                <FolderLinks
+                                    key={index}
+                                    icons={innerLinkIcons}
+                                    subStatus={subStatus}
+                                    viewType={viewType}
+                                    layout={layout}
+                                />
+                            )
+                        })}
+                    </div>
+                </>
+            }
         </div>
     )
 }

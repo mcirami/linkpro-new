@@ -330,6 +330,51 @@
                     }
                 }
             }
+
+            &.layout_two {
+
+                .icon_col.folder {
+                    display: block !important;
+
+                    h3 {
+                        font-size: .8rem;
+                        color: $blue;
+                        text-transform: uppercase;
+                    }
+                }
+
+                .folder_icons.preview {
+                    display: flex;
+                    position: relative;
+                    padding: 0;
+                    gap: .6rem;
+
+                    svg {
+                        color: $blue;
+                    }
+
+                    .image_col {
+                        width: 100%;
+                        border-radius: 15px;
+                        -webkit-border-radius: 15px;
+                        -moz-border-radius: 15px;
+                        padding: 10px;
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        align-items: center;
+                        -webkit-align-items: center;
+                        border: 1px solid $borderGray;
+
+                        img {
+                            max-width: 2rem;
+                            border-radius: 8px !important;
+                            -webkit-border-radius: 8px !important;
+                            -moz-border-radius: 8px !important;
+                        }
+                    }
+                }
+            }
         }
     }
 }

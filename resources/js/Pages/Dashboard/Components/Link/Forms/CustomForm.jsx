@@ -457,7 +457,6 @@ const CustomForm = ({
 
                 func.then((data) => {
 
-                    console.log("data: ", data);
                     if (data.success) {
 
                         const iconPath = data.iconPath;

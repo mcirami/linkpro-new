@@ -100,7 +100,6 @@ const Links = ({
             return e.id === linkID
         });
 
-        console.log("currentLink", currentLink);
         setEditIcon(prev => ({
             ...prev,
             id: linkID,
@@ -211,6 +210,9 @@ const Links = ({
                         {userLinks?.map(link => {
 
                             return (
+                                (link.type !== "folder" && pageSettings['page_layout'] === "layout_two") ||
+                                pageSettings['page_layout'] === "layout_one"
+                                ?
                                 <Link
                                     key={link.id}
                                     link={link}
@@ -220,6 +222,8 @@ const Links = ({
                                     subStatus={subStatus}
                                     setShowConfirmPopup={setShowConfirmPopup}
                                 />
+                                    :
+                                    ""
                             )
                         })}
 

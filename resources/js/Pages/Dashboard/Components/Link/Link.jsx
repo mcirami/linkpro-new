@@ -56,7 +56,7 @@ const Link = ({
                     <div className="hover_text"><p>Move</p></div>
                 </span>
 
-                <div className="column_content">
+                <div className={`column_content ${type === "folder" ? "folder" : ""}`}>
                     {type === "folder" ?
                         <div className="icon_wrap folder">
 
@@ -91,24 +91,36 @@ const Link = ({
                                 :
                                 <div className={hasLinks ?
                                     "folder_icons main" :
-                                    "folder_icons empty"}>
+                                    "folder_icons empty"}
+                                     onClick={(e) => {
+                                         fetchFolderLinks(id)
+                                     }}
+                                >
                                     {hasLinks && links.slice(
                                         0, 9).map((innerLink, index) => {
 
                                         const {
                                             id,
-                                            icon
+                                            icon,
+                                            name,
                                         } = innerLink;
 
                                         return (
                                             <div className="image_col" key={index}>
                                                 <img src={checkIcon(icon, "", subStatus)} alt=""/>
+                                                {pageSettings.page_layout === "layout_two" &&
+                                                    <h3>{name}</h3>}
                                             </div>
                                         )
                                     })}
-                                    {!hasLinks &&
+                                    {!hasLinks ? pageSettings.page_layout === "layout_two" ?
+                                        <p><span>+</span> Add Icons
+                                        </p>
+                                        :
                                         <p><span>+</span> <br/>Add<br/>Icons
-                                        </p>}
+                                        </p>
+                                    :
+                                    ""}
                                 </div>
                             }
                         </div>
@@ -134,7 +146,7 @@ const Link = ({
                            <div className={`${pageSettings.page_layout === 'layout_two' ? 'flex items-center gap-2' : ''}`}>
                                {pageSettings.page_layout === 'layout_two' ?
                                 <span className="edit_icon" onClick={(e) => {
-                                    fetchFolderLinks(id)
+                                    handleOnClick(id)
                                 }}>
                                     <FaEdit />
                                     <div className="hover_text edit_image">

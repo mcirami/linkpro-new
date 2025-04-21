@@ -475,24 +475,64 @@
                                 flex-direction: column;
                                 -webkit-flex-direction: column;
                                 -ms-flex-direction: column;
+                                justify-content: center;
+                                -webkit-justify-content: center;
 
                                 .image_col {
                                     width: 100%;
-                                    margin-bottom: 1rem;
                                     border: 1px solid $blue;
                                     border-radius: 15px;
                                     -webkit-border-radius: 15px;
                                     -moz-border-radius: 15px;
                                     padding: 10px;
+                                    display: -webkit-box;
+                                    display: -ms-flexbox;
+                                    display: flex;
+                                    -webkit-box-orient: horizontal;
+                                    -webkit-box-direction: normal;
+                                    -ms-flex-direction: row;
+                                    flex-direction: row;
+                                    -ms-flex-wrap: nowrap;
+                                    flex-wrap: nowrap;
+                                    align-items: center;
+                                    -webkit-align-items: center;
 
                                     img {
                                         max-width: 4rem;
                                     }
                                 }
 
-                                .link_content {
-                                    width: 20%;
+                                .folder_icons {
+                                    position: relative;
+                                    display: -webkit-box;
+                                    display: -ms-flexbox;
+                                    display: flex;
+                                    -webkit-box-orient: vertical;
+                                    -webkit-box-direction: normal;
+                                    -ms-flex-direction: column;
+                                    flex-direction: column;
+                                    -ms-flex-wrap: nowrap;
+                                    flex-wrap: nowrap;
+                                    padding: 0;
+                                    row-gap: 1rem;
+
+                                    h3 {
+                                        color: $black;
+                                        font-size: .8rem;
+                                    }
+
+                                    img {
+                                        max-width: 2rem;
+                                    }
                                 }
+                            }
+                        }
+
+                        &.folder {
+                            .link_content {
+                                width: 20%;
+                                justify-content: flex-end;
+                                -webkit-justify-content: flex-end;
                             }
                         }
 
@@ -538,6 +578,7 @@
                                 -ms-flex-wrap: nowrap;
                                 flex-wrap: nowrap;
                                 height: 100%;
+                                row-gap: 1rem;
                             }
 
                             .switch_wrap {
