@@ -8,7 +8,7 @@ import AccordionLinks from '@/Components/LinkComponents/AccordionLinks.jsx';
 import {TrackIconClick} from '@/Services/TrackClicks.jsx';
 import AdvancedIcon from '@/Components/LinkComponents/AdvancedIcon.jsx';
 //import IconDescription from '@/Components/LinkComponents/IconDescription.jsx';
-
+import { IoOpenOutline } from "react-icons/io5";
 function LivePage({links, page, subscribed}) {
 
     const {user_id, header_img, profile_layout, page_layout, profile_img, title, bio, name} = page;
@@ -83,8 +83,19 @@ function LivePage({links, page, subscribed}) {
                                         phone,
                                         icon,
                                         active_status,
-                                        links
+                                        links,
+                                        bg_image
                                     } = linkItem;
+
+                                    let styles = {};
+                                    if (bg_image && page_layout === "layout_two") {
+                                        styles = {
+                                            backgroundImage: `url(${bg_image})`,
+                                            backgroundRepeat: "no-repeat",
+                                            backgroundSize: "cover",
+                                            backgroundPosition: "center",
+                                        }
+                                    }
 
                                     if (email) {
                                         url = "mailto:" + email;
@@ -104,9 +115,18 @@ function LivePage({links, page, subscribed}) {
 
                                     let colClasses = "";
                                     if (type === "folder" || type === "mailchimp" || type === "shopify" || type === "advanced") {
-                                        colClasses = "icon_col folder";
+                                        colClasses=`icon_col folder
+                                        ${bg_image && page_layout ==="layout_two" ?
+                                            "bg_image"
+                                            :
+                                            ""
+                                        }`
                                     } else {
-                                        colClasses = "icon_col";
+                                        colClasses = `icon_col ${bg_image && page_layout ==="layout_two" ?
+                                            "bg_image"
+                                            :
+                                            ""
+                                        }`;
                                     }
 
                                     return (
@@ -141,7 +161,7 @@ function LivePage({links, page, subscribed}) {
                                                     case "email":
                                                     case "phone":
                                                         return (
-                                                            <div className={` ${colClasses} `}>
+                                                            <div className={` ${colClasses} `} style={styles}>
                                                                 {active_status ? page_layout === "layout_one" ?
                                                                     <>
                                                                         <a className={!url || !displayIcon ? "default" : ""}
@@ -158,11 +178,20 @@ function LivePage({links, page, subscribed}) {
                                                                         </p>
                                                                     </>
                                                                     :
-                                                                        <a className={`icon_wrap ${ (!url || !displayIcon) ? "default" : ""}`}
+                                                                        <a className={`icon_wrap
+                                                                        ${ (!url || !displayIcon) ? "default" : ""}`}
                                                                            target="_blank"
                                                                            href={url || "#"}>
-                                                                            <img src={displayIcon} alt=""/>
-                                                                            <h3>{name || "Link Name"}</h3>
+                                                                            <div className={`${bg_image ?
+                                                                                "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
+                                                                                :
+                                                                                "flex items-center justify-between w-full"}`}>
+                                                                                <span className="flex items-center justify-start">
+                                                                                    <img src={displayIcon} alt=""/>
+                                                                                    <h3>{name || "Link Name"}</h3>
+                                                                                </span>
+                                                                                <IoOpenOutline />
+                                                                            </div>
                                                                         </a>
                                                                     :
                                                                     ""

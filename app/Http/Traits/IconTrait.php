@@ -103,18 +103,18 @@ trait IconTrait {
      *
      * @return string
      */
-    public function saveCustomIcon($request): string {
+    public function saveCustomImage($iconPath, $savePath): string {
 
-        $userID = Auth::id();
+        /*$userID = Auth::id();
         $imgName = $userID . '-' . time() . '.' . $request->ext;
-        $path = 'custom-icons/' . $userID . '/' . $imgName;
+        $path = 'custom-icons/' . $userID . '/' . $imgName;*/
 
-        Storage::disk('s3')->delete($path);
+        Storage::disk('s3')->delete($savePath);
         Storage::disk('s3')->copy(
-            $request->icon,
-            str_replace($request->icon, $path, $request->icon)
+            $iconPath,
+            str_replace($iconPath, $savePath, $iconPath)
         );
 
-        return  Storage::disk('s3')->url($path);
+        return  Storage::disk('s3')->url($savePath);
     }
 }

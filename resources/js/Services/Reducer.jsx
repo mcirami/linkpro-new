@@ -110,9 +110,15 @@ export function reducer(userLinks, action) {
 
             return userLinks.map((item) => {
                 if (item.id === action.payload.editID ) {
+                    console.log("action.payload",action.payload);
+                    const { editID, currentLink, ...restPayload } = action.payload;
                     return {
                         ...item,
-                        name: action.payload.currentLink.name,
+                        ...(currentLink || {}),
+                        ...restPayload,
+                    }
+
+                    /*name: action.payload.currentLink.name,
                         url: action.payload.url,
                         email: action.payload.currentLink.email,
                         phone: action.payload.currentLink.phone,
@@ -121,8 +127,8 @@ export function reducer(userLinks, action) {
                         shopify_products: action.payload.currentLink.shopify_products,
                         shopify_id: action.payload.currentLink.shopify_id,
                         description: action.payload.currentLink.description,
-                        icon: action.payload.iconPath
-                    }
+                        icon: action.payload.iconPath,
+                        bg_image: action.payload.bg_image*/
                 }
 
                 return item;

@@ -80,7 +80,7 @@ const AdvancedIcon = ({
                         </p>
                     </>
                     :
-                    <a className={`icon_wrap ${!displayIcon ? "default" : ""}`}
+                    <a className={`icon_wrap !justify-start ${!displayIcon ? "default" : ""}`}
                        target="_blank"
                        href={url || "#"}>
                         <img src={displayIcon} alt=""/>

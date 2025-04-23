@@ -315,7 +315,7 @@ const IntegrationForm = ({
 
                     if (data.success) {
 
-                        const iconPath = data.iconPath;
+                        const iconPath = data.imagePath;
 
                         if (editID) {
                             dispatch({

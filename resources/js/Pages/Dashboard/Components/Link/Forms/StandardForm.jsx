@@ -2,7 +2,7 @@ import React, {
     useCallback,
     useEffect,
     useState,
-    useContext,
+    useContext, useRef,
 } from 'react';
 import IconList from '../IconList';
 import InputComponent from './InputComponent';
@@ -26,7 +26,12 @@ import {usePageContext} from '@/Context/PageContext.jsx';
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 import {acceptTerms} from '@/Services/UserService.jsx';
 import IconDescription from './IconDescription.jsx';
-import {getJsonValue} from '@/Services/IconRequests.jsx';
+import { FaImage } from "react-icons/fa";
+import { CiImageOn } from "react-icons/ci";
+import HoverText from '@/Utils/HoverText.jsx';
+
+import ImageUploader
+    from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
 
 const StandardForm = ({
                           accordionValue,
@@ -38,6 +43,7 @@ const StandardForm = ({
                           setShowLinkForm,
                           setEditIcon,
                           setShowUpgradePopup,
+                          setShowLoader,
                           affiliateStatus = null,
                           setAffiliateStatus = null,
 
@@ -47,7 +53,12 @@ const StandardForm = ({
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
     const  { pageSettings } = usePageContext();
     const [ showTerms, setShowTerms ] = useState(false);
-
+    const [ showBGUpload, setShowBGUpload ] = useState(false);
+    const [ showIconList, setShowIconList ] = useState(false);
+    const [ isHovering, setIsHovering ] = useState({
+        status: false,
+        section: null,
+    });
     const {id, folderId} = editIcon;
 
     const [currentLink, setCurrentLink] = useState(
@@ -57,6 +68,7 @@ const StandardForm = ({
             return e.id === id
         }) ||
         {
+            id: null,
             icon: null,
             name: null,
             url: null,
@@ -410,20 +422,81 @@ const StandardForm = ({
             :
 
             <form onSubmit={handleSubmit} className="link_form">
-                <div className="icon_row">
-                    <div className="icon_box">
-                        <IconList
-                            currentLink={currentLink}
-                            setCurrentLink={setCurrentLink}
-                            accordionValue={accordionValue}
-                            setCharactersLeft={setCharactersLeft}
-                            inputType={inputType}
-                            setInputType={setInputType}
-                            editID={id}
-                        />
+                <div className="form_nav relative">
+                    { (currentLink.icon && !showIconList && !showBGUpload) &&
+                        <div className="relative">
+                            <a className="relative block"
+                               onMouseOver={() => setIsHovering({status: true, section: "icon"})}
+                               onMouseLeave={() => setIsHovering({status: false, section: null})}
+                               href="#"
+                               onClick={(e) => {
+                                e.preventDefault();
+                                setShowIconList(true);
+                                setIsHovering({status: false, section: null})
+                            }}><CiImageOn />
+                            </a>
+                            { (isHovering.section === "icon" && isHovering.status) &&
+                                <div className="hover_text block" style={{opacity: 1, width: '50px'}}><p>Icon</p></div>
+                            }
+                            </div>
+                    }
+                    { (!showBGUpload && currentLink.id && !showIconList) &&
+                        <div className="relative">
+                            <a className="relative block"
+                               onMouseOver={() => setIsHovering({status: true, section: "bg"})}
+                               onMouseLeave={() => setIsHovering({status: false, section: null})}
+                               href="#"
+                               onClick={(e) => {
+                                e.preventDefault();
+                                setShowBGUpload(true);
+                                setIsHovering({status: false, section: null})
+                            }}><FaImage /></a>
+                            { (isHovering.section === "bg" && isHovering.status) &&
+                                <div className="hover_text" style={{opacity: 1}}><p>Background</p></div>
+                            }
+                        </div>
+                    }
+                </div>
+                { (!currentLink.icon || showIconList) &&
+                    <div className="icon_row">
+                        <div className="icon_box">
+                            <IconList
+                                currentLink={currentLink}
+                                setCurrentLink={setCurrentLink}
+                                accordionValue={accordionValue}
+                                setCharactersLeft={setCharactersLeft}
+                                inputType={inputType}
+                                setInputType={setInputType}
+                                editID={id}
+                            />
+                        </div>
+                        <a className="hide_button uppercase mt-2" href="#" onClick={(e) => {
+                            e.preventDefault();
+                            setShowIconList(false);
+                        }}>Hide Icons</a>
+                    </div>
+                }
+
+                {showBGUpload &&
+                    <div className="flex flex-wrap justify-end mt-5 relative">
+                        <div className="w-full">
+                            <p className="mb-2 text-center">Upload an image to display as the button background.</p>
+                            <ImageUploader
+                                currentLink={currentLink}
+                                setShowLoader={setShowLoader}
+                                pageSettings={pageSettings}
+                                uploadUrl={`/dashboard/links/update/${currentLink.id}`}
+                            />
+                        </div>
+                        <a className="hide_button uppercase mt-2 absolute bottom-0" href="#" onClick={(e) => {
+                            e.preventDefault();
+                            setShowBGUpload(false);
+                        }}>Hide Upload</a>
 
                     </div>
-                </div>
+                }
+
+
                 <div className="my_row my-4">
 
                     {!subStatus &&
@@ -447,17 +520,19 @@ const StandardForm = ({
                             </span>
                         }
                     </div>
-                    <div className="my_row info_text title">
-                        <p className="char_max">Max 11 Characters Shown</p>
-                        <p className="char_count">
-                            {charactersLeft < 0 ?
-                                <span className="over">Only 11 Characters Will Be Shown</span>
-                                :
-                                "Characters Left: " +
-                                charactersLeft
-                            }
-                        </p>
-                    </div>
+                    {pageSettings["layout_one"] &&
+                        <div className="my_row info_text title">
+                            <p className="char_max">Max 11 Characters Shown</p>
+                            <p className="char_count">
+                                {charactersLeft < 0 ?
+                                    <span className="over">Only 11 Characters Will Be Shown</span>
+                                    :
+                                    "Characters Left: " +
+                                    charactersLeft
+                                }
+                            </p>
+                        </div>
+                    }
                 </div>
 
                 {accordionValue !== "offer" &&

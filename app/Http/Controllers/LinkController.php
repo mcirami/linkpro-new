@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\Link;
 use App\Models\Page;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 
 class LinkController extends Controller
@@ -66,6 +67,10 @@ class LinkController extends Controller
         }*/
 
         return response()->json(['message' => 'Icon Updated', 'path' => $path]);
+
+    }
+
+    public function backgroundImage(Request $request, Link $link, LinkService $linkService) {
 
     }
 

@@ -65,15 +65,15 @@ export const updateLink = (packets, editID) => {
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
             EventBus.dispatch("success", {message: returnMessage});
-            let iconPath = null;
+            let imagePath = null;
 
             if(response.data.path) {
-                iconPath = response.data.path;
+                imagePath = response.data.path;
             }
 
             return {
                 success : true,
-                iconPath : iconPath
+                imagePath : imagePath
             }
         }
     ).catch(error => {

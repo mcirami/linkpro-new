@@ -459,7 +459,7 @@ const CustomForm = ({
 
                     if (data.success) {
 
-                        const iconPath = data.iconPath;
+                        const iconPath = data.imagePath;
 
                         if (folderId) {
 

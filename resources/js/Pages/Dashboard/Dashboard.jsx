@@ -434,7 +434,7 @@ function Dashboard({
 
                                                     {Object.values(editIcon).every(value => value === null) && !showLinkForm ?
                                                         <div className="my_row link_row">
-                                                            <div className="add_content_links">
+                                                            <div className={`add_content_links ${pageSettings.page_layout === "layout_two" && "!border-0" } `}>
                                                                 <div className="add_more_link">
                                                                     <AddLink
                                                                         setShowLinkForm={setShowLinkForm}
@@ -442,13 +442,15 @@ function Dashboard({
                                                                         setShowUpgradePopup={setShowUpgradePopup}
                                                                     />
                                                                 </div>
-                                                                <div className="add_more_link">
-                                                                    <AddFolder
-                                                                        subStatus={subStatus}
-                                                                        setShowUpgradePopup={setShowUpgradePopup}
-                                                                        setEditIcon={setEditIcon}
-                                                                    />
-                                                                </div>
+                                                                {pageSettings.page_layout === "layout_one" &&
+                                                                    <div className="add_more_link">
+                                                                        <AddFolder
+                                                                            subStatus={subStatus}
+                                                                            setShowUpgradePopup={setShowUpgradePopup}
+                                                                            setEditIcon={setEditIcon}
+                                                                        />
+                                                                    </div>
+                                                                }
                                                             </div>
                                                         </div>
                                                         :
@@ -490,6 +492,7 @@ function Dashboard({
                                                                                 setShowLinkForm={setShowLinkForm}
                                                                                 setEditIcon={setEditIcon}
                                                                                 setShowUpgradePopup={setShowUpgradePopup}
+                                                                                setShowLoader={setShowLoader}
                                                                             />
 
                                                                         </div>

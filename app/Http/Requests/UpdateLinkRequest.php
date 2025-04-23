@@ -24,11 +24,12 @@ class UpdateLinkRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
-            'url' => 'sometimes|required',
+            'name'  => 'sometimes|required|max:255',
+            'url'   => 'sometimes|required',
             'email' => 'sometimes|required|email',
             'phone' => 'sometimes|required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-            'icon' => 'required',
+            'icon'  => 'sometimes|required',
+            'bg_image'  => 'string'
         ];
     }
 }

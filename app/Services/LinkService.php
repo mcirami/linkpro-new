@@ -9,6 +9,7 @@ use App\Models\Page;
 use App\Http\Traits\LinkTrait;
 use App\Http\Traits\IconTrait;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 
 class LinkService {
 
@@ -47,7 +48,7 @@ class LinkService {
 
         $iconPath = $request->icon;
         if (str_contains($iconPath, 'tmp/') ) {
-            $iconPath = $this->saveCustomIcon( $request );
+            $iconPath = $this->saveCustomImage( $request );
         }
 
         if ($request->folder_id) {
@@ -150,39 +151,56 @@ class LinkService {
      */
     public function updateLink($request, $link): ?string {
 
+        $userID = Auth::id();
+        $imgName = $userID . '-' . time() . '.' . $request->ext;
+
+        $iconPath = $request->icon;
         if (str_contains($request->icon, 'tmp/') ) {
-            $iconPath = $this->saveCustomIcon($request);
-        } else {
-            $iconPath = $request->icon;
+            $savePath = 'custom-icons/' . $userID . '/' . $imgName;
+            $iconPath = $this->saveCustomImage($iconPath, $savePath);
         }
 
+        $bgPath = null;
+        if ($request->bg_image) {
+            $path = 'icon-bgs/' . $userID . '/' . $imgName;
+            $bgPath = $this->saveCustomImage($request->bg_image, $path);
+        }
+
+        $productIDs = [];
         if ($request->shopify_products) {
-            $productIDs = [];
             foreach($request->shopify_products as $product) {
                 $productObject = [
                     'id' => $product["id"],
                     'position' => $product["position"],
                     'shopify_id' =>  $request->shopify_id
                 ];
-                array_push($productIDs, $productObject);
+                $productIDs[]  = $productObject;
             }
         }
 
-        $link->update([
-            'name'              => $request->name,
-            'url'               => $request->url ? : null,
-            'email'             => $request->email ? : null,
-            'phone'             => $request->phone ? : null,
-            'mailchimp_list_id' => $request->mailchimp_list_id ? : null,
-            'shopify_products'  => $request->shopify_products ? $productIDs : null,
-            'shopify_id'        => $request->shopify_id ? : null,
-            'course_id'         => $request->course_id ? : null,
-            'description'       => $request->description ? : null,
-            'icon'              => $iconPath,
-            'type'              => $request->type,
-        ]);
+        $columns = Schema::getColumnListing($link->getTable());
+        $payload = collect($columns)
+            ->filter(fn ($col) => $request->exists($col))   // client sent the key
+            ->mapWithKeys(fn ($col) => [$col => $request->input($col)])
+            ->toArray();
 
-        return $iconPath;
+        if ($request->exists('icon')) {
+            $payload['icon'] = $iconPath;
+        }
+
+        if ($request->exists('bg_image')) {
+            $payload['bg_image'] = $bgPath;
+        }
+
+        if ($request->exists('shopify_products')) {
+            $payload['shopify_products'] = $productIDs;
+        }
+
+        if (!empty($payload)) {
+            $link->update($payload);
+        }
+
+        return $iconPath || $bgPath;
     }
 
     /**

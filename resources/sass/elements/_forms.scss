@@ -689,6 +689,34 @@ form .bottom_row a {
                 -webkit-border-radius: 12px;
                 -moz-border-radius: 12px;
 
+                a.hide_button {
+                    color: $darkGray;
+
+                    &:hover {
+                        color: $black;
+                    }
+                }
+
+                .form_nav {
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-orient: horizontal;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: row;
+                    flex-direction: row;
+                    -ms-flex-wrap: nowrap;
+                    flex-wrap: nowrap;
+                    gap: 1rem;
+
+                    a {
+                        background: rgba(0, 0, 255, .4);
+                        padding: 4px 7px;
+                        border-radius: 6px;
+                        color: white;
+                    }
+                }
+
                 label[for="mailchimp_list_id"],
                 label[for="domain"] {
                     margin-bottom: 5px;

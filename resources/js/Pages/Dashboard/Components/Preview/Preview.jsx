@@ -121,8 +121,19 @@ const Preview = ({
                                         phone,
                                         icon,
                                         active_status,
-                                        links
+                                        links,
+                                        bg_image,
                                     } = linkItem;
+
+                                    let styles = {};
+                                    if (bg_image && pageSettings.page_layout === "layout_two") {
+                                        styles = {
+                                            backgroundImage: `url(${bg_image})`,
+                                            backgroundRepeat: "no-repeat",
+                                            backgroundSize: "cover",
+                                            backgroundPosition: "center",
+                                        }
+                                    }
 
                                     if (email) {
                                         url = "mailto:" + email;
@@ -133,7 +144,10 @@ const Preview = ({
                                         }
                                     }
 
-                                    const dataRow = pageSettings.page_layout === "layout_one" ? Math.ceil((index + 1) / 4) : index + 1;
+                                    const dataRow = pageSettings.page_layout === "layout_one" ?
+                                        Math.ceil((index + 1) / 4)
+                                        :
+                                        index + 1;
 
                                     let displayIcon = null;
                                     if (type !== "folder") {
@@ -144,9 +158,18 @@ const Preview = ({
                                     if (type === "folder" || type ===
                                         "mailchimp" || type === "shopify" ||
                                         type === "advanced") {
-                                        colClasses = "icon_col folder";
+                                        colClasses=`icon_col folder
+                                       ${bg_image && pageSettings.page_layout ==="layout_two" ?
+                                            "bg_image"
+                                            :
+                                            ""
+                                        }`
                                     } else {
-                                        colClasses = "icon_col";
+                                        colClasses = `icon_col ${bg_image && pageSettings.page_layout ==="layout_two" ?
+                                            "bg_image"
+                                            :
+                                            ""
+                                        }`;
                                     }
 
                                     return (
@@ -184,11 +207,18 @@ const Preview = ({
                                                     case "email":
                                                     case "phone":
                                                         return (
-                                                            <div className={` ${colClasses} `}>
+                                                            <div className={` ${colClasses} `}
+                                                                 style={styles}
+                                                            >
                                                                 {active_status ?
                                                                     pageSettings.page_layout === "layout_one" ?
                                                                         <>
-                                                                            <a className={`${ (!url || !displayIcon) ? "default" : ""}`}
+                                                                            <a className={`
+                                                                            ${ (!url || !displayIcon) ?
+                                                                                "default"
+                                                                                :
+                                                                                ""}`
+                                                                            }
                                                                                target="_blank"
                                                                                href={url || "#"}>
                                                                                 <img src={displayIcon} alt=""/>
@@ -202,14 +232,22 @@ const Preview = ({
                                                                             </p>
                                                                         </>
                                                                         :
-                                                                        <a className={`icon_wrap flex items-center !justify-between ${ (!url || !displayIcon) ? "default" : ""}`}
+                                                                        <a className={`icon_wrap flex items-center !justify-between
+                                                                        ${ (!url || !displayIcon) ? "default"
+                                                                            : ""
+                                                                        }`}
                                                                            target="_blank"
                                                                            href={url || "#"}>
-                                                                            <span className="flex items-center">
-                                                                                <img src={displayIcon} alt=""/>
-                                                                                <h3>{name || "Link Name"}</h3>
-                                                                            </span>
-                                                                            <IoOpenOutline />
+                                                                            <div className={`${bg_image ?
+                                                                                "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
+                                                                                :
+                                                                                "flex items-center justify-between w-full"}`}>
+                                                                                <span className="flex items-center justify-start">
+                                                                                    <img src={displayIcon} alt=""/>
+                                                                                    <h3>{name || "Link Name"}</h3>
+                                                                                </span>
+                                                                                <IoOpenOutline />
+                                                                            </div>
                                                                         </a>
                                                                     :
                                                                     ""

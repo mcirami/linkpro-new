@@ -62,9 +62,9 @@ const hoverText = [
         section: 'layout',
         text: [
             {
-                description: 'Choose between 3 different layouts to display your profile content that includes your profile image, title and bio.',
+                description: 'Choose between 2 different layouts to display your icons in a grid style or button style.',
                 subTitle: 'Pro Tip!',
-                tip: 'A longer title and/or bio may look best on Layout 3.'
+                tip: 'If you choose the button style, you can add a background to your button.'
             }
         ]
     },
