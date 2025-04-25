@@ -268,7 +268,8 @@ class LinkService {
                 'shopify_id',
                 'type',
                 'course_id',
-                'description'
+                'description',
+                'bg_image'
             ]);
             $newLink->setTable( 'deleted_links' );
             $newLink->link_id = $link->id;

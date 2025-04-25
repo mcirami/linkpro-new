@@ -21,7 +21,7 @@ export const ConfirmPopup = ({
                                  setAccordionValue
                              }) => {
 
-    const {id, type} = useState(editIcon);
+    const {id, type, folderId} = editIcon;
     const { userLinks, dispatch  } = useContext(UserLinksContext);
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
 
@@ -31,9 +31,9 @@ export const ConfirmPopup = ({
         let newFolderArray;
         let newArray;
 
-        const iconId = id || showConfirmPopup.id;
+        const iconId = (id || folderId) || showConfirmPopup.id;
 
-        if (!id && showConfirmPopup.type === "folder") {
+        if (!id && folderId) {
             let newArray = userLinks.filter(element => {
 
                 if (element.type !== "folder") {
@@ -55,6 +55,9 @@ export const ConfirmPopup = ({
 
                     //dispatchOrig({ type: ORIGINAL_LINKS_ACTIONS.SET_ORIGINAL_LINKS, payload: {links: data.links} })
                     dispatch({ type: LINKS_ACTIONS.SET_LINKS, payload: {links: data.links} })
+
+                    setEditIcon(prev =>
+                        Object.fromEntries(Object.keys(prev).map(key => [key, null])));
 
                     setShowConfirmPopup({
                         show: false,

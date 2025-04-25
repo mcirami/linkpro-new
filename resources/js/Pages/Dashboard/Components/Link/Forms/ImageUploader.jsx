@@ -15,7 +15,6 @@ const ImageUploader = ({
                            currentLink,
                            setShowLoader,
                            pageSettings,
-                           uploadUrl,
 }) => {
 
     const { userLinks, dispatch } = useContext(UserLinksContext);
@@ -150,9 +149,17 @@ const ImageUploader = ({
                 <div className="icon_box">
                     <div className="uploader">
                         {imageSelected ?
-                            <a className="!uppercase button blue !w-full" href="#" onClick={uploadImage}>
-                                Upload Image
-                            </a>
+                            <div className="my_row button_row mt-4">
+                                <a className="!uppercase button blue" href="#" onClick={uploadImage}>
+                                    Upload
+                                </a>
+                                <a className="!uppercase button transparent gray" href="#" onClick={(e) => {
+                                    e.preventDefault();
+                                    set(false);
+                                }}>
+                                    Cancel
+                                </a>
+                            </div>
                             :
                             <label htmlFor="custom_icon_upload" className="custom !uppercase button blue">
                                 Select Image

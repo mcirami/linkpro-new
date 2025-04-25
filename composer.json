@@ -20,8 +20,8 @@
         "laravel/sanctum": "^3.2",
         "laravel/socialite": "^5.9",
         "laravel/tinker": "^2.8",
-        "laravel/vapor-cli": "^1.59",
-        "laravel/vapor-core": "^2.33",
+        "laravel/vapor-cli": "^1.65",
+        "laravel/vapor-core": "^2.37",
         "league/flysystem-aws-s3-v3": "^3.16",
         "mailchimp/marketing": "^3.0",
         "mchev/banhammer": "^2.3",
@@ -36,7 +36,7 @@
         "stripe/stripe-php": "^13.10",
         "symfony/http-client": "^6.3",
         "symfony/mailgun-mailer": "^7.1",
-        "tcg/voyager": "^v1.7",
+        "tcg/voyager": "^1.7",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {

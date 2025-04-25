@@ -9,7 +9,6 @@ const FolderLinks = ({
                          layout
 }) => {
 
-    console.log(icons);
     const {name, icon, active_status, url} = icons
 
     return (

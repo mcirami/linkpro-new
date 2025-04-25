@@ -1018,6 +1018,15 @@
     .ReactCrop {
         min-width: 40%;
         z-index: 999;
+
+        .ord-se, .ord-sw, .ord-ne, .ord-nw {
+            margin: auto !important;
+        }
+    }
+
+    .ReactCrop__drag-handle {
+        width: 30px;
+        height: 30px;
     }
 
     p {

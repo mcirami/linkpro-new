@@ -32,6 +32,7 @@ import HoverText from '@/Utils/HoverText.jsx';
 
 import ImageUploader
     from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
+import FormNav from '@/Pages/Dashboard/Components/Link/Forms/FormNav.jsx';
 
 const StandardForm = ({
                           accordionValue,
@@ -55,10 +56,7 @@ const StandardForm = ({
     const [ showTerms, setShowTerms ] = useState(false);
     const [ showBGUpload, setShowBGUpload ] = useState(false);
     const [ showIconList, setShowIconList ] = useState(false);
-    const [ isHovering, setIsHovering ] = useState({
-        status: false,
-        section: null,
-    });
+
     const {id, folderId} = editIcon;
 
     const [currentLink, setCurrentLink] = useState(
@@ -421,63 +419,9 @@ const StandardForm = ({
                 </div>
             :
 
-            <form onSubmit={handleSubmit} className="link_form">
-                <div className="form_nav relative">
-                    { (currentLink.icon && !showIconList && !showBGUpload) &&
-                        <div className="relative">
-                            <a className="relative block"
-                               onMouseOver={() => setIsHovering({status: true, section: "icon"})}
-                               onMouseLeave={() => setIsHovering({status: false, section: null})}
-                               href="#"
-                               onClick={(e) => {
-                                e.preventDefault();
-                                setShowIconList(true);
-                                setIsHovering({status: false, section: null})
-                            }}><CiImageOn />
-                            </a>
-                            { (isHovering.section === "icon" && isHovering.status) &&
-                                <div className="hover_text block" style={{opacity: 1, width: '50px'}}><p>Icon</p></div>
-                            }
-                            </div>
-                    }
-                    { (!showBGUpload && currentLink.id && !showIconList) &&
-                        <div className="relative">
-                            <a className="relative block"
-                               onMouseOver={() => setIsHovering({status: true, section: "bg"})}
-                               onMouseLeave={() => setIsHovering({status: false, section: null})}
-                               href="#"
-                               onClick={(e) => {
-                                e.preventDefault();
-                                setShowBGUpload(true);
-                                setIsHovering({status: false, section: null})
-                            }}><FaImage /></a>
-                            { (isHovering.section === "bg" && isHovering.status) &&
-                                <div className="hover_text" style={{opacity: 1}}><p>Background</p></div>
-                            }
-                        </div>
-                    }
-                </div>
-                { (!currentLink.icon || showIconList) &&
-                    <div className="icon_row">
-                        <div className="icon_box">
-                            <IconList
-                                currentLink={currentLink}
-                                setCurrentLink={setCurrentLink}
-                                accordionValue={accordionValue}
-                                setCharactersLeft={setCharactersLeft}
-                                inputType={inputType}
-                                setInputType={setInputType}
-                                editID={id}
-                            />
-                        </div>
-                        <a className="hide_button uppercase mt-2" href="#" onClick={(e) => {
-                            e.preventDefault();
-                            setShowIconList(false);
-                        }}>Hide Icons</a>
-                    </div>
-                }
-
-                {showBGUpload &&
+            <>
+            {
+                showBGUpload ?
                     <div className="flex flex-wrap justify-end mt-5 relative">
                         <div className="w-full">
                             <p className="mb-2 text-center">Upload an image to display as the button background.</p>
@@ -494,96 +438,131 @@ const StandardForm = ({
                         }}>Hide Upload</a>
 
                     </div>
-                }
-
-
-                <div className="my_row my-4">
-
-                    {!subStatus &&
-                        <p className="upgrade_text"><sup>*</sup>Upgrade to customize</p>
-                    }
-                    <div className="input_wrap mt-2">
-                        <input
-                            className={`${!subStatus ? "disabled " : ""} ${currentLink.name ? "active" : ""}`}
-                            name="name"
-                            type="text"
-                            value={currentLink.name || ""}
-                            onChange={(e) => handleLinkName(e)}
-                            onFocus={(e) => HandleFocus(e.target)}
-                            onBlur={(e) => HandleBlur(e.target)}
-                            disabled={!subStatus}
+                    :
+                    <form onSubmit={handleSubmit} className="link_form">
+                        <FormNav
+                            currentLink={currentLink}
+                            showIconList={showIconList}
+                            setShowIconList={setShowIconList}
+                            showBGUpload={showBGUpload}
+                            setShowBGUpload={setShowBGUpload}
+                            pageLayout={pageSettings.page_layout}
                         />
-                        <label>Icon Name</label>
-                        {!subStatus &&
-                            <span className="disabled_wrap"
-                                  onClick={(e) => handleOnClick(e)}>
-                            </span>
+                        {(!currentLink.icon || showIconList) &&
+                            <div className="icon_row">
+                                <div className="icon_box">
+                                    <IconList
+                                        currentLink={currentLink}
+                                        setCurrentLink={setCurrentLink}
+                                        accordionValue={accordionValue}
+                                        setCharactersLeft={setCharactersLeft}
+                                        inputType={inputType}
+                                        setInputType={setInputType}
+                                        editID={id}
+                                    />
+                                </div>
+                                <a className="hide_button uppercase mt-2" href="#" onClick={(e) => {
+                                    e.preventDefault();
+                                    setShowIconList(false);
+                                }}>Hide Icons</a>
+                            </div>
                         }
-                    </div>
-                    {pageSettings["layout_one"] &&
-                        <div className="my_row info_text title">
-                            <p className="char_max">Max 11 Characters Shown</p>
-                            <p className="char_count">
-                                {charactersLeft < 0 ?
-                                    <span className="over">Only 11 Characters Will Be Shown</span>
-                                    :
-                                    "Characters Left: " +
-                                    charactersLeft
+
+                        <div className="my_row my-4">
+
+                            {!subStatus &&
+                                <p className="upgrade_text">
+                                    <sup>*</sup>Upgrade to customize</p>
+                            }
+                            <div className="input_wrap mt-2">
+                                <input
+                                    className={`${!subStatus ?
+                                        "disabled " :
+                                        ""} ${currentLink.name ?
+                                        "active" :
+                                        ""}`}
+                                    name="name"
+                                    type="text"
+                                    value={currentLink.name || ""}
+                                    onChange={(e) => handleLinkName(e)}
+                                    onFocus={(e) => HandleFocus(e.target)}
+                                    onBlur={(e) => HandleBlur(e.target)}
+                                    disabled={!subStatus}
+                                />
+                                <label>Icon Name</label>
+                                {!subStatus &&
+                                    <span className="disabled_wrap"
+                                          onClick={(e) => handleOnClick(e)}>
+                            </span>
                                 }
-                            </p>
-                        </div>
-                    }
-                </div>
-
-                {accordionValue !== "offer" &&
-                    <InputTypeRadio
-                        inputType={inputType}
-                        setInputType={setInputType}
-                        currentLink={currentLink}
-                        setCurrentLink={setCurrentLink}
-                    />
-                }
-
-                <div className="my_row mb-4">
-                    {accordionValue === "offer" ?
-                        <div className="external_link">
-                            <h3>Tracking Link:</h3>
-                            {currentLink.url ?
-                                <a className="inline-block" target="_blank" href={currentLink.url}>{currentLink.url}</a>
-                                :
-                                <p>Select An Icon Above</p>
+                            </div>
+                            {pageSettings["layout_one"] &&
+                                <div className="my_row info_text title">
+                                    <p className="char_max">Max 11 Characters Shown</p>
+                                    <p className="char_count">
+                                        {charactersLeft < 0 ?
+                                            <span className="over">Only 11 Characters Will Be Shown</span>
+                                            :
+                                            "Characters Left: " +
+                                            charactersLeft
+                                        }
+                                    </p>
+                                </div>
                             }
                         </div>
-                        :
-                        <InputComponent
-                            inputType={inputType}
-                            setInputType={setInputType}
-                            currentLink={currentLink}
-                            setCurrentLink={setCurrentLink}
-                        />
-                    }
-                </div>
 
-                {/*{!folderID &&
-                    <IconDescription
-                        currentLink={currentLink}
-                        setCurrentLink={setCurrentLink}
-                        descChecked={descChecked}
-                        setDescChecked={setDescChecked}
-                    />
-                }*/}
+                        {accordionValue !== "offer" &&
+                            <InputTypeRadio
+                                inputType={inputType}
+                                setInputType={setInputType}
+                                currentLink={currentLink}
+                                setCurrentLink={setCurrentLink}
+                            />
+                        }
 
-                <div className="button_row w-full mt-4">
-                    <button className="button green" type="submit">
-                        Save
-                    </button>
-                    <a href="#" className="button transparent gray" onClick={(e) => handleCancel(e)}>
-                        Cancel
-                    </a>
-                    <a className="help_link" href="mailto:help@link.pro">Need Help?</a>
-                </div>
+                        <div className="my_row mb-4">
+                            {accordionValue === "offer" ?
+                                <div className="external_link">
+                                    <h3>Tracking Link:</h3>
+                                    {currentLink.url ?
+                                        <a className="inline-block" target="_blank" href={currentLink.url}>{currentLink.url}</a>
+                                        :
+                                        <p>Select An Icon Above</p>
+                                    }
+                                </div>
+                                :
+                                <InputComponent
+                                    inputType={inputType}
+                                    setInputType={setInputType}
+                                    currentLink={currentLink}
+                                    setCurrentLink={setCurrentLink}
+                                />
+                            }
+                        </div>
 
-            </form>
+                        {/*{!folderID &&
+                            <IconDescription
+                                currentLink={currentLink}
+                                setCurrentLink={setCurrentLink}
+                                descChecked={descChecked}
+                                setDescChecked={setDescChecked}
+                            />
+                        }*/}
+
+                        <div className="button_row w-full mt-4">
+                            <button className="button green" type="submit">
+                                Save
+                            </button>
+                            <a href="#" className="button transparent gray" onClick={(e) => handleCancel(
+                                e)}>
+                                Cancel
+                            </a>
+                            <a className="help_link" href="mailto:help@link.pro">Need Help?</a>
+                        </div>
+                    </form>
+
+            }
+            </>
         }
         </>
     );

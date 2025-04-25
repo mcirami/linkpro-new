@@ -26,7 +26,7 @@ function ConnectShopify({ domain, errors = null }) {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const errors = urlParams?.get("errors");
-        console.log(urlParams);
+        //console.log(urlParams);
     }, []);
 
     const handleCancel = () => {

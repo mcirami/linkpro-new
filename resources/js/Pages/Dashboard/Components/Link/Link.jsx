@@ -48,7 +48,7 @@ const Link = ({
              style={style}
         >
             <div className="icon_col">
-                <span className="drag_handle"
+                <span className="drag_handle relative"
                       {...attributes}
                       {...listeners}
                 >

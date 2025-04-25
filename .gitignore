@@ -44,3 +44,4 @@ staging.Dockerfile
 .env.prod
 .env.production-new
 .env.newStaging
+.env.stag-standard

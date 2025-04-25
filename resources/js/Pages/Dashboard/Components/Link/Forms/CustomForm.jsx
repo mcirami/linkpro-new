@@ -36,6 +36,9 @@ import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 import CropTools from '@/Utils/CropTools';
 import IconDescription from './IconDescription.jsx';
 import {getJsonValue} from '@/Services/IconRequests.jsx';
+import FormNav from '@/Pages/Dashboard/Components/Link/Forms/FormNav.jsx';
+import ImageUploader
+    from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
 
 const CustomForm = ({
                         accordionValue,
@@ -53,6 +56,8 @@ const CustomForm = ({
     const { userLinks, dispatch } = useContext(UserLinksContext);
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
     const  { pageSettings } = usePageContext();
+    const [ showBGUpload, setShowBGUpload ] = useState(false);
+    const [ showIconList, setShowIconList ] = useState(false);
 
     //const iconRef = useRef(null)
     const [completedIconCrop, setCompletedIconCrop] = useState({});
@@ -620,120 +625,196 @@ const CustomForm = ({
         }))
     },[]);
 
-    return (
-        <form onSubmit={handleSubmit} className="link_form">
-            <div className="my_row">
+    const uploadImage = async (e) => {
+        e.preventDefault();
+        const image = getFileToUpload(previewCanvasRef?.current);
+        image.then((value) => {
+            setShowLoader({show: true, icon: "upload", position: "fixed"})
 
-                {iconSelected &&
-                    <div className="crop_section">
-                        <p>Crop Icon</p>
-
-                        <CropTools
-                            rotate={rotate}
-                            setRotate={setRotate}
-                            scale={scale}
-                            setScale={setScale}
-                        />
-                        <ReactCrop
-                            crop={crop}
-                            onChange={(_, percentCrop) => setCrop(percentCrop)}
-                            onComplete={(c) => setCompletedIconCrop(c)}
-                            aspect={aspect}
-                        >
-                            <img
-                                onLoad={(e) => onImageLoad(e, aspect, setCrop)}
-                                src={upImg}
-                                ref={imgRef}
-                                style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
-                                alt="Crop Me"/>
-                        </ReactCrop>
-                        <div className="icon_col">
-                            <p>Icon Preview</p>
-                            <canvas
-                                ref={previewCanvasRef}
-                                // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
-                                style={{
-                                    backgroundSize: `cover`,
-                                    backgroundRepeat: `no-repeat`,
-                                    width: iconSelected ? `100%` : 0,
-                                    height: iconSelected ? `100%` : 0,
-                                    borderRadius: `20px`,
-                                }}
-                            />
-                        </div>
-                    </div>
+            window.Vapor.store(
+                value,
+                {
+                    visibility: "public-read",
+                    progress: progress => {
+                        setShowLoader(prev => ({
+                            ...prev,
+                            progress: Math.round(progress * 100)
+                        }))
+                    }
                 }
-                <div className="icon_row">
-                    <div className="icon_box">
-                        <div className="uploader">
-                            <label htmlFor="custom_icon_upload" className="custom text-uppercase button blue">
-                                Upload Image
-                            </label>
-                            <input id="custom_icon_upload" type="file" className="custom" onChange={selectCustomIcon} accept="image/png, image/jpeg, image/jpg, image/gif"/>
-                            <div className="my_row info_text file_types text-center mb-2">
-                                <p className="m-0 char_count w-100 ">Allowed File Types: <span>png, jpg, jpeg, gif</span>
-                                </p>
+            ).then(response => {
+                //console.log("Vapor Response: ", response);
+                const packets = {
+                    icon: response.key,
+                    ext: response.extension,
+                };
+                updateLink(packets, currentLink.id)
+                .then((data) => {
+                    setShowLoader({
+                        show: false,
+                        icon: "",
+                        position: "",
+                        progress: null
+                    });
+
+                    dispatch({
+                        type: LINKS_ACTIONS.UPDATE_LINK,
+                        payload: {
+                            editID: currentLink.id,
+                            icon: data.imagePath,
+                        }});
+                    setIconSelected(false);
+                });
+            });
+        });
+    }
+
+    return (
+        iconSelected ?
+            <div className="crop_section">
+                <p>Crop Icon</p>
+
+                <CropTools
+                    rotate={rotate}
+                    setRotate={setRotate}
+                    scale={scale}
+                    setScale={setScale}
+                />
+                <ReactCrop
+                    crop={crop}
+                    onChange={(_, percentCrop) => setCrop(percentCrop)}
+                    onComplete={(c) => setCompletedIconCrop(c)}
+                    aspect={aspect}
+                >
+                    <img
+                        onLoad={(e) => onImageLoad(e, aspect, setCrop)}
+                        src={upImg}
+                        ref={imgRef}
+                        style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
+                        alt="Crop Me"/>
+                </ReactCrop>
+                <div className="icon_col">
+                    <p>Icon Preview</p>
+                    <canvas
+                        ref={previewCanvasRef}
+                        // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
+                        style={{
+                            backgroundSize: `cover`,
+                            backgroundRepeat: `no-repeat`,
+                            width: iconSelected ? `100%` : 0,
+                            height: iconSelected ? `100%` : 0,
+                            borderRadius: `20px`,
+                        }}
+                    />
+                </div>
+                <div className="my_row button_row mt-4">
+                    <a className="!uppercase button blue" href="#" onClick={uploadImage}>
+                        Upload
+                    </a>
+                    <a className="!uppercase button transparent gray" href="#" onClick={(e) => {
+                        e.preventDefault();
+                        setIconSelected(false);
+                    }}>
+                        Cancel
+                    </a>
+                </div>
+            </div>
+            :
+            showBGUpload ?
+                <ImageUploader
+                    currentLink={currentLink}
+                    setShowLoader={setShowLoader}
+                    pageSettings={pageSettings}
+                    setShowBGUpload={setShowBGUpload}
+                />
+
+                :
+                <form onSubmit={handleSubmit} className="link_form">
+                    <FormNav
+                        currentLink={currentLink}
+                        showIconList={showIconList}
+                        setShowIconList={setShowIconList}
+                        showBGUpload={showBGUpload}
+                        setShowBGUpload={setShowBGUpload}
+                        pageLayout={pageSettings.page_layout}
+                    />
+                    {(!currentLink.icon || showIconList) &&
+                        <div className="icon_row">
+                            <div className="icon_box">
+                                <IconList
+                                    currentLink={currentLink}
+                                    setCurrentLink={setCurrentLink}
+                                    accordionValue={accordionValue}
+                                    setCharactersLeft={setCharactersLeft}
+                                    inputType={inputType}
+                                    setInputType={setInputType}
+                                    customIconArray={customIconArray}
+                                    setCustomIconArray={setCustomIconArray}
+                                    editID={id}
+                                />
+                                <div className="uploader inline-block mt-4 w-full">
+                                    <label htmlFor="custom_icon_upload" className="custom !uppercase button blue">
+                                        Select Image
+                                    </label>
+                                    <input id="custom_icon_upload" type="file" className="custom" onChange={selectCustomIcon} accept="image/png, image/jpeg, image/jpg, image/gif"/>
+                                    <div className="my_row info_text file_types text-center mb-2">
+                                        <p className="m-0 char_count w-100 ">Allowed File Types: <span>png, jpg, jpeg, gif</span>
+                                        </p>
+                                        <a className="hide_button uppercase" href="#" onClick={(e) => {
+                                            e.preventDefault();
+                                            setShowIconList(false);
+                                        }}>Hide Icons</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <IconList
-                            currentLink={currentLink}
-                            setCurrentLink={setCurrentLink}
-                            accordionValue={accordionValue}
-                            setCharactersLeft={setCharactersLeft}
+                    }
+
+                    <div className="my_row my-4">
+                        <div className="input_wrap">
+                            <input
+                                className={currentLink.name !== "" ?
+                                    "active" :
+                                    ""}
+                                name="name"
+                                type="text"
+                                value={currentLink.name ||
+                                    ""}
+                                onChange={(e) => handleLinkName(e)}
+                                onFocus={(e) => HandleFocus(e.target)}
+                                onBlur={(e) => HandleBlur(e.target)}
+                            />
+                            <label>Link Name</label>
+                        </div>
+                        <div className="info_text title my_row">
+                            <p className="char_max">Max 11 Characters Shown</p>
+                            <p className="char_count">
+                                {charactersLeft < 0 ?
+                                    <span className="over">Only 11 Characters Will Be Shown</span>
+                                    :
+                                    "Characters Left: " +
+                                    charactersLeft
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <InputTypeRadio
+                        inputType={inputType}
+                        setInputType={setInputType}
+                        currentLink={currentLink}
+                        setCurrentLink={setCurrentLink}
+                    />
+
+                    <div className="my_row">
+                        <InputComponent
                             inputType={inputType}
                             setInputType={setInputType}
-                            customIconArray={customIconArray}
-                            setCustomIconArray={setCustomIconArray}
-                            editID={id}
+                            currentLink={currentLink}
+                            setCurrentLink={setCurrentLink}
                         />
                     </div>
-                </div>
-
-            </div>
-
-            <div className="my_row my-4">
-                <div className="input_wrap">
-                    <input
-                        className={currentLink.name !== "" ? "active" : ""}
-                        name="name"
-                        type="text"
-                        value={currentLink.name ||
-                            ""}
-                        onChange={(e) => handleLinkName(e)}
-                        onFocus={(e) => HandleFocus(e.target)}
-                        onBlur={(e) => HandleBlur(e.target)}
-                    />
-                    <label>Link Name</label>
-                </div>
-                <div className="info_text title my_row">
-                    <p className="char_max">Max 11 Characters Shown</p>
-                    <p className="char_count">
-                        {charactersLeft < 0 ?
-                            <span className="over">Only 11 Characters Will Be Shown</span>
-                            :
-                            "Characters Left: " +
-                            charactersLeft
-                        }
-                    </p>
-                </div>
-            </div>
-
-            <InputTypeRadio
-                inputType={inputType}
-                setInputType={setInputType}
-                currentLink={currentLink}
-                setCurrentLink={setCurrentLink}
-            />
-
-            <div className="my_row">
-                <InputComponent
-                    inputType={inputType}
-                    setInputType={setInputType}
-                    currentLink={currentLink}
-                    setCurrentLink={setCurrentLink}
-                />
-            </div>
-            {/*{!folderID &&
+                    {/*{!folderID &&
                 <IconDescription
                     currentLink={currentLink}
                     setCurrentLink={setCurrentLink}
@@ -741,18 +822,20 @@ const CustomForm = ({
                     setDescChecked={setDescChecked}
                 />
             }*/}
-            <div className="my_row button_row mt-4">
-                <button className="button green" type="submit">
-                    Save
-                </button>
-                <a href="#" className="button transparent gray" onClick={(e) => handleCancel(e)}>
-                    Cancel
-                </a>
-                <a className="help_link" href="mailto:help@link.pro">Need Help?</a>
-            </div>
+                    <div className="my_row button_row mt-4">
+                        <button className="button green" type="submit">
+                            Save
+                        </button>
+                        <a href="#" className="button transparent gray" onClick={(e) => handleCancel(
+                            e)}>
+                            Cancel
+                        </a>
+                        <a className="help_link" href="mailto:help@link.pro">Need Help?</a>
+                    </div>
 
-        </form>
-    );
+                </form>
+
+        );
 };
 
 export default CustomForm;

@@ -413,7 +413,7 @@ function Dashboard({
                                                                     <div className="delete_icon">
                                                                         <DeleteIcon
                                                                             setShowConfirmPopup={setShowConfirmPopup}
-                                                                            editIcon={editIcon}
+                                                                            editId={editIcon.id}
                                                                         />
                                                                     </div>
                                                                 }

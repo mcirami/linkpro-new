@@ -28,7 +28,7 @@ const DropdownComponent = ({
 
     return (
 
-        <div className="my_row position-relative">
+        <div className="my_row relative">
             <select
                 className="active"
                 id="category_select"
