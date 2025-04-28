@@ -397,7 +397,19 @@ form .bottom_row a {
             }
 
             .uploader {
-                margin-bottom: 20px;
+
+                a.hide_button {
+                    color: $darkGray;
+                    font-size: 1rem;
+
+                    &:hover {
+                        color: $black;
+                    }
+                }
+
+                p {
+                    @include ossemibold;
+                }
 
                 label.custom {
                     margin: 0;
@@ -639,6 +651,8 @@ form .bottom_row a {
 
                         &.open {
                             padding-bottom: 5px;
+                            margin-bottom: 20px;
+                            border-bottom: 1px solid $borderGray;
 
                             svg {
                                 transform: rotate(180deg);
@@ -649,21 +663,6 @@ form .bottom_row a {
 
                 .inner_wrap {
                     position: relative;
-
-                    &.offer {
-                        &.open {
-                            min-height: 200px;
-                            display: -webkit-box;
-                            display: -ms-flexbox;
-                            display: flex;
-                            -webkit-box-orient: horizontal;
-                            -webkit-box-direction: normal;
-                            -ms-flex-direction: row;
-                            flex-direction: row;
-                            -ms-flex-wrap: nowrap;
-                            flex-wrap: nowrap;
-                        }
-                    }
 
                     .info_message {
                         p {
@@ -682,6 +681,26 @@ form .bottom_row a {
                 }
             }
 
+            .form_nav {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                -ms-flex-wrap: nowrap;
+                flex-wrap: nowrap;
+                gap: 1rem;
+
+                a {
+                    background: rgba(0, 0, 255, .4);
+                    padding: 4px 7px;
+                    border-radius: 6px;
+                    color: white;
+                }
+            }
+
             .link_form {
                 width: 100%;
                 background: $white;
@@ -691,29 +710,10 @@ form .bottom_row a {
 
                 a.hide_button {
                     color: $darkGray;
+                    font-size: 1rem;
 
                     &:hover {
                         color: $black;
-                    }
-                }
-
-                .form_nav {
-                    display: -webkit-box;
-                    display: -ms-flexbox;
-                    display: flex;
-                    -webkit-box-orient: horizontal;
-                    -webkit-box-direction: normal;
-                    -ms-flex-direction: row;
-                    flex-direction: row;
-                    -ms-flex-wrap: nowrap;
-                    flex-wrap: nowrap;
-                    gap: 1rem;
-
-                    a {
-                        background: rgba(0, 0, 255, .4);
-                        padding: 4px 7px;
-                        border-radius: 6px;
-                        color: white;
                     }
                 }
 

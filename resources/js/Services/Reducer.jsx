@@ -110,7 +110,6 @@ export function reducer(userLinks, action) {
 
             return userLinks.map((item) => {
                 if (item.id === action.payload.editID ) {
-                    console.log("action.payload",action.payload);
                     const { editID, currentLink, ...restPayload } = action.payload;
                     return {
                         ...item,

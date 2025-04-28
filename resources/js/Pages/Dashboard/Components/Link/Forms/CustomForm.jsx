@@ -57,7 +57,7 @@ const CustomForm = ({
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
     const  { pageSettings } = usePageContext();
     const [ showBGUpload, setShowBGUpload ] = useState(false);
-    const [ showIconList, setShowIconList ] = useState(false);
+    const [ showIconList, setShowIconList ] = useState(!id);
 
     //const iconRef = useRef(null)
     const [completedIconCrop, setCompletedIconCrop] = useState({});
@@ -720,7 +720,16 @@ const CustomForm = ({
                 </div>
             </div>
             :
-            showBGUpload ?
+            <>
+            <FormNav
+                currentLink={currentLink}
+                showIconList={showIconList}
+                setShowIconList={setShowIconList}
+                showBGUpload={showBGUpload}
+                setShowBGUpload={setShowBGUpload}
+                pageLayout={pageSettings.page_layout}
+            />
+                {showBGUpload ?
                 <ImageUploader
                     currentLink={currentLink}
                     setShowLoader={setShowLoader}
@@ -730,15 +739,7 @@ const CustomForm = ({
 
                 :
                 <form onSubmit={handleSubmit} className="link_form">
-                    <FormNav
-                        currentLink={currentLink}
-                        showIconList={showIconList}
-                        setShowIconList={setShowIconList}
-                        showBGUpload={showBGUpload}
-                        setShowBGUpload={setShowBGUpload}
-                        pageLayout={pageSettings.page_layout}
-                    />
-                    {(!currentLink.icon || showIconList) &&
+                    {showIconList &&
                         <div className="icon_row">
                             <div className="icon_box">
                                 <IconList
@@ -834,7 +835,8 @@ const CustomForm = ({
                     </div>
 
                 </form>
-
+                }
+            </>
         );
 };
 

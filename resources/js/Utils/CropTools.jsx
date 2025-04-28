@@ -33,6 +33,7 @@ const CropTools = ({
                     <HiPlus />
                 </a>
             </div>
+            <p>Crop Image</p>
             <div className="column">
                 <a href="#" className="number_control" onClick={(e) => handleRotateChange(e, rotate, setRotate, "decrease")}>
                     <HiMinus />

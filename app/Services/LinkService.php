@@ -147,9 +147,9 @@ class LinkService {
      * @param $request
      * @param $link
      *
-     * @return string|null
+     * @return array|null
      */
-    public function updateLink($request, $link): ?string {
+    public function updateLink($request, $link): ?array {
 
         $userID = Auth::id();
         $imgName = $userID . '-' . time() . '.' . $request->ext;
@@ -200,7 +200,10 @@ class LinkService {
             $link->update($payload);
         }
 
-        return $iconPath || $bgPath;
+        return [
+            'icon_path' => $iconPath,
+            'bg_path' => $bgPath,
+        ];
     }
 
     /**

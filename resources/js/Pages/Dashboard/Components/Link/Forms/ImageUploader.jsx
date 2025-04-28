@@ -15,6 +15,7 @@ const ImageUploader = ({
                            currentLink,
                            setShowLoader,
                            pageSettings,
+                           setShowBGUpload
 }) => {
 
     const { userLinks, dispatch } = useContext(UserLinksContext);
@@ -87,11 +88,13 @@ const ImageUploader = ({
                         position: "",
                         progress: null
                     });
+                    setShowBGUpload(false);
+
                     dispatch({
                         type: LINKS_ACTIONS.UPDATE_LINK,
                         payload: {
                             editID: currentLink.id,
-                            bg_image: data.imagePath,
+                            bg_image: data.imagePath.bg_path,
                         }})
                 });
             });
@@ -102,8 +105,6 @@ const ImageUploader = ({
         <>
             {imageSelected &&
                 <div className={`crop_section ${pageSettings.page_layout}`}>
-                    <p>Crop Image</p>
-
                     <CropTools
                         rotate={rotate}
                         setRotate={setRotate}
@@ -149,27 +150,37 @@ const ImageUploader = ({
                 <div className="icon_box">
                     <div className="uploader">
                         {imageSelected ?
-                            <div className="my_row button_row mt-4">
+                            <div className="my_row button_row mt-2">
                                 <a className="!uppercase button blue" href="#" onClick={uploadImage}>
                                     Upload
                                 </a>
                                 <a className="!uppercase button transparent gray" href="#" onClick={(e) => {
                                     e.preventDefault();
-                                    set(false);
+                                    setImageSelected(false);
                                 }}>
                                     Cancel
                                 </a>
                             </div>
                             :
-                            <label htmlFor="custom_icon_upload" className="custom !uppercase button blue">
-                                Select Image
-                            </label>
+                            <>
+                                <p className="mb-2 text-center">Upload a background image for your button</p>
+                                <label htmlFor="custom_icon_upload" className="custom !uppercase button blue">
+                                    Select Image
+                                </label>
+                            </>
                         }
                         <input id="custom_icon_upload" type="file" className="custom" onChange={selectImage} accept="image/png, image/jpeg, image/jpg, image/gif"/>
-                        <div className="my_row info_text file_types text-center mb-2">
-                            <p className="m-0 char_count w-100 ">Allowed File Types: <span>png, jpg, jpeg, gif</span>
+                        <div className="my_row info_text file_types text-center mb-2 !pl-0 !pr-0">
+                            <p className="m-0 char_count w-100">Allowed File Types: <span>png, jpg, jpeg, gif</span>
                             </p>
+                            {!imageSelected &&
+                                <a className="hide_button uppercase" href="#" onClick={(e) => {
+                                    e.preventDefault();
+                                    setShowBGUpload(false);
+                                }}>Hide Upload</a>
+                            }
                         </div>
+
                     </div>
                 </div>
             </div>

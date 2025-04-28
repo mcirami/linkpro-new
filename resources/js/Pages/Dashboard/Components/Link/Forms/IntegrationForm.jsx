@@ -32,6 +32,9 @@ import StoreDropdown from './Shopify/StoreDropdown';
 import SelectedProducts from './Shopify/SelectedProducts';
 import {HandleBlur, HandleFocus} from '@/Utils/InputAnimations.jsx';
 import CropTools from '@/Utils/CropTools';
+import FormNav from '@/Pages/Dashboard/Components/Link/Forms/FormNav.jsx';
+import ImageUploader
+    from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
 
 const IntegrationForm = ({
                              setAccordionValue,
@@ -58,6 +61,8 @@ const IntegrationForm = ({
     const [completedIconCrop, setCompletedIconCrop] = useState(null);
     // if a custom icon is selected
     const [iconSelected, setIconSelected] = useState(false);
+    const [ showBGUpload, setShowBGUpload ] = useState(false);
+    const [ showIconList, setShowIconList ] = useState(!editID);
 
     //image cropping
     const [upImg, setUpImg] = useState();
@@ -359,7 +364,7 @@ const IntegrationForm = ({
 
                         setShowLinkForm(false);
                         setAccordionValue(null);
-                        setEditID(prev =>
+                        setEditIcon(prev =>
                             Object.fromEntries(Object.keys(prev).map(key => [key, null])))
                         setIntegrationType(null);
                         setCurrentLink({})
@@ -402,7 +407,7 @@ const IntegrationForm = ({
 
     const handleCancel = (e) => {
         e.preventDefault();
-        setEditID(prev =>
+        setEditIcon(prev =>
             Object.fromEntries(Object.keys(prev).map(key => [key, null])));
         setShowLinkForm(false);
         setIntegrationType(null);
@@ -417,6 +422,14 @@ const IntegrationForm = ({
 
     return (
         <>
+            <FormNav
+                currentLink={currentLink}
+                showIconList={showIconList}
+                setShowIconList={setShowIconList}
+                showBGUpload={showBGUpload}
+                setShowBGUpload={setShowBGUpload}
+                pageLayout={pageSettings.page_layout}
+            />
             <IntegrationType
                 integrationType={integrationType}
                 setIntegrationType={setIntegrationType}
@@ -447,171 +460,184 @@ const IntegrationForm = ({
             {   (integrationType === "mailchimp" && !isEmpty(lists)) ||
                 (integrationType === "shopify" && !isEmpty(shopifyStores) && !showAddStore ) ?
 
-                <form onSubmit={handleSubmit} className="link_form">
-                    <div className="my_row">
+                iconSelected ?
+                <div className="crop_section">
+                    <p>Crop Icon</p>
+                    <CropTools
+                        rotate={rotate}
+                        setRotate={setRotate}
+                        scale={scale}
+                        setScale={setScale}
+                    />
+                    <ReactCrop
+                        crop={crop}
+                        onChange={(_, percentCrop) => setCrop(percentCrop)}
+                        onComplete={(c) => setCompletedIconCrop(c)}
+                        aspect={aspect}
+                    >
+                        <img
+                            onLoad={(e) => onImageLoad(e, aspect, setCrop)}
+                            src={upImg}
+                            ref={imgRef}
+                            style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
+                            alt="Crop Me"/>
+                    </ReactCrop>
+                    <div className="icon_col">
+                        <p>Icon Preview</p>
+                        <canvas
+                            ref={previewCanvasRef}
+                            // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
+                            style={{
+                                backgroundSize: `cover`,
+                                backgroundRepeat: `no-repeat`,
+                                width: iconSelected ? `100%` : 0,
+                                height: iconSelected ? `100%` : 0,
+                                borderRadius: `20px`,
+                            }}
+                        />
+                    </div>
+                </div>
+                :
 
-                        {iconSelected &&
-                            <div className="crop_section">
-                                <p>Crop Icon</p>
-                                <CropTools
-                                    rotate={rotate}
-                                    setRotate={setRotate}
-                                    scale={scale}
-                                    setScale={setScale}
-                                />
-                                <ReactCrop
-                                    crop={crop}
-                                    onChange={(_, percentCrop) => setCrop(percentCrop)}
-                                    onComplete={(c) => setCompletedIconCrop(c)}
-                                    aspect={aspect}
-                                >
-                                    <img
-                                        onLoad={(e) => onImageLoad(e, aspect, setCrop)}
-                                        src={upImg}
-                                        ref={imgRef}
-                                        style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
-                                        alt="Crop Me"/>
-                                </ReactCrop>
-                                <div className="icon_col">
-                                    <p>Icon Preview</p>
-                                    <canvas
-                                        ref={previewCanvasRef}
-                                        // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
-                                        style={{
-                                            backgroundSize: `cover`,
-                                            backgroundRepeat: `no-repeat`,
-                                            width: iconSelected ? `100%` : 0,
-                                            height: iconSelected ? `100%` : 0,
-                                            borderRadius: `20px`,
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        }
+                showBGUpload ?
+                    <ImageUploader
+                        currentLink={currentLink}
+                        setShowLoader={setShowLoader}
+                        pageSettings={pageSettings}
+                        setShowBGUpload={setShowBGUpload}
+                    />
+                    :
+                    <form onSubmit={handleSubmit} className="link_form">
+                        <div className="my_row mt-3">
+                            {!displayAllProducts &&
+                                showIconList &&
+                                <>
+                                    <div className="icon_row">
+                                        <div className="icon_box">
 
-                        {!displayAllProducts &&
-                            <div className="icon_row">
-                                <div className="icon_box">
+                                            <IconList
+                                                currentLink={currentLink}
+                                                setCurrentLink={setCurrentLink}
+                                                accordionValue={accordionValue}
+                                                setCharactersLeft={setCharactersLeft}
+                                                integrationType={integrationType}
+                                                editID={editID}
+                                                customIconArray={customIconArray}
+                                                setCustomIconArray={setCustomIconArray}
+                                                redirectedType={redirectedType}
+                                            />
 
-                                    <div className="uploader">
-                                        <label htmlFor="custom_icon_upload" className="custom text-uppercase button blue">
-                                            Upload Image
-                                        </label>
-                                        <input id="custom_icon_upload" type="file" className="custom" onChange={selectCustomIcon} accept="image/png, image/jpeg, image/jpg, image/gif"/>
-                                        <div className="my_row info_text file_types text-center mb-2">
-                                            <p className="m-0 char_count w-100 ">Allowed File Types: <span>png, jpg, jpeg, gif</span>
-                                            </p>
+                                            <div className="uploader inline-block mt-4 w-full">
+                                                <label htmlFor="custom_icon_upload" className="custom text-uppercase button blue">
+                                                    Upload Image
+                                                </label>
+                                                <input id="custom_icon_upload" type="file" className="custom" onChange={selectCustomIcon} accept="image/png, image/jpeg, image/jpg, image/gif"/>
+                                                <div className="my_row info_text file_types text-center mb-2">
+                                                    <p className="m-0 char_count w-100 ">Allowed File Types: <span>png, jpg, jpeg, gif</span>
+                                                    </p>
+                                                    <a className="hide_button uppercase" href="#" onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setShowIconList(false);
+                                                    }}>Hide Icons</a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                </>
+                            }
 
-                                    <IconList
-                                        currentLink={currentLink}
-                                        setCurrentLink={setCurrentLink}
-                                        accordionValue={accordionValue}
-                                        setCharactersLeft={setCharactersLeft}
-                                        integrationType={integrationType}
-                                        editID={editID}
-                                        customIconArray={customIconArray}
-                                        setCustomIconArray={setCustomIconArray}
-                                        redirectedType={redirectedType}
+                        </div>
+                        {!displayAllProducts &&
+
+                            <div className="my_row mt-4">
+                                <div className="input_wrap">
+                                    <input
+                                        className={currentLink.name !== "" ? "active" : ""}
+                                        name="name"
+                                        type="text"
+                                        value={currentLink.name ||
+                                            ""}
+                                        onChange={(e) => handleLinkName(e)}
+                                        onFocus={(e) => HandleFocus(e.target)}
+                                        onBlur={(e) => HandleBlur(e.target)}
                                     />
-
+                                    <label>Link Name</label>
+                                </div>
+                                <div className="my_row info_text title">
+                                    <p className="char_max">Max 11 Characters Shown</p>
+                                    <p className="char_count">
+                                        {charactersLeft < 0 ?
+                                            <span className="over">Only 11 Characters Will Be Shown</span>
+                                            :
+                                            "Characters Left: " +
+                                            charactersLeft
+                                        }
+                                    </p>
                                 </div>
                             </div>
+
                         }
+                        <div className="my_row my-4">
 
-                    </div>
-                    {!displayAllProducts &&
-
-                        <div className="my_row mt-4">
-                            <div className="input_wrap">
-                                <input
-                                    className={currentLink.name !== "" ? "active" : ""}
-                                    name="name"
-                                    type="text"
-                                    value={currentLink.name ||
-                                        ""}
-                                    onChange={(e) => handleLinkName(e)}
-                                    onFocus={(e) => HandleFocus(e.target)}
-                                    onBlur={(e) => HandleBlur(e.target)}
+                            {integrationType === "mailchimp" ?
+                                <MailchimpLists
+                                    lists={lists}
+                                    setLists={setLists}
+                                    currentLink={currentLink}
+                                    setCurrentLink={setCurrentLink}
+                                    setIntegrationType={setIntegrationType}
                                 />
-                                <label>Link Name</label>
-                            </div>
-                            <div className="my_row info_text title">
-                                <p className="char_max">Max 11 Characters Shown</p>
-                                <p className="char_count">
-                                    {charactersLeft < 0 ?
-                                        <span className="over">Only 11 Characters Will Be Shown</span>
-                                        :
-                                        "Characters Left: " +
-                                        charactersLeft
-                                    }
-                                </p>
-                            </div>
-                        </div>
+                                :
+                                ""
+                            }
 
-                    }
-                    <div className="my_row my-4">
-
-                        {integrationType === "mailchimp" ?
-                            <MailchimpLists
-                                lists={lists}
-                                setLists={setLists}
-                                currentLink={currentLink}
-                                setCurrentLink={setCurrentLink}
-                                setIntegrationType={setIntegrationType}
-                            />
-                            :
-                            ""
-                        }
-
-                        {integrationType === "shopify" &&
-                            <div className="my_row products_wrap">
-                                {displayAllProducts ?
-                                    <AllProducts
-                                        selectedProducts={selectedProducts}
-                                        setSelectedProducts={setSelectedProducts}
-                                        allProducts={allProducts}
-                                        setDisplayAllProducts={setDisplayAllProducts}
-                                        setCurrentLink={setCurrentLink}
-                                    />
-
-                                    :
-                                    <>
-                                        <StoreDropdown
-                                            currentLink={currentLink}
-                                            setCurrentLink={setCurrentLink}
+                            {integrationType === "shopify" &&
+                                <div className="my_row products_wrap">
+                                    {displayAllProducts ?
+                                        <AllProducts
+                                            selectedProducts={selectedProducts}
                                             setSelectedProducts={setSelectedProducts}
-                                            setShowAddStore={setShowAddStore}
-                                            shopifyStores={shopifyStores}
-                                            storeID={storeID}
-                                        />
-                                        <SelectedProducts
-                                            currentLink={currentLink}
+                                            allProducts={allProducts}
                                             setDisplayAllProducts={setDisplayAllProducts}
-                                            setAllProducts={setAllProducts}
-                                            setShowLoader={setShowLoader}
-                                            storeID={storeID}
+                                            setCurrentLink={setCurrentLink}
                                         />
-                                    </>
-                                }
+
+                                        :
+                                        <>
+                                            <StoreDropdown
+                                                currentLink={currentLink}
+                                                setCurrentLink={setCurrentLink}
+                                                setSelectedProducts={setSelectedProducts}
+                                                setShowAddStore={setShowAddStore}
+                                                shopifyStores={shopifyStores}
+                                                storeID={storeID}
+                                            />
+                                            <SelectedProducts
+                                                currentLink={currentLink}
+                                                setDisplayAllProducts={setDisplayAllProducts}
+                                                setAllProducts={setAllProducts}
+                                                setShowLoader={setShowLoader}
+                                                storeID={storeID}
+                                            />
+                                        </>
+                                    }
+                                </div>
+                            }
+
+                        </div>
+
+                        {!displayAllProducts &&
+                            <div className="my_row button_row">
+                                <button className="button green" type="submit">
+                                    Save
+                                </button>
+                                <a href="#" className="button transparent gray" onClick={(e) => handleCancel(e)}>
+                                    Cancel
+                                </a>
+                                <a className="help_link" href="mailto:help@link.pro">Need Help?</a>
                             </div>
                         }
-
-                    </div>
-
-                    {!displayAllProducts &&
-                        <div className="my_row button_row">
-                            <button className="button green" type="submit">
-                                Save
-                            </button>
-                            <a href="#" className="button transparent gray" onClick={(e) => handleCancel(e)}>
-                                Cancel
-                            </a>
-                            <a className="help_link" href="mailto:help@link.pro">Need Help?</a>
-                        </div>
-                    }
-                </form>
+                    </form>
                 :
                 ""
             }

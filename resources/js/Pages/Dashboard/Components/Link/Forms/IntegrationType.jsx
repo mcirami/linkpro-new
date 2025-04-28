@@ -89,7 +89,8 @@ const IntegrationType = ({
 
     return (
         <div className="integration_dropdown_wrap">
-            <select
+            <h3>MailChimp</h3>
+            {/*<select
                 className={integrationType !== "" ? "active" : ""}
                 name="integration_type"
                 onChange={(e) => handleChange(e)}
@@ -102,12 +103,12 @@ const IntegrationType = ({
                     value="mailchimp">
                     MailChimp
                 </option>
-                {/*<option
+                <option
                     value="shopify">
                     Shopify
-                </option>*/}
+                </option>
             </select>
-            <label htmlFor="mailchimp_list_id">Select Integration Type</label>
+            <label htmlFor="mailchimp_list_id">Select Integration Type</label>*/}
         </div>
     );
 };
