@@ -54,7 +54,10 @@ const StandardForm = ({
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
     const  { pageSettings } = usePageContext();
     const [ showTerms, setShowTerms ] = useState(false);
-    const [ showBGUpload, setShowBGUpload ] = useState(false);
+    const [ showBGUpload, setShowBGUpload ] = useState({
+        show: false,
+        initialMessage: false,
+    });
 
     const {id, folderId} = editIcon;
     const [ showIconList, setShowIconList ] = useState(!id);
@@ -346,12 +349,21 @@ const StandardForm = ({
                         }
                     }
 
-                    setCurrentLink({});
-                    setAccordionValue(null);
-                    setShowLinkForm(false);
-                    setInputType(null);
-                    setEditIcon(prev =>
-                        Object.fromEntries(Object.keys(prev).map(key => [key, null])));
+                    if (!id) {
+                        setShowBGUpload({
+                            show: false,
+                            initialMessage: true
+                        })
+                    }
+                    setCurrentLink((prev)=> ({
+                        ...prev,
+                        id: data.link_id,
+                    }));
+
+                    //setAccordionValue(null);
+                    //setShowLinkForm(false);
+                    //setInputType(null);
+                    //setEditIcon(prev => Object.fromEntries(Object.keys(prev).map(key => [key, null])));
                 }
             })
         }
@@ -428,7 +440,7 @@ const StandardForm = ({
                 setShowBGUpload={setShowBGUpload}
                 pageLayout={pageSettings.page_layout}
             />
-                {showBGUpload ?
+                {showBGUpload.show ?
                 <div className="flex flex-wrap justify-end mt-5 relative">
                     <div className="w-full">
                         <ImageUploader

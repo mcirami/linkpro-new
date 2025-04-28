@@ -88,7 +88,10 @@ const ImageUploader = ({
                         position: "",
                         progress: null
                     });
-                    setShowBGUpload(false);
+                    setShowBGUpload({
+                        show: false,
+                        initialMessage: false
+                    });
 
                     dispatch({
                         type: LINKS_ACTIONS.UPDATE_LINK,
@@ -176,7 +179,10 @@ const ImageUploader = ({
                             {!imageSelected &&
                                 <a className="hide_button uppercase" href="#" onClick={(e) => {
                                     e.preventDefault();
-                                    setShowBGUpload(false);
+                                    setShowBGUpload({
+                                        show: false,
+                                        initialMessage: false
+                                    });
                                 }}>Hide Upload</a>
                             }
                         </div>

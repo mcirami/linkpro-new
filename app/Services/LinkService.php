@@ -48,7 +48,10 @@ class LinkService {
 
         $iconPath = $request->icon;
         if (str_contains($iconPath, 'tmp/') ) {
-            $iconPath = $this->saveCustomImage( $request );
+            $userID = Auth::id();
+            $imgName = $userID . '-' . time() . '.' . $request->ext;
+            $savePath = 'custom-icons/' . $userID . '/' . $imgName;
+            $iconPath = $this->saveCustomImage( $iconPath, $savePath);
         }
 
         if ($request->folder_id) {
@@ -57,7 +60,7 @@ class LinkService {
             $folder = Folder::findOrFail($folderID);
             $folderLinkIDs = $folder->link_ids;
 
-            if($folderLinkIDs && !empty($folderLinkIDs)) {
+            if( !empty($folderLinkIDs) ) {
                 $linksArray = [];
                 $linkIDs = json_decode($folderLinkIDs);
 

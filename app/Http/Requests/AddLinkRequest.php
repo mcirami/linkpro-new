@@ -32,6 +32,7 @@ class AddLinkRequest extends FormRequest
             'shopify_products'  => 'sometimes|required',
             'description'       => 'sometimes',
             'icon'              => 'required',
+            'bg_image'          => 'string'
         ];
     }
 }

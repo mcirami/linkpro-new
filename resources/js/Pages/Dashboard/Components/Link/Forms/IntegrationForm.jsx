@@ -61,7 +61,10 @@ const IntegrationForm = ({
     const [completedIconCrop, setCompletedIconCrop] = useState(null);
     // if a custom icon is selected
     const [iconSelected, setIconSelected] = useState(false);
-    const [ showBGUpload, setShowBGUpload ] = useState(false);
+    const [ showBGUpload, setShowBGUpload ] = useState({
+        show: false,
+        initialMessage: false
+    });
     const [ showIconList, setShowIconList ] = useState(!editID);
 
     //image cropping
@@ -330,7 +333,8 @@ const IntegrationForm = ({
                                     currentLink: currentLink,
                                     url: URL,
                                     iconPath: iconPath
-                                }})
+                                }
+                            })
 
                         } else {
                             let newLinks = [...userLinks];
@@ -354,7 +358,8 @@ const IntegrationForm = ({
                                 type: LINKS_ACTIONS.SET_LINKS,
                                 payload: {
                                     links: newLinks.concat(newLinkObject)
-                                }})
+                                }
+                            })
                         }
 
                         setCustomIconArray(customIconArray => [
@@ -362,13 +367,25 @@ const IntegrationForm = ({
                             iconPath
                         ]);
 
-                        setShowLinkForm(false);
+                        setCurrentLink((prev) => ({
+                            ...prev,
+                            id: data.link_id,
+                        }));
+
+                        if (!editID) {
+                            setShowBGUpload({
+                                show: false,
+                                initialMessage: true
+                            })
+                        }
+
+                        /*setShowLinkForm(false);
                         setAccordionValue(null);
                         setEditIcon(prev =>
                             Object.fromEntries(Object.keys(prev).map(key => [key, null])))
                         setIntegrationType(null);
                         setCurrentLink({})
-
+*/
                     }
                     setShowLoader({show: false, icon: null, progress: null});
                 })
@@ -460,53 +477,55 @@ const IntegrationForm = ({
             {   (integrationType === "mailchimp" && !isEmpty(lists)) ||
                 (integrationType === "shopify" && !isEmpty(shopifyStores) && !showAddStore ) ?
 
-                iconSelected ?
-                <div className="crop_section">
-                    <p>Crop Icon</p>
-                    <CropTools
-                        rotate={rotate}
-                        setRotate={setRotate}
-                        scale={scale}
-                        setScale={setScale}
-                    />
-                    <ReactCrop
-                        crop={crop}
-                        onChange={(_, percentCrop) => setCrop(percentCrop)}
-                        onComplete={(c) => setCompletedIconCrop(c)}
-                        aspect={aspect}
-                    >
-                        <img
-                            onLoad={(e) => onImageLoad(e, aspect, setCrop)}
-                            src={upImg}
-                            ref={imgRef}
-                            style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
-                            alt="Crop Me"/>
-                    </ReactCrop>
-                    <div className="icon_col">
-                        <p>Icon Preview</p>
-                        <canvas
-                            ref={previewCanvasRef}
-                            // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
-                            style={{
-                                backgroundSize: `cover`,
-                                backgroundRepeat: `no-repeat`,
-                                width: iconSelected ? `100%` : 0,
-                                height: iconSelected ? `100%` : 0,
-                                borderRadius: `20px`,
-                            }}
+                <>
+                {showBGUpload ?
+                        <ImageUploader
+                            currentLink={currentLink}
+                            setShowLoader={setShowLoader}
+                            pageSettings={pageSettings}
+                            setShowBGUpload={setShowBGUpload}
                         />
-                    </div>
-                </div>
-                :
-
-                showBGUpload ?
-                    <ImageUploader
-                        currentLink={currentLink}
-                        setShowLoader={setShowLoader}
-                        pageSettings={pageSettings}
-                        setShowBGUpload={setShowBGUpload}
-                    />
                     :
+                    iconSelected ?
+                        <div className="crop_section">
+                            <p>Crop Icon</p>
+                            <CropTools
+                                rotate={rotate}
+                                setRotate={setRotate}
+                                scale={scale}
+                                setScale={setScale}
+                            />
+                            <ReactCrop
+                                crop={crop}
+                                onChange={(_, percentCrop) => setCrop(percentCrop)}
+                                onComplete={(c) => setCompletedIconCrop(c)}
+                                aspect={aspect}
+                            >
+                                <img
+                                    onLoad={(e) => onImageLoad(e, aspect, setCrop)}
+                                    src={upImg}
+                                    ref={imgRef}
+                                    style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
+                                    alt="Crop Me"/>
+                            </ReactCrop>
+                            <div className="icon_col">
+                                <p>Icon Preview</p>
+                                <canvas
+                                    ref={previewCanvasRef}
+                                    // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
+                                    style={{
+                                        backgroundSize: `cover`,
+                                        backgroundRepeat: `no-repeat`,
+                                        width: iconSelected ? `100%` : 0,
+                                        height: iconSelected ? `100%` : 0,
+                                        borderRadius: `20px`,
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    :
+                    ""}
+
                     <form onSubmit={handleSubmit} className="link_form">
                         <div className="my_row mt-3">
                             {!displayAllProducts &&
@@ -528,8 +547,8 @@ const IntegrationForm = ({
                                             />
 
                                             <div className="uploader inline-block mt-4 w-full">
-                                                <label htmlFor="custom_icon_upload" className="custom text-uppercase button blue">
-                                                    Upload Image
+                                                <label htmlFor="custom_icon_upload" className="custom !uppercase button blue">
+                                                    Select Image
                                                 </label>
                                                 <input id="custom_icon_upload" type="file" className="custom" onChange={selectCustomIcon} accept="image/png, image/jpeg, image/jpg, image/gif"/>
                                                 <div className="my_row info_text file_types text-center mb-2">
@@ -638,6 +657,7 @@ const IntegrationForm = ({
                             </div>
                         }
                     </form>
+                </>
                 :
                 ""
             }

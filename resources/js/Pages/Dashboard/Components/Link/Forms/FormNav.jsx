@@ -41,7 +41,7 @@ const FormNav = ({
             </div>
 
             { (pageLayout === "layout_two" && currentLink.id) &&
-                <div className="relative">
+                <div className="relative flex items-center gap-3">
                     <a className="relative block"
                        onMouseOver={() => setIsHovering(
                            {status: true, section: "bg"})}
@@ -50,14 +50,22 @@ const FormNav = ({
                        href="#"
                        onClick={(e) => {
                            e.preventDefault();
-                           setShowBGUpload(true);
+                           setShowBGUpload({
+                               show: true,
+                               initialMessage: false,
+                           });
                            setIsHovering(
                                {status: false, section: null})
-                       }}><FaImage/></a>
+                       }}><FaImage/>
+                    </a>
+                    {showBGUpload.initialMessage &&
+                        <p className="text-sm initial_message">You can now add a button background</p>
+                    }
                     {(isHovering.section === "bg" &&
                             isHovering.status) &&
                         <div className="hover_text" style={{opacity: 1}}>
-                            <p>Background</p></div>
+                            <p>Background</p>
+                        </div>
                     }
                 </div>
             }
