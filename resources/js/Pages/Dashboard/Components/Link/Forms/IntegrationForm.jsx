@@ -478,7 +478,7 @@ const IntegrationForm = ({
                 (integrationType === "shopify" && !isEmpty(shopifyStores) && !showAddStore ) ?
 
                 <>
-                {showBGUpload ?
+                {showBGUpload.show ?
                         <ImageUploader
                             currentLink={currentLink}
                             setShowLoader={setShowLoader}

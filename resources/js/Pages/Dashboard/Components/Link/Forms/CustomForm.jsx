@@ -641,7 +641,7 @@ const CustomForm = ({
         }))
     },[]);
 
-    const uploadImage = async (e) => {
+    /*const uploadImage = async (e) => {
         e.preventDefault();
         const image = getFileToUpload(previewCanvasRef?.current);
         image.then((value) => {
@@ -683,7 +683,7 @@ const CustomForm = ({
                 });
             });
         });
-    }
+    }*/
 
     return (
             <>
@@ -695,7 +695,7 @@ const CustomForm = ({
                     setShowBGUpload={setShowBGUpload}
                     pageLayout={pageSettings.page_layout}
                 />
-                {showBGUpload ?
+                {showBGUpload.show ?
                     <ImageUploader
                         currentLink={currentLink}
                         setShowLoader={setShowLoader}
