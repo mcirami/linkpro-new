@@ -57,7 +57,7 @@ const Link = ({
                 </span>
 
                 <div className={`column_content ${type === "folder" ? "folder" : ""}`}>
-                    {type === "folder" ?
+                    {type === "folder" && pageSettings.page_layout === "layout_one" ?
                         <div className="icon_wrap folder">
 
                             {pageSettings.page_layout === 'layout_one' ?
@@ -125,25 +125,33 @@ const Link = ({
                             }
                         </div>
                         :
-                        <div className="icon_wrap" onClick={(e) => {
-                            handleOnClick(id)
-                        }}>
-                            <div className="image_wrap">
-                                <img src={displayIcon} alt=""/>
+                        pageSettings.page_layout === "layout_one" &&
+                            <div className="icon_wrap" onClick={(e) => {
+                                handleOnClick(id)
+                            }}>
+                                <div className="image_wrap">
+                                    <img src={displayIcon} alt=""/>
+                                </div>
                             </div>
-                        </div>
                     }
                     <div className="link_content">
-                        {pageSettings.page_layout === "layout_two" && type !== "folder" ?
-                            <div className="left_col">
-                                <h3>{name}</h3>
-                                <p>{url}</p>
-                            </div>
-                            :
-                            ""
+                        { (pageSettings.page_layout === "layout_two" && type !== "folder") &&
+                            <>
+                                <div className="icon_wrap" onClick={(e) => {
+                                    handleOnClick(id)
+                                }}>
+                                    <div className="image_wrap">
+                                        <img src={displayIcon} alt=""/>
+                                    </div>
+                                </div>
+                                <div className="left_col">
+                                    <h3>{name}</h3>
+                                    <p>{url}</p>
+                                </div>
+                            </>
                         }
                         <div className={`right_col ${pageSettings.page_layout === 'layout_one' ? 'w-full block text-center' : ''}`}>
-                           <div className={`${pageSettings.page_layout === 'layout_two' ? 'flex items-center gap-2' : ''}`}>
+                           <div className={`${pageSettings.page_layout === 'layout_two' ? 'edit_wrap flex items-center gap-2' : ''}`}>
                                {pageSettings.page_layout === 'layout_two' ?
                                 <span className="edit_icon" onClick={(e) => {
                                     handleOnClick(id)

@@ -13,6 +13,7 @@ body.stop_scroll {
         .container {
             max-width: 1600px !important;
             padding-left: 100px;
+            padding-right: 20px;
 
             @media screen and (max-width: 768px) {
                 padding-left: 0.75rem;
