@@ -102,8 +102,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/links/delete/{link}', [LinkController::class, 'destroy']);
 
         Route::post('/page/new', [PageController::class, 'store'])->name('page.new');
-        Route::patch('/page/update-main-image/{page}', [PageController::class, 'updateMainImage'])->name('page.main.image');
-        Route::patch('/page/update-profile-image/{page}', [PageController::class, 'updateProfileImage'])->name('page.profile.update');
+        Route::patch('/page/update-page-image/{page}', [PageController::class, 'updatePageImage'])->name('page.image.update');
         Route::patch('/page/update-name/{page}', [PageController::class, 'updateName'])->name('page.name.update');
         Route::patch('/page/update-setting/{page}', [PageController::class, 'updateSetting'])->name('page.update.setting');
         Route::patch('/page/update-profile-layout/{page}', [PageController::class, 'updateProfileLayout'])->name('profile.layout.update');

@@ -7,7 +7,7 @@ import {MdEdit} from 'react-icons/md';
 import {usePageContext} from '@/Context/PageContext.jsx';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
-import {mainImage} from '@/Services/PageRequests.jsx';
+import {submitPageImage} from '@/Services/PageRequests.jsx';
 import {
     useDebounceEffect,
     onImageLoad,
@@ -27,8 +27,9 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
         setCompletedCrop,
         setShowLoader,
         elementName,
-        imageType,
-        cropSettings
+        imageType = null,
+        cropSettings,
+        label
     } = props;
 
     const [cropSettingsArray, setCropSettingsArray] = useState(cropSettings)
@@ -50,9 +51,8 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
     const imgRef = useRef();
     const previewCanvasRef = ref;
     const [crop, setCrop] = useState(cropSettingsArray);
-    const [scale, setScale] = useState(1)
-    const [rotate, setRotate] = useState(0)
-
+    const [scale, setScale] = useState(1);
+    const [rotate, setRotate] = useState(0);
 
     useDebounceEffect(
         completedCrop,
@@ -76,9 +76,10 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
 
             setCrop(undefined);
             setDisableButton(false);
-            document.querySelector("form.main_img_form .bottom_section").classList.remove("hidden");
+            const el = document.querySelector(`form.${elementName} .bottom_section`);
+            if (el) el.classList.remove("hidden");
             if (window.innerWidth < 993) {
-                document.querySelector(".main_img_form").scrollIntoView({
+                document.querySelector(`${elementName}`).scrollIntoView({
                     behavior: "smooth",
                 });
             }
@@ -120,7 +121,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                 type: imageType,
             };
 
-            mainImage(packets, pageSettings["id"])
+            submitPageImage(packets, pageSettings["id"])
             .then((data) => {
                 setShowLoader({show: false, icon: null, position: ""})
                 if (data.success) {
@@ -128,9 +129,9 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                     setCompletedCrop({});
                     const newArray = {...pageSettings};
                     newArray[elementName] = data.imgPath;
-                    newArray["main_img_type"] = imageType;
+                    if (imageType) newArray["main_img_type"] = imageType;
                     setPageSettings(newArray);
-                    document.querySelector("form.main_img_form .bottom_section").classList.add("hidden");
+                    document.querySelector(`form.${elementName} .bottom_section`).classList.add("hidden");
                 }
 
             });
@@ -150,31 +151,31 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
         delete copy[elementName];
         setCompletedCrop(copy);
 
-        document.querySelector("form.main_img_form .bottom_section").classList.add("hidden");
+        document.querySelector(`form.${elementName} .bottom_section`).classList.add("hidden");
     };
 
     return (
         <div className="my_row page_settings">
             <div className="column_wrap">
-                <form onSubmit={handleSubmit} className="main_img_form">
+                <form onSubmit={handleSubmit} className={elementName}>
                     {!upImg && (
                         <>
                             <div className="top_section">
                                 <label
-                                    htmlFor="header_file_upload"
+                                    htmlFor={`${elementName}_upload`}
                                     className="custom"
                                 >
-                                    Select Main Image
+                                    Select {label}
                                     <span className="edit_icon">
                                         <MdEdit />
                                         <div className="hover_text edit_image">
-                                            <p>Edit Main Image</p>
+                                            <p>Edit {label}</p>
                                         </div>
                                     </span>
                                 </label>
                                 <input
                                     className="custom"
-                                    id="header_file_upload"
+                                    id={`${elementName}_upload`}
                                     type="file"
                                     accept="image/png, image/jpeg, image/jpg, image/gif"
                                     onChange={onSelectFile}

@@ -7,7 +7,7 @@ import {MdEdit} from 'react-icons/md';
 import {usePageContext} from '@/Context/PageContext.jsx';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
-import {mainImage} from '@/Services/PageRequests.jsx';
+import {submitPageImage} from '@/Services/PageRequests.jsx';
 import {
     useDebounceEffect,
     onImageLoad,
@@ -104,7 +104,7 @@ const PageHeader = forwardRef(function PageHeader(props, ref) {
                     ext: response.extension,
                 };
 
-                mainImage(packets, pageSettings["id"])
+                submitPageImage(packets, pageSettings["id"])
                 .then((data) => {
                     setShowLoader({show: false, icon: null, position: ""})
                     if (data.success) {

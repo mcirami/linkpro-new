@@ -187,50 +187,27 @@ class PageService {
 
         $amazonPath = Storage::disk('s3')->url($path);
 
-        $page->update([
-            $request->element => $amazonPath,
-            "main_img_type" => $request->type,
-        ]);
-
-        return $amazonPath;
-    }
-
-    /**
-     * Update Page Profile Image
-     *
-     * @param $request
-     * @param $userID
-     * @param $page
-     *
-     * @return string $new path
-     */
-    public function updateProfileImage($request, $userID, $page): string {
-
-        $imgName = time() . '.' . $request->ext;
-        $pathToFolder = 'page-images/' . $userID . '/' . $page->id . '/profile-img/';
-        $path = $pathToFolder . $imgName;
-
-        $files = Storage::disk('s3')->allFiles($pathToFolder);
-        Storage::disk('s3')->delete($files);
-
-        Storage::disk('s3')->copy(
-            $request->profile_img,
-            str_replace($request->profile_img, $path, $request->profile_img)
-        );
-
-        $amazonPath = Storage::disk('s3')->url($path);
+        $updateData = [];
+        $updateData[$request->element] = $amazonPath;
 
         $page->update(['profile_img' => $amazonPath]);
 
-        if ($page->default) {
+        if ($page->default && $request->element == "profile_img") {
             $user = $page->user()->first();
             $user->update([
                 'avatar' => $amazonPath
             ]);
         }
 
-        return $amazonPath;
+        if($request->type) {
+            $updateData["main_img_type"] = $request->type;
+        }
 
+
+
+        $page->update($updateData);
+
+        return $amazonPath;
     }
 
     /**

@@ -63,14 +63,18 @@ export const updatePageName = (packets, pageID) => {
     });
 }
 
-export const mainImage = (packets, pageID) => {
+export const submitPageImage = (packets, pageID) => {
 
-    return axios.patch('/dashboard/page/update-main-image/' + pageID, packets)
+    return axios.patch('/dashboard/page/update-page-image/' + pageID, packets)
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
             EventBus.dispatch("success", { message: returnMessage });
             const imgPath = response.data.imgPath;
+
+            if(packets.element === "profile_img"){
+                document.querySelector('#user_image').src = imgPath;
+            }
 
             return {
                 success : true,

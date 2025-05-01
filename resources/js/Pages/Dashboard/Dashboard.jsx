@@ -373,6 +373,7 @@ function Dashboard({
                                                             setShowLoader={setShowLoader}
                                                             imageType={imageType}
                                                             elementName={imageType === "header" ? "header_img" : "page_img"}
+                                                            label="Main Image"
                                                             cropSettings={{
                                                                 unit: '%',
                                                                 aspect: imageType === "header" ? 16 / 9 : 6 / 8,
@@ -380,13 +381,27 @@ function Dashboard({
                                                             }}
                                                         />
 
-                                                        <PageProfile
+                                                        <ImageUploader
                                                             ref={nodesRef}
                                                             completedCrop={completedCrop}
                                                             setCompletedCrop={setCompletedCrop}
                                                             setShowLoader={setShowLoader}
                                                             elementName="profile_img"
+                                                            label="Profile Image"
+                                                            cropSettings={{
+                                                                unit: '%',
+                                                                aspect: 1,
+                                                                width: 30
+                                                            }}
                                                         />
+
+                                                        {/*<PageProfile
+                                                            ref={nodesRef}
+                                                            completedCrop={completedCrop}
+                                                            setCompletedCrop={setCompletedCrop}
+                                                            setShowLoader={setShowLoader}
+                                                            elementName="profile_img"
+                                                        />*/}
 
                                                         <PageSettingComponent
                                                             element="title"
@@ -397,11 +412,9 @@ function Dashboard({
                                                             maxChar="65"
                                                         />
 
-
                                                         <PageLayout
                                                             pageLayoutRef={pageLayoutRef}
                                                         />
-
 
                                                         <InfoText
                                                             divRef={leftColWrap}

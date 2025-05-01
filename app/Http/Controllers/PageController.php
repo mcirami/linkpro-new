@@ -129,7 +129,7 @@ class PageController extends Controller
      *
      * @return JsonResponse
      */
-    public function updateMainImage(Request $request, Page $page, PageService $pageService): JsonResponse {
+    public function updatePageImage(Request $request, Page $page, PageService $pageService): JsonResponse {
 
         $userID = Auth::id();
 
@@ -139,28 +139,7 @@ class PageController extends Controller
 
         $imgPath = $pageService->updateImage($request, $userID, $page);
 
-        return response()->json(['message' => 'Main Image Updated', 'imgPath' => $imgPath]);
-
-    }
-
-    /**
-     * @param Request $request
-     * @param Page $page
-     * @param PageService $pageService
-     *
-     * @return JsonResponse
-     */
-    public function updateProfileImage(Request $request, Page $page, PageService $pageService): JsonResponse {
-
-        $userID = Auth::id();
-
-        if ($page->user_id != $userID) {
-            return abort(404);
-        }
-
-        $imgPath = $pageService->updateProfileImage($request, $userID, $page);
-
-        return response()->json(['message' => 'Profile Image Updated', 'imgPath' => $imgPath]);
+        return response()->json(['message' => 'Image Updated', 'imgPath' => $imgPath]);
 
     }
 
