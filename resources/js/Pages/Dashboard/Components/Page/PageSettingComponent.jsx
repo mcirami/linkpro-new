@@ -1,43 +1,45 @@
 import React, {useEffect, useState} from 'react';
 import {usePageContext} from '@/Context/PageContext.jsx';
 import {FiThumbsDown, FiThumbsUp} from 'react-icons/fi';
-import {pageTitle} from '@/Services/PageRequests.jsx';
+import {submitPageSetting} from '@/Services/PageRequests.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
+import {capitalize} from 'lodash';
 
-const PageTitle = () => {
+const PageSettingComponent = ({
+                       element,
+                       maxChar,
+                   }) => {
 
     const { pageSettings, setPageSettings } = usePageContext();
-    const [charactersLeft, setCharactersLeft] = useState();
+    const [charactersLeft, setCharactersLeft] = useState(maxChar);
 
     useEffect(() => {
-        if(pageSettings["title"]) {
-            setCharactersLeft(30 - pageSettings["title"].length);
-        } else {
-            setCharactersLeft(30);
+        if(pageSettings[element]) {
+            setCharactersLeft(maxChar - pageSettings[element].length);
         }
     },[charactersLeft])
 
     const handleChange = (e) => {
         const value = e.target.value;
 
-        setCharactersLeft(30 - value.length);
+        setCharactersLeft(maxChar - value.length);
 
         setPageSettings({
             ...pageSettings,
-            title: value,
+            [`${element}`]: value,
         });
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (pageSettings["title"] != null) {
+        if (pageSettings[element] != null) {
 
             const packets = {
-                title: pageSettings["title"],
+                [`${element}`]: pageSettings[element],
             };
 
-            pageTitle(packets, pageSettings["id"]);
+            submitPageSetting(packets, pageSettings["id"]);
         }
     }
 
@@ -47,11 +49,11 @@ const PageTitle = () => {
             <form onSubmit={handleSubmit}>
                 <input
                     className="active"
-                    maxLength="30"
-                    name="title"
+                    maxLength={maxChar}
+                    name={element}
                     type="text"
-                    placeholder="Add Title"
-                    defaultValue={pageSettings["title"] || ""}
+                    placeholder={`Add ${capitalize(element)}`}
+                    defaultValue={pageSettings[element] || ""}
                     onChange={(e) => handleChange(e) }
                     onKeyDown={ event => {
                             if(event.key === 'Enter') {
@@ -61,13 +63,13 @@ const PageTitle = () => {
                     }
                        onBlur={(e) => handleSubmit(e)}
                 />
-                <label htmlFor="title" >Page Title</label>
-                {charactersLeft < 30 ?
+                <label htmlFor={element} >Page {capitalize(element)}</label>
+                {charactersLeft < maxChar ?
                     <a className="submit_circle" href="#"
                        onClick={(e) => handleSubmit(e)}
                     >
                         <FiThumbsUp />
-                        <div className="hover_text submit_button"><p>Submit Title Text</p></div>
+                        <div className="hover_text submit_button"><p>Submit {capitalize(element)} Text</p></div>
                     </a>
                     :
                     <span className="cancel_icon">
@@ -75,7 +77,7 @@ const PageTitle = () => {
                     </span>
                 }
                 <div className="my_row info_text title">
-                    <p className="char_max">Max 30 Characters</p>
+                    <p className="char_max">Max {maxChar} Characters</p>
                     <p className="char_count">
                         {charactersLeft < 0 ?
                             <span className="over">Over Character Limit</span>
@@ -87,10 +89,10 @@ const PageTitle = () => {
                     </p>
                 </div>
             </form>
-            <ToolTipIcon section="title" />
+            <ToolTipIcon section={element} />
         </div>
 
     );
 }
 
-export default PageTitle;
+export default PageSettingComponent;

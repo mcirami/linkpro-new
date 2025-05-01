@@ -1,7 +1,7 @@
 import React, {
     useState,
     useRef,
-    forwardRef,
+    forwardRef, useEffect,
 } from 'react';
 import {MdEdit} from 'react-icons/md';
 import {usePageContext} from '@/Context/PageContext.jsx';
@@ -18,27 +18,41 @@ import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import CropTools from '@/Utils/CropTools';
 import EventBus from '@/Utils/Bus';
 import {resizeFile} from '@/Services/ImageService.jsx';
+import {toInteger} from 'lodash';
 
-const PageHeader = forwardRef(function PageHeader(props, ref) {
+const ImageUploader = forwardRef(function ImageUploader(props, ref) {
 
     const {
         completedCrop,
         setCompletedCrop,
         setShowLoader,
-        elementName
+        elementName,
+        imageType,
+        cropSettings
     } = props;
 
+    const [cropSettingsArray, setCropSettingsArray] = useState(cropSettings)
     const {pageSettings, setPageSettings} = usePageContext();
+    const [aspect, setAspect] = useState(cropSettingsArray.aspect)
+
+    useEffect(() => {
+        setAspect(cropSettingsArray.aspect || null);
+    }, [cropSettingsArray]);
+
+    useEffect(() => {
+        setCropSettingsArray(cropSettings); // Update cropSettingsArray on imageType change
+    }, [imageType, cropSettings]);
+
 
     const [disableButton, setDisableButton] = useState(true);
 
     const [upImg, setUpImg] = useState(null);
     const imgRef = useRef();
     const previewCanvasRef = ref;
-    const [crop, setCrop] = useState({ unit: "%", width: 30, aspect: 16 / 9 });
+    const [crop, setCrop] = useState(cropSettingsArray);
     const [scale, setScale] = useState(1)
     const [rotate, setRotate] = useState(0)
-    const [aspect, setAspect] = useState(16 / 9)
+
 
     useDebounceEffect(
         completedCrop,
@@ -62,9 +76,9 @@ const PageHeader = forwardRef(function PageHeader(props, ref) {
 
             setCrop(undefined);
             setDisableButton(false);
-            document.querySelector("form.header_img_form .bottom_section").classList.remove("hidden");
+            document.querySelector("form.main_img_form .bottom_section").classList.remove("hidden");
             if (window.innerWidth < 993) {
-                document.querySelector(".header_img_form").scrollIntoView({
+                document.querySelector(".main_img_form").scrollIntoView({
                     behavior: "smooth",
                 });
             }
@@ -98,32 +112,35 @@ const PageHeader = forwardRef(function PageHeader(props, ref) {
                 },
             }
         )
-            .then((response) => {
-                const packets = {
-                    header_img: response.key,
-                    ext: response.extension,
-                };
+        .then((response) => {
+            const packets = {
+                [`${elementName}`]: response.key,
+                ext: response.extension,
+                element: elementName,
+                type: imageType,
+            };
 
-                mainImage(packets, pageSettings["id"])
-                .then((data) => {
-                    setShowLoader({show: false, icon: null, position: ""})
-                    if (data.success) {
-                        setUpImg(null);
-                        setCompletedCrop({});
-                        const newArray = {...pageSettings};
-                        newArray.header_img = data.imgPath;
-                        setPageSettings(newArray);
-                        document.querySelector("form.header_img_form .bottom_section").classList.add("hidden");
-                    }
+            mainImage(packets, pageSettings["id"])
+            .then((data) => {
+                setShowLoader({show: false, icon: null, position: ""})
+                if (data.success) {
+                    setUpImg(null);
+                    setCompletedCrop({});
+                    const newArray = {...pageSettings};
+                    newArray[elementName] = data.imgPath;
+                    newArray["main_img_type"] = imageType;
+                    setPageSettings(newArray);
+                    document.querySelector("form.main_img_form .bottom_section").classList.add("hidden");
+                }
 
-                });
-            })
-            .catch((error) => {
-                console.error(error);
-                EventBus.dispatch("error", { message: "There was an error saving your image." });
-                setDisableButton(false);
-                setShowLoader({show: false, icon: null, position: "", progress: null})
             });
+        })
+        .catch((error) => {
+            console.error(error);
+            EventBus.dispatch("error", { message: "There was an error saving your image." });
+            setDisableButton(false);
+            setShowLoader({show: false, icon: null, position: "", progress: null})
+        });
     };
 
     const handleCancel = () => {
@@ -133,13 +150,13 @@ const PageHeader = forwardRef(function PageHeader(props, ref) {
         delete copy[elementName];
         setCompletedCrop(copy);
 
-        document.querySelector("form.header_img_form .bottom_section").classList.add("hidden");
+        document.querySelector("form.main_img_form .bottom_section").classList.add("hidden");
     };
 
     return (
         <div className="my_row page_settings">
             <div className="column_wrap">
-                <form onSubmit={handleSubmit} className="header_img_form">
+                <form onSubmit={handleSubmit} className="main_img_form">
                     {!upImg && (
                         <>
                             <div className="top_section">
@@ -147,11 +164,11 @@ const PageHeader = forwardRef(function PageHeader(props, ref) {
                                     htmlFor="header_file_upload"
                                     className="custom"
                                 >
-                                    Header Image
+                                    Select Main Image
                                     <span className="edit_icon">
                                         <MdEdit />
                                         <div className="hover_text edit_image">
-                                            <p>Edit Header Image</p>
+                                            <p>Edit Main Image</p>
                                         </div>
                                     </span>
                                 </label>
@@ -227,10 +244,10 @@ const PageHeader = forwardRef(function PageHeader(props, ref) {
                 </form>
             </div>
             {!upImg && (
-                <ToolTipIcon section="header" />
+                <ToolTipIcon section="main" />
             )}
         </div>
     );
 });
 
-export default PageHeader;
+export default ImageUploader;

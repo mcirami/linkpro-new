@@ -41,6 +41,49 @@
 
         .inner_content {
 
+            &.bg_image {
+                &:before {
+                    content: '';
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,.4);
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    left: 0;
+                    bottom: 0;
+                    border-radius: 20px;
+                    -webkit-border-radius:  20px;
+                    -moz-border-radius: 20px;
+                }
+
+                .profile_content {
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-orient: horizontal;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: row;
+                    flex-direction: row;
+                    -ms-flex-wrap: nowrap;
+                    flex-wrap: nowrap;
+                    align-items: center;
+                    -webkit-align-items: center;
+                    justify-content: center;
+                    -webkit-justify-content: center;
+
+                    .profile_img_column {
+                        margin-top: 0 !important;
+                    }
+
+                    .profile_text {
+                        p, h2 {
+                            color: $white;
+                        }
+                    }
+                }
+            }
+
             &.live_page {
                 @include boxShadow;
                 padding: 0 0 20px 0;

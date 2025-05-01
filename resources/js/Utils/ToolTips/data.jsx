@@ -21,10 +21,10 @@ const hoverText = [
         ]
     },
     {
-        section: 'header',
+        section: 'main',
         text: [
             {
-                description: ' Here you can upload a background header image to your Page. After selecting a file (.jpg, .jpeg, .png, .gif) to upload, you can resize the image to perfection using the built-in cropping functionality.',
+                description: ' Here you can choose to upload a header image or a full page image. After selecting a file (.jpg, .jpeg, .png, .gif) to upload, you can resize the image to perfection using the built-in cropping functionality.',
             }
         ]
     },

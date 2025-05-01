@@ -11,9 +11,10 @@ import AdvancedIcon from '@/Components/LinkComponents/AdvancedIcon.jsx';
 import { IoOpenOutline } from "react-icons/io5";
 function LivePage({links, page, subscribed}) {
 
-    const {user_id, header_img, profile_layout, page_layout, profile_img, title, bio, name} = page;
+    const {user_id, header_img, page_img, main_img_type, profile_layout, page_layout, profile_img, title, bio, name} = page;
 
     const [headerStyle, setHeaderStyle] = useState({});
+    const [pageStyle, setPageStyle] = useState({});
     const [iconCount, setIconCount] = useState(null);
     const [row, setRow] = useState(null);
     const [value, setValue] = useState({
@@ -23,11 +24,25 @@ function LivePage({links, page, subscribed}) {
     const [clickType, setClickType] = useState(null);
 
     useEffect(() => {
-        if(header_img) {
+        if(main_img_type === "header") {
             setHeaderStyle({
                 background: 'url(' + header_img + ') no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center bottom'
+            })
+        } else {
+            setHeaderStyle({
+                padding: "0"
+            })
+        }
+
+        if(main_img_type === "page") {
+            setPageStyle({
+                background: 'url(' + page_img + ') no-repeat',
+                backgroundSize: 'cover',
+                height: "100%",
+                width: "100%",
+                paddingTop: "20px"
             })
         }
     },[])
@@ -53,7 +68,7 @@ function LivePage({links, page, subscribed}) {
             <div id="links_page">
                 <div className="links_col my_row">
                     <div className="links_wrap live_page h-full">
-                        <div className="inner_content live_page">
+                        <div className={`inner_content live_page ${main_img_type === "page" && "bg_image"}`} style={pageStyle}>
                             <div className={`page_header ${!header_img ? "default" : ""} `} style={headerStyle}>
                                 {!header_img &&
                                     <img src={ Vapor.asset( 'images/default-img.png' ) } alt="Header Image" />

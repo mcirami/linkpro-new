@@ -170,23 +170,27 @@ class PageService {
      *
      * @return string
      */
-    public function updateHeaderImage($request, $userID, $page): string {
+    public function updateImage($request, $userID, $page): string {
 
         $imgName = time() . '.' . $request->ext;
-        $pathToFolder = 'page-images/' . $userID . '/' . $page->id . '/header-img/';
+        $pathToFolder = 'page-images/' . $userID . '/' . $page->id . '/' . $request->element . '/';
         $path = $pathToFolder . $imgName;
+        $value = $request->{$request->element};
 
         $files = Storage::disk('s3')->allFiles($pathToFolder);
         Storage::disk('s3')->delete($files);
 
         Storage::disk('s3')->copy(
-            $request->header_img,
-            str_replace($request->header_img, $path, $request->header_img)
+            $value,
+            str_replace($value, $path, $value)
         );
 
         $amazonPath = Storage::disk('s3')->url($path);
 
-        $page->update(['header_img' => $amazonPath]);
+        $page->update([
+            $request->element => $amazonPath,
+            "main_img_type" => $request->type,
+        ]);
 
         return $amazonPath;
     }
@@ -235,26 +239,14 @@ class PageService {
      * @param $request
      * @param $page
      *
-     * @return void
+     * @return mixed
      */
-    public function updatePageTitle($request, $page): void {
+    public function updatePageSetting($request, $page): mixed {
+        $keys = collect($request->all())->keys();
 
-        $page->update(['title' => $request['title']]);
+        $page->update([$keys[0] => $request[$keys[0]]]);
 
-    }
-
-    /**
-     * Update Page Bio
-     *
-     * @param $request
-     * @param $page
-     *
-     * @return void
-     */
-    public function updatePageBio($request, $page): void {
-
-        $page->update(['bio' => $request['bio']]);
-
+        return $keys[0];
     }
 
     public function updateProfileLayout($request, $page): void {

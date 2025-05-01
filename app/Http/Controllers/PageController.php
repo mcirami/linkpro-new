@@ -129,7 +129,7 @@ class PageController extends Controller
      *
      * @return JsonResponse
      */
-    public function updateHeaderImage(Request $request, Page $page, PageService $pageService): JsonResponse {
+    public function updateMainImage(Request $request, Page $page, PageService $pageService): JsonResponse {
 
         $userID = Auth::id();
 
@@ -137,9 +137,9 @@ class PageController extends Controller
             return abort(404);
         }
 
-        $imgPath = $pageService->updateHeaderImage($request, $userID, $page);
+        $imgPath = $pageService->updateImage($request, $userID, $page);
 
-        return response()->json(['message' => 'Header Image Updated', 'imgPath' => $imgPath]);
+        return response()->json(['message' => 'Main Image Updated', 'imgPath' => $imgPath]);
 
     }
 
@@ -171,35 +171,15 @@ class PageController extends Controller
      *
      * @return JsonResponse
      */
-    public function updateTitle(PageTitleRequest $request, Page $page, PageService $pageService): JsonResponse {
-
-
-        if ($page->user_id != Auth::id()) {
-            return abort(404);
-        }
-
-        $pageService->updatePageTitle($request, $page);
-
-        return response()->json(['message' => 'Link Title Updated']);
-
-    }
-
-    /**
-     * @param PageBioRequest $request
-     * @param Page $page
-     * @param PageService $pageService
-     *
-     * @return JsonResponse
-     */
-    public function updateBio(PageBioRequest $request, Page $page, PageService $pageService): JsonResponse {
+    public function updateSetting(PageTitleRequest $request, Page $page, PageService $pageService): JsonResponse {
 
         if ($page->user_id != Auth::id()) {
             return abort(404);
         }
 
-        $pageService->updatePageBio($request, $page);
+        $updatedElement = $pageService->updatePageSetting($request, $page);
 
-        return response()->json(['message' => 'Link Bio Updated']);
+        return response()->json(['message' => 'Page ' . $updatedElement . ' Updated']);
 
     }
 

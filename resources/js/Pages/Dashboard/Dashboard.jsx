@@ -12,8 +12,7 @@ import PageHeader from './Components/Page/PageHeader';
 import PageProfile from './Components/Page/PageProfile';
 import PageName from './Components/Page/PageName';
 import PageNav from './Components/Page/PageNav';
-import PageTitle from './Components/Page/PageTitle';
-import PageBio from './Components/Page/PageBio';
+import PageSettingComponent from './Components/Page/PageSettingComponent.jsx';
 import AddLink from './Components/Link/AddLink';
 import PreviewButton from '../../Components/PreviewButton.jsx';
 import { UpgradePopup } from '@/Utils/Popups/UpgradePopup';
@@ -21,7 +20,6 @@ import { ConfirmPopup } from '@/Utils/Popups/ConfirmPopup';
 import { Loader } from '@/Utils/Loader.jsx';
 import AddFolder from './Components/Folder/AddFolder';
 import FolderLinks from './Components/Folder/FolderLinks';
-import { ConfirmFolderDelete } from '@/Utils/Popups/ConfirmFolderDelete';
 import {ErrorBoundary} from 'react-error-boundary';
 import {updateLinksPositions, getAllLinks} from '@/Services/LinksRequest.jsx';
 import {
@@ -54,6 +52,9 @@ import {Head} from '@inertiajs/react';
 import SetFlash from '@/Utils/SetFlash.jsx';
 import EventBus from '@/Utils/Bus.jsx';
 import PageLayout from '@/Pages/Dashboard/Components/Page/PageLayout.jsx';
+import ImageTypeRadio
+    from '@/Pages/Dashboard/Components/Page/ImageTypeRadio.jsx';
+import ImageUploader from '@/Pages/Dashboard/Components/Page/ImageUploader.jsx';
 
 function Dashboard({
                        message = null,
@@ -72,6 +73,8 @@ function Dashboard({
     const [infoLocation, setInfoLocation] = useState({})
     const [infoClicked, setInfoClicked] = useState(null);
     const [triangleRef, setTriangleRef] = useState(null);
+
+    const [imageType, setImageType] = useState(pageSettings.main_img_type);
 
     const [allUserPages, setAllUserPages] = useState(userPages);
 
@@ -354,12 +357,27 @@ function Dashboard({
                                                             pageNames={allPageNames}
                                                         />
 
-                                                        <PageHeader
+                                                        { (!completedCrop.header_img && !completedCrop.page_img) &&
+                                                            <ImageTypeRadio
+                                                                setImageType={setImageType}
+                                                                imageType={imageType}
+                                                                pageId={pageSettings.id}
+                                                                setPageSettings={setPageSettings}
+                                                            />
+                                                        }
+
+                                                        <ImageUploader
                                                             ref={nodesRef}
                                                             completedCrop={completedCrop}
                                                             setCompletedCrop={setCompletedCrop}
                                                             setShowLoader={setShowLoader}
-                                                            elementName="header_img"
+                                                            imageType={imageType}
+                                                            elementName={imageType === "header" ? "header_img" : "page_img"}
+                                                            cropSettings={{
+                                                                unit: '%',
+                                                                aspect: imageType === "header" ? 16 / 9 : 6 / 8,
+                                                                width: 30
+                                                            }}
                                                         />
 
                                                         <PageProfile
@@ -370,14 +388,20 @@ function Dashboard({
                                                             elementName="profile_img"
                                                         />
 
-                                                        <PageTitle />
-                                                        <PageBio />
+                                                        <PageSettingComponent
+                                                            element="title"
+                                                            maxChar="30"
+                                                        />
+                                                        <PageSettingComponent
+                                                            element="bio"
+                                                            maxChar="65"
+                                                        />
 
-                                                        <div className="layouts_wrap">
-                                                            <PageLayout
-                                                                pageLayoutRef={pageLayoutRef}
-                                                            />
-                                                        </div>
+
+                                                        <PageLayout
+                                                            pageLayoutRef={pageLayoutRef}
+                                                        />
+
 
                                                         <InfoText
                                                             divRef={leftColWrap}
@@ -644,7 +668,6 @@ function Dashboard({
                                                 pageLayoutRef={pageLayoutRef}
                                                 showPreview={showPreview}
                                                 setShowPreview={setShowPreview}
-                                                pageName={pageSettings['name']}
                                             />
                                         </ToolTipContextProvider>
                                     </PageContext.Provider>

@@ -63,9 +63,9 @@ export const updatePageName = (packets, pageID) => {
     });
 }
 
-export const headerImage = (packets, pageID) => {
+export const mainImage = (packets, pageID) => {
 
-    return axios.patch('/dashboard/page/update-header-image/' + pageID, packets)
+    return axios.patch('/dashboard/page/update-main-image/' + pageID, packets)
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
@@ -79,7 +79,7 @@ export const headerImage = (packets, pageID) => {
         }
     ).catch(error => {
         if (error.response) {
-            EventBus.dispatch("error", { message: error.response.data.errors.header_img[0] });
+            EventBus.dispatch("error", { message: "there was a problem uploading the image" });
             console.error(error.response);
         } else {
             console.error("ERROR:: ", error);
@@ -124,17 +124,19 @@ export const profileImage = (packets, pageID, pageDefault) => {
     });
 }
 
-export const pageTitle = (packets, pageID) => {
+export const submitPageSetting = (packets, pageID) => {
 
-    return axios.patch('/dashboard/page/update-title/' + pageID,
+    return axios.patch('/dashboard/page/update-setting/' + pageID,
         packets).then(
         response => {
-            const returnMessage = JSON.stringify(response.data.message);
-            EventBus.dispatch("success", {message: returnMessage});
+            if(!packets.main_img_type) {
+                const returnMessage = JSON.stringify(response.data.message);
+                EventBus.dispatch("success", {message: returnMessage});
+            }
         }
     ).catch(error => {
         if (error.response) {
-            EventBus.dispatch("error", { message: error.response.data.errors.title[0] });
+            EventBus.dispatch("error", { message: "There was a problem updating the page" });
             console.error(error.response);
         } else {
             console.error("ERROR:: ", error);
@@ -142,27 +144,6 @@ export const pageTitle = (packets, pageID) => {
 
     });
 }
-
-export const pageBio = (packets, pageID) => {
-
-    return axios.patch('/dashboard/page/update-bio/' + pageID,
-        packets).then(
-        (response) => {
-            const returnMessage = JSON.stringify(response.data.message);
-            EventBus.dispatch("success", {message: returnMessage});
-        }
-    ).catch(error => {
-        //console.error("ERROR:: ", error.response.data.errors.bio[0]);
-
-        if (error.response) {
-            EventBus.dispatch("error", {message: error.response.data.errors.bio[0]});
-            console.error(error.response);
-        } else {
-            console.error("ERROR:: ", error);
-        }
-    });
-}
-
 export const updateProfileLayout = (packets, pageID) => {
 
     return axios.patch('/dashboard/page/update-profile-layout/' + pageID,

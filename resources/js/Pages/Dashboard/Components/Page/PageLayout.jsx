@@ -21,33 +21,35 @@ function PageLayout({pageLayoutRef}) {
     }
 
     return (
-        <div className="edit_form">
-            <form className="layouts">
-                <div className="radio_wrap relative">
-                    <p className="layout_label">Tiles</p>
-                    <label htmlFor="layout_one">
-                        <input type="radio" value="layout_one" name="layout"
-                               checked={pageSettings.page_layout === 'layout_one'}
-                               onChange={(e) => {setRadioValue(e.target.value) }}
-                        />
-                        <img src={Vapor.asset('images/layout-tiles.png')} alt=""/>
-                    </label>
-                </div>
-                <div className="radio_wrap relative">
-                    <p className="layout_label">Buttons</p>
-                    <label htmlFor="layout_two">
-                        <input type="radio" value="layout_two" name="layout"
-                               checked={pageSettings.page_layout === 'layout_two'}
-                               onChange={(e) => {setRadioValue(e.target.value) }}
-                        />
-                        <img src={Vapor.asset('images/layout-buttons.png')} alt=""/>
-                    </label>
+        <div className="layouts_wrap">
+            <div className="edit_form">
+                <form className="layouts">
+                    <div className="radio_wrap relative">
+                        <p className="layout_label">Tiles</p>
+                        <label htmlFor="layout_one">
+                            <input type="radio" value="layout_one" name="layout"
+                                   checked={pageSettings.page_layout === 'layout_one'}
+                                   onChange={(e) => {setRadioValue(e.target.value) }}
+                            />
+                            <img src={Vapor.asset('images/layout-tiles.png')} alt=""/>
+                        </label>
+                    </div>
+                    <div className="radio_wrap relative">
+                        <p className="layout_label">Buttons</p>
+                        <label htmlFor="layout_two">
+                            <input type="radio" value="layout_two" name="layout"
+                                   checked={pageSettings.page_layout === 'layout_two'}
+                                   onChange={(e) => {setRadioValue(e.target.value) }}
+                            />
+                            <img src={Vapor.asset('images/layout-buttons.png')} alt=""/>
+                        </label>
 
-                </div>
-            </form>
+                    </div>
+                </form>
 
-            <ToolTipIcon section="layout" />
+                <ToolTipIcon section="layout" />
 
+            </div>
         </div>
     );
 }

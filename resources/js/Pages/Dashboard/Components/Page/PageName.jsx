@@ -67,7 +67,6 @@ const PageName = ({pageNames}) => {
             setAvailability(true);
             setCurrentMatch(false);
         } else {
-            console.log("last one")
             setAvailability(false);
             setCurrentMatch(false);
         }

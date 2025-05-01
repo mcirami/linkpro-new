@@ -19,6 +19,8 @@ import AdvancedIcon from '@/Components/LinkComponents/AdvancedIcon.jsx';
 //import IconDescription from '@/Components/LinkComponents/IconDescription.jsx';
 import LivePageButton from '@/Pages/Dashboard/Components/LivePageButton.jsx';
 import { IoOpenOutline } from "react-icons/io5";
+import PageBackground
+    from '@/Pages/Dashboard/Components/Page/PageBackground.jsx';
 const Preview = ({
                      nodesRef,
                      completedCrop,
@@ -30,7 +32,6 @@ const Preview = ({
                      subStatus,
                      showPreview,
                      setShowPreview,
-                     pageName
 }) => {
 
     const { userLinks } = useContext(UserLinksContext);
@@ -90,17 +91,36 @@ const Preview = ({
             </div>
             <div className="links_wrap preview">
                 <div className="inner_content" id="preview_wrap">
-                    <div className="inner_content_wrap" style={{
+                    <div className={`inner_content_wrap ${pageSettings.main_img_type === "page" && "bg_image"}
+                    ${completedCrop["page_img"]?.isCompleted ? " no_scroll" : ""}
+                    `} style={{
                         maxHeight: resizePreviewHeight ?
                             resizePreviewHeight + "px" :
-                            loadPreviewHeight + "px"
+                            loadPreviewHeight + "px",
+                            backgroundImage: pageSettings.main_img_type === "page" ? "url(" + pageSettings["page_img"] + ")" : "",
+                            backgroundRepeat: "no-repeat",
+                            backgroundSize: "cover",
+                            height: "100%",
+                            width: "100%",
                     }}>
-                        <Header
-                            nodesRef={nodesRef}
-                            completedCrop={completedCrop}
-                        />
+                        {pageSettings.main_img_type === "page" &&
+                            <PageBackground
+                                nodesRef={nodesRef}
+                                completedCrop={completedCrop}
+                            />
+                        }
+                        {pageSettings.main_img_type === "header" &&
+                            <Header
+                                nodesRef={nodesRef}
+                                completedCrop={completedCrop}
+                            />
+                        }
 
-                        <div id={pageSettings['profile_layout']} className="profile_content">
+                        <div id={pageSettings['profile_layout']} className="profile_content"
+                            style={{
+                                paddingTop: pageSettings.main_img_type === "page" ? '40px' : '',
+                            }}
+                        >
                             <ProfileImage
                                 completedCrop={completedCrop}
                                 nodesRef={nodesRef}
@@ -347,7 +367,7 @@ const Preview = ({
                     </div>
                 </div>
                 <div className="view_live_link link_row mt-5">
-                    <LivePageButton pageName={pageName}/>
+                    <LivePageButton pageName={pageSettings.name}/>
                 </div>
             </div>
         </div>
