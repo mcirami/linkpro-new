@@ -8,8 +8,6 @@ import React, {
 } from 'react';
 import Preview from './Components/Preview/Preview';
 import Links from './Components/Link/Links';
-import PageHeader from './Components/Page/PageHeader';
-import PageProfile from './Components/Page/PageProfile';
 import PageName from './Components/Page/PageName';
 import PageNav from './Components/Page/PageNav';
 import PageSettingComponent from './Components/Page/PageSettingComponent.jsx';
@@ -52,9 +50,11 @@ import {Head} from '@inertiajs/react';
 import SetFlash from '@/Utils/SetFlash.jsx';
 import EventBus from '@/Utils/Bus.jsx';
 import PageLayout from '@/Pages/Dashboard/Components/Page/PageLayout.jsx';
-import ImageTypeRadio
-    from '@/Pages/Dashboard/Components/Page/ImageTypeRadio.jsx';
+import RadioComponent
+    from '@/Pages/Dashboard/Components/Page/RadioComponent.jsx';
 import ImageUploader from '@/Pages/Dashboard/Components/Page/ImageUploader.jsx';
+import SwitchComponent
+    from '@/Pages/Dashboard/Components/Page/SwitchComponent.jsx';
 
 function Dashboard({
                        message = null,
@@ -75,6 +75,7 @@ function Dashboard({
     const [triangleRef, setTriangleRef] = useState(null);
 
     const [imageType, setImageType] = useState(pageSettings.main_img_type);
+    const [profileImgActive, setProfileImgActive] = useState(Boolean(pageSettings.profile_img_active));
 
     const [allUserPages, setAllUserPages] = useState(userPages);
 
@@ -358,11 +359,20 @@ function Dashboard({
                                                         />
 
                                                         { (!completedCrop.header_img && !completedCrop.page_img) &&
-                                                            <ImageTypeRadio
-                                                                setImageType={setImageType}
-                                                                imageType={imageType}
+                                                            <RadioComponent
+                                                                setRadioValue={setImageType}
+                                                                radioValue={imageType}
                                                                 pageId={pageSettings.id}
                                                                 setPageSettings={setPageSettings}
+                                                                elementName="main_img_type"
+                                                                label={{
+                                                                    header: "Header Only",
+                                                                    page: "Full Page"
+                                                                }}
+                                                                radioValues={[
+                                                                    "header",
+                                                                    "page"
+                                                                ]}
                                                             />
                                                         }
 
@@ -381,6 +391,33 @@ function Dashboard({
                                                             }}
                                                         />
 
+                                                       {/* { !completedCrop.profile_img &&
+
+                                                            <ImageTypeRadio
+                                                                setRadioValue={setProfileImgActive}
+                                                                radioValue={profileImgActive}
+                                                                pageId={pageSettings.id}
+                                                                setPageSettings={setPageSettings}
+                                                                elementName="profile_img"
+                                                                label={{
+                                                                    true: "Enable Profile Image",
+                                                                    false: "Disable Profile Image"
+                                                                }}
+                                                                radioValues={[
+                                                                    true,
+                                                                    false
+                                                                ]}
+                                                            />
+                                                        }*/}
+
+                                                        <SwitchComponent
+                                                            setSwitchValue={setProfileImgActive}
+                                                            switchValue={profileImgActive}
+                                                            pageId={pageSettings.id}
+                                                            setPageSettings={setPageSettings}
+                                                            elementName="profile_img_active"
+                                                            hoverText="Profile Image"
+                                                        />
                                                         <ImageUploader
                                                             ref={nodesRef}
                                                             completedCrop={completedCrop}
@@ -394,14 +431,6 @@ function Dashboard({
                                                                 width: 30
                                                             }}
                                                         />
-
-                                                        {/*<PageProfile
-                                                            ref={nodesRef}
-                                                            completedCrop={completedCrop}
-                                                            setCompletedCrop={setCompletedCrop}
-                                                            setShowLoader={setShowLoader}
-                                                            elementName="profile_img"
-                                                        />*/}
 
                                                         <PageSettingComponent
                                                             element="title"
@@ -681,6 +710,7 @@ function Dashboard({
                                                 pageLayoutRef={pageLayoutRef}
                                                 showPreview={showPreview}
                                                 setShowPreview={setShowPreview}
+                                                profileImgActive={profileImgActive}
                                             />
                                         </ToolTipContextProvider>
                                     </PageContext.Provider>

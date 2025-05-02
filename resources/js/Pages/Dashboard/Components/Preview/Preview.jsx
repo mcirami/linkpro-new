@@ -32,6 +32,7 @@ const Preview = ({
                      subStatus,
                      showPreview,
                      setShowPreview,
+                     profileImgActive
 }) => {
 
     const { userLinks } = useContext(UserLinksContext);
@@ -121,11 +122,13 @@ const Preview = ({
                                 paddingTop: pageSettings.main_img_type === "page" ? '40px' : '',
                             }}
                         >
-                            <ProfileImage
-                                completedCrop={completedCrop}
-                                nodesRef={nodesRef}
-                            />
-                            <ProfileText/>
+                            {profileImgActive &&
+                                <ProfileImage
+                                    completedCrop={completedCrop}
+                                    nodesRef={nodesRef}
+                                />
+                            }
+                            <ProfileText />
                         </div>
                         <div className={`icons_wrap main ${pageSettings.page_layout} `}>
 

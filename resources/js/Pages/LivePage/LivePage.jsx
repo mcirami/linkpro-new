@@ -11,7 +11,19 @@ import AdvancedIcon from '@/Components/LinkComponents/AdvancedIcon.jsx';
 import { IoOpenOutline } from "react-icons/io5";
 function LivePage({links, page, subscribed}) {
 
-    const {user_id, header_img, page_img, main_img_type, profile_layout, page_layout, profile_img, title, bio, name} = page;
+    const {
+        user_id,
+        header_img,
+        page_img,
+        main_img_type,
+        profile_layout,
+        profile_img_active,
+        page_layout,
+        profile_img,
+        title,
+        bio,
+        name
+    } = page;
 
     const [headerStyle, setHeaderStyle] = useState({});
     const [pageStyle, setPageStyle] = useState({});
@@ -57,6 +69,21 @@ function LivePage({links, page, subscribed}) {
 
     }, []);
 
+    const [styles, setStyles] = useState({})
+
+    useEffect(() => {
+        if(!profile_img_active) {
+            setStyles({
+                width: '100%',
+                textAlign: "center",
+                paddingLeft: '0'
+            })
+        } else {
+            setStyles({})
+        }
+
+    }, [profile_img_active]);
+
     const accordionLinks = value.index ? links[value.index].links : null;
     const mailchimpListId = value.index ? links[value.index].mailchimp_list_id : null;
     const storeProducts = value.index ? links[value.index].shopify_products : null;
@@ -75,14 +102,18 @@ function LivePage({links, page, subscribed}) {
                                 }
                             </div>
                             <div id={profile_layout} className="profile_content">
-                                <div className={`profile_img_column ${!profile_img ? "default" : "" }`}>
-                                    <div className="profile_image">
-                                        <div className="image_wrap">
-                                            <img src={profile_img || Vapor.asset( 'images/default-img.png' )} alt=""/>
+                                {profile_img_active ?
+                                    <div className={`profile_img_column ${!profile_img ? "default" : "" }`}>
+                                        <div className="profile_image">
+                                            <div className="image_wrap">
+                                                <img src={profile_img || Vapor.asset( 'images/default-img.png' )} alt=""/>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="profile_text">
+                                    :
+                                    ""
+                                }
+                                <div className="profile_text" style={styles}>
                                     {title && <h2>{title}</h2>}
                                     {bio && <p>{bio}</p>}
                                 </div>

@@ -130,17 +130,17 @@ export const profileImage = (packets, pageID, pageDefault) => {
 
 export const submitPageSetting = (packets, pageID) => {
 
-    return axios.patch('/dashboard/page/update-setting/' + pageID,
-        packets).then(
+    return axios.patch('/dashboard/page/update-setting/' + pageID, packets)
+    .then(
         response => {
-            if(!packets.main_img_type) {
+            if(packets.successMessage) {
                 const returnMessage = JSON.stringify(response.data.message);
                 EventBus.dispatch("success", {message: returnMessage});
             }
         }
     ).catch(error => {
         if (error.response) {
-            EventBus.dispatch("error", { message: "There was a problem updating the page" });
+            EventBus.dispatch("error", { message: "There was a problem updating the page settings" });
             console.error(error.response);
         } else {
             console.error("ERROR:: ", error);

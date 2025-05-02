@@ -21,7 +21,7 @@ const hoverText = [
         ]
     },
     {
-        section: 'main',
+        section: 'page_img',
         text: [
             {
                 description: ' Here you can choose to upload a header image or a full page image. After selecting a file (.jpg, .jpeg, .png, .gif) to upload, you can resize the image to perfection using the built-in cropping functionality.',
@@ -29,7 +29,15 @@ const hoverText = [
         ]
     },
     {
-        section: 'profile',
+        section: 'header_img',
+        text: [
+            {
+                description: ' Here you can choose to upload a header image or a full page image. After selecting a file (.jpg, .jpeg, .png, .gif) to upload, you can resize the image to perfection using the built-in cropping functionality.',
+            }
+        ]
+    },
+    {
+        section: 'profile_img',
         text: [
             {
                 description: 'Here you can upload a profile image to your Page. After selecting a file (.jpg, .jpeg, .png, .gif) to upload, you can resize the image to perfection using the built-in cropping functionality.',

@@ -18,7 +18,6 @@ import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import CropTools from '@/Utils/CropTools';
 import EventBus from '@/Utils/Bus';
 import {resizeFile} from '@/Services/ImageService.jsx';
-import {toInteger} from 'lodash';
 
 const ImageUploader = forwardRef(function ImageUploader(props, ref) {
 
@@ -245,7 +244,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                 </form>
             </div>
             {!upImg && (
-                <ToolTipIcon section="main" />
+                <ToolTipIcon section={elementName} />
             )}
         </div>
     );

@@ -24,14 +24,14 @@ class AddLinkRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'              => 'required|max:255',
-            'url'               => 'sometimes|required',
-            'email'             => 'sometimes|required|email',
-            'phone'             => 'sometimes|required',
-            'mailchimp_list_id' => 'sometimes|required',
-            'shopify_products'  => 'sometimes|required',
-            'description'       => 'sometimes',
-            'icon'              => 'required',
+            'name'              => 'max:255',
+            'url'               => 'string',
+            'email'             => 'email',
+            'phone'             => 'string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
+            'mailchimp_list_id' => 'integer',
+            'shopify_products'  => 'json',
+            'description'       => 'string',
+            'icon'              => 'string',
             'bg_image'          => 'string'
         ];
     }
