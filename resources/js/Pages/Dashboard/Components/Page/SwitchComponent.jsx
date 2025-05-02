@@ -33,12 +33,12 @@ const SwitchComponent = ({
                 onChange={(e) => handleOnChange(e)}
                 checked={Boolean(switchValue)}
             />
-            {/*<div className="hover_text switch inline-block">
+            <div className="hover_text switch inline-block">
                 <p>
                     {Boolean(switchValue) ? "Disable " : "Enable "}
                     {hoverText}
                 </p>
-            </div>*/}
+            </div>
         </div>
     );
 };

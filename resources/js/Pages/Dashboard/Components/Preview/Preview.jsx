@@ -200,8 +200,8 @@ const Preview = ({
                                             {(() => {
                                                 switch (type) {
                                                     case "folder":
-                                                        return (active_status ?
-                                                            subStatus && pageSettings.page_layout !== "layout_two" ?
+                                                        return (
+                                                            active_status && subStatus && pageSettings.page_layout !== "layout_two" ?
                                                                 <Folder
                                                                     colClasses={colClasses}
                                                                     mainIndex={index}
@@ -221,8 +221,6 @@ const Preview = ({
                                                                 subStatus && pageSettings.page_layout !== "layout_two" &&
                                                                 <div className={` ${colClasses} `}>
                                                                 </div>
-                                                                :
-                                                                ""
                                                         )
                                                     case "standard":
                                                     case "offer":
@@ -230,75 +228,83 @@ const Preview = ({
                                                     case "email":
                                                     case "phone":
                                                         return (
+
+                                                            (!active_status && pageSettings.page_layout === "layout_one") || active_status ?
                                                             <div className={` ${colClasses} `}
                                                                  style={styles}
                                                             >
-                                                                {active_status ?
-                                                                    pageSettings.page_layout === "layout_one" ?
-                                                                        <>
-                                                                            <a className={`
-                                                                            ${ (!url || !displayIcon) ?
-                                                                                "default"
-                                                                                :
-                                                                                ""}`
-                                                                            }
-                                                                               target="_blank"
-                                                                               href={url || "#"}>
-                                                                                <img src={displayIcon} alt=""/>
-                                                                            </a>
-                                                                            <p>
-                                                                                {name?.length > 11 ?
-                                                                                    name.substring(0, 11) + "..."
-                                                                                    :
-                                                                                    name || "Link Name"
-                                                                                }
-                                                                            </p>
-                                                                        </>
-                                                                        :
-                                                                        <a className={`icon_wrap flex items-center !justify-between
-                                                                        ${ (!url || !displayIcon) ? "default"
-                                                                            : ""
-                                                                        }`}
+                                                                {active_status && pageSettings.page_layout === "layout_one" ?
+                                                                    <>
+                                                                        <a className={`
+                                                                        ${ (!url || !displayIcon) ?
+                                                                            "default"
+                                                                            :
+                                                                            ""}`
+                                                                        }
                                                                            target="_blank"
                                                                            href={url || "#"}>
-                                                                            <div className={`${bg_image ?
-                                                                                "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
-                                                                                :
-                                                                                "flex items-center justify-between w-full"}`}>
-                                                                                <span className="flex items-center justify-start">
-                                                                                    <img src={displayIcon} alt=""/>
-                                                                                    <h3>{name || "Link Name"}</h3>
-                                                                                </span>
-                                                                                <IoOpenOutline />
-                                                                            </div>
+                                                                            <img src={displayIcon} alt=""/>
                                                                         </a>
+                                                                        <p>
+                                                                            {name?.length > 11 ?
+                                                                                name.substring(0, 11) + "..."
+                                                                                :
+                                                                                name || "Link Name"
+                                                                            }
+                                                                        </p>
+                                                                    </>
                                                                     :
-                                                                    ""
+                                                                    active_status ?
+                                                                    <a className={`icon_wrap flex items-center !justify-between
+                                                                    ${ (!url || !displayIcon) ? "default"
+                                                                        : ""
+                                                                    }`}
+                                                                       target="_blank"
+                                                                       href={url || "#"}>
+                                                                        <div className={`${bg_image ?
+                                                                            "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
+                                                                            :
+                                                                            "flex items-center justify-between w-full"}`}>
+                                                                            <span className="flex items-center justify-start">
+                                                                                <img src={displayIcon} alt=""/>
+                                                                                <h3>{name || "Link Name"}</h3>
+                                                                            </span>
+                                                                            <IoOpenOutline />
+                                                                        </div>
+                                                                    </a>
+                                                                        :
+                                                                        ""
                                                                 }
                                                             </div>
+                                                                :
+                                                                ""
+
                                                         )
                                                     case "mailchimp":
                                                     case "shopify":
                                                     case "advanced":
                                                         return (
-                                                            <AdvancedIcon
-                                                                colClasses={colClasses}
-                                                                displayIcon={displayIcon}
-                                                                name={name}
-                                                                active_status={active_status}
-                                                                dataRow={dataRow}
-                                                                mainIndex={index}
-                                                                setRow={setRow}
-                                                                value={value}
-                                                                setValue={setValue}
-                                                                url={url}
-                                                                index={index}
-                                                                setClickType={setClickType}
-                                                                clickType={clickType}
-                                                                type={type}
-                                                                viewType="preview"
-                                                                pageLayout={pageSettings.page_layout}
-                                                            />
+                                                            (!active_status && pageSettings.page_layout === "layout_one") || active_status ?
+                                                                <AdvancedIcon
+                                                                    colClasses={colClasses}
+                                                                    displayIcon={displayIcon}
+                                                                    name={name}
+                                                                    active_status={active_status}
+                                                                    dataRow={dataRow}
+                                                                    mainIndex={index}
+                                                                    setRow={setRow}
+                                                                    value={value}
+                                                                    setValue={setValue}
+                                                                    url={url}
+                                                                    index={index}
+                                                                    setClickType={setClickType}
+                                                                    clickType={clickType}
+                                                                    type={type}
+                                                                    viewType="preview"
+                                                                    pageLayout={pageSettings.page_layout}
+                                                                />
+                                                                :
+                                                                ""
                                                         )
                                                 }
                                             })()}

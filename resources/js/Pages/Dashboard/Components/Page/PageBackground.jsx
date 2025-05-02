@@ -6,6 +6,7 @@ const PageBackground = ({
                         }) => {
 
     return (
+        completedCrop["page_img"] &&
         <div className="canvas"
              style={{
                  width: completedCrop["page_img"]?.isCompleted ? `100%` : 0,
@@ -27,6 +28,7 @@ const PageBackground = ({
                 }}
             />
         </div>
+
     );
 };
 

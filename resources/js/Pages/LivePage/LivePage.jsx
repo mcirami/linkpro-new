@@ -207,66 +207,72 @@ function LivePage({links, page, subscribed}) {
                                                     case "email":
                                                     case "phone":
                                                         return (
-                                                            <div className={` ${colClasses} `} style={styles}>
-                                                                {active_status ? page_layout === "layout_one" ?
-                                                                    <>
-                                                                        <a className={!url || !displayIcon ? "default" : ""}
-                                                                           target="_blank"
-                                                                           href={url || "#"}
-                                                                           onClick={(e) => TrackIconClick(id)}
-                                                                        >
-                                                                            <img src={displayIcon} alt=""/>
-                                                                        </a>
-                                                                        <p>
-                                                                            {name?.length > 11 ? name.substring(0, 11) + "..."
-                                                                                : name || "Link Name"
-                                                                            }
-                                                                        </p>
-                                                                    </>
-                                                                    :
-                                                                        <a className={`icon_wrap
-                                                                        ${ (!url || !displayIcon) ? "default" : ""}`}
-                                                                           target="_blank"
-                                                                           href={url || "#"}>
-                                                                            <div className={`${bg_image ?
-                                                                                "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
-                                                                                :
-                                                                                "flex items-center justify-between w-full"}`}>
-                                                                                <span className="flex items-center justify-start">
-                                                                                    <img src={displayIcon} alt=""/>
-                                                                                    <h3>{name || "Link Name"}</h3>
-                                                                                </span>
-                                                                                <IoOpenOutline />
-                                                                            </div>
-                                                                        </a>
-                                                                    :
-                                                                    ""
-                                                                }
-                                                            </div>
+                                                            (!active_status && page_layout=== "layout_one") || active_status ?
+                                                                <div className={` ${colClasses} `} style={styles}>
+                                                                    {active_status ? page_layout === "layout_one" ?
+                                                                        <>
+                                                                            <a className={!url || !displayIcon ? "default" : ""}
+                                                                               target="_blank"
+                                                                               href={url || "#"}
+                                                                               onClick={(e) => TrackIconClick(id)}
+                                                                            >
+                                                                                <img src={displayIcon} alt=""/>
+                                                                            </a>
+                                                                            <p>
+                                                                                {name?.length > 11 ? name.substring(0, 11) + "..."
+                                                                                    : name || "Link Name"
+                                                                                }
+                                                                            </p>
+                                                                        </>
+                                                                        :
+                                                                            <a className={`icon_wrap
+                                                                            ${ (!url || !displayIcon) ? "default" : ""}`}
+                                                                               target="_blank"
+                                                                               href={url || "#"}>
+                                                                                <div className={`${bg_image ?
+                                                                                    "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
+                                                                                    :
+                                                                                    "flex items-center justify-between w-full"}`}>
+                                                                                    <span className="flex items-center justify-start">
+                                                                                        <img src={displayIcon} alt=""/>
+                                                                                        <h3>{name || "Link Name"}</h3>
+                                                                                    </span>
+                                                                                    <IoOpenOutline />
+                                                                                </div>
+                                                                            </a>
+                                                                        :
+                                                                        ""
+                                                                    }
+                                                                </div>
+                                                                :
+                                                                ""
                                                         )
                                                     case "mailchimp":
                                                     case "shopify":
                                                     case "advanced":
                                                         return (
-                                                            <AdvancedIcon
-                                                                id={id}
-                                                                colClasses={colClasses}
-                                                                displayIcon={displayIcon}
-                                                                name={name}
-                                                                active_status={active_status}
-                                                                dataRow={dataRow}
-                                                                mainIndex={index}
-                                                                setRow={setRow}
-                                                                value={value}
-                                                                setValue={setValue}
-                                                                url={url}
-                                                                index={index}
-                                                                setClickType={setClickType}
-                                                                clickType={clickType}
-                                                                type={type}
-                                                                viewType="live"
-                                                                pageLayout={page_layout}
-                                                            />
+                                                            (!active_status && page_layout=== "layout_one") || active_status ?
+                                                                <AdvancedIcon
+                                                                    id={id}
+                                                                    colClasses={colClasses}
+                                                                    displayIcon={displayIcon}
+                                                                    name={name}
+                                                                    active_status={active_status}
+                                                                    dataRow={dataRow}
+                                                                    mainIndex={index}
+                                                                    setRow={setRow}
+                                                                    value={value}
+                                                                    setValue={setValue}
+                                                                    url={url}
+                                                                    index={index}
+                                                                    setClickType={setClickType}
+                                                                    clickType={clickType}
+                                                                    type={type}
+                                                                    viewType="live"
+                                                                    pageLayout={page_layout}
+                                                                />
+                                                                :
+                                                                ""
                                                         )
                                                 }
                                             })()}
