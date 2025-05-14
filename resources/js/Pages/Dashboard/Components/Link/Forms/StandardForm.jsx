@@ -33,16 +33,16 @@ import HoverText from '@/Utils/HoverText.jsx';
 import ImageUploader
     from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
 import FormNav from '@/Pages/Dashboard/Components/Link/Forms/FormNav.jsx';
+import IconSettingComponent
+    from '@/Pages/Dashboard/Components/Link/Forms/IconSettingComponent.jsx';
+import {capitalize} from 'lodash';
 
 const StandardForm = ({
-                          accordionValue,
-                          setAccordionValue,
-                          inputType,
-                          setInputType,
-                          editIcon,
+                          editLink,
+                          setEditLink,
                           subStatus,
+                          showLinkForm,
                           setShowLinkForm,
-                          setEditIcon,
                           setShowUpgradePopup,
                           setShowLoader,
                           affiliateStatus = null,
@@ -50,6 +50,7 @@ const StandardForm = ({
 
 }) => {
 
+    console.log("editLink", editLink);
     const { userLinks, dispatch } = useContext(UserLinksContext);
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
     const  { pageSettings } = usePageContext();
@@ -59,32 +60,36 @@ const StandardForm = ({
         initialMessage: false,
     });
 
-    const {id, folderId} = editIcon;
-    const [ showIconList, setShowIconList ] = useState(!id);
+    //const {id, folderId} = editLink;
+    const [ showIconList, setShowIconList ] = useState(true);
 
-    const [currentLink, setCurrentLink] = useState(
-        userLinks.find(function(e) {
-            return e.id === id
-        }) || folderLinks.find(function(e) {
-            return e.id === id
-        }) ||
-        {
-            id: null,
-            icon: null,
-            name: null,
-            url: null,
-            email: null,
-            phone: null,
-            mailchimp_list_id: null,
-            shopify_products: null,
-            shopify_id: null,
-            course_id: null,
-            description: null,
-            type: null,
-        }
-    );
+    useEffect(() => {
+        setEditLink(
+            userLinks.find(function(e) {
+                return e.id === editLink.id
+            }) || folderLinks.find(function(e) {
+                return e.id === editLink.id
+            }) ||
+            {
+                id: null,
+                page_id: pageSettings["id"],
+                icon: null,
+                name: null,
+                url: null,
+                email: null,
+                phone: null,
+                mailchimp_list_id: null,
+                shopify_products: null,
+                shopify_id: null,
+                course_id: null,
+                folder_id: editLink.folderId,
+                description: null,
+                type: editLink.type,
+            }
+        );
+    }, []);
 
-
+    const [charactersLeft, setCharactersLeft] = useState(11);
 
     /*const [descChecked, setDescChecked] = useState(
         Boolean(
@@ -93,7 +98,7 @@ const StandardForm = ({
             currentLink.type === "advanced"
         ));*/
 
-    const [charactersLeft, setCharactersLeft] = useState(11);
+    /*
 
     useEffect(() => {
         if(currentLink.name) {
@@ -128,8 +133,8 @@ const StandardForm = ({
                 name: value
             }))
         },[]);
-
-    const handleOnClick = () => {
+*/
+    /*const handleOnClick = () => {
 
         if (!subStatus) {
             setShowUpgradePopup({
@@ -137,9 +142,9 @@ const StandardForm = ({
                 text: "change link name"
             });
         }
-    }
+    }*/
 
-    const handleSubmit = (e) => {
+    /*const handleSubmit = (e) => {
         e.preventDefault();
 
         let URL = currentLink.url;
@@ -161,12 +166,12 @@ const StandardForm = ({
             let descValue = null;
             let iconType = inputType;
 
-            /*if (currentLink.description && currentLink.description !== "") {
+            /!*if (currentLink.description && currentLink.description !== "") {
                 if(descChecked) {
                     iconType = "advanced";
                 }
                 descValue = getJsonValue(currentLink.description);
-            }*/
+            }*!/
 
             switch (inputType) {
                 case "url":
@@ -363,7 +368,7 @@ const StandardForm = ({
                     //setAccordionValue(null);
                     //setShowLinkForm(false);
                     //setInputType(null);
-                    //setEditIcon(prev => Object.fromEntries(Object.keys(prev).map(key => [key, null])));
+                    //setEditLink(prev => Object.fromEntries(Object.keys(prev).map(key => [key, null])));
                 }
             })
         }
@@ -371,7 +376,7 @@ const StandardForm = ({
 
     const handleCancel = (e) => {
         e.preventDefault();
-        setEditIcon(prev =>
+        setEditLink(prev =>
             Object.fromEntries(Object.keys(prev).map(key => [key, null])));
         setShowLinkForm(false);
         setInputType(null);
@@ -379,7 +384,7 @@ const StandardForm = ({
         setCurrentLink({});
         document.getElementById('left_col_wrap').style.minHeight = "unset";
     }
-
+*/
     const handleSubmitTerms = (e) => {
         e.preventDefault()
 
@@ -394,8 +399,7 @@ const StandardForm = ({
     }
 
     return (
-         accordionValue === "offer" && (affiliateStatus !== "approved" || !affiliateStatus) ?
-
+         (affiliateStatus !== "approved" || !affiliateStatus) && editLink.type === "offer" ?
             showTerms ?
                 <div className="aff_terms">
                     <h3>Terms and Conditions</h3>
@@ -433,7 +437,7 @@ const StandardForm = ({
             :
             <>
             <FormNav
-                currentLink={currentLink}
+                currentLink={editLink}
                 showIconList={showIconList}
                 setShowIconList={setShowIconList}
                 showBGUpload={showBGUpload}
@@ -444,7 +448,7 @@ const StandardForm = ({
                 <div className="flex flex-wrap justify-end mt-5 relative">
                     <div className="w-full">
                         <ImageUploader
-                            currentLink={currentLink}
+                            currentLink={editLink}
                             setShowLoader={setShowLoader}
                             pageSettings={pageSettings}
                             setShowBGUpload={setShowBGUpload}
@@ -452,18 +456,15 @@ const StandardForm = ({
                     </div>
                 </div>
                 :
-                <form onSubmit={handleSubmit} className="link_form">
+                <div className="link_form">
                     {showIconList &&
                         <div className="icon_row">
                             <div className="icon_box">
                                 <IconList
-                                    currentLink={currentLink}
-                                    setCurrentLink={setCurrentLink}
-                                    accordionValue={accordionValue}
                                     setCharactersLeft={setCharactersLeft}
-                                    inputType={inputType}
-                                    setInputType={setInputType}
-                                    editID={id}
+                                    editLink={editLink}
+                                    setEditLink={setEditLink}
+                                    showLinkForm={showLinkForm}
                                 />
                             </div>
                             <a className="hide_button uppercase mt-2" href="#" onClick={(e) => {
@@ -474,12 +475,15 @@ const StandardForm = ({
                     }
 
                     <div className="my_row mb-4">
-
-                        {!subStatus &&
-                            <p className="upgrade_text">
-                                <sup>*</sup>Upgrade to customize</p>
-                        }
-                        <div className="input_wrap mt-2">
+                        <IconSettingComponent
+                            inputType="text"
+                            currentLink={editLink}
+                            setCurrentLink={setEditLink}
+                            elementName="name"
+                            label="Link Name"
+                            maxChar={11}
+                        />
+                        {/*<div className="input_wrap mt-2">
                             <input
                                 className={`${!subStatus ?
                                     "disabled " :
@@ -498,10 +502,10 @@ const StandardForm = ({
                             {!subStatus &&
                                 <span className="disabled_wrap"
                                       onClick={(e) => handleOnClick(e)}>
-                        </span>
+                                </span>
                             }
-                        </div>
-                        {pageSettings["layout_one"] &&
+                        </div>*/}
+                        {/*{pageSettings["layout_one"] &&
                             <div className="my_row info_text title">
                                 <p className="char_max">Max 11 Characters Shown</p>
                                 <p className="char_count">
@@ -513,35 +517,41 @@ const StandardForm = ({
                                     }
                                 </p>
                             </div>
-                        }
+                        }*/}
                     </div>
 
-                    {accordionValue !== "offer" &&
+                    {editLink.type !== "offer" &&
                         <InputTypeRadio
-                            inputType={inputType}
-                            setInputType={setInputType}
-                            currentLink={currentLink}
-                            setCurrentLink={setCurrentLink}
+                            showLinkForm={showLinkForm}
+                            currentLink={editLink}
+                            setCurrentLink={setEditLink}
                         />
                     }
 
                     <div className="my_row mb-4">
-                        {accordionValue === "offer" ?
+                        {editLink.type === "offer" ?
                             <div className="external_link">
                                 <h3>Tracking Link:</h3>
-                                {currentLink.url ?
-                                    <a className="inline-block" target="_blank" href={currentLink.url}>{currentLink.url}</a>
+                                {editLink.url ?
+                                    <a className="inline-block" target="_blank" href={editLink.url}>{editLink.url}</a>
                                     :
                                     <p>Select An Icon Above</p>
                                 }
                             </div>
                             :
-                            <InputComponent
+                            <IconSettingComponent
+                                inputType={editLink.type}
+                                currentLink={editLink}
+                                setCurrentLink={setEditLink}
+                                elementName={editLink.type}
+                                label={capitalize(editLink.type)}
+                            />
+                            /*<InputComponent
                                 inputType={inputType}
                                 setInputType={setInputType}
-                                currentLink={currentLink}
-                                setCurrentLink={setCurrentLink}
-                            />
+                                currentLink={editLink}
+                                setCurrentLink={setEditLink}
+                            />*/
                         }
                     </div>
 
@@ -555,16 +565,16 @@ const StandardForm = ({
                     }*/}
 
                     <div className="button_row w-full mt-4">
-                        <button className="button green" type="submit">
+                        {/*<button className="button green" type="submit">
                             Save
                         </button>
                         <a href="#" className="button transparent gray" onClick={(e) => handleCancel(
                             e)}>
                             Cancel
-                        </a>
+                        </a>*/}
                         <a className="help_link" href="mailto:help@link.pro">Need Help?</a>
                     </div>
-                </form>
+                </div>
                 }
                 </>
     );

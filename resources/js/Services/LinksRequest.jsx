@@ -1,18 +1,21 @@
 import axios from 'axios';
 import EventBus from '../Utils/Bus';
 import {icons} from './IconObjects';
+import toBoolean from 'validator/es/lib/toBoolean.js';
 
 /**
  * Submit a request to add a new link
  * return object
  */
-export const addLink = (packets) => {
+export const addLink = async (packets) => {
 
-    return axios.post('/dashboard/links/new', packets)
+    return await axios.post(route('link.store'), packets)
     .then(
         (response) => {
+
+            console.log("response", response);
             const returnMessage = JSON.stringify(response.data.message);
-            EventBus.dispatch("success", {message: returnMessage});
+            //EventBus.dispatch("success", {message: returnMessage});
             const link_id = response.data.link_id;
             const position = response.data.position;
             let iconPath = null;
@@ -30,7 +33,7 @@ export const addLink = (packets) => {
         })
     .catch(error => {
         if (error.response) {
-            if (error.response.data.errors.icon !== undefined) {
+            /*if (error.response.data.errors.icon !== undefined) {
                 EventBus.dispatch("error", { message: error.response.data.errors.icon[0] });
             } else if (error.response.data.errors.name !== undefined) {
                 EventBus.dispatch("error", { message: error.response.data.errors.name[0] });
@@ -42,9 +45,9 @@ export const addLink = (packets) => {
                 EventBus.dispatch("error", { message: "Mailchimp List Is Required" });
             } else if (error.response.data.errors.shopify_products !== undefined) {
                 EventBus.dispatch("error", { message: "Shopify Products Are Required" });
-            } else {
+            } else {*/
                 console.error(error.response);
-            }
+          /*  }*/
         } else {
             console.error("ERROR:: ", error);
         }
@@ -64,7 +67,7 @@ export const updateLink = (packets, editID) => {
     return axios.put('/dashboard/links/update/' + editID, packets).then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
-            EventBus.dispatch("success", {message: returnMessage});
+            //EventBus.dispatch("success", {message: returnMessage});
             let imagePath = null;
 
             if(response.data.path) {
@@ -78,19 +81,19 @@ export const updateLink = (packets, editID) => {
         }
     ).catch(error => {
         if (error.response) {
-            if (error.response.data.errors.icon !== undefined) {
+            if (error.response.data.errors?.icon !== undefined) {
                 EventBus.dispatch("error", { message: error.response.data.errors.icon[0] });
-            } else if (error.response.data.errors.name !== undefined) {
+            } else if (error.response.data.errors?.name !== undefined) {
                 EventBus.dispatch("error", { message: error.response.data.errors.name[0] });
-            } else if (error.response.data.errors.url !== undefined) {
+            } else if (error.response.data.errors?.url !== undefined) {
                 EventBus.dispatch("error", { message: error.response.data.errors.url[0] });
-            } else if (error.response.data.errors.email !== undefined) {
+            } else if (error.response.data.errors?.email !== undefined) {
                 EventBus.dispatch("error", { message: error.response.data.errors.email[0] });
-            } else if (error.response.data.errors.phone !== undefined) {
+            } else if (error.response.data.errors?.phone !== undefined) {
                 EventBus.dispatch("error", { message: error.response.data.errors.phone[0] });
-            } else if (error.response.data.errors.mailchimp_list_id !== undefined) {
+            } else if (error.response.data.errors?.mailchimp_list_id !== undefined) {
                 EventBus.dispatch("error", { message: "Mailchimp List Is Required" });
-            } else if (error.response.data.errors.shopify_products !== undefined) {
+            } else if (error.response.data.errors?.shopify_products !== undefined) {
                 EventBus.dispatch("error", { message: "Shopify Products Are Required" });
             } else {
                 console.error(error.response);
@@ -329,7 +332,7 @@ export const setStorage = (editID, integrationType, pageID) => {
     if (editID) {
         localStorage.setItem('editID', editID);
     } else {
-        localStorage.setItem('showLinkForm', true);
+        localStorage.setItem('showLinkForm', toBoolean(true));
     }
 
     localStorage.setItem('integrationType', integrationType);

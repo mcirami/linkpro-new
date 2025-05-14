@@ -34,7 +34,7 @@ import FolderLink from './FolderLink';
 const FolderLinks = ({
                          folderID,
                          subStatus,
-                         setEditIcon,
+                         setEditLink,
                          setAccordionValue
 
                }) => {
@@ -73,7 +73,7 @@ const FolderLinks = ({
     };
 
     const handleOnClick = (linkID) => {
-        setEditIcon(prev => ({...prev, id: linkID}));
+        setEditLink(prev => ({...prev, id: linkID}));
 
         const currentLink = folderLinks.find(function(e) {
             return e.id === linkID

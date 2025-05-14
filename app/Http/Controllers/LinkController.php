@@ -44,7 +44,7 @@ class LinkController extends Controller
             'link_id' => $data["link"]->id,
             'position' => $data["link"]->position,
             'iconPath' => $data["path"]
-        ]);
+        ], 201);
     }
 
     /**

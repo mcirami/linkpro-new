@@ -1,58 +1,66 @@
 import React, {useEffect} from 'react';
 
-const InputTypeRadio = ({inputType, setInputType, currentLink, setCurrentLink}) => {
+const InputTypeRadio = ({showLinkForm, currentLink, setCurrentLink}) => {
 
     useEffect(() => {
         if (currentLink.url) {
-            setInputType("url")
+            setCurrentLink((prev) => ({
+                ...prev,
+                type: "url"
+            }))
         } else if (currentLink.email) {
-            setInputType("email")
+            setCurrentLink((prev) => ({
+                ...prev,
+                type: "email"
+            }))
         } else if (currentLink.phone) {
-            setInputType("phone")
+            setCurrentLink((prev) => ({
+                ...prev,
+                type: "phone"
+            }))
         }
     }, [])
 
      const handleOnChange = (e) => {
-         setInputType(e.target.value)
-         setCurrentLink(prevState => ({
-             ...prevState,
+         setCurrentLink(prev => ({
+             ...prev,
              type: e.target.value
-         }))
+         }));
      }
 
     return (
         <div className="my_row radios_wrap input_types mb-1">
-            <div className={inputType === "url" || !inputType ? "radio_wrap active" : "radio_wrap" }>
+            <div className={currentLink.type === "url" || !currentLink.type ? "radio_wrap active" : "radio_wrap" }>
                 <label htmlFor="url">
                     <input id="url"
                            type="radio"
                            value="url"
                            name="input_type"
-                           checked={inputType === "url" || !inputType}
+                           checked={currentLink.type === "url" || !currentLink.type}
                            onChange={(e) => {handleOnChange(e) }}/>
                     URL
                 </label>
             </div>
-            <div className={inputType === "email" ? "radio_wrap active" : "radio_wrap" }>
+            <div className={currentLink.type === "email" ? "radio_wrap active" : "radio_wrap" }>
                 <label htmlFor="email">
                     <input id="email"
                            type="radio"
                            value="email"
                            name="input_type"
                            onChange={(e) => { handleOnChange(e) }}
-                           checked={inputType === "email"}
+                           checked={currentLink.type === "email"}
                     />
                     Email
                 </label>
             </div>
-            <div className={inputType === "phone" ? "radio_wrap active" : "radio_wrap" }>
+            <div className={currentLink.type === "phone" ? "radio_wrap active" : "radio_wrap" }>
                 <label htmlFor="phone">
                     <input id="phone"
                            type="radio"
                            value="phone"
                            name="input_type"
                            onChange={(e) => { handleOnChange(e) }}
-                           checked={inputType === "phone"}
+                           checked={currentLink.type === "phone"}
                     />
                     Phone
                 </label>

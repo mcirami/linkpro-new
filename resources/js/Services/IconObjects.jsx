@@ -288,7 +288,7 @@ export const icons = [
     },
     {
         "name" : "X",
-        "required_in_url": "x",
+        "required_in_url": "x.com",
         "prefix" : "https://x.com/"
     },
     {

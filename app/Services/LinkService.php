@@ -95,7 +95,7 @@ class LinkService {
                 'type'              => $request->type
             ]);
 
-            array_push($linkIDs, $link->id);
+            $linkIDs[] = $link->id;
 
             $folder->update(['link_ids' => json_encode($linkIDs)]);
 
@@ -109,7 +109,7 @@ class LinkService {
                 $position = max($highestPagePos, $highestFolderPos) + 1;
             }
 
-
+            $productIDs = null;
             if ($request->shopify_products) {
                 $productIDs = [];
                 foreach($request->shopify_products as $product) {
@@ -118,25 +118,28 @@ class LinkService {
                         'position' => $product["position"],
                         'shopify_id' => $request->shopify_id
                     ];
-                    array_push($productIDs, $productObject);
+                    $productIDs[]  = $productObject;
                 }
             }
 
-            $link = Auth::user()->links()->create([
-                'name'              => $request->name,
-                'url'               => $request->url ? : null,
-                'email'             => $request->email ? : null,
-                'phone'             => $request->phone ? : null,
-                'mailchimp_list_id' => $request->mailchimp_list_id ? : null,
-                'shopify_products'  => $request->shopify_products ? $productIDs : null,
-                'shopify_id'        => $request->shopify_id ? : null,
-                'course_id'         => $request->course_id ? : null,
-                'icon'              => $iconPath,
-                'page_id'           => $request->page_id,
-                'position'          => $position,
-                'description'       => $request->description ? json_encode($request->description) : null,
-                'type'              => $request->type
-            ]);
+            $payload = [];
+
+            $keys = collect($request->all())->keys();
+            foreach ($keys as $key) {
+                if ($key == "description") {
+                    $payload['description'] = json_encode($request->description);
+                } else if($key == "shopify_products") {
+                    $payload['shopify_products'] =  $productIDs;
+                } else if ($key == "icon") {
+                    $payload['icon'] = $iconPath;
+                } else {
+                    $payload[$key] = $request[$key];
+                }
+            }
+
+            $payload['position'] = $position;
+
+            $link = Auth::user()->links()->create($payload);
         }
 
         return [

@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {BiChevronLeft, BiChevronsLeft} from 'react-icons/bi';
 
 const FormBreadcrumbs = ({
-                             editIcon,
-                             setEditIcon,
+                             editLink,
+                             setEditLink,
                              setAccordionValue,
                              showLinkForm,
                              setShowLinkForm,
@@ -11,18 +11,20 @@ const FormBreadcrumbs = ({
                              setInputType
 }) => {
 
-    const {id, type, folderId} = editIcon;
+    const {id, type, folderId} = editLink;
 
     return (
         <div className="breadcrumb_links">
             {folderId  ?
                 <>
-                    {id || showLinkForm ?
+                    {id || showLinkForm.show ?
                         <a className="back" href="#"
                            onClick={(e) => {
                                e.preventDefault();
-                               setShowLinkForm(false)
-                               setEditIcon(prev => ({...prev,
+                               setShowLinkForm({
+                                   show: false,
+                               })
+                               setEditLink(prev => ({...prev,
                                    id: null,
                                    type: null,
                                    inputType: null,
@@ -39,8 +41,10 @@ const FormBreadcrumbs = ({
                     <a className="back" href="#"
                        onClick={(e) => {
                            e.preventDefault();
-                           setShowLinkForm(false);
-                           setEditIcon(prev =>
+                           setShowLinkForm({
+                               show: false,
+                           });
+                           setEditLink(prev =>
                                Object.fromEntries(Object.keys(prev).map(key => [key, null])));
                            setAccordionValue(null);
                        }}
@@ -53,8 +57,10 @@ const FormBreadcrumbs = ({
                 <a className="back" href="#"
                    onClick={(e) => {
                        e.preventDefault();
-                       setShowLinkForm(false)
-                       setEditIcon(prev =>
+                       setShowLinkForm({
+                           show: false,
+                       })
+                       setEditLink(prev =>
                            Object.fromEntries(Object.keys(prev).map(key => [key, null])))
                        setIntegrationType(null)
                        setInputType(null)

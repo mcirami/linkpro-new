@@ -143,9 +143,9 @@ function LivePage({links, page, subscribed}) {
                                         }
                                     }
 
-                                    if (email) {
+                                    if (type === "email") {
                                         url = "mailto:" + email;
-                                    } else if (phone) {
+                                    } else if (type === "phone") {
                                         url = "tel:" + phone;
                                         if(icon.includes("Facetime")) {
                                             url = 'facetime:' + phone;

@@ -34,7 +34,8 @@ import {
 } from '@/Services/Reducer.jsx';
 
 const Links = ({
-                   setEditIcon,
+                   editLink,
+                   setEditLink,
                    setRow,
                    setValue,
                    setShowUpgradePopup,
@@ -100,7 +101,7 @@ const Links = ({
             return e.id === linkID
         });
 
-        setEditIcon(prev => ({
+        setEditLink(prev => ({
             ...prev,
             id: linkID,
             type: currentLink.type || 'standard'
@@ -108,9 +109,9 @@ const Links = ({
 
         if(currentLink.type === "shopify" || currentLink.type === "mailchimp") {
             setAccordionValue("integration")
-        } else if (currentLink.icon.includes("offer-images")) {
+        } else if (currentLink.icon?.includes("offer-images")) {
             setAccordionValue("offer")
-        } else if (currentLink.icon.includes("custom-icons")){
+        } else if (currentLink.icon?.includes("custom-icons")){
             if(subStatus) {
                 setAccordionValue("custom")
             } else {
@@ -138,7 +139,7 @@ const Links = ({
             const folderLinks = await response.json();
 
             dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks["links"]} })
-            setEditIcon(prev => ({...prev, folderId: linkID}));
+            setEditLink(prev => ({...prev, folderId: linkID}));
             setRow(prev => ({...prev, row: 0}))
             setValue(prev => ({...prev, index: 0, url: null}));
 

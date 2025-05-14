@@ -95,7 +95,7 @@ Route::middleware('auth')->group(function () {
     Route::get('auth/shopify/callback', [ShopifyController::class, 'apiCallback']);
 
     Route::group(['prefix' => 'dashboard'], function () {
-        Route::post('/links/new', [LinkController::class, 'store']);
+        Route::post('/links/new', [LinkController::class, 'store'])->name('link.store');
         Route::put('/links/update/{link}', [LinkController::class, 'update']);
         Route::patch('/links/status/{link}', [LinkController::class, 'updateStatus']);
         Route::patch('/links/update-positions', [LinkController::class, 'updatePositions']);
@@ -233,16 +233,16 @@ Route::group(['middleware' => ['course.user:course', 'auth.banned']], function (
     Route::get('/purchase/success', [PurchaseController::class, 'success'])->name('course.purchase.success');
 });
 
-Route::get('/{course:slug?}/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::get('/{course:slug?}/login', [AuthenticatedSessionController::class, 'create'])->name('custom.login');
 
 Route::post('/custom-login', [AuthenticatedSessionController::class, 'customLoginPost'])->name('customLoginPost');
 Route::post('/send-reset-course-password', [CoursePasswordController::class, 'sendResetCoursePassword'])->name('send.reset.course.password');
 Route::post('/reset-course-password', [CoursePasswordController::class, 'resetCoursePassword'])->name('reset.course.password');
 
-Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
-Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
-Route::post('/send-reset-password-email', [PasswordResetLinkController::class, 'store'])->name('password.email');
-Route::post('/reset-password-submit', [NewPasswordController::class, 'store'])->name('password.store');
+Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('custom.password.request');
+Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('custom.password.reset');
+Route::post('/send-reset-password-email', [PasswordResetLinkController::class, 'store'])->name('custom.password.email');
+Route::post('/reset-password-submit', [NewPasswordController::class, 'store'])->name('custom.password.store');
 
 Route::get('/{user:username}/{landing_page:slug}', [LandingPageController::class, 'show'])->name('live.landing.page');
 Route::get('/{user:username}/course/{course:slug}/register', [CourseRegisterController::class, 'show'])->name('course.register.show');

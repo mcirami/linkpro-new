@@ -5,10 +5,11 @@ import {UserLinksContext} from '../../Dashboard.jsx';
 const AddLink = ({
                      subStatus,
                      setShowUpgradePopup,
-                     setShowLinkForm
+                     setShowLinkTypeRadio
 }) => {
 
     const { userLinks } = useContext(UserLinksContext);
+
     const handleClick = (e) => {
         e.preventDefault();
 
@@ -19,7 +20,7 @@ const AddLink = ({
 
         if (count < 8 || subStatus ) {
 
-            setShowLinkForm(true);
+            setShowLinkTypeRadio(true);
 
             setTimeout(function(){
                 document.querySelector('#scrollTo').scrollIntoView({
@@ -42,7 +43,7 @@ const AddLink = ({
 
         <a href="" className="icon_wrap" onClick={handleClick}>
             <ImPlus />
-            <h3>Add Icon</h3>
+            <h3>Add Link</h3>
         </a>
 
     )

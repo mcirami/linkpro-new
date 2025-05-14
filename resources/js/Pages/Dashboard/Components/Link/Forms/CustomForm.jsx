@@ -45,13 +45,13 @@ const CustomForm = ({
                         setAccordionValue,
                         inputType,
                         setInputType,
-                        editIcon,
+                        editLink,
                         setShowLinkForm,
-                        setEditIcon,
+                        setEditLink,
                         setShowLoader,
 }) => {
 
-    const {id, folderId} = editIcon;
+    const {id, folderId} = editLink;
     const [customIconArray, setCustomIconArray] = useState([]);
     const { userLinks, dispatch } = useContext(UserLinksContext);
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
@@ -357,7 +357,7 @@ const CustomForm = ({
 
                         }
 
-                        /*setEditIcon(prev =>
+                        /*setEditLink(prev =>
                             Object.fromEntries(Object.keys(prev).map(key => [key, null])));
                         setShowLinkForm(false);
                         setAccordionValue(null);
@@ -598,7 +598,7 @@ const CustomForm = ({
                         /*setCurrentLink({});
                         setShowLinkForm(false);
                         setAccordionValue(null);
-                        setEditIcon(prev =>
+                        setEditLink(prev =>
                             Object.fromEntries(Object.keys(prev).map(key => [key, null])))
                         setInputType(null);*/
                     }
@@ -620,7 +620,7 @@ const CustomForm = ({
 
     const handleCancel = (e) => {
         e.preventDefault();
-        setEditIcon(prev =>
+        setEditLink(prev =>
             Object.fromEntries(Object.keys(prev).map(key => [key, null])));
         setShowLinkForm(false);
         setAccordionValue(null);

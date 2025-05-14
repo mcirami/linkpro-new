@@ -14,7 +14,7 @@ import {
 
 const AddFolder = ({
                        setShowUpgradePopup,
-                       setEditIcon,
+                       setEditLink,
                        subStatus,
 }) => {
 
@@ -70,7 +70,7 @@ const AddFolder = ({
         //dispatchOrigFolderLinks({ type: ORIG_FOLDER_LINKS_ACTIONS.SET_ORIG_FOLDER_LINKS, payload: {links: folderLinks["links"] }})
         dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks["links"] }});
 
-        setEditIcon(prev => ({...prev, folderId: folderID}));
+        setEditLink(prev => ({...prev, folderId: folderID}));
 
         setTimeout(function(){
             document.querySelector('#scrollTo').scrollIntoView({

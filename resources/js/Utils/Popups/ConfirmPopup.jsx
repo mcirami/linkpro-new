@@ -13,7 +13,7 @@ import {deleteFolder} from '@/Services/FolderRequests.jsx';
 
 export const ConfirmPopup = ({
                                  editIcon,
-                                 setEditIcon,
+                                 setEditLink,
                                  showConfirmPopup,
                                  setShowConfirmPopup,
                                  setInputType,
@@ -56,7 +56,7 @@ export const ConfirmPopup = ({
                     //dispatchOrig({ type: ORIGINAL_LINKS_ACTIONS.SET_ORIGINAL_LINKS, payload: {links: data.links} })
                     dispatch({ type: LINKS_ACTIONS.SET_LINKS, payload: {links: data.links} })
 
-                    setEditIcon(prev =>
+                    setEditLink(prev =>
                         Object.fromEntries(Object.keys(prev).map(key => [key, null])));
 
                     setShowConfirmPopup({
@@ -117,7 +117,7 @@ export const ConfirmPopup = ({
                         dispatch({ type: LINKS_ACTIONS.SET_LINKS, payload: {links: data.links} })
                     }
 
-                    setEditIcon(prev =>
+                    setEditLink(prev =>
                         Object.fromEntries(Object.keys(prev).map(key => [key, null])));
                     setShowConfirmPopup({
                         show: false,
@@ -134,7 +134,7 @@ export const ConfirmPopup = ({
 
     const handleCancel = e => {
         e.preventDefault();
-        setEditIcon(prev =>
+        setEditLink(prev =>
             Object.fromEntries(Object.keys(prev).map(key => [key, null])));
         setShowConfirmPopup({
             show: false,

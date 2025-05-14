@@ -41,7 +41,7 @@ const IntegrationForm = ({
                              accordionValue,
                              editID,
                              setShowLinkForm,
-                             setEditIcon,
+                             setEditLink,
                              setShowMessageAlertPopup,
                              setShowLoader,
                              setIntegrationType,
@@ -249,7 +249,7 @@ const IntegrationForm = ({
                         setAccordionValue(null);
                         setShowLinkForm(false);
                         setIntegrationType(null);
-                        setEditIcon(prev =>
+                        setEditLink(prev =>
                             Object.fromEntries(Object.keys(prev).map(key => [key, null])));
                         setStoreID(0);
                     }
@@ -381,7 +381,7 @@ const IntegrationForm = ({
 
                         /*setShowLinkForm(false);
                         setAccordionValue(null);
-                        setEditIcon(prev =>
+                        setEditLink(prev =>
                             Object.fromEntries(Object.keys(prev).map(key => [key, null])))
                         setIntegrationType(null);
                         setCurrentLink({})
@@ -424,7 +424,7 @@ const IntegrationForm = ({
 
     const handleCancel = (e) => {
         e.preventDefault();
-        setEditIcon(prev =>
+        setEditLink(prev =>
             Object.fromEntries(Object.keys(prev).map(key => [key, null])));
         setShowLinkForm(false);
         setIntegrationType(null);

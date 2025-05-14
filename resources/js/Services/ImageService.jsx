@@ -120,7 +120,16 @@ export const getIconPaths = (iconPaths) => {
         const newPath = iconPath.slice(end);
         const newArray = newPath.split(".")
         const iconName = newArray[0].replace("/", "");
-        const tmp = {"name": iconName.replace("-", " "), "path" : iconPath}
+        let type = "";
+        const name = iconName.toLowerCase();
+        if(name.includes("phone") || name.includes("facetime")) {
+            type = "phone";
+        }else if (name.includes("mail") && !name.includes("mailchimp") ) {
+            type = "email";
+        } else {
+            type = "url";
+        }
+        const tmp = {"name": iconName.replace("-", " "), "path" : iconPath, "type": type}
         iconArray.push(tmp);
     });
 

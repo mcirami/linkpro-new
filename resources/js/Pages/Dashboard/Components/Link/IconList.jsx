@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {icons} from '@/Services/IconObjects.jsx';
 import {
     getIcons,
@@ -9,21 +9,23 @@ import DropdownComponent from './Forms/DropdownComponent';
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 import {isEmpty} from 'lodash';
 import {usePage} from '@inertiajs/react';
+import {addLink, updateLink} from '@/Services/LinksRequest.jsx';
+import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
+import {UserLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
 
 const IconList = ({
-                      currentLink,
-                      setCurrentLink,
-                      accordionValue,
                       setCharactersLeft,
-                      setInputType = null,
                       integrationType = null,
-                      editID,
+                      setEditLink,
+                      editLink,
                       customIconArray = null,
                       setCustomIconArray = null,
 }) => {
 
     const { auth } = usePage().props;
     const authUser = auth.user.userInfo?.id;
+
+    const { userLinks, dispatch } = useContext(UserLinksContext);
 
     const [isDefaultIcon, setIsDefaultIcon] = useState(false);
 
@@ -41,18 +43,25 @@ const IconList = ({
 
     useEffect(() => {
 
-        if (accordionValue === "offer") {
+        if (editLink.type === "offer") {
             getCourseCategories().then((data) => {
                 if (data.success) {
                     setCourseCategories(data.categories);
                 }
             })
         }
-    },[])
+    },[editLink])
 
     useEffect(() => {
+        const url = '/get-standard-icons';
 
-        let url;
+        getIcons(url).then((data) => {
+            if(data.success) {
+                setIconList(getIconPaths(data.iconData));
+            }
+        });
+
+        /*let url;
 
         switch(accordionValue) {
             case "offer":
@@ -85,25 +94,25 @@ const IconList = ({
                     setIsLoading(false);
                 }, 500)
             }
-        })
+        })*/
 
-    },[accordionValue])
+    },[editLink])
 
     useEffect(() => {
 
-        if (accordionValue === "integration" && !editID) {
+        if (!editLink.id && editLink.type === "mailchimp" || editLink.type === "shopify") {
             setIsDefaultIcon(true)
 
-            if (integrationType === "mailchimp") {
-                setCurrentLink(prevState => ({
+            if (editLink.type === "mailchimp") {
+                setEditLink(prevState => ({
                     ...prevState,
                     icon: "https://local-lp-user-images.s3.us-east-2.amazonaws.com/icons/Mailchimp.png",
                     type: "mailchimp"
                 }))
             }
 
-            if (integrationType === "shopify") {
-                setCurrentLink(prevState => ({
+            if (editLink.type === "shopify") {
+                setEditLink(prevState => ({
                     ...prevState,
                     icon: "https://lp-production-images.s3.us-east-2.amazonaws.com/icons/Shopify.png",
                     type: "shopify"
@@ -115,18 +124,19 @@ const IconList = ({
             setIsLoading(false);
         }, 500)
 
-    },[accordionValue])
+    },[editLink])
 
     const selectIcon = useCallback((e, source) => {
         e.preventDefault();
         const el = e.target;
         const iconType = el.dataset.icontype;
         const iconIndex = el.dataset.index || null;
+        const courseId = el.dataset.course || null;
 
         if(iconIndex !== activeIcon) {
             setActiveIcon(iconIndex);
 
-            let name;
+            let name = editLink.name;
             if(el.dataset.name) {
                 name = el.dataset.name;
                 setCharactersLeft(11 - name.length);
@@ -134,39 +144,27 @@ const IconList = ({
                 if( (name.toLowerCase().includes("mail") && !name.toLowerCase().includes("mailchimp") )
                     || name.toLowerCase().includes("yahoo")
                     || name.toLowerCase().includes("outlook") ) {
-                    setInputType("email");
+                    setEditLink((prev) => ({...prev, type: "email"}));
                 } else if (name.toLowerCase() === "phone" || name.toLowerCase() === "facetime") {
-                    setInputType("phone");
+                    setEditLink((prev) => ({...prev, type: "phone"}));
                 } else {
-                    setInputType("url");
+                    setEditLink((prev) => ({...prev, type: "url"}));
                 }
-
-            } else {
-                name = currentLink.name;
             }
 
-            let url = null;
-            if(iconType === "standard") {
+            let value = null;
+            if(iconType === "url") {
                 let icon = icons.find(icon => icon.name === name);
                 if (icon?.prefix) {
-                    url = icon.prefix;
+                    value = icon.prefix;
                 }
             }
 
             if(iconType === "offer") {
                 //url = window.location.origin + "/" + el.dataset.creator + "/course-page/" + el.dataset.slug + "?a=" + authUser;
-                url = window.location.origin + "/offers/" + el.dataset.offer + "/" + authUser
-                setInputType("offer")
+                value = window.location.origin + "/offers/" + el.dataset.offer + "/" + authUser
+                setEditLink((prev) => ({...prev, type: "offer"}));
             }
-
-            setCurrentLink(prevState => ({
-                ...prevState,
-                name: name,
-                icon: source,
-                url: url,
-                type: iconType,
-                course_id: el.dataset.course || ""
-            }))
 
             setTimeout(function(){
                 el.scrollIntoView({
@@ -176,10 +174,83 @@ const IconList = ({
 
             }, 500)
 
+            let linkId = editLink.id;
+            const packets =
+                {
+                    page_id: editLink.page_id,
+                    folder_id: editLink.folderId,
+                    name: name,
+                    icon: source,
+                    [`${iconType}`]: value,
+                    type: iconType,
+                    course_id: courseId
+                }
+
+            setTimeout(function(){
+
+                if (linkId) {
+                    updateLink(packets, linkId).then((data) => {
+                        if(data.success) {
+                            dispatch({
+                                type: LINKS_ACTIONS.UPDATE_LINK,
+                                payload: {
+                                    editID: linkId,
+                                    currentLink: editLink,
+                                    [`${iconType}`]: value,
+                                    type: iconType,
+                                    iconPath: editLink.icon
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    console.log("edit link from here", editLink);
+                    console.log("packets from here", packets);
+                    addLink(packets).then((data) => {
+                        if (data.success) {
+                            linkId = data.link_id;
+                            setEditLink(editLink => ({
+                                ...editLink,
+                                id: linkId,
+                            }))
+                            let newLinks = [...userLinks];
+
+                            const newLinkObject = {
+                                name: name,
+                                icon: source,
+                                [`${iconType}`]: value,
+                                type: iconType,
+                                course_id: courseId,
+                                id: linkId,
+                                position: data.position,
+                                active_status: true
+                            }
+
+                            dispatch({
+                                type: LINKS_ACTIONS.SET_LINKS,
+                                payload: {
+                                    links: newLinks.concat(newLinkObject)
+                                }
+                            })
+                        }
+                    });
+                }
+
+                setEditLink(prevState => ({
+                    ...prevState,
+                    id: linkId,
+                    name: name,
+                    icon: source,
+                    [`${iconType}`]: value,
+                    type: iconType,
+                    course_id: courseId
+                }))
+            }, 1000)
+
         } else {
             setActiveIcon(null);
         }
-    });
+    },[]);
 
     const handleChange = (e) => {
         setSearchInput(e.target.value);
@@ -187,7 +258,7 @@ const IconList = ({
 
     useEffect(() => {
 
-        if (accordionValue === "standard") {
+        if (editLink.type === "url" || editLink.type === "email" || editLink.type === "phone") {
             setFilteredIcons(iconList?.filter((i) => {
                 const iconName = i.name && i.name.toLowerCase().replace(" ", "");
                 const userInput = searchInput.toLowerCase().replace(" ", "");
@@ -213,14 +284,16 @@ const IconList = ({
 
         let classes = "";
 
-        if(accordionValue === "integration") {
+        if(editLink.type === "mailchimp") {
             classes = "outer integration_icons";
         }
 
         if(activeIcon !== null ||
             (customIconArray && customIconArray.length < 5 &&
-                (accordionValue === "custom" ||
-                    accordionValue === "integration") ) ) {
+                (editLink.type === "url" ||
+                    editLink.type === "email" ||
+                    editLink.type === "phone" ||
+                    editLink.type === "mailchimp") ) ) {
             classes += " active";
         }
 
@@ -230,7 +303,7 @@ const IconList = ({
 
     const switchIconsList = () => {
 
-        switch(accordionValue) {
+        switch(editLink.type) {
 
             case "custom" :
 
@@ -242,7 +315,7 @@ const IconList = ({
                             <div key={index} className="icon_col">
                                 <img alt=""
                                      className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
-                                     data-icontype={accordionValue}
+                                     data-icontype={editLink.type}
                                      data-index={index}
                                      src={newPath}
                                      onClick={(e) => {
@@ -259,7 +332,7 @@ const IconList = ({
                         </div>
                 )
 
-                case "integration":
+                case "mailchimp":
 
                     return (
                         <>
@@ -296,7 +369,7 @@ const IconList = ({
                                                      data-index={index}
                                                      className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
                                                      src={newPath}
-                                                     data-icontype={accordionValue}
+                                                     data-icontype={editLink.type}
                                                      onClick={(e) => {
                                                          selectIcon(e, newPath)
                                                      }}/>
@@ -332,7 +405,7 @@ const IconList = ({
                                         data-creator={icon.creator || ""}
                                         data-slug={icon.slug || ""}
                                         data-course={icon.course_id || ""}
-                                        data-icontype={accordionValue}
+                                        data-icontype={icon.type}
                                         data-offer={icon.offer_id || ""}
                                         data-index={index}
                                         alt=""
@@ -360,7 +433,7 @@ const IconList = ({
                                         data-creator={icon.creator || ""}
                                         data-slug={icon.slug || ""}
                                         data-course={icon.course_id || ""}
-                                        data-icontype={accordionValue}
+                                        data-icontype={icon.type || ""}
                                         data-offer={icon.offer_id || ""}
                                         data-index={index}
                                         alt=""
@@ -380,9 +453,12 @@ const IconList = ({
     return (
 
         <>
-        { (accordionValue === "standard" || accordionValue === "offer") &&
+        { (editLink.type === "url" ||
+                editLink.type === "offer" ||
+                editLink.type === "email" ||
+                editLink.type === "phone") &&
             <div className="uploader mt-3">
-                {accordionValue === "offer" &&
+                {editLink.type === "offer" &&
                     <DropdownComponent
                         data={courseCategories}
                         iconList={iconList}
@@ -400,9 +476,12 @@ const IconList = ({
                         onFocus={(e) => HandleFocus(e.target)}
                         onBlur={(e) => HandleBlur(e.target)}
                         value={searchInput}/>
-                    <label htmlFor="search">Search {accordionValue === "standard" ? "Icons" : "Offers"}</label>
+                    <label htmlFor="search">Search {
+                        editLink.type === "url" || editLink.type === "email" || editLink.type === "phone"
+                        ?
+                        "Icons" : "Offers"}</label>
                 </div>
-                {accordionValue === "standard" &&
+                {editLink.type === "url" &&
                     <div className="my_row info_text file_types mb-2 text-center">
                         <a href="mailto:help@link.pro" className="mx-auto m-0 char_count">Don't See Your Icon? Contact Us!</a>
                     </div>

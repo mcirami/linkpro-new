@@ -41,7 +41,7 @@ class IconController extends Controller
                           $course = Course::where('id', '=', $data->course_id)->with('categories')->first();
                           $catArray = array();
                           foreach($course["categories"] as $category) {
-                               array_push($catArray,strtolower($category->name));
+                               $catArray[] = strtolower( $category->name );
                           }
                           $data->categories =  $catArray;
                       }
@@ -59,8 +59,7 @@ class IconController extends Controller
         $standardIcons = [];
         $iconNames = Storage::disk('s3')->allFiles("icons/");
         foreach($iconNames as $icon) {
-            $path = Storage::disk('s3')->url($icon);
-            array_push($standardIcons, $path);
+            $standardIcons[] = Storage::disk('s3')->url($icon);
         }
 
         return response()->json([
@@ -80,8 +79,7 @@ class IconController extends Controller
             $imageNames = Storage::disk('s3')->allFiles("custom-icons/" . $userID);
 
             foreach($imageNames as $name) {
-                $path = Storage::disk('s3')->url($name);
-                array_push($userIcons, $path);
+                $userIcons[] = Storage::disk('s3')->url($name);
             }
         }
 
