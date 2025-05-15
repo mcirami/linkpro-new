@@ -70,7 +70,7 @@ const AddFolder = ({
         //dispatchOrigFolderLinks({ type: ORIG_FOLDER_LINKS_ACTIONS.SET_ORIG_FOLDER_LINKS, payload: {links: folderLinks["links"] }})
         dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks["links"] }});
 
-        setEditLink(prev => ({...prev, folderId: folderID}));
+        setEditLink(prev => ({...prev, folder_id: folderID}));
 
         setTimeout(function(){
             document.querySelector('#scrollTo').scrollIntoView({

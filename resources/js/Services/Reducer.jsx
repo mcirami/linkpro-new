@@ -53,7 +53,7 @@ export function reducer(userLinks, action) {
 
             return userLinks.map((item) => {
 
-                if (item.id === action.payload.folderID && item.type === "folder") {
+                if (item.id === action.payload.folder_id && item.type === "folder") {
 
                     const newItemLinks = item.links.map((linkItem) => {
 
@@ -79,7 +79,7 @@ export function reducer(userLinks, action) {
 
             return userLinks.map((item) => {
 
-                if (item.id === action.payload.folderID) {
+                if (item.id === action.payload.folder_id) {
 
                     const itemLinks = item.links.concat(action.payload.newLinkObject)
 
@@ -97,7 +97,7 @@ export function reducer(userLinks, action) {
         case LINKS_ACTIONS.UPDATE_FOLDER_NAME:
 
             return userLinks.map((item) => {
-                if (item.id === action.payload.folderID) {
+                if (item.id === action.payload.folder_id) {
                     item.name = action.payload.name;
 
                     return item
@@ -116,18 +116,6 @@ export function reducer(userLinks, action) {
                         ...(currentLink || {}),
                         ...restPayload,
                     }
-
-                    /*name: action.payload.currentLink.name,
-                        url: action.payload.url,
-                        email: action.payload.currentLink.email,
-                        phone: action.payload.currentLink.phone,
-                        type: action.payload.type,
-                        mailchimp_list_id: action.payload.currentLink.mailchimp_list_id,
-                        shopify_products: action.payload.currentLink.shopify_products,
-                        shopify_id: action.payload.currentLink.shopify_id,
-                        description: action.payload.currentLink.description,
-                        icon: action.payload.iconPath,
-                        bg_image: action.payload.bg_image*/
                 }
 
                 return item;
@@ -136,7 +124,7 @@ export function reducer(userLinks, action) {
         case LINKS_ACTIONS.UPDATE_LINK_IN_FOLDER:
 
             return userLinks.map((item) => {
-                if (item.id === action.payload.folderID) {
+                if (item.id === action.payload.folder_id) {
 
                     const newItemsLinks = item.links.map((linkItem) => {
 
@@ -172,7 +160,7 @@ export function reducer(userLinks, action) {
         case LINKS_ACTIONS.UPDATE_LINKS_POSITIONS:
 
             return action.payload.links.map((item) => {
-                if (item.id === action.payload.folderID) {
+                if (item.id === action.payload.folder_id) {
                     //const itemLinks = item.links.concat(newLinkObject)
                     const newOrder = item.links.map((link, index) => {
                         return {

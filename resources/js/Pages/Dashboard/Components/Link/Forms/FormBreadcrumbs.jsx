@@ -4,20 +4,20 @@ import {BiChevronLeft, BiChevronsLeft} from 'react-icons/bi';
 const FormBreadcrumbs = ({
                              editLink,
                              setEditLink,
-                             setAccordionValue,
                              showLinkForm,
                              setShowLinkForm,
                              setIntegrationType,
-                             setInputType
+                             setInputType,
+                             showLinkTypeRadio
 }) => {
 
-    const {id, type, folderId} = editLink;
+    const {id, folder_id} = editLink;
 
     return (
         <div className="breadcrumb_links">
-            {folderId  ?
+            {folder_id  ?
                 <>
-                    {id || showLinkForm.show ?
+                    {id || showLinkForm.show || showLinkTypeRadio?
                         <a className="back" href="#"
                            onClick={(e) => {
                                e.preventDefault();
@@ -29,7 +29,6 @@ const FormBreadcrumbs = ({
                                    type: null,
                                    inputType: null,
                                }))
-                               setAccordionValue(null);
                            }}
                         >
                             <BiChevronLeft />
@@ -46,7 +45,6 @@ const FormBreadcrumbs = ({
                            });
                            setEditLink(prev =>
                                Object.fromEntries(Object.keys(prev).map(key => [key, null])));
-                           setAccordionValue(null);
                        }}
                     >
                         <BiChevronsLeft />
@@ -64,7 +62,6 @@ const FormBreadcrumbs = ({
                            Object.fromEntries(Object.keys(prev).map(key => [key, null])))
                        setIntegrationType(null)
                        setInputType(null)
-                       setAccordionValue(null);
                    }}
                 >
                     <BiChevronLeft />

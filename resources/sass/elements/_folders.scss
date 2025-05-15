@@ -14,7 +14,7 @@
             &:before {
                 content: '';
                 background: rgba(0,0,0,.7);
-                background-image: url('../../../public/images/icon-placeholder-hover.png');
+                background-image: url('../../images/icon-placeholder-hover.png');
                 background-size: contain;
                 position: absolute;
                 left: 0;
@@ -42,7 +42,6 @@
     -moz-transition: max-height  50ms linear;
     -o-transition: max-height  50ms linear;
     transition: max-height 50ms linear;
-    background: $white;
     z-index: -999;
 
     &.open {
@@ -76,6 +75,7 @@
         -moz-border-radius: 20px;
         text-align: center;
         margin-bottom: 20px;
+        background: $white;
 
         @media screen and (max-width: 550px) {
             padding: 10px !important;

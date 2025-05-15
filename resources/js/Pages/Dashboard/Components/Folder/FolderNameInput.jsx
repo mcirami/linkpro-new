@@ -5,7 +5,7 @@ import {
 } from '@/Services/Reducer.jsx';
 import {UserLinksContext} from '../../Dashboard.jsx';
 
-const FolderNameInput = ({folderID}) => {
+const FolderNameInput = ({folder_id}) => {
 
     const [charactersLeft, setCharactersLeft] = useState();
     const { userLinks, dispatch } = useContext(UserLinksContext);
@@ -13,7 +13,7 @@ const FolderNameInput = ({folderID}) => {
 
     const [ currentFolder, setCurrentFolder ] = useState(
         userLinks.find(function(e) {
-            return e.id === folderID && e.type === "folder"
+            return e.id === folder_id && e.type === "folder"
         }) || null );
 
     useEffect(() => {
@@ -30,13 +30,13 @@ const FolderNameInput = ({folderID}) => {
             folderName: currentFolder.name
         }
 
-        updateFolderName(folderID, packets)
+        updateFolderName(folder_id, packets)
         .then((data) => {
 
             if(data.success) {
 
-                dispatch({ type: LINKS_ACTIONS.UPDATE_FOLDER_NAME, payload: {folderID: folderID, name: currentFolder.name} })
-                //dispatchOrig({ type: ORIGINAL_LINKS_ACTIONS.UPDATE_FOLDER_NAME, payload: {folderID: folderID, name: currentFolder.name} })
+                dispatch({ type: LINKS_ACTIONS.UPDATE_FOLDER_NAME, payload: {folder_id: folder_id, name: currentFolder.name} })
+                //dispatchOrig({ type: ORIGINAL_LINKS_ACTIONS.UPDATE_FOLDER_NAME, payload: {folder_id: folder_id, name: currentFolder.name} })
             }
         })
     }

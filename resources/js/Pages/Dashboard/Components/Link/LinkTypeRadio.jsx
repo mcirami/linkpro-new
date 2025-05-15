@@ -4,7 +4,7 @@ const LinkTypeRadio = ({
                            setShowLinkForm,
                            setEditLink,
                            setShowLinkTypeRadio,
-                           pageId
+                           pageId,
 }) => {
 
     const handleOnChange = (type) => {

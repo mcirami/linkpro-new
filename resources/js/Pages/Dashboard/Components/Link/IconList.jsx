@@ -10,8 +10,8 @@ import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 import {isEmpty} from 'lodash';
 import {usePage} from '@inertiajs/react';
 import {addLink, updateLink} from '@/Services/LinksRequest.jsx';
-import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
-import {UserLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
+import {FOLDER_LINKS_ACTIONS, LINKS_ACTIONS} from '@/Services/Reducer.jsx';
+import {UserLinksContext, FolderLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
 
 const IconList = ({
                       setCharactersLeft,
@@ -26,6 +26,7 @@ const IconList = ({
     const authUser = auth.user.userInfo?.id;
 
     const { userLinks, dispatch } = useContext(UserLinksContext);
+    const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
 
     const [isDefaultIcon, setIsDefaultIcon] = useState(false);
 
@@ -178,7 +179,7 @@ const IconList = ({
             const packets =
                 {
                     page_id: editLink.page_id,
-                    folder_id: editLink.folderId,
+                    folder_id: editLink.folder_id,
                     name: name,
                     icon: source,
                     [`${iconType}`]: value,
@@ -187,7 +188,6 @@ const IconList = ({
                 }
 
             setTimeout(function(){
-
                 if (linkId) {
                     updateLink(packets, linkId).then((data) => {
                         if(data.success) {
@@ -204,8 +204,6 @@ const IconList = ({
                         }
                     })
                 } else {
-                    console.log("edit link from here", editLink);
-                    console.log("packets from here", packets);
                     addLink(packets).then((data) => {
                         if (data.success) {
                             linkId = data.link_id;
@@ -214,7 +212,6 @@ const IconList = ({
                                 id: linkId,
                             }))
                             let newLinks = [...userLinks];
-
                             const newLinkObject = {
                                 name: name,
                                 icon: source,
@@ -223,13 +220,25 @@ const IconList = ({
                                 course_id: courseId,
                                 id: linkId,
                                 position: data.position,
-                                active_status: true
+                                active_status: true,
+                                folder_id: editLink.folder_id,
+                            }
+
+                            if (editLink.folder_id) {
+                                newLinks.map((link, index) => {
+                                    if (link.id === editLink.folder_id) {
+                                        link.links.push(newLinkObject);
+                                    }
+                                })
+                                dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks.concat(newLinkObject)} })
+                            } else {
+                                newLinks.concat(newLinkObject)
                             }
 
                             dispatch({
                                 type: LINKS_ACTIONS.SET_LINKS,
                                 payload: {
-                                    links: newLinks.concat(newLinkObject)
+                                    links: newLinks
                                 }
                             })
                         }
@@ -243,7 +252,7 @@ const IconList = ({
                     icon: source,
                     [`${iconType}`]: value,
                     type: iconType,
-                    course_id: courseId
+                    course_id: courseId,
                 }))
             }, 1000)
 

@@ -12,8 +12,6 @@ export const addLink = async (packets) => {
     return await axios.post(route('link.store'), packets)
     .then(
         (response) => {
-
-            console.log("response", response);
             const returnMessage = JSON.stringify(response.data.message);
             //EventBus.dispatch("success", {message: returnMessage});
             const link_id = response.data.link_id;

@@ -32,7 +32,7 @@ import {
 import FolderLink from './FolderLink';
 
 const FolderLinks = ({
-                         folderID,
+                         folder_id,
                          subStatus,
                          setEditLink,
                          setAccordionValue
@@ -66,26 +66,16 @@ const FolderLinks = ({
             if(data.success) {
 
                 dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.UPDATE_FOLDER_LINKS_STATUS, payload: {id: currentItem.id } })
-                dispatch ({ type: LINKS_ACTIONS.UPDATE_LINKS_STATUS_FROM_FOLDER, payload: {id: currentItem.id, folderID: folderID } })
+                dispatch ({ type: LINKS_ACTIONS.UPDATE_LINKS_STATUS_FROM_FOLDER, payload: {id: currentItem.id, folder_id: folder_id } })
 
             }
         })
     };
 
     const handleOnClick = (linkID) => {
-        setEditLink(prev => ({...prev, id: linkID}));
-
-        const currentLink = folderLinks.find(function(e) {
+        setEditLink(folderLinks.find(function(e) {
             return e.id === linkID
-        });
-
-        if(currentLink.icon.includes("offer-images")) {
-            setAccordionValue("offer")
-        } else if (currentLink.icon.includes("custom-icons")){
-            setAccordionValue("custom")
-        } else {
-            setAccordionValue("standard")
-        }
+        }));
 
         setTimeout(function(){
             document.querySelector('#scrollTo').scrollIntoView({
@@ -113,7 +103,7 @@ const FolderLinks = ({
             const newArray = arrayMove(folderLinks, oldIndex, newIndex);
 
             dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: newArray}})
-            dispatch({ type: LINKS_ACTIONS.SET_FOLDER_LINKS_ORDER, payload: {links: newArray, id: folderID}})
+            dispatch({ type: LINKS_ACTIONS.SET_FOLDER_LINKS_ORDER, payload: {links: newArray, id: folder_id}})
 
             const packets = {
                 userLinks: newArray,

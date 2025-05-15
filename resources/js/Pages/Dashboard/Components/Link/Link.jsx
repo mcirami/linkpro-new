@@ -96,31 +96,26 @@ const Link = ({
                                          fetchFolderLinks(id)
                                      }}
                                 >
-                                    {hasLinks && links.slice(
-                                        0, 9).map((innerLink, index) => {
+                                    {hasLinks ?
+                                        links.slice(0, 9).map((innerLink, index) => {
+                                            const {
+                                                id,
+                                                icon,
+                                                name,
+                                            } = innerLink;
 
-                                        const {
-                                            id,
-                                            icon,
-                                            name,
-                                        } = innerLink;
-
-                                        return (
-                                            <div className="image_col" key={index}>
-                                                <img src={checkIcon(icon, "", subStatus)} alt=""/>
-                                                {pageSettings.page_layout === "layout_two" &&
-                                                    <h3>{name}</h3>}
-                                            </div>
-                                        )
-                                    })}
-                                    {!hasLinks ? pageSettings.page_layout === "layout_two" ?
-                                        <p><span>+</span> Add Icons
-                                        </p>
+                                            return (
+                                                <div className="image_col" key={index}>
+                                                    <img src={checkIcon(icon, "", subStatus)} alt=""/>
+                                                    {pageSettings.page_layout === "layout_two" &&
+                                                        <h3>{name}</h3>}
+                                                </div>
+                                            )
+                                        })
                                         :
                                         <p><span>+</span> <br/>Add<br/>Icons
                                         </p>
-                                    :
-                                    ""}
+                                    }
                                 </div>
                             }
                         </div>

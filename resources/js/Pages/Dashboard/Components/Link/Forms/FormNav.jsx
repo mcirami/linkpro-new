@@ -16,7 +16,6 @@ const FormNav = ({
         section: null,
     });
 
-    console.log("currentLink", currentLink);
     return (
         <div className="form_nav relative mb-4">
             <div className="relative">

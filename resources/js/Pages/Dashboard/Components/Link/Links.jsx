@@ -97,17 +97,11 @@ const Links = ({
 
     const handleOnClick = (linkID) => {
 
-        const currentLink = userLinks.find(function(e) {
+        setEditLink(userLinks.find(function(e) {
             return e.id === linkID
-        });
-
-        setEditLink(prev => ({
-            ...prev,
-            id: linkID,
-            type: currentLink.type || 'standard'
         }));
 
-        if(currentLink.type === "shopify" || currentLink.type === "mailchimp") {
+        /*if(currentLink.type === "shopify" || currentLink.type === "mailchimp") {
             setAccordionValue("integration")
         } else if (currentLink.icon?.includes("offer-images")) {
             setAccordionValue("offer")
@@ -119,7 +113,7 @@ const Links = ({
             }
         } else {
             setAccordionValue("standard")
-        }
+        }*/
 
         setTimeout(function(){
             document.querySelector('#scrollTo').scrollIntoView({
@@ -139,7 +133,7 @@ const Links = ({
             const folderLinks = await response.json();
 
             dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks["links"]} })
-            setEditLink(prev => ({...prev, folderId: linkID}));
+            setEditLink(prev => ({...prev, folder_id: linkID}));
             setRow(prev => ({...prev, row: 0}))
             setValue(prev => ({...prev, index: 0, url: null}));
 

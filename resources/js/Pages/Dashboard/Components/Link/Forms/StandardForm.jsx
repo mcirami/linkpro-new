@@ -50,7 +50,6 @@ const StandardForm = ({
 
 }) => {
 
-    console.log("editLink", editLink);
     const { userLinks, dispatch } = useContext(UserLinksContext);
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
     const  { pageSettings } = usePageContext();
@@ -82,7 +81,7 @@ const StandardForm = ({
                 shopify_products: null,
                 shopify_id: null,
                 course_id: null,
-                folder_id: editLink.folderId,
+                folder_id: editLink.folder_id,
                 description: null,
                 type: editLink.type,
             }
@@ -374,16 +373,6 @@ const StandardForm = ({
         }
     };
 
-    const handleCancel = (e) => {
-        e.preventDefault();
-        setEditLink(prev =>
-            Object.fromEntries(Object.keys(prev).map(key => [key, null])));
-        setShowLinkForm(false);
-        setInputType(null);
-        setAccordionValue(null);
-        setCurrentLink({});
-        document.getElementById('left_col_wrap').style.minHeight = "unset";
-    }
 */
     const handleSubmitTerms = (e) => {
         e.preventDefault()
@@ -483,41 +472,6 @@ const StandardForm = ({
                             label="Link Name"
                             maxChar={11}
                         />
-                        {/*<div className="input_wrap mt-2">
-                            <input
-                                className={`${!subStatus ?
-                                    "disabled " :
-                                    ""} ${currentLink.name ?
-                                    "active" :
-                                    ""}`}
-                                name="name"
-                                type="text"
-                                value={currentLink.name || ""}
-                                onChange={(e) => handleLinkName(e)}
-                                onFocus={(e) => HandleFocus(e.target)}
-                                onBlur={(e) => HandleBlur(e.target)}
-                                disabled={!subStatus}
-                            />
-                            <label>Icon Name</label>
-                            {!subStatus &&
-                                <span className="disabled_wrap"
-                                      onClick={(e) => handleOnClick(e)}>
-                                </span>
-                            }
-                        </div>*/}
-                        {/*{pageSettings["layout_one"] &&
-                            <div className="my_row info_text title">
-                                <p className="char_max">Max 11 Characters Shown</p>
-                                <p className="char_count">
-                                    {charactersLeft < 0 ?
-                                        <span className="over">Only 11 Characters Will Be Shown</span>
-                                        :
-                                        "Characters Left: " +
-                                        charactersLeft
-                                    }
-                                </p>
-                            </div>
-                        }*/}
                     </div>
 
                     {editLink.type !== "offer" &&
@@ -546,12 +500,6 @@ const StandardForm = ({
                                 elementName={editLink.type}
                                 label={capitalize(editLink.type)}
                             />
-                            /*<InputComponent
-                                inputType={inputType}
-                                setInputType={setInputType}
-                                currentLink={editLink}
-                                setCurrentLink={setEditLink}
-                            />*/
                         }
                     </div>
 
@@ -565,13 +513,6 @@ const StandardForm = ({
                     }*/}
 
                     <div className="button_row w-full mt-4">
-                        {/*<button className="button green" type="submit">
-                            Save
-                        </button>
-                        <a href="#" className="button transparent gray" onClick={(e) => handleCancel(
-                            e)}>
-                            Cancel
-                        </a>*/}
                         <a className="help_link" href="mailto:help@link.pro">Need Help?</a>
                     </div>
                 </div>

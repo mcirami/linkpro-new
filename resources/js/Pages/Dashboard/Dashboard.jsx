@@ -66,6 +66,7 @@ function Dashboard({
     const [affiliateStatus, setAffiliateStatus] = useState(affStatus);
 
     const [userLinks, dispatch] = useReducer(reducer, links);
+
     const [folderLinks, dispatchFolderLinks] = useReducer(folderLinksReducer, []);
 
     const [pageSettings, setPageSettings] = useState(page);
@@ -86,7 +87,7 @@ function Dashboard({
         id: null,
         type: null,
         inputType: null,
-        folderId: null
+        folder_id: null
     });
 
     const [showLinkForm, setShowLinkForm] = useState({
@@ -467,24 +468,24 @@ function Dashboard({
                                                         }
                                                     </div>
 
-                                                    {editLink.id || showLinkForm.show || editLink.folderId ?
+                                                    {editLink.id || showLinkForm.show || editLink.folder_id ?
                                                         <div className="my_row icon_links" id="scrollTo">
                                                             <p className="form_title">
-                                                                {editLink.id || (editLink.folderId && !showLinkForm.show) ? "Editing " : "" }
+                                                                {editLink.id || (editLink.folder_id && !showLinkForm.show) ? "Editing " : "" }
                                                                 {showLinkForm.show ? "Adding " : "" }
-                                                                {(editLink.folderId && !editLink.id && !showLinkForm.show) ? "Folder" : "Icon"}
+                                                                {(editLink.folder_id && !editLink.id && !showLinkForm.show) ? "Folder" : "Icon"}
                                                             </p>
                                                             <div className="links_row">
                                                                 <FormBreadcrumbs
                                                                     setShowLinkForm={setShowLinkForm}
-                                                                    setAccordionValue={setAccordionValue}
                                                                     editLink={editLink}
                                                                     setEditLink={setEditLink}
                                                                     setIntegrationType={setIntegrationType}
                                                                     setInputType={setInputType}
                                                                     showLinkForm={showLinkForm}
+                                                                    showLinkTypeRadio={showLinkTypeRadio}
                                                                 />
-                                                                { (editLink.id || editLink.folderId && !showLinkForm.show) &&
+                                                                { (editLink.id || editLink.folder_id && !showLinkForm.show) &&
                                                                     <div className="delete_icon">
                                                                         <DeleteIcon
                                                                             setShowConfirmPopup={setShowConfirmPopup}
@@ -493,10 +494,10 @@ function Dashboard({
                                                                     </div>
                                                                 }
                                                             </div>
-                                                            {editLink.folderId && !editLink.id ?
+                                                            {editLink.folder_id && !editLink.id ?
                                                                 <div className="folder_name my_row">
                                                                     <FolderNameInput
-                                                                        folderID={editLink.folderId}
+                                                                        folder_id={editLink.folder_id}
                                                                     />
                                                                 </div>
                                                                 :
@@ -507,8 +508,7 @@ function Dashboard({
                                                         ""
                                                     }
 
-                                                    { (Object.values(editLink).every(value => value === null) ||
-                                                        editLink.folderId) && !showLinkForm.show ?
+                                                    { !editLink.id && (!showLinkForm.show && !showLinkTypeRadio) ?
                                                         <div className="my_row link_row">
                                                             <div className={`add_content_links ${pageSettings.page_layout === "layout_two" && "!border-0" } `}>
                                                                 <div className="add_more_link">
@@ -518,7 +518,7 @@ function Dashboard({
                                                                         setShowUpgradePopup={setShowUpgradePopup}
                                                                     />
                                                                 </div>
-                                                                {(pageSettings.page_layout === "layout_one" && !editLink.folderId) &&
+                                                                {(pageSettings.page_layout === "layout_one" && !editLink.folder_id) &&
                                                                     <div className="add_more_link">
                                                                         <AddFolder
                                                                             subStatus={subStatus}
@@ -644,7 +644,7 @@ function Dashboard({
                                                                         </div>
                                                                     }
                                                                 </div>
-                                                                {!editLink.folderId &&
+                                                                {!editLink.folder_id &&
                                                                     <div data-type="integration"
                                                                          className={`accordion_row my_row ${!subStatus ? "disabled" : ""}`}
                                                                          onClick={(e) => handleDisabledClick(e)}
@@ -688,11 +688,15 @@ function Dashboard({
                                                         </div>
                                                     }
 
-                                                    { (editLink.folderId && !editLink.id && !showLinkForm.show) ?
+                                                    { (editLink.folder_id &&
+                                                        !editLink.id &&
+                                                        !showLinkForm.show &&
+                                                        !showLinkTypeRadio
+                                                    ) ?
 
                                                         <ErrorBoundary FallbackComponent={errorFallback} onError={myErrorHandler}>
                                                             <FolderLinks
-                                                                folderID={editLink.folderId}
+                                                                folder_id={editLink.folder_id}
                                                                 subStatus={subStatus}
                                                                 setEditLink={setEditLink}
                                                                 setAccordionValue={setAccordionValue}
@@ -701,7 +705,7 @@ function Dashboard({
 
                                                         :
 
-                                                        (!showLinkForm.show && !editLink.id && !editLink.folderId && !showLinkTypeRadio) &&
+                                                        (!showLinkForm.show && !editLink.id && !editLink.folder_id && !showLinkTypeRadio) &&
 
                                                             <ErrorBoundary FallbackComponent={errorFallback} onError={myErrorHandler}>
                                                                 <Links
