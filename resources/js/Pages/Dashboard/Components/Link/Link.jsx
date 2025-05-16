@@ -8,6 +8,8 @@ import {CSS} from '@dnd-kit/utilities';
 import DeleteIcon from '@/Pages/Dashboard/Components/Link/Forms/DeleteIcon.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
 import {MdEdit} from 'react-icons/md';
+import LayoutOne from '@/Pages/Dashboard/Components/Link/LayoutOne.jsx';
+import LayoutTwo from '@/Pages/Dashboard/Components/Link/LayoutTwo.jsx';
 const Link = ({
                   link,
                   handleOnClick,
@@ -15,9 +17,11 @@ const Link = ({
                   handleChange,
                   subStatus,
                   setShowConfirmPopup,
+                  editLink,
+                  setEditLink
 }) => {
 
-    const {type, id, icon, links, active_status, name, url} = link;
+    const {type, id, icon, links, active_status} = link;
     const {pageSettings} = usePageContext();
 
     let hasLinks = true;
@@ -57,135 +61,31 @@ const Link = ({
                 </span>
 
                 <div className={`column_content ${type === "folder" ? "folder" : ""}`}>
-                    {type === "folder" && pageSettings.page_layout === "layout_one" ?
-                        <div className="icon_wrap folder">
-
-                            {pageSettings.page_layout === 'layout_one' ?
-                                <div className="inner_icon_wrap" onClick={(e) => {
-                                    fetchFolderLinks(id)
-                                }}>
-                                    <img src={Vapor.asset('images/blank-folder-square.jpg')} alt=""/>
-                                    <div className={hasLinks ?
-                                        "folder_icons main" :
-                                        "folder_icons empty"}>
-                                        {hasLinks && links.slice(
-                                            0, 9).map((innerLink, index) => {
-
-                                            const {
-                                                id,
-                                                icon
-                                            } = innerLink;
-
-                                            return (
-                                                <div className="image_col" key={index}>
-                                                    <img src={checkIcon(icon, "", subStatus)} alt=""/>
-                                                </div>
-                                            )
-                                        })}
-                                        {!hasLinks &&
-                                            <p><span>+</span> <br/>Add<br/>Icons
-                                            </p>}
-                                    </div>
-
-                                </div>
-                                :
-                                <div className={hasLinks ?
-                                    "folder_icons main" :
-                                    "folder_icons empty"}
-                                     onClick={(e) => {
-                                         fetchFolderLinks(id)
-                                     }}
-                                >
-                                    {hasLinks ?
-                                        links.slice(0, 9).map((innerLink, index) => {
-                                            const {
-                                                id,
-                                                icon,
-                                                name,
-                                            } = innerLink;
-
-                                            return (
-                                                <div className="image_col" key={index}>
-                                                    <img src={checkIcon(icon, "", subStatus)} alt=""/>
-                                                    {pageSettings.page_layout === "layout_two" &&
-                                                        <h3>{name}</h3>}
-                                                </div>
-                                            )
-                                        })
-                                        :
-                                        <p><span>+</span> <br/>Add<br/>Icons
-                                        </p>
-                                    }
-                                </div>
-                            }
-                        </div>
+                    {pageSettings.page_layout === "layout_one" ?
+                        <LayoutOne
+                            fetchFolderLinks={fetchFolderLinks}
+                            hasLinks={hasLinks}
+                            links={links}
+                            checkIcon={checkIcon}
+                            subStatus={subStatus}
+                            displayIcon={displayIcon}
+                            link={link}
+                            handleOnClick={handleOnClick}
+                            handleChange={handleChange}
+                        />
                         :
-                        pageSettings.page_layout === "layout_one" &&
-                            <div className="icon_wrap" onClick={(e) => {
-                                handleOnClick(id)
-                            }}>
-                                <div className="image_wrap">
-                                    <img src={displayIcon} alt=""/>
-                                </div>
-                            </div>
+                        type !== "folder" &&
+                            <LayoutTwo
+                                hasLinks={hasLinks}
+                                displayIcon={displayIcon}
+                                link={link}
+                                handleOnClick={handleOnClick}
+                                handleChange={handleChange}
+                                setShowConfirmPopup={setShowConfirmPopup}
+                                editLink={editLink}
+                                setEditLink={setEditLink}
+                            />
                     }
-                    <div className="link_content">
-                        { (pageSettings.page_layout === "layout_two" && type !== "folder") &&
-                            <>
-                                <div className="icon_wrap" onClick={(e) => {
-                                    handleOnClick(id)
-                                }}>
-                                    <div className="image_wrap">
-                                        <img src={displayIcon} alt=""/>
-                                    </div>
-                                </div>
-                                <div className="left_col">
-                                    <h3>{name}</h3>
-                                    <p>{url}</p>
-                                </div>
-                            </>
-                        }
-                        <div className={`right_col ${pageSettings.page_layout === 'layout_one' ? 'w-full block text-center' : ''}`}>
-                           <div className={`${pageSettings.page_layout === 'layout_two' ? 'edit_wrap flex items-center gap-2' : ''}`}>
-                               {pageSettings.page_layout === 'layout_two' ?
-                                <span className="edit_icon" onClick={(e) => {
-                                    handleOnClick(id)
-                                }}>
-                                    <FaEdit />
-                                    <div className="hover_text edit_image">
-                                        <p>Edit Icon</p>
-                                    </div>
-                                </span>
-                                   :
-                                   ""
-                               }
-                               <div className="switch_wrap">
-                                   <IOSSwitch
-                                       onChange={() => handleChange(link, hasLinks, type)}
-                                       checked={Boolean(active_status)}
-                                   />
-                                   <div className="hover_text switch">
-                                       <p>
-                                           {Boolean(active_status) ? "Disable" : "Enable"}
-                                           {type === "folder" ? "Folder" : "Icon"}
-                                       </p>
-                                   </div>
-                               </div>
-                           </div>
-                            {pageSettings.page_layout === "layout_two" ?
-                                <div className="delete_icon mt-auto">
-                                    <DeleteIcon
-                                        setShowConfirmPopup={setShowConfirmPopup}
-                                        editId={id}
-                                        type={type}
-                                    />
-                                </div>
-                                :
-                                ""
-                            }
-                        </div>
-
-                    </div>
                 </div>
             </div>
         </div>

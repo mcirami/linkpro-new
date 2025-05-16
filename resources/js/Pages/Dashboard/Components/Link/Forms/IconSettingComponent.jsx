@@ -1,65 +1,117 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {HandleBlur, HandleFocus} from '@/Utils/InputAnimations.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
-import {updateLink} from '@/Services/LinksRequest.jsx';
-import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
-import {UserLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
+import {addLink, updateLink} from '@/Services/LinksRequest.jsx';
+import {FOLDER_LINKS_ACTIONS, LINKS_ACTIONS} from '@/Services/Reducer.jsx';
+import {UserLinksContext, FolderLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
 const IconSettingComponent = ({
                                   inputType,
-                                  currentLink,
-                                  setCurrentLink,
+                                  editLink,
+                                  setEditLink,
                                   elementName,
                                   label,
-                                  maxChar = null
+                                  maxChar = null,
+                                  isEditing = null,
+                                  setIsEditing = null
 }) => {
 
     const [charactersLeft, setCharactersLeft] = useState(maxChar);
     const { pageSettings } = usePageContext();
     const { userLinks, dispatch } = useContext(UserLinksContext);
+    const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
 
-
-    //console.log("currentLink", currentLink);
     useEffect(() => {
-        if(currentLink[elementName] && maxChar) {
-            setCharactersLeft(maxChar - currentLink[elementName].length);
+        if(editLink[elementName] && maxChar) {
+            setCharactersLeft(maxChar - editLink[elementName].length);
         }
     },[charactersLeft])
 
     const handleChange = (e) => {
         const value = e.target.value;
 
-        setCharactersLeft(maxChar - value.length);
+        if (maxChar) {
+            setCharactersLeft(maxChar - value.length);
+        }
 
-        setCurrentLink({
-            ...currentLink,
-            [`${elementName}`]: value,
-        });
+        if (!isEditing?.active) {
+            setEditLink({
+                ...editLink,
+                [`${elementName}`]: value,
+            });
+        }
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (currentLink[elementName] != null) {
+        if (editLink[elementName] != null) {
 
             const packets = {
-                [`${elementName}`]: currentLink[elementName],
+                [`${elementName}`]: editLink[elementName],
                 page_id: pageSettings.id,
-                folder_id: currentLink.folder_id,
-                type: currentLink.type,
+                folder_id: editLink.folder_id,
+                type: editLink.type,
             };
 
-            updateLink(packets, currentLink.id).then((data) => {
-                if(data.success) {
-                    dispatch({
-                        type: LINKS_ACTIONS.UPDATE_LINK,
-                        payload: {
-                            editID: currentLink.id,
-                            currentLink: currentLink,
-                            [`${elementName}`]: currentLink[elementName]
+            if(editLink.id) {
+
+                updateLink(packets, editLink.id).then((data) => {
+                    if (data.success) {
+                        dispatch({
+                            type: LINKS_ACTIONS.UPDATE_LINK,
+                            payload: {
+                                editID: editLink.id,
+                                editLink: editLink,
+                                [`${elementName}`]: editLink[elementName]
+                            }
+                        })
+                    }
+                });
+            } else {
+                addLink(packets).then((data) => {
+                    if (data.success) {
+                        const linkId = data.link_id;
+                        const newLinkObject = {
+                            [`${elementName}`]: editLink[elementName],
+                            type: editLink.type,
+                            course_id: editLink.course_id,
+                            id: linkId,
+                            position: data.position,
+                            active_status: true,
+                            folder_id: editLink.folder_id,
                         }
-                    })
-                }
-            });
+                        setEditLink(prev => ({
+                            ...prev,
+                            [`${elementName}`]: editLink[elementName],
+                            type: editLink.type,
+                            course_id: editLink.course_id,
+                            id: linkId,
+                            position: data.position,
+                            active_status: true,
+                            folder_id: editLink.folder_id,
+                        }))
+                        let newLinks = [...userLinks];
+
+                        if (editLink.folder_id) {
+                            newLinks.map((link, index) => {
+                                if (link.id === editLink.folder_id) {
+                                    link.links.push(newLinkObject);
+                                }
+                            })
+                            dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks.concat(newLinkObject)} })
+                        } else {
+                            newLinks = newLinks.concat(newLinkObject)
+                        }
+
+                        dispatch({
+                            type: LINKS_ACTIONS.SET_LINKS,
+                            payload: {
+                                links: newLinks
+                            }
+                        })
+                    }
+                });
+            }
         }
     }
 
@@ -67,10 +119,10 @@ const IconSettingComponent = ({
         <>
             <div className="input_wrap mt-2">
                 <input
-                    className={`${currentLink[elementName] ? "active" : ""}`}
+                    className={`${editLink[elementName] ? "active" : ""}`}
                     name={elementName}
                     type={inputType === "phone" ? "tel" : inputType}
-                    value={currentLink[elementName] || ""}
+                    value={editLink[elementName] || isEditing?.value || ""}
                     onChange={(e) => handleChange(e)}
                     onFocus={(e) => HandleFocus(e.target)}
                     onBlur={(e) => {HandleBlur(e.target); handleSubmit(e); }}

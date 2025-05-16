@@ -198,7 +198,7 @@ const IconList = ({
                                     currentLink: editLink,
                                     [`${iconType}`]: value,
                                     type: iconType,
-                                    iconPath: editLink.icon
+                                    icon: editLink.icon
                                 }
                             })
                         }
@@ -207,10 +207,6 @@ const IconList = ({
                     addLink(packets).then((data) => {
                         if (data.success) {
                             linkId = data.link_id;
-                            setEditLink(editLink => ({
-                                ...editLink,
-                                id: linkId,
-                            }))
                             let newLinks = [...userLinks];
                             const newLinkObject = {
                                 name: name,
@@ -232,7 +228,7 @@ const IconList = ({
                                 })
                                 dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks.concat(newLinkObject)} })
                             } else {
-                                newLinks.concat(newLinkObject)
+                                newLinks = newLinks.concat(newLinkObject)
                             }
 
                             dispatch({

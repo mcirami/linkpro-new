@@ -216,6 +216,8 @@ const Links = ({
                                     handleChange={handleChange}
                                     subStatus={subStatus}
                                     setShowConfirmPopup={setShowConfirmPopup}
+                                    editLink={editLink}
+                                    setEditLink={setEditLink}
                                 />
                                     :
                                     ""

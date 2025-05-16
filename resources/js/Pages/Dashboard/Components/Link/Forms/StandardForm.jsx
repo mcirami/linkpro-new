@@ -463,45 +463,48 @@ const StandardForm = ({
                         </div>
                     }
 
-                    <div className="my_row mb-4">
-                        <IconSettingComponent
-                            inputType="text"
-                            currentLink={editLink}
-                            setCurrentLink={setEditLink}
-                            elementName="name"
-                            label="Link Name"
-                            maxChar={11}
-                        />
-                    </div>
+                    {/*{pageSettings.page_layout === "layout_one" &&*/}
+                        <div className="my_row mb-4">
+                            <IconSettingComponent
+                                inputType="text"
+                                editLink={editLink}
+                                setEditLink={setEditLink}
+                                elementName="name"
+                                label="Link Name"
+                                maxChar={11}
+                            />
+                        </div>
+                   {/* }*/}
 
                     {editLink.type !== "offer" &&
                         <InputTypeRadio
                             showLinkForm={showLinkForm}
-                            currentLink={editLink}
-                            setCurrentLink={setEditLink}
+                            editLink={editLink}
+                            setEditLink={setEditLink}
                         />
                     }
-
-                    <div className="my_row mb-4">
-                        {editLink.type === "offer" ?
-                            <div className="external_link">
-                                <h3>Tracking Link:</h3>
-                                {editLink.url ?
-                                    <a className="inline-block" target="_blank" href={editLink.url}>{editLink.url}</a>
-                                    :
-                                    <p>Select An Icon Above</p>
-                                }
-                            </div>
-                            :
-                            <IconSettingComponent
-                                inputType={editLink.type}
-                                currentLink={editLink}
-                                setCurrentLink={setEditLink}
-                                elementName={editLink.type}
-                                label={capitalize(editLink.type)}
-                            />
-                        }
-                    </div>
+                    {/*{pageSettings.page_layout === "layout_one" &&*/}
+                        <div className="my_row mb-4">
+                            {editLink.type === "offer" ?
+                                <div className="external_link">
+                                    <h3>Tracking Link:</h3>
+                                    {editLink.url ?
+                                        <a className="inline-block" target="_blank" href={editLink.url}>{editLink.url}</a>
+                                        :
+                                        <p>Select An Icon Above</p>
+                                    }
+                                </div>
+                                :
+                                <IconSettingComponent
+                                    inputType={editLink.type}
+                                    editLink={editLink}
+                                    setEditLink={setEditLink}
+                                    elementName={editLink.type}
+                                    label={capitalize(editLink.type)}
+                                />
+                            }
+                        </div>
+                   {/* }*/}
 
                     {/*{!folderID &&
                         <IconDescription

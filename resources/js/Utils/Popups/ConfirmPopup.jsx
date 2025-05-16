@@ -12,7 +12,7 @@ import {
 import {deleteFolder} from '@/Services/FolderRequests.jsx';
 
 export const ConfirmPopup = ({
-                                 editIcon,
+                                 editLink,
                                  setEditLink,
                                  showConfirmPopup,
                                  setShowConfirmPopup,
@@ -21,7 +21,7 @@ export const ConfirmPopup = ({
                                  setAccordionValue
                              }) => {
 
-    const {id, type, folderId} = editIcon;
+    const {id, type, folderId} = editLink;
     const { userLinks, dispatch  } = useContext(UserLinksContext);
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
 

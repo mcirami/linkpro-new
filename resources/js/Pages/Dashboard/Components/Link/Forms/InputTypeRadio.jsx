@@ -1,20 +1,24 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
+import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
+import {UserLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
 
-const InputTypeRadio = ({showLinkForm, currentLink, setCurrentLink}) => {
+const InputTypeRadio = ({showLinkForm, editLink, setEditLink}) => {
+
+    const { userLinks, dispatch } = useContext(UserLinksContext);
 
     useEffect(() => {
-        if (currentLink.url) {
-            setCurrentLink((prev) => ({
+        if (editLink.url) {
+            setEditLink((prev) => ({
                 ...prev,
                 type: "url"
             }))
-        } else if (currentLink.email) {
-            setCurrentLink((prev) => ({
+        } else if (editLink.email) {
+            setEditLink((prev) => ({
                 ...prev,
                 type: "email"
             }))
-        } else if (currentLink.phone) {
-            setCurrentLink((prev) => ({
+        } else if (editLink.phone) {
+            setEditLink((prev) => ({
                 ...prev,
                 type: "phone"
             }))
@@ -22,45 +26,54 @@ const InputTypeRadio = ({showLinkForm, currentLink, setCurrentLink}) => {
     }, [])
 
      const handleOnChange = (e) => {
-         setCurrentLink(prev => ({
+         setEditLink(prev => ({
              ...prev,
              type: e.target.value
          }));
+         dispatch({
+             type: LINKS_ACTIONS.UPDATE_LINK,
+             payload: {
+                 editID: editLink.id,
+                 editLink: editLink,
+                 type: e.target.value,
+                 [`${e.target.value}`] : editLink[`${e.target.value}`]
+             }
+         })
      }
 
     return (
         <div className="my_row radios_wrap input_types mb-1">
-            <div className={currentLink.type === "url" || !currentLink.type ? "radio_wrap active" : "radio_wrap" }>
+            <div className={editLink.type === "url" || !editLink.type ? "radio_wrap active" : "radio_wrap" }>
                 <label htmlFor="url">
                     <input id="url"
                            type="radio"
                            value="url"
                            name="input_type"
-                           checked={currentLink.type === "url" || !currentLink.type}
+                           checked={editLink.type === "url" || !editLink.type}
                            onChange={(e) => {handleOnChange(e) }}/>
                     URL
                 </label>
             </div>
-            <div className={currentLink.type === "email" ? "radio_wrap active" : "radio_wrap" }>
+            <div className={editLink.type === "email" ? "radio_wrap active" : "radio_wrap" }>
                 <label htmlFor="email">
                     <input id="email"
                            type="radio"
                            value="email"
                            name="input_type"
                            onChange={(e) => { handleOnChange(e) }}
-                           checked={currentLink.type === "email"}
+                           checked={editLink.type === "email"}
                     />
                     Email
                 </label>
             </div>
-            <div className={currentLink.type === "phone" ? "radio_wrap active" : "radio_wrap" }>
+            <div className={editLink.type === "phone" ? "radio_wrap active" : "radio_wrap" }>
                 <label htmlFor="phone">
                     <input id="phone"
                            type="radio"
                            value="phone"
                            name="input_type"
                            onChange={(e) => { handleOnChange(e) }}
-                           checked={currentLink.type === "phone"}
+                           checked={editLink.type === "phone"}
                     />
                     Phone
                 </label>

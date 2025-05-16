@@ -15,10 +15,18 @@ const LinkTypeRadio = ({
         }));
         setShowLinkForm({show: true});
         setShowLinkTypeRadio(false);
+        setTimeout(function(){
+            document.querySelector('#scrollTo').scrollIntoView({
+                behavior: 'smooth',
+                block: "start",
+                inline: "nearest"
+            });
+
+        }, 800)
     }
 
     return (
-        <div className="my_row radios_wrap mb-1">
+        <div id="scrollTo" className="my_row radios_wrap mb-1">
             <div className="radio_wrap">
                 <label htmlFor="link_type">
                     <input type="radio"

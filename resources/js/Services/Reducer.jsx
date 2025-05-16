@@ -18,6 +18,7 @@ export function reducer(userLinks, action) {
 
         case LINKS_ACTIONS.SET_LINKS:
 
+            console.log("action.payload.links",action.payload.links);
             return action.payload.links
 
         case LINKS_ACTIONS.SET_FOLDER_LINKS_ORDER:
@@ -110,10 +111,11 @@ export function reducer(userLinks, action) {
 
             return userLinks.map((item) => {
                 if (item.id === action.payload.editID ) {
-                    const { editID, currentLink, ...restPayload } = action.payload;
+                    console.log("item", action.payload);
+                    const { editID, editLink, ...restPayload } = action.payload;
                     return {
                         ...item,
-                        ...(currentLink || {}),
+                        ...(editLink || {}),
                         ...restPayload,
                     }
                 }

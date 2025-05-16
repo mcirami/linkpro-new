@@ -577,6 +577,12 @@
                             padding: 4px;
                             background: none;
                             color: $lightBlue;
+
+                            &.edit_setting {
+                                width: 22px;
+                                height: 22px;
+                                margin-top: -5px;
+                            }
                         }
 
                         .link_content {
