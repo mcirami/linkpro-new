@@ -34,10 +34,10 @@ const IconSettingComponent = ({
         }
 
         if (!isEditing?.active) {
-            setEditLink({
-                ...editLink,
+            setEditLink((prev) => ({
+                ...prev,
                 [`${elementName}`]: value,
-            });
+            }));
         }
     }
 
@@ -53,6 +53,7 @@ const IconSettingComponent = ({
                 type: editLink.type,
             };
 
+            console.log("editLink: ", editLink);
             if(editLink.id) {
 
                 updateLink(packets, editLink.id).then((data) => {
@@ -82,14 +83,10 @@ const IconSettingComponent = ({
                         }
                         setEditLink(prev => ({
                             ...prev,
-                            [`${elementName}`]: editLink[elementName],
-                            type: editLink.type,
-                            course_id: editLink.course_id,
                             id: linkId,
                             position: data.position,
                             active_status: true,
-                            folder_id: editLink.folder_id,
-                        }))
+                        }));
                         let newLinks = [...userLinks];
 
                         if (editLink.folder_id) {

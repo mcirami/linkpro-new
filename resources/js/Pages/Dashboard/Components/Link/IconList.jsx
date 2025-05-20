@@ -198,15 +198,23 @@ const IconList = ({
                                     currentLink: editLink,
                                     [`${iconType}`]: value,
                                     type: iconType,
-                                    icon: editLink.icon
+                                    icon: source
                                 }
                             })
+
+                            setEditLink(prevState => ({
+                                ...prevState,
+                                name: name,
+                                icon: source,
+                                [`${iconType}`]: value,
+                                type: iconType,
+                                course_id: courseId,
+                            }))
                         }
                     })
                 } else {
                     addLink(packets).then((data) => {
                         if (data.success) {
-                            linkId = data.link_id;
                             let newLinks = [...userLinks];
                             const newLinkObject = {
                                 name: name,
@@ -214,11 +222,21 @@ const IconList = ({
                                 [`${iconType}`]: value,
                                 type: iconType,
                                 course_id: courseId,
-                                id: linkId,
+                                id: data.link_id,
                                 position: data.position,
                                 active_status: true,
                                 folder_id: editLink.folder_id,
                             }
+
+                            setEditLink(prevState => ({
+                                ...prevState,
+                                id: data.link_id,
+                                name: name,
+                                icon: source,
+                                [`${iconType}`]: value,
+                                type: iconType,
+                                course_id: courseId,
+                            }))
 
                             if (editLink.folder_id) {
                                 newLinks.map((link, index) => {
@@ -240,16 +258,6 @@ const IconList = ({
                         }
                     });
                 }
-
-                setEditLink(prevState => ({
-                    ...prevState,
-                    id: linkId,
-                    name: name,
-                    icon: source,
-                    [`${iconType}`]: value,
-                    type: iconType,
-                    course_id: courseId,
-                }))
             }, 1000)
 
         } else {

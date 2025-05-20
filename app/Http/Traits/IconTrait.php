@@ -99,7 +99,8 @@ trait IconTrait {
     }
 
     /**
-     * @param $request
+     * @param $iconPath
+     * @param $savePath
      *
      * @return string
      */

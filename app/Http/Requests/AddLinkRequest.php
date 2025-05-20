@@ -26,9 +26,9 @@ class AddLinkRequest extends FormRequest
         return [
             'name'              => 'sometimes|nullable|max:255',
             'page_id'           => 'required|integer',
-            'url'               => 'sometimes|nullable|string',
-            'email'             => 'sometimes|nullable|email',
-            'phone'             => 'sometimes|nullable|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
+            'url'               => 'nullable|string',
+            'email'             => 'nullable|email',
+            'phone'             => 'nullable|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
             'mailchimp_list_id' => 'sometimes|nullable|integer',
             'shopify_products'  => 'sometimes|nullable|json',
             'description'       => 'sometimes|nullable|string',

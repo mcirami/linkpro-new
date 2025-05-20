@@ -14,6 +14,7 @@ export const addLink = async (packets) => {
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
             //EventBus.dispatch("success", {message: returnMessage});
+            console.log("response data", response.data);
             const link_id = response.data.link_id;
             const position = response.data.position;
             let iconPath = null;
