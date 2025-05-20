@@ -21,7 +21,9 @@ const LayoutTwo = ({
     const [isEditing, setIsEditing] = useState({
         active: false,
         section: "",
-        value: ""
+        value: "",
+        id: id,
+        type: type
     });
 
     return (
@@ -39,8 +41,8 @@ const LayoutTwo = ({
                 {isEditing.active && isEditing.section === "name" ?
                     <IconSettingComponent
                         inputType="text"
-                        currentLink={editLink}
-                        setCurrentLink={setEditLink}
+                        editLink={editLink}
+                        setEditLink={setEditLink}
                         isEditing={isEditing}
                         setIsEditing={setIsEditing}
                         elementName="name"

@@ -33,7 +33,14 @@ const IconSettingComponent = ({
             setCharactersLeft(maxChar - value.length);
         }
 
-        if (!isEditing?.active) {
+        if (isEditing?.active) {
+            if(setIsEditing) {
+                setIsEditing(prev => ({
+                    ...prev,
+                    value: value,
+                }));
+            }
+        } else {
             setEditLink((prev) => ({
                 ...prev,
                 [`${elementName}`]: value,
@@ -109,6 +116,34 @@ const IconSettingComponent = ({
                     }
                 });
             }
+        } else {
+            const packets = {
+                [`${isEditing.section}`]: isEditing.value,
+                page_id: pageSettings.id,
+                type: isEditing.type,
+            };
+
+            updateLink(packets, isEditing.id).then((data) => {
+                if (data.success) {
+                    dispatch({
+                        type: LINKS_ACTIONS.UPDATE_LINK,
+                        payload: {
+                            editID: isEditing.id,
+                            [`${isEditing.section}`]: isEditing.value
+                        }
+                    })
+
+                    setIsEditing &&
+                        setIsEditing({
+                            active: false,
+                            section: "",
+                            value: "",
+                            id: null,
+                            type: null
+                        });
+                }
+            });
+
         }
     }
 

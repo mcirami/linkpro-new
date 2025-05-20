@@ -463,7 +463,7 @@ const StandardForm = ({
                         </div>
                     }
 
-                    {/*{pageSettings.page_layout === "layout_one" &&*/}
+                    {pageSettings.page_layout === "layout_one" &&
                         <div className="my_row mb-4">
                             <IconSettingComponent
                                 inputType="text"
@@ -474,7 +474,7 @@ const StandardForm = ({
                                 maxChar={11}
                             />
                         </div>
-                   {/* }*/}
+                    }
 
                     {editLink.type !== "offer" &&
                         <InputTypeRadio
@@ -483,7 +483,8 @@ const StandardForm = ({
                             setEditLink={setEditLink}
                         />
                     }
-                    {/*{pageSettings.page_layout === "layout_one" &&*/}
+
+                    {pageSettings.page_layout === "layout_one" &&
                         <div className="my_row mb-4">
                             {editLink.type === "offer" ?
                                 <div className="external_link">
@@ -504,7 +505,7 @@ const StandardForm = ({
                                 />
                             }
                         </div>
-                   {/* }*/}
+                    }
 
                     {/*{!folderID &&
                         <IconDescription
