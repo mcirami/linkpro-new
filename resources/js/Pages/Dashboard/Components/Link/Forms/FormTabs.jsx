@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {CiImageOn} from 'react-icons/ci';
 import {FaImage} from 'react-icons/fa';
 
-const FormNav = ({
+const FormTabs = ({
                      currentLink,
                      showIconList,
                      setShowIconList,
@@ -17,7 +17,7 @@ const FormNav = ({
     });
 
     return (
-        <div className="form_nav relative mb-4">
+        <div className="form_nav relative">
             <div className="relative">
                 <a className="relative block"
                    onMouseOver={() => setIsHovering(
@@ -74,4 +74,4 @@ const FormNav = ({
     );
 };
 
-export default FormNav;
+export default FormTabs;

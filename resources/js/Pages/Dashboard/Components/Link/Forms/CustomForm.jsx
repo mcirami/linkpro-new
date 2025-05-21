@@ -36,7 +36,7 @@ import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 import CropTools from '@/Utils/CropTools';
 import IconDescription from './IconDescription.jsx';
 import {getJsonValue} from '@/Services/IconRequests.jsx';
-import FormNav from '@/Pages/Dashboard/Components/Link/Forms/FormNav.jsx';
+import FormTabs from '@/Pages/Dashboard/Components/Link/Forms/FormTabs.jsx';
 import ImageUploader
     from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
 
@@ -687,7 +687,7 @@ const CustomForm = ({
 
     return (
             <>
-                <FormNav
+                <FormTabs
                     currentLink={currentLink}
                     showIconList={showIconList}
                     setShowIconList={setShowIconList}

@@ -187,6 +187,9 @@ const IconList = ({
                     course_id: courseId
                 }
 
+                console.log("packets: ", packets);
+            console.log("linkId: ", linkId);
+
             setTimeout(function(){
                 if (linkId) {
                     updateLink(packets, linkId).then((data) => {
@@ -470,7 +473,7 @@ const IconList = ({
                 editLink.type === "offer" ||
                 editLink.type === "email" ||
                 editLink.type === "phone") &&
-            <div className="uploader mt-3">
+            <div className="uploader">
                 {editLink.type === "offer" &&
                     <DropdownComponent
                         data={courseCategories}
@@ -480,7 +483,7 @@ const IconList = ({
                         setFilteredByCat={setFilteredByCat}
                     />
                 }
-                <div className="relative my-3 my_row">
+                <div className="relative mb-3 my_row">
                     <input
                         className="animate"
                         name="search"

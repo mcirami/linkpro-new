@@ -10,7 +10,8 @@ const LayoutOne = ({
                        displayIcon,
                        handleOnClick,
                        link,
-                       handleChange
+                       handleChange,
+                       index
 }) => {
 
     const {type, id, active_status} = link;
@@ -51,7 +52,7 @@ const LayoutOne = ({
             </div>
             :
                 <div className="icon_wrap" onClick={(e) => {
-                    handleOnClick(id)
+                    handleOnClick(e, id, Math.ceil((index + 1) / 4))
                 }}>
                     <div className="image_wrap">
                         <img src={displayIcon} alt=""/>

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AddLinkRequest;
-use App\Http\Requests\UpdateLinkRequest;
+use App\Http\Requests\LinkRequest;
 use App\Services\LinkService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -30,12 +29,12 @@ class LinkController extends Controller
     }
 
     /**
-     * @param AddLinkRequest $request
+     * @param LinkRequest $request
      * @param LinkService $linkService
      *
      * @return JsonResponse
      */
-    public function store(AddLinkRequest $request, LinkService $linkService): JsonResponse {
+    public function store(LinkRequest $request, LinkService $linkService): JsonResponse {
 
         $data = $linkService->addLink($request);
 
@@ -48,13 +47,13 @@ class LinkController extends Controller
     }
 
     /**
-     * @param UpdateLinkRequest $request
+     * @param LinkRequest $request
      * @param Link $link
      * @param LinkService $linkService
      *
      * @return JsonResponse
      */
-    public function update(UpdateLinkRequest $request, Link $link, LinkService $linkService): JsonResponse {
+    public function update(LinkRequest $request, Link $link, LinkService $linkService): JsonResponse {
 
         if ($link->user_id != Auth::id()) {
             return abort(403);
@@ -67,10 +66,6 @@ class LinkController extends Controller
         }*/
 
         return response()->json(['message' => 'Icon Updated', 'path' => $path]);
-
-    }
-
-    public function backgroundImage(Request $request, Link $link, LinkService $linkService) {
 
     }
 

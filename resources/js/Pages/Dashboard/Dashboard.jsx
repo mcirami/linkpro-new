@@ -508,7 +508,7 @@ function Dashboard({
                                                         ""
                                                     }
 
-                                                    { !editLink.id && (!showLinkForm.show && !showLinkTypeRadio) ?
+                                                    {/*{ !editLink.id && (!showLinkForm.show && !showLinkTypeRadio) ?*/}
                                                         <div className="my_row link_row">
                                                             <div className={`add_content_links ${pageSettings.page_layout === "layout_two" && "!border-0" } `}>
                                                                 <div className="add_more_link">
@@ -529,9 +529,9 @@ function Dashboard({
                                                                 }
                                                             </div>
                                                         </div>
-                                                        :
+                                                        {/*:
                                                         ""
-                                                    }
+                                                    }*/}
                                                     {showLinkTypeRadio &&
                                                         <LinkTypeRadio
                                                             setShowLinkForm={setShowLinkForm}
@@ -540,7 +540,7 @@ function Dashboard({
                                                             pageId={pageSettings.id}
                                                         />
                                                     }
-                                                    {( showLinkForm.show || editLink.id) &&
+                                                    {/*{( showLinkForm.show || editLink.id) &&
                                                         <div className="edit_form link my_row">
                                                             {
                                                                 editLink.type ===  "url" ||
@@ -557,7 +557,7 @@ function Dashboard({
                                                                     />
                                                                     :
                                                                     ""
-                                                            }
+                                                            }*/}
                                                             {/*<div className={"my_row tab_content_wrap"}>
                                                                 <div className={`accordion_row my_row`}>
                                                                     <AccordionLink
@@ -685,8 +685,8 @@ function Dashboard({
                                                                 }
 
                                                             </div>*/}
-                                                        </div>
-                                                    }
+                                                        {/*</div>
+                                                    }*/}
 
                                                     { (editLink.folder_id &&
                                                         !editLink.id &&
@@ -705,7 +705,7 @@ function Dashboard({
 
                                                         :
 
-                                                        (!showLinkForm.show && !editLink.id && !editLink.folder_id && !showLinkTypeRadio) &&
+                                                        /*(!showLinkForm.show && !editLink.id && !editLink.folder_id && !showLinkTypeRadio) &&*/
 
                                                             <ErrorBoundary FallbackComponent={errorFallback} onError={myErrorHandler}>
                                                                 <Links
@@ -715,9 +715,9 @@ function Dashboard({
                                                                     setRow={setRow}
                                                                     setValue={setValue}
                                                                     setShowUpgradePopup={setShowUpgradePopup}
-                                                                    setAccordionValue={setAccordionValue}
                                                                     pageLayoutRef={pageLayoutRef}
                                                                     setShowConfirmPopup={setShowConfirmPopup}
+                                                                    setShowLoader={setShowLoader}
                                                                 />
                                                             </ErrorBoundary>
                                                     }

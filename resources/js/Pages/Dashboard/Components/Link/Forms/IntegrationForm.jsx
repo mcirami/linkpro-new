@@ -32,7 +32,7 @@ import StoreDropdown from './Shopify/StoreDropdown';
 import SelectedProducts from './Shopify/SelectedProducts';
 import {HandleBlur, HandleFocus} from '@/Utils/InputAnimations.jsx';
 import CropTools from '@/Utils/CropTools';
-import FormNav from '@/Pages/Dashboard/Components/Link/Forms/FormNav.jsx';
+import FormTabs from '@/Pages/Dashboard/Components/Link/Forms/FormTabs.jsx';
 import ImageUploader
     from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
 
@@ -439,7 +439,7 @@ const IntegrationForm = ({
 
     return (
         <>
-            <FormNav
+            <FormTabs
                 currentLink={currentLink}
                 showIconList={showIconList}
                 setShowIconList={setShowIconList}

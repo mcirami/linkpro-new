@@ -10,6 +10,8 @@ import {usePageContext} from '@/Context/PageContext.jsx';
 import {MdEdit} from 'react-icons/md';
 import LayoutOne from '@/Pages/Dashboard/Components/Link/LayoutOne.jsx';
 import LayoutTwo from '@/Pages/Dashboard/Components/Link/LayoutTwo.jsx';
+import StandardForm
+    from '@/Pages/Dashboard/Components/Link/Forms/StandardForm.jsx';
 const Link = ({
                   link,
                   handleOnClick,
@@ -18,7 +20,11 @@ const Link = ({
                   subStatus,
                   setShowConfirmPopup,
                   editLink,
-                  setEditLink
+                  setEditLink,
+                  index,
+                  setShowLoader,
+                  formRow,
+                  setFormRow
 }) => {
 
     const {type, id, icon, links, active_status} = link;
@@ -47,7 +53,7 @@ const Link = ({
 
     return (
         <div
-             className="grid_item"
+             className="grid_item scrollTo"
              ref={setNodeRef}
              style={style}
         >
@@ -72,6 +78,7 @@ const Link = ({
                             link={link}
                             handleOnClick={handleOnClick}
                             handleChange={handleChange}
+                            index={index}
                         />
                         :
                         type !== "folder" &&
@@ -84,10 +91,23 @@ const Link = ({
                                 setShowConfirmPopup={setShowConfirmPopup}
                                 editLink={editLink}
                                 setEditLink={setEditLink}
+                                index={index}
                             />
                     }
                 </div>
             </div>
+
+            {
+                ((pageSettings.page_layout === "layout_one" && Math.ceil((index + 1) / 4) === formRow) ||
+                formRow === index + 1) &&
+                <div className="edit_form link my_row">
+                    <StandardForm
+                        editLink={editLink}
+                        setEditLink={setEditLink}
+                        setShowLoader={setShowLoader}
+                    />
+                </div>
+            }
         </div>
     );
 };

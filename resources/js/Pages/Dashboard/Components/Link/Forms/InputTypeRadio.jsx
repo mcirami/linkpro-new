@@ -2,7 +2,10 @@ import React, {useContext, useEffect} from 'react';
 import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
 import {UserLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
 
-const InputTypeRadio = ({showLinkForm, editLink, setEditLink}) => {
+const InputTypeRadio = ({
+                            editLink,
+                            setEditLink
+}) => {
 
     const { userLinks, dispatch } = useContext(UserLinksContext);
 

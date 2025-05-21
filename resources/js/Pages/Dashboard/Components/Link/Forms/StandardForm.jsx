@@ -32,7 +32,7 @@ import HoverText from '@/Utils/HoverText.jsx';
 
 import ImageUploader
     from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
-import FormNav from '@/Pages/Dashboard/Components/Link/Forms/FormNav.jsx';
+import FormTabs from '@/Pages/Dashboard/Components/Link/Forms/FormTabs.jsx';
 import IconSettingComponent
     from '@/Pages/Dashboard/Components/Link/Forms/IconSettingComponent.jsx';
 import {capitalize} from 'lodash';
@@ -40,10 +40,6 @@ import {capitalize} from 'lodash';
 const StandardForm = ({
                           editLink,
                           setEditLink,
-                          subStatus,
-                          showLinkForm,
-                          setShowLinkForm,
-                          setShowUpgradePopup,
                           setShowLoader,
                           affiliateStatus = null,
                           setAffiliateStatus = null,
@@ -425,7 +421,7 @@ const StandardForm = ({
                 </div>
             :
             <>
-            <FormNav
+            <FormTabs
                 currentLink={editLink}
                 showIconList={showIconList}
                 setShowIconList={setShowIconList}
@@ -453,7 +449,6 @@ const StandardForm = ({
                                     setCharactersLeft={setCharactersLeft}
                                     editLink={editLink}
                                     setEditLink={setEditLink}
-                                    showLinkForm={showLinkForm}
                                 />
                             </div>
                             <a className="hide_button uppercase mt-2" href="#" onClick={(e) => {
@@ -478,7 +473,6 @@ const StandardForm = ({
 
                     {editLink.type !== "offer" &&
                         <InputTypeRadio
-                            showLinkForm={showLinkForm}
                             editLink={editLink}
                             setEditLink={setEditLink}
                         />

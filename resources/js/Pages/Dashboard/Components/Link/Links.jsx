@@ -40,14 +40,15 @@ const Links = ({
                    setValue,
                    setShowUpgradePopup,
                    subStatus,
-                   setAccordionValue,
                    pageLayoutRef,
                    setShowConfirmPopup,
+                   setShowLoader
 }) => {
 
     const { userLinks, dispatch } = useContext(UserLinksContext);
     const { dispatchFolderLinks } = useContext(FolderLinksContext);
     const {pageSettings} = usePageContext();
+    const [formRow, setFormRow] = useState(0);
 
     //const targetRef = useRef(null);
 
@@ -95,11 +96,17 @@ const Links = ({
         }
     };
 
-    const handleOnClick = (linkID) => {
+    const handleOnClick = (e, linkID, row) => {
 
-        setEditLink(userLinks.find(function(e) {
-            return e.id === linkID
-        }));
+        if (formRow === row) {
+            setFormRow(null)
+            setEditLink({});
+        } else {
+            setFormRow(row);
+            setEditLink(userLinks.find(function(e) {
+                return e.id === linkID
+            }));
+        }
 
         /*if(currentLink.type === "shopify" || currentLink.type === "mailchimp") {
             setAccordionValue("integration")
@@ -116,12 +123,13 @@ const Links = ({
         }*/
 
         setTimeout(function(){
-            document.querySelector('#scrollTo').scrollIntoView({
+            const closestScrollTo = e.target.closest('.scrollTo');
+
+            closestScrollTo.scrollIntoView({
                 behavior: 'smooth',
                 block: "start",
                 inline: "nearest"
             });
-
         }, 300)
 
     }
@@ -202,12 +210,12 @@ const Links = ({
                         strategy={rectSortingStrategy}
                     >
 
-                        {userLinks?.map(link => {
+                        {userLinks?.map((link, index) => {
 
                             return (
-                                (link.type !== "folder" && pageSettings['page_layout'] === "layout_two") ||
-                                pageSettings['page_layout'] === "layout_one"
-                                ?
+                                ((link.type !== "folder" && pageSettings['page_layout'] === "layout_two") ||
+                                pageSettings['page_layout'] === "layout_one")
+                                &&
                                 <Link
                                     key={link.id}
                                     link={link}
@@ -218,9 +226,11 @@ const Links = ({
                                     setShowConfirmPopup={setShowConfirmPopup}
                                     editLink={editLink}
                                     setEditLink={setEditLink}
+                                    index={index}
+                                    setShowLoader={setShowLoader}
+                                    formRow={formRow}
+                                    setFormRow={setFormRow}
                                 />
-                                    :
-                                    ""
                             )
                         })}
 
