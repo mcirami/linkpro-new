@@ -99,13 +99,43 @@ const Links = ({
     const handleOnClick = (e, linkID, row) => {
 
         if (formRow === row) {
-            setFormRow(null)
-            setEditLink({});
+            if (e.target.closest('.column_content').classList.contains('open')) {
+                e.target.closest('.column_content').classList.remove('open');
+                setFormRow(null)
+                setEditLink({});
+            } else {
+                document.querySelector('.column_content.open').classList.remove('open');
+                e.target.closest('.column_content').classList.add('open');
+                setEditLink(userLinks.find(function(e) {
+                    return e.id === linkID
+                }));
+                setTimeout(function(){
+                    const closestScrollTo = e.target.closest('.scrollTo');
+
+                    closestScrollTo.scrollIntoView({
+                        behavior: 'smooth',
+                        block: "start",
+                        inline: "nearest"
+                    });
+                }, 300)
+            }
+
         } else {
             setFormRow(row);
             setEditLink(userLinks.find(function(e) {
                 return e.id === linkID
             }));
+            e.target.closest('.column_content').classList.add('open');
+
+            setTimeout(function(){
+                const closestScrollTo = e.target.closest('.scrollTo');
+
+                closestScrollTo.scrollIntoView({
+                    behavior: 'smooth',
+                    block: "start",
+                    inline: "nearest"
+                });
+            }, 300)
         }
 
         /*if(currentLink.type === "shopify" || currentLink.type === "mailchimp") {
@@ -121,16 +151,6 @@ const Links = ({
         } else {
             setAccordionValue("standard")
         }*/
-
-        setTimeout(function(){
-            const closestScrollTo = e.target.closest('.scrollTo');
-
-            closestScrollTo.scrollIntoView({
-                behavior: 'smooth',
-                block: "start",
-                inline: "nearest"
-            });
-        }, 300)
 
     }
 
@@ -190,6 +210,15 @@ const Links = ({
         }
     }
 
+    const handleDragStart = (event) => {
+        const div = document.querySelector('.column_content.open');
+        if (div) {
+            div.classList.remove('open');
+            setFormRow(null)
+            setEditLink({});
+        }
+    }
+
     return (
         <section id={pageSettings['page_layout']} ref={pageLayoutRef} className={`icons_wrap add_icons icons ${userLinks.length === 0 ? "no_icons" : ""} `}>
 
@@ -203,6 +232,7 @@ const Links = ({
                     sensors={sensors}
                     collisionDetection={closestCenter}
                     onDragEnd={handleGridOnChange}
+                    onDragStart={handleDragStart}
                 >
                     <SortableContext
                         id={'grid-sort-contextbasic'}

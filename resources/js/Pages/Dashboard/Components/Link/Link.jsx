@@ -52,6 +52,7 @@ const Link = ({
     };
 
     return (
+        <>
         <div
              className="grid_item scrollTo"
              ref={setNodeRef}
@@ -98,8 +99,7 @@ const Link = ({
             </div>
 
             {
-                ((pageSettings.page_layout === "layout_one" && Math.ceil((index + 1) / 4) === formRow) ||
-                formRow === index + 1) &&
+                ((pageSettings.page_layout === "layout_two" && formRow === index + 1)) &&
                 <div className="edit_form link my_row">
                     <StandardForm
                         editLink={editLink}
@@ -109,6 +109,18 @@ const Link = ({
                 </div>
             }
         </div>
+            {(pageSettings.page_layout === "layout_one" &&
+                    Math.ceil((index + 1) / 4) === formRow &&
+                    (index + 1) % 4 === 0) &&
+            <div className="edit_form link my_row">
+                <StandardForm
+                    editLink={editLink}
+                    setEditLink={setEditLink}
+                    setShowLoader={setShowLoader}
+                />
+            </div>
+            }
+        </>
     );
 };
 
