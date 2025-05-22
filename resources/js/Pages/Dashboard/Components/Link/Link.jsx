@@ -27,7 +27,7 @@ const Link = ({
                   setFormRow
 }) => {
 
-    const {type, id, icon, links, active_status} = link;
+    const {type, id, icon, links} = link;
     const {pageSettings} = usePageContext();
 
     let hasLinks = true;
@@ -54,7 +54,7 @@ const Link = ({
     return (
         <>
         <div
-             className="grid_item scrollTo"
+             className="grid_item"
              ref={setNodeRef}
              style={style}
         >
@@ -99,26 +99,34 @@ const Link = ({
             </div>
 
             {
-                ((pageSettings.page_layout === "layout_two" && formRow === index + 1)) &&
-                <div className="edit_form link my_row">
-                    <StandardForm
-                        editLink={editLink}
-                        setEditLink={setEditLink}
-                        setShowLoader={setShowLoader}
-                    />
-                </div>
+                ((pageSettings.page_layout === "layout_two" && formRow === index + 1)) ?
+                    <div className="form_wrapper">
+                        <div className="edit_form link my_row">
+                            <StandardForm
+                                editLink={editLink}
+                                setEditLink={setEditLink}
+                                setShowLoader={setShowLoader}
+                                setFormRow={setFormRow}
+                            />
+                        </div>
+                    </div>
+                    :
+                    ""
             }
         </div>
             {(pageSettings.page_layout === "layout_one" &&
                     Math.ceil((index + 1) / 4) === formRow &&
-                    (index + 1) % 4 === 0) &&
+                    (index + 1) % 4 === 0) ?
             <div className="edit_form link my_row">
                 <StandardForm
                     editLink={editLink}
                     setEditLink={setEditLink}
                     setShowLoader={setShowLoader}
+                    setFormRow={setFormRow}
                 />
             </div>
+                :
+                ""
             }
         </>
     );

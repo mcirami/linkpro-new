@@ -11,63 +11,38 @@ const FormTabs = ({
                      pageLayout
                  }) => {
 
-    const [ isHovering, setIsHovering ] = useState({
-        status: false,
-        section: null,
-    });
+    const handleOnClick = (e, type) => {
+        e.preventDefault();
+        if (!e.target.classList.contains("active")) {
+            document.querySelector('.tab_link.active').classList.remove('active');
+            if (type === "icon") {
+                setShowIconList(true);
+                setShowBGUpload(false);
+            } else {
+                setShowIconList(false);
+                setShowBGUpload(true);
+            }
+            e.target.classList.add('active');
+        }
+    }
 
     return (
         <div className="form_nav relative">
             <div className="relative">
-                <a className="relative block"
-                   onMouseOver={() => setIsHovering(
-                       {status: true, section: "icon"})}
-                   onMouseLeave={() => setIsHovering(
-                       {status: false, section: null})}
+                <a className="relative block active tab_link"
                    href="#"
-                   onClick={(e) => {
-                       e.preventDefault();
-                       setShowIconList(true);
-                       setIsHovering(
-                           {status: false, section: null})
-                   }}><CiImageOn/>
+                   onClick={(e) => handleOnClick(e, "icon")}>
+                    Button Icon
                 </a>
-                {(isHovering.section === "icon" &&
-                        isHovering.status) &&
-                    <div className="hover_text block" style={{
-                        opacity: 1,
-                        width: '50px'
-                    }}><p>Icon</p></div>
-                }
             </div>
 
-            { (pageLayout === "layout_two" && currentLink.id) &&
+            { pageLayout === "layout_two" &&
                 <div className="relative flex items-center gap-3">
-                    <a className="relative block"
-                       onMouseOver={() => setIsHovering(
-                           {status: true, section: "bg"})}
-                       onMouseLeave={() => setIsHovering(
-                           {status: false, section: null})}
+                    <a className="relative block tab_link"
                        href="#"
-                       onClick={(e) => {
-                           e.preventDefault();
-                           setShowBGUpload({
-                               show: true,
-                               initialMessage: false,
-                           });
-                           setIsHovering(
-                               {status: false, section: null})
-                       }}><FaImage/>
+                       onClick={(e) => handleOnClick(e, "image")}>
+                        Button Image
                     </a>
-                    {showBGUpload.initialMessage &&
-                        <p className="text-sm initial_message">You can now add a button background</p>
-                    }
-                    {(isHovering.section === "bg" &&
-                            isHovering.status) &&
-                        <div className="hover_text" style={{opacity: 1}}>
-                            <p>Background</p>
-                        </div>
-                    }
                 </div>
             }
         </div>

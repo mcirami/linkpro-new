@@ -88,10 +88,7 @@ const ImageUploader = ({
                         position: "",
                         progress: null
                     });
-                    setShowBGUpload({
-                        show: false,
-                        initialMessage: false
-                    });
+                    setShowBGUpload(false);
 
                     dispatch({
                         type: LINKS_ACTIONS.UPDATE_LINK,
@@ -176,15 +173,6 @@ const ImageUploader = ({
                         <div className="my_row info_text file_types text-center mb-2 !pl-0 !pr-0">
                             <p className="m-0 char_count w-100">Allowed File Types: <span>png, jpg, jpeg, gif</span>
                             </p>
-                            {!imageSelected &&
-                                <a className="hide_button uppercase" href="#" onClick={(e) => {
-                                    e.preventDefault();
-                                    setShowBGUpload({
-                                        show: false,
-                                        initialMessage: false
-                                    });
-                                }}>Hide Upload</a>
-                            }
                         </div>
 
                     </div>

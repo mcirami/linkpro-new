@@ -356,32 +356,37 @@ form .bottom_row a {
     }
 }
 
-#links_page .grid_item .edit_form.link {
-    flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    -webkit-flex-wrap: wrap;
-    padding-left: 31px;
-    margin-top: -32px;
+#links_page .grid_item {
+    .form_wrapper {
+        padding-left: 31px;
+        display: inline-block;
 
-    .form_nav {
-        width: 100%;
-        padding: 20px;
-        border-left: 1px solid $borderGray;
-        border-right: 1px solid $borderGray;
-    }
+        .edit_form.link {
+            @include boxShadow;
+            flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
+            -webkit-flex-wrap: wrap;
+            border-radius: 20px;
+            -webkit-border-radius:20px;
+            -moz-border-radius: 20px;
+            margin-bottom: 10px;
 
-    .link_form {
-        padding: 20px;
-        border: 1px solid $borderGray;
-        border-top: 0;
-        border-top-left-radius: 0;
-        -webkit-border-top-left-radius: 0;
-        -moz-border-radius-topleft: 0;
-        border-top-right-radius: 0;
-        -webkit-border-top-right-radius: 0;
-        -moz-border-radius-topright: 0;
+            .link_form {
+                padding: 20px;
+                border-top: 0;
+                border-top-left-radius: 0;
+                -webkit-border-top-left-radius: 0;
+                -moz-border-radius-topleft: 0;
+                border-top-right-radius: 0;
+                -webkit-border-top-right-radius: 0;
+                -moz-border-radius-topright: 0;
+            }
+        }
     }
 }
+
+
+
 
 #links_page {
     .edit_form {
@@ -718,13 +723,30 @@ form .bottom_row a {
                 flex-direction: row;
                 -ms-flex-wrap: nowrap;
                 flex-wrap: nowrap;
-                gap: 1rem;
+                gap: .8rem;
+                width: 100%;
+                padding: 20px 20px 0 20px;
+                border-bottom: 1px solid $borderGray;
 
                 a {
-                    background: rgba(0, 0, 255, .4);
-                    padding: 4px 7px;
-                    border-radius: 6px;
-                    color: white;
+                    border-top: 1px solid $borderGray;
+                    border-left: 1px solid $borderGray;
+                    border-right: 1px solid $borderGray;
+                    border-top-left-radius: 6px;
+                    border-top-right-radius: 6px;
+                    -webkit-border-top-left-radius: 6px;
+                    -webkit-border-top-right-radius: 6px;
+                    color: $black;
+                    font-size: .8rem;
+                    padding: 10px 15px;
+                    text-transform: uppercase;
+                    margin-bottom: -2px;
+                    background: $white;
+
+                    &.active {
+                        background: $blue;
+                        color:$white;
+                    }
                 }
             }
 

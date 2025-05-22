@@ -36,11 +36,13 @@ import FormTabs from '@/Pages/Dashboard/Components/Link/Forms/FormTabs.jsx';
 import IconSettingComponent
     from '@/Pages/Dashboard/Components/Link/Forms/IconSettingComponent.jsx';
 import {capitalize} from 'lodash';
+import {IoCloseSharp} from 'react-icons/io5';
 
 const StandardForm = ({
                           editLink,
                           setEditLink,
                           setShowLoader,
+                          setFormRow,
                           affiliateStatus = null,
                           setAffiliateStatus = null,
 
@@ -50,10 +52,7 @@ const StandardForm = ({
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
     const  { pageSettings } = usePageContext();
     const [ showTerms, setShowTerms ] = useState(false);
-    const [ showBGUpload, setShowBGUpload ] = useState({
-        show: false,
-        initialMessage: false,
-    });
+    const [ showBGUpload, setShowBGUpload ] = useState(false);
 
     //const {id, folderId} = editLink;
     const [ showIconList, setShowIconList ] = useState(true);
@@ -383,6 +382,13 @@ const StandardForm = ({
 
     }
 
+    const handleCloseForm = (e) => {
+        e.preventDefault();
+        document.querySelector('.column_content.open').classList.remove('open');
+        setFormRow(0);
+        setEditLink({});
+    }
+
     return (
          (affiliateStatus !== "approved" || !affiliateStatus) && editLink.type === "offer" ?
             showTerms ?
@@ -421,6 +427,9 @@ const StandardForm = ({
                 </div>
             :
             <>
+            <div className="close_button absolute right-5 top-5 z-10">
+                <a className="text-xl hide_button" href="#" onClick={(e) => handleCloseForm(e)}><IoCloseSharp/></a>
+            </div>
             <FormTabs
                 currentLink={editLink}
                 showIconList={showIconList}
@@ -429,7 +438,7 @@ const StandardForm = ({
                 setShowBGUpload={setShowBGUpload}
                 pageLayout={pageSettings.page_layout}
             />
-                {showBGUpload.show ?
+                {showBGUpload &&
                 <div className="flex flex-wrap justify-end mt-5 relative">
                     <div className="w-full">
                         <ImageUploader
@@ -440,23 +449,18 @@ const StandardForm = ({
                         />
                     </div>
                 </div>
-                :
+                }
+                {(showIconList || pageSettings.page_layout === "layout_one") &&
                 <div className="link_form">
-                    {showIconList &&
-                        <div className="icon_row">
-                            <div className="icon_box">
-                                <IconList
-                                    setCharactersLeft={setCharactersLeft}
-                                    editLink={editLink}
-                                    setEditLink={setEditLink}
-                                />
-                            </div>
-                            <a className="hide_button uppercase mt-2" href="#" onClick={(e) => {
-                                e.preventDefault();
-                                setShowIconList(false);
-                            }}>Hide Icons</a>
+                    <div className="icon_row">
+                        <div className="icon_box">
+                            <IconList
+                                setCharactersLeft={setCharactersLeft}
+                                editLink={editLink}
+                                setEditLink={setEditLink}
+                            />
                         </div>
-                    }
+                    </div>
 
                     {pageSettings.page_layout === "layout_one" &&
                         <div className="my_row mb-4">
@@ -471,7 +475,7 @@ const StandardForm = ({
                         </div>
                     }
 
-                    {editLink.type !== "offer" &&
+                    { (editLink.type !== "offer" && editLink.type !== "mailchimp") &&
                         <InputTypeRadio
                             editLink={editLink}
                             setEditLink={setEditLink}
@@ -511,7 +515,7 @@ const StandardForm = ({
                     }*/}
 
                     <div className="button_row w-full mt-4">
-                        <a className="help_link" href="mailto:help@link.pro">Need Help?</a>
+                        <a className="help_link" href="mailto:help@link.pro"><small>Need Help?</small></a>
                     </div>
                 </div>
                 }

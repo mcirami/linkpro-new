@@ -48,8 +48,10 @@ const Links = ({
     const { userLinks, dispatch } = useContext(UserLinksContext);
     const { dispatchFolderLinks } = useContext(FolderLinksContext);
     const {pageSettings} = usePageContext();
-    const [formRow, setFormRow] = useState(0);
+    const [formRow, setFormRow] = useState(null);
 
+    console.log("formRow: ", formRow);
+    console.log("editLink: ", editLink);
     //const targetRef = useRef(null);
 
     const sensors = useSensors(
@@ -110,7 +112,7 @@ const Links = ({
                     return e.id === linkID
                 }));
                 setTimeout(function(){
-                    const closestScrollTo = e.target.closest('.scrollTo');
+                    const closestScrollTo = e.target.closest('.grid_item');
 
                     closestScrollTo.scrollIntoView({
                         behavior: 'smooth',
@@ -128,7 +130,7 @@ const Links = ({
             e.target.closest('.column_content').classList.add('open');
 
             setTimeout(function(){
-                const closestScrollTo = e.target.closest('.scrollTo');
+                const closestScrollTo = e.target.closest('.grid_item');
 
                 closestScrollTo.scrollIntoView({
                     behavior: 'smooth',
