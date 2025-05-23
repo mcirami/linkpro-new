@@ -1075,11 +1075,16 @@
     p {
         margin: 0;
         font-size: 14px;
+        width: 100%;
+        text-align: center;
     }
 
     .icon_col {
         width: 125px;
         margin: 0 auto;
+        -webkit-flex-wrap: wrap !important;
+        -ms-flex-wrap: wrap !important;
+        flex-wrap: wrap !important;
     }
 
     &.layout_two {

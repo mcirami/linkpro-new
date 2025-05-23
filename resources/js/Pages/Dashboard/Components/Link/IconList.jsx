@@ -298,11 +298,7 @@ const IconList = ({
 
     useEffect(() => {
 
-        let classes = "";
-
-        if(editLink.type === "mailchimp") {
-            classes = "outer integration_icons";
-        }
+        let classes = "outer";
 
         if(activeIcon !== null ||
             (customIconArray && customIconArray.length < 5 &&
@@ -406,62 +402,90 @@ const IconList = ({
                 default:
 
                     return (
-                        filteredIcons ?
-                            filteredIcons.map((icon, index) => {
+                        <>
+                        <div className="icon_col default_icon">
+                            <p>Current Icon</p>
+                            {editLink.icon ?
+                                <img alt=""
+                                     className={`active img-fluid icon_image`}
+                                     src={editLink.icon}
+                                />
+                                :
+                                <p>No Icon Selected</p>
+                            }
+                        </div>
 
-                            return (
-                                <div key={index} className="icon_col">
-                                    <img
-                                        className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
-                                        src={icon.path}
-                                        onClick={(e) => {
-                                            selectIcon(e, icon.path)
-                                        }}
-                                        data-name={icon.name}
-                                        data-creator={icon.creator || ""}
-                                        data-slug={icon.slug || ""}
-                                        data-course={icon.course_id || ""}
-                                        data-icontype={icon.type}
-                                        data-offer={icon.offer_id || ""}
-                                        data-index={index}
-                                        alt=""
-                                    />
-                                    <div className="hover_text icon_text">
-                                        <p>
-                                            {icon.name}
-                                        </p>
-                                    </div>
-                                </div>
-                            )
-                        })
-                        :
-                        iconList?.map((icon, index) => {
+                        <div className="custom_icons">
+                            <p>Standard Icons</p>
+                            <div className="icons_wrap inner">
+                                {filteredIcons ?
+                                    filteredIcons.map((icon, index) => {
 
-                            return (
-                                <div key={index} className="icon_col">
-                                    <img
-                                        className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
-                                        src={icon.path}
-                                        onClick={(e) => {
-                                            selectIcon(e, icon.path)
-                                        }}
-                                        data-name={icon.name}
-                                        data-creator={icon.creator || ""}
-                                        data-slug={icon.slug || ""}
-                                        data-course={icon.course_id || ""}
-                                        data-icontype={icon.type || ""}
-                                        data-offer={icon.offer_id || ""}
-                                        data-index={index}
-                                        alt=""
-                                    />
-                                    <div className="hover_text icon_text">
-                                        <p>
-                                            {icon.name}
-                                        </p>
-                                    </div>
-                                </div>
-                            )
-                        })
+                                    return (
+                                        <div key={index} className="icon_col">
+                                            <img
+                                                className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
+                                                src={icon.path}
+                                                onClick={(e) => {
+                                                    selectIcon(e, icon.path)
+                                                }}
+                                                data-name={icon.name}
+                                                data-creator={icon.creator || ""}
+                                                data-slug={icon.slug || ""}
+                                                data-course={icon.course_id || ""}
+                                                data-icontype={icon.type}
+                                                data-offer={icon.offer_id || ""}
+                                                data-index={index}
+                                                alt=""
+                                            />
+                                            <div className="hover_text icon_text">
+                                                <p>
+                                                    {icon.name}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                                :
+                                    iconList?.map((icon, index) => {
+
+                                        return (
+                                            <div key={index} className="icon_col">
+                                                <img
+                                                    className={`img-fluid icon_image ${parseInt(
+                                                        activeIcon) ===
+                                                    parseInt(index) ?
+                                                        "active" :
+                                                        ""}`}
+                                                    src={icon.path}
+                                                    onClick={(e) => {
+                                                        selectIcon(e, icon.path)
+                                                    }}
+                                                    data-name={icon.name}
+                                                    data-creator={icon.creator ||
+                                                        ""}
+                                                    data-slug={icon.slug || ""}
+                                                    data-course={icon.course_id ||
+                                                        ""}
+                                                    data-icontype={icon.type ||
+                                                        ""}
+                                                    data-offer={icon.offer_id ||
+                                                        ""}
+                                                    data-index={index}
+                                                    alt=""
+                                                />
+                                                <div className="hover_text icon_text">
+                                                    <p>
+                                                        {icon.name}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                        </>
                     )
         }
     }

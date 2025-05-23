@@ -94,7 +94,7 @@ const ImageUploader = ({
                         type: LINKS_ACTIONS.UPDATE_LINK,
                         payload: {
                             editID: currentLink.id,
-                            bg_image: data.imagePath.bg_path,
+                            bg_image: data.imagePath.bg_image,
                         }})
                 });
             });

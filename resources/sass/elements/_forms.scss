@@ -473,11 +473,71 @@ form .bottom_row a {
 
                 &.outer {
                     overflow-y: hidden;
+                    padding: 5px 10px 10px;
+
+                    /* @media all and (max-width: 768px) {
+                        overflow-y:  scroll;
+                    }*/
+
+                    .custom_icons {
+                        width: 82%;
+                        padding: 0 10px;
+                        border-left: 1px solid $borderGray;
+                        overflow-y: auto;
+                        margin: 10px 0 0;
+                        height: 220px;
+
+                        @media all and (max-width: 1300px) and (min-width: 993px) {
+                            width: 73%;
+                        }
+
+                        @media all and (max-width: 768px) {
+                            /*width: 100%;
+                            height: auto;
+                            border-left: none;*/
+                            width: 73%;
+                        }
+
+                        @media screen and (max-width: 550px) {
+                            width: 68%;
+                        }
+
+                        .icons_wrap.inner {
+                            overflow: hidden;
+                            height: auto;
+
+                            .icon_col {
+                                @media all and (max-width: 1300px) and (min-width: 993px) {
+                                    width: 23%;
+                                }
+
+                                @media all and (max-width: 768px) {
+                                    width: 23%;
+                                }
+
+                                @media screen and (max-width: 550px) {
+                                    width: 31.3%;
+                                }
+                            }
+                        }
+                    }
+
+                    p {
+                        width: 100%;
+                        font-size: 12px;
+                        padding-bottom: 5px;
+                        text-align: center;
+                        margin-bottom: 5px;
+                        border-bottom: 1px solid $borderGray;
+                    }
 
                     .default_icon.icon_col {
                         width: 16%;
                         padding-right: 10px;
                         padding-top: 5px;
+                        flex-direction: column !important;
+                        -webkit-flex-direction: column !important;
+                        -ms-flex-direction: column !important;
 
                         @media all and (max-width: 1300px) and (min-width: 993px) {
                             width: 25%;
@@ -505,66 +565,6 @@ form .bottom_row a {
                                 max-width: 68%;
                                 margin: 0 auto;
                             }
-                        }
-                    }
-
-                    &.integration_icons {
-                        padding: 5px 10px 10px;
-
-                        /* @media all and (max-width: 768px) {
-                            overflow-y:  scroll;
-                        }*/
-
-                        .custom_icons {
-                            width: 82%;
-                            padding: 0 10px;
-                            border-left: 1px solid $borderGray;
-                            overflow-y: auto;
-                            margin: 10px 0 0;
-                            height: 220px;
-
-                            @media all and (max-width: 1300px) and (min-width: 993px) {
-                                width: 73%;
-                            }
-
-                            @media all and (max-width: 768px) {
-                                /*width: 100%;
-                                height: auto;
-                                border-left: none;*/
-                                width: 73%;
-                            }
-
-                            @media screen and (max-width: 550px) {
-                                width: 68%;
-                            }
-
-                            .icons_wrap.inner {
-                                overflow: hidden;
-                                height: auto;
-
-                                .icon_col {
-                                    @media all and (max-width: 1300px) and (min-width: 993px) {
-                                        width: 23%;
-                                    }
-
-                                    @media all and (max-width: 768px) {
-                                        width: 23%;
-                                    }
-
-                                    @media screen and (max-width: 550px) {
-                                        width: 31.3%;
-                                    }
-                                }
-                            }
-                        }
-
-                        p {
-                            width: 100%;
-                            font-size: 12px;
-                            padding-bottom: 5px;
-                            text-align: center;
-                            margin-bottom: 5px;
-                            border-bottom: 1px solid $borderGray;
                         }
                     }
                 }
