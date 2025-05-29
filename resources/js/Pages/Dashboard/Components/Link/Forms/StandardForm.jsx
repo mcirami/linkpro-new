@@ -450,6 +450,12 @@ const StandardForm = ({
                     </div>
                 </div>
                 }
+                { (editLink.type !== "offer" && editLink.type !== "mailchimp") &&
+                    <InputTypeRadio
+                        editLink={editLink}
+                        setEditLink={setEditLink}
+                    />
+                }
                 {(showIconList || pageSettings.page_layout === "layout_one") &&
                 <div className="link_form">
                     <div className="icon_row">
@@ -473,13 +479,6 @@ const StandardForm = ({
                                 maxChar={11}
                             />
                         </div>
-                    }
-
-                    { (editLink.type !== "offer" && editLink.type !== "mailchimp") &&
-                        <InputTypeRadio
-                            editLink={editLink}
-                            setEditLink={setEditLink}
-                        />
                     }
 
                     {pageSettings.page_layout === "layout_one" &&
@@ -514,7 +513,10 @@ const StandardForm = ({
                         />
                     }*/}
 
-                    <div className="button_row w-full mt-4">
+                    <div className="button_row w-full mt-1 flex flex-nowrap justify-between">
+                        <div className="info_text file_types text-center !pl-0">
+                            <a href="mailto:help@link.pro" className="mx-auto m-0 char_count">Don't See Your Icon? Contact Us!</a>
+                        </div>
                         <a className="help_link" href="mailto:help@link.pro"><small>Need Help?</small></a>
                     </div>
                 </div>

@@ -705,7 +705,7 @@ function Dashboard({
 
                                                         :
 
-                                                        /*(!showLinkForm.show && !editLink.id && !editLink.folder_id && !showLinkTypeRadio) &&*/
+                                                        (!editLink.folder_id && !showLinkTypeRadio) &&
 
                                                             <ErrorBoundary FallbackComponent={errorFallback} onError={myErrorHandler}>
                                                                 <Links

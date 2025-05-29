@@ -483,9 +483,7 @@ form .bottom_row a {
                         width: 82%;
                         padding: 0 10px;
                         border-left: 1px solid $borderGray;
-                        overflow-y: auto;
                         margin: 10px 0 0;
-                        height: 220px;
 
                         @media all and (max-width: 1300px) and (min-width: 993px) {
                             width: 73%;
@@ -503,8 +501,8 @@ form .bottom_row a {
                         }
 
                         .icons_wrap.inner {
-                            overflow: hidden;
-                            height: auto;
+                            overflow-y: scroll;
+                            height: 190px;
 
                             .icon_col {
                                 @media all and (max-width: 1300px) and (min-width: 993px) {
@@ -746,6 +744,26 @@ form .bottom_row a {
                     &.active {
                         background: $blue;
                         color:$white;
+                    }
+                }
+
+                &.icons {
+                    padding: 0;
+                    gap: 0;
+
+                    > div.relative {
+                        width: 100%;
+                        text-align: center;
+
+                        &:first-child {
+                            border-top-right-radius: 0;
+                            -webkit-border-top-right-radius: 0;
+                        }
+
+                        &:last-child {
+                            border-top-left-radius: 0;
+                            -webkit-border-top-left-radius: 0;
+                        }
                     }
                 }
             }
