@@ -1042,17 +1042,6 @@
     text-align: center;
     padding-bottom: 20px;
 
-    .canvas_wrap:before {
-        content: '';
-        background: rgba(0,0,0,.4);
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-        border-radius: 8px;
-    }
-
     &.hidden {
         height: 0;
         padding: 0;
@@ -1088,7 +1077,8 @@
     }
 
     &.layout_two {
-        .icon_col {
+
+        .icon_col.bg_image {
             width: 100%;
             border-radius: 8px;
             -webkit-border-radius: 8px;
@@ -1098,6 +1088,30 @@
                 @include osbold;
                 color: $white;
             }
+
+            .canvas_wrap:before {
+                content: '';
+                background: rgba(0,0,0,.4);
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                left: 0;
+                top: 0;
+                border-radius: 8px;
+            }
+        }
+    }
+
+    .icon_col.icon {
+        box-shadow: none !important;
+        width: 125px !important;
+
+        .canvas_wrap {
+            @include boxShadow;
+            border-radius: 20px;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            margin-top: 10px;
         }
     }
 

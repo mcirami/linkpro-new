@@ -207,8 +207,8 @@ class LinkService {
         }
 
         return [
-            'icon_path' => $iconPath,
-            'bg_path' => $bgPath,
+            'icon' => $iconPath,
+            'bg_image' => $bgPath,
         ];
     }
 

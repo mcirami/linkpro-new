@@ -23,9 +23,11 @@ class LinkRequest extends FormRequest
      */
     public function rules()
     {
+        $isUpdate = $this->isMethod('put') || $this->isMethod('patch');
+
         return [
             'name'              => 'sometimes|nullable|max:255',
-            'page_id'           => 'required|integer',
+            'page_id'           => $isUpdate ? 'sometimes|integer' : 'required|integer',
             'url'               => 'sometimes|nullable|string',
             'email'             => 'sometimes|nullable|email',
             'phone'             => 'sometimes|nullable|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',

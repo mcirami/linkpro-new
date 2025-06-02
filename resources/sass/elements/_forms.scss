@@ -503,6 +503,11 @@ form .bottom_row a {
                         .icons_wrap.inner {
                             overflow-y: scroll;
                             height: 190px;
+                            border-left: 1px solid $borderGray;
+                            justify-content: flex-start;
+                            -webkit-justify-content: flex-start;
+                            align-items: flex-start;
+                            -webkit-align-items: flex-start;
 
                             .icon_col {
                                 @media all and (max-width: 1300px) and (min-width: 993px) {
@@ -721,7 +726,7 @@ form .bottom_row a {
                 flex-direction: row;
                 -ms-flex-wrap: nowrap;
                 flex-wrap: nowrap;
-                gap: .8rem;
+                gap: .3rem;
                 width: 100%;
                 padding: 20px 20px 0 20px;
                 border-bottom: 1px solid $borderGray;
@@ -756,13 +761,17 @@ form .bottom_row a {
                         text-align: center;
 
                         &:first-child {
-                            border-top-right-radius: 0;
-                            -webkit-border-top-right-radius: 0;
+                            a {
+                                border-top-right-radius: 0;
+                                -webkit-border-top-right-radius: 0;
+                            }
                         }
 
                         &:last-child {
-                            border-top-left-radius: 0;
-                            -webkit-border-top-left-radius: 0;
+                            a {
+                                border-top-left-radius: 0;
+                                -webkit-border-top-left-radius: 0;
+                            }
                         }
                     }
                 }

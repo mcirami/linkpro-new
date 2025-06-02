@@ -12,14 +12,17 @@ import {usePage} from '@inertiajs/react';
 import {addLink, updateLink} from '@/Services/LinksRequest.jsx';
 import {FOLDER_LINKS_ACTIONS, LINKS_ACTIONS} from '@/Services/Reducer.jsx';
 import {UserLinksContext, FolderLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
+import ImageUploader
+    from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
 
 const IconList = ({
                       setCharactersLeft,
                       integrationType = null,
                       setEditLink,
                       editLink,
-                      customIconArray = null,
-                      setCustomIconArray = null,
+                      showIconList,
+                      setShowIconList,
+                      setShowLoader,
 }) => {
 
     const { auth } = usePage().props;
@@ -39,16 +42,20 @@ const IconList = ({
     const [courseCategories, setCourseCategories] = useState([]);
 
     const [activeIcon, setActiveIcon] = useState(null)
-
+    const [customIconArray, setCustomIconArray] = useState([]);
     const [iconsWrapClasses, setIconsWrapClasses] = useState("");
-
-    const [iconDisplay, setIconDisplay] = useState('standard');
 
     useEffect(() => {
         if (str.includes(editLink.icon, "custom-icons") ) {
-            setIconDisplay("custom")
+            setShowIconList((prev) => ({
+                ...prev,
+                type: "custom"
+            }));
         } else {
-            setIconDisplay("standard");
+            setShowIconList((prev) => ({
+                ...prev,
+                type: "standard"
+            }));
         }
 
     },[editLink])
@@ -65,11 +72,19 @@ const IconList = ({
     },[editLink])
 
     useEffect(() => {
-        const url = '/get-standard-icons';
+        let url = '/get-standard-icons';
+        if(showIconList.type === "custom") {
+            url = '/get-custom-icons';
+        }
 
         getIcons(url).then((data) => {
             if(data.success) {
-                setIconList(getIconPaths(data.iconData));
+                if (showIconList.type === "custom") {
+                    setCustomIconArray(data.iconData);
+                } else {
+                    setIconList(getIconPaths(data.iconData));
+                }
+                setIsLoading(false);
             }
         });
 
@@ -108,7 +123,7 @@ const IconList = ({
             }
         })*/
 
-    },[editLink])
+    },[showIconList])
 
     useEffect(() => {
 
@@ -307,7 +322,7 @@ const IconList = ({
 
     },[iconList, searchInput])
 
-    useEffect(() => {
+    /*useEffect(() => {
 
         let classes = "outer";
 
@@ -322,11 +337,13 @@ const IconList = ({
 
         setIconsWrapClasses(classes);
 
-    },[activeIcon, customIconArray]);
+    },[activeIcon, customIconArray]);*/
 
     const switchIconsList = () => {
 
-        switch(editLink.type) {
+        const mapArray = filteredIcons.length > 0 ? filteredIcons : iconList;
+
+        switch(showIconList.type) {
 
             /*case "custom" :
 
@@ -429,21 +446,27 @@ const IconList = ({
                         <div className="custom_icons">
                             <div className="form_nav icons relative">
                                 <div className="relative">
-                                    <a className={`relative block tab_link ${iconDisplay === "standard" ? "active" : ""}`}
+                                    <a className={`relative block tab_link ${showIconList.type === "standard" ? "active" : ""}`}
                                        href="#"
                                        onClick={(e) => {
                                            e.preventDefault()
-                                           setIconDisplay("standard")
+                                           setShowIconList((prev) => ({
+                                               ...prev,
+                                               type: "standard"
+                                           }))
                                        }}>
                                         Standard Icons
                                     </a>
                                 </div>
                                 <div className="relative">
-                                    <a className={`relative block tab_link ${iconDisplay === "custom" ? "active" : ""}`}
+                                    <a className={`relative block tab_link ${showIconList.type === "custom" ? "active" : ""}`}
                                        href="#"
                                        onClick={(e) => {
                                            e.preventDefault()
-                                           setIconDisplay("custom")
+                                           setShowIconList((prev) => ({
+                                               ...prev,
+                                               type: "custom"
+                                           }))
                                        }}>
                                         Custom Icons
                                     </a>
@@ -451,7 +474,7 @@ const IconList = ({
                             </div>
 
                             <div className="icons_wrap inner">
-                                {iconDisplay === "custom" ?
+                                {showIconList.type === "custom" ?
                                     !isEmpty(customIconArray) ? customIconArray.map((iconPath, index) => {
                                             const newPath = iconPath?.replace("public", "/storage");
 
@@ -472,11 +495,38 @@ const IconList = ({
                                         :
                                         <div className="info_message">
                                             <p>You don't have any icons to display.</p>
-                                            <p>Click 'Upload Image' above to add a custom icon.</p>
+                                            <p>Click 'Upload Image' below to add a custom icon.</p>
                                         </div>
                                     :
-                                    filteredIcons ?
-                                        filteredIcons.map((icon, index) => {
+                                    /* filteredIcons ?
+                                         filteredIcons.map((icon, index) => {
+
+                                         return (
+                                             <div key={index} className="icon_col">
+                                                 <img
+                                                     className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
+                                                     src={icon.path}
+                                                     onClick={(e) => {
+                                                         selectIcon(e, icon.path)
+                                                     }}
+                                                     data-name={icon.name}
+                                                     data-creator={icon.creator || ""}
+                                                     data-slug={icon.slug || ""}
+                                                     data-course={icon.course_id || ""}
+                                                     data-icontype={icon.type}
+                                                     data-offer={icon.offer_id || ""}
+                                                     data-index={index}
+                                                     alt=""
+                                                 />
+                                                 <div className="hover_text icon_text">
+                                                     <p>
+                                                         {icon.name}
+                                                     </p>
+                                                 </div>
+                                             </div>
+                                         )
+                                     })*/
+                                    mapArray.map((icon, index) => {
 
                                         return (
                                             <div key={index} className="icon_col">
@@ -490,44 +540,8 @@ const IconList = ({
                                                     data-creator={icon.creator || ""}
                                                     data-slug={icon.slug || ""}
                                                     data-course={icon.course_id || ""}
-                                                    data-icontype={icon.type}
+                                                    data-icontype={icon.type || ""}
                                                     data-offer={icon.offer_id || ""}
-                                                    data-index={index}
-                                                    alt=""
-                                                />
-                                                <div className="hover_text icon_text">
-                                                    <p>
-                                                        {icon.name}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                    :
-                                    iconList?.map((icon, index) => {
-
-                                        return (
-                                            <div key={index} className="icon_col">
-                                                <img
-                                                    className={`img-fluid icon_image ${parseInt(
-                                                        activeIcon) ===
-                                                    parseInt(index) ?
-                                                        "active" :
-                                                        ""}`}
-                                                    src={icon.path}
-                                                    onClick={(e) => {
-                                                        selectIcon(e, icon.path)
-                                                    }}
-                                                    data-name={icon.name}
-                                                    data-creator={icon.creator ||
-                                                        ""}
-                                                    data-slug={icon.slug || ""}
-                                                    data-course={icon.course_id ||
-                                                        ""}
-                                                    data-icontype={icon.type ||
-                                                        ""}
-                                                    data-offer={icon.offer_id ||
-                                                        ""}
                                                     data-index={index}
                                                     alt=""
                                                 />
@@ -564,24 +578,43 @@ const IconList = ({
                         setFilteredByCat={setFilteredByCat}
                     />
                 }
-                <div className="relative mb-3 my_row">
-                    <input
-                        className="animate w-full"
-                        name="search"
-                        type="text"
-                        onChange={(e) => handleChange(e)}
-                        onFocus={(e) => HandleFocus(e.target)}
-                        onBlur={(e) => HandleBlur(e.target)}
-                        value={searchInput}/>
-                    <label htmlFor="search">Search {
-                        editLink.type === "url" || editLink.type === "email" || editLink.type === "phone"
-                        ?
-                        "Icons" : "Offers"}</label>
-                </div>
+                {showIconList.type === "standard" &&
+
+                    <div className="relative mb-3 my_row">
+                        <input
+                            className="animate w-full"
+                            name="search"
+                            type="text"
+                            onChange={(e) => handleChange(e)}
+                            onFocus={(e) => HandleFocus(e.target)}
+                            onBlur={(e) => HandleBlur(e.target)}
+                            value={searchInput}/>
+                        <label htmlFor="search">Search {
+                            editLink.type === "url" || editLink.type === "email" || editLink.type === "phone"
+                                ?
+                                "Icons" : "Offers"}</label>
+                    </div>
+                }
+
+                {showIconList.type === "custom" &&
+                    <div className="flex flex-wrap justify-end mt-5 relative">
+                        <div className="w-full">
+                            <ImageUploader
+                                editLink={editLink}
+                                setEditLink={setEditLink}
+                                setShowLoader={setShowLoader}
+                                elementName="icon"
+                                imageCrop={{ unit: '%', width: 30 }}
+                                imageAspectRatio={1}
+                                setCustomIconArray={setCustomIconArray}
+                            />
+                        </div>
+                    </div>
+                }
             </div>
         }
 
-            <div className={`icons_wrap my_row ${iconsWrapClasses}`}>
+            <div className={`icons_wrap my_row outer`}>
 
                 {isLoading &&
                     <div id="loading_spinner" className="active">

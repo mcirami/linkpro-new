@@ -4,11 +4,11 @@ import {FaImage} from 'react-icons/fa';
 
 const FormTabs = ({
                      currentLink,
-                     showIconList,
                      setShowIconList,
                      showBGUpload,
                      setShowBGUpload,
                      pageLayout
+
                  }) => {
 
     const handleOnClick = (e, type) => {
@@ -16,10 +16,16 @@ const FormTabs = ({
         if (!e.target.classList.contains("active")) {
             document.querySelector('.tab_link.active').classList.remove('active');
             if (type === "icon") {
-                setShowIconList(true);
+                setShowIconList((prev) => ({
+                    ...prev,
+                    show: true,
+                }));
                 setShowBGUpload(false);
             } else {
-                setShowIconList(false);
+                setShowIconList((prev) => ({
+                    ...prev,
+                    show: false,
+                }));
                 setShowBGUpload(true);
             }
             e.target.classList.add('active');

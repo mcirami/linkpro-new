@@ -10,20 +10,24 @@ import {
 import {updateLink} from '@/Services/LinksRequest.jsx';
 import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
 import {UserLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
+import {usePageContext} from '@/Context/PageContext.jsx';
 
 const ImageUploader = ({
-                           currentLink,
+                           editLink,
+                           setEditLink,
                            setShowLoader,
-                           pageSettings,
-                           setShowBGUpload
+                           elementName,
+                           imageCrop,
+                           imageAspectRatio,
+                           setCustomIconArray = null
 }) => {
 
     const { userLinks, dispatch } = useContext(UserLinksContext);
-
+    const  { pageSettings } = usePageContext();
     const [completedIconCrop, setCompletedIconCrop] = useState({});
     const [scale, setScale] = useState(1)
     const [rotate, setRotate] = useState(0)
-    const [aspect, setAspect] = useState(16 / 5)
+    const [aspect, setAspect] = useState(imageAspectRatio)
 
     // if a custom icon is selected
     const [imageSelected, setImageSelected] = useState(false);
@@ -32,7 +36,7 @@ const ImageUploader = ({
     const [upImg, setUpImg] = useState(null);
     const imgRef = useRef(null);
     const previewCanvasRef = useRef(null);
-    const [crop, setCrop] = useState({ unit: "%", width: 100, aspect: 16 / 5 });
+    const [crop, setCrop] = useState(imageCrop);
 
     useDebounceEffect(
         null,
@@ -77,10 +81,10 @@ const ImageUploader = ({
             ).then(response => {
                 //console.log("Vapor Response: ", response);
                 const packets = {
-                    bg_image: response.key,
+                    [`${elementName}`]: response.key,
                     ext: response.extension,
                 };
-                updateLink(packets, currentLink.id)
+                updateLink(packets, editLink.id)
                 .then((data) => {
                     setShowLoader({
                         show: false,
@@ -88,14 +92,23 @@ const ImageUploader = ({
                         position: "",
                         progress: null
                     });
-                    setShowBGUpload(false);
+                    setImageSelected(false);
 
                     dispatch({
                         type: LINKS_ACTIONS.UPDATE_LINK,
                         payload: {
-                            editID: currentLink.id,
-                            bg_image: data.imagePath.bg_image,
+                            editID: editLink.id,
+                            [`${elementName}`]: data.imagePath[elementName],
                         }})
+
+                    setEditLink((prev) => ({
+                        ...prev,
+                        [`${elementName}`]: data.imagePath[elementName],
+                    }))
+                    if (elementName === "icon" && setCustomIconArray) {
+                        setCustomIconArray((prev) => ([...prev, data.imagePath.icon]))
+                    }
+
                 });
             });
         });
@@ -124,25 +137,48 @@ const ImageUploader = ({
                             style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
                             alt="Crop Me"/>
                     </ReactCrop>
-                    <div className="icon_col relative">
-                        <p>Button Preview</p>
-                        <div className="canvas_wrap relative">
-                            <canvas
-                                ref={previewCanvasRef}
-                                // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
-                                style={{
-                                    backgroundSize: `cover`,
-                                    backgroundRepeat: `no-repeat`,
-                                    width: imageSelected ? `100%` : 0,
-                                    height: imageSelected ? `auto` : 0,
-                                    borderRadius: `8px`,
-                                }}
-                            />
-                        </div>
-                        <div className="icon_info absolute left-2 bottom-2 flex items-center justify-center gap-2">
-                            <img className="max-w-10 rounded-lg" src={currentLink.icon || Vapor.asset('images/icon-placeholder.png')} alt=""/>
-                            <p>{currentLink.name || "Icon Name"}</p>
-                        </div>
+
+                    <div className={`icon_col relative ${elementName}`}>
+                        {elementName === "bg_image" &&
+                            <>
+                            <p>Button Preview</p>
+                            <div className="canvas_wrap relative">
+                                <canvas
+                                    ref={previewCanvasRef}
+                                    // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
+                                    style={{
+                                        backgroundSize: `cover`,
+                                        backgroundRepeat: `no-repeat`,
+                                        width: imageSelected ? `100%` : 0,
+                                        height: imageSelected ? `auto` : 0,
+                                        borderRadius: `8px`,
+                                    }}
+                                />
+                            </div>
+                            <div className="icon_info absolute left-2 bottom-2 flex items-center justify-center gap-2">
+                                <img className="max-w-10 rounded-lg" src={editLink.icon || Vapor.asset('images/icon-placeholder.png')} alt=""/>
+                                <p>{editLink.name || "Icon Name"}</p>
+                            </div>
+                                </>
+                        }
+                        {elementName === "icon" &&
+                            <>
+                                <p>Icon Preview</p>
+                                <div className="canvas_wrap relative">
+                                    <canvas
+                                        ref={previewCanvasRef}
+                                        // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
+                                        style={{
+                                            backgroundSize: `cover`,
+                                            backgroundRepeat: `no-repeat`,
+                                            width: imageSelected ? `100%` : 0,
+                                            height: imageSelected ? `100%` : 0,
+                                            borderRadius: `20px`,
+                                        }}
+                                    />
+                                </div>
+                            </>
+                        }
                     </div>
                 </div>
             }
@@ -163,7 +199,7 @@ const ImageUploader = ({
                             </div>
                             :
                             <>
-                                <p className="mb-2 text-center">Upload a background image for your button</p>
+                                <p className="mb-2 text-center">Upload a {elementName === "bg_image" ? "background image" : "icon"} for your button</p>
                                 <label htmlFor="custom_icon_upload" className="custom !uppercase button blue">
                                     Select Image
                                 </label>

@@ -53,9 +53,11 @@ const StandardForm = ({
     const  { pageSettings } = usePageContext();
     const [ showTerms, setShowTerms ] = useState(false);
     const [ showBGUpload, setShowBGUpload ] = useState(false);
-
     //const {id, folderId} = editLink;
-    const [ showIconList, setShowIconList ] = useState(true);
+    const [ showIconList, setShowIconList ] = useState({
+        show: true,
+        type: 'standard'
+    });
 
     useEffect(() => {
         setEditLink(
@@ -432,7 +434,6 @@ const StandardForm = ({
             </div>
             <FormTabs
                 currentLink={editLink}
-                showIconList={showIconList}
                 setShowIconList={setShowIconList}
                 showBGUpload={showBGUpload}
                 setShowBGUpload={setShowBGUpload}
@@ -442,21 +443,23 @@ const StandardForm = ({
                 <div className="flex flex-wrap justify-end mt-5 relative">
                     <div className="w-full">
                         <ImageUploader
-                            currentLink={editLink}
+                            editLink={editLink}
+                            setEditLink={setEditLink}
                             setShowLoader={setShowLoader}
-                            pageSettings={pageSettings}
-                            setShowBGUpload={setShowBGUpload}
+                            elementName="bg_image"
+                            imageCrop={{unit: "%", width: 100, aspect: 16 / 5 }}
+                            imageAspectRatio={16 / 5}
                         />
                     </div>
                 </div>
                 }
-                { (editLink.type !== "offer" && editLink.type !== "mailchimp") &&
+                { (editLink.type !== "offer" && editLink.type !== "mailchimp" && !showBGUpload) &&
                     <InputTypeRadio
                         editLink={editLink}
                         setEditLink={setEditLink}
                     />
                 }
-                {(showIconList || pageSettings.page_layout === "layout_one") &&
+                {(showIconList.show || pageSettings.page_layout === "layout_one") &&
                 <div className="link_form">
                     <div className="icon_row">
                         <div className="icon_box">
@@ -464,6 +467,9 @@ const StandardForm = ({
                                 setCharactersLeft={setCharactersLeft}
                                 editLink={editLink}
                                 setEditLink={setEditLink}
+                                showIconList={showIconList}
+                                setShowIconList={setShowIconList}
+                                setShowLoader={setShowLoader}
                             />
                         </div>
                     </div>
