@@ -173,7 +173,7 @@ const Preview = ({
                                         index + 1;
 
                                     let displayIcon = null;
-                                    if (type !== "folder") {
+                                    if (type !== "folder" && icon) {
                                         displayIcon = checkIcon(icon, "preview", subStatus);
                                     }
 
@@ -222,7 +222,6 @@ const Preview = ({
                                                                 <div className={` ${colClasses} `}>
                                                                 </div>
                                                         )
-                                                    case "standard":
                                                     case "offer":
                                                     case "url":
                                                     case "email":
@@ -266,7 +265,11 @@ const Preview = ({
                                                                             :
                                                                             "flex items-center justify-between w-full"}`}>
                                                                             <span className="flex items-center justify-start">
-                                                                                <img src={displayIcon} alt=""/>
+                                                                                {displayIcon ?
+                                                                                    <img src={displayIcon} alt=""/>
+                                                                                        :
+                                                                                        ""
+                                                                                }
                                                                                 <h3>{name || "Link Name"}</h3>
                                                                             </span>
                                                                             <IoOpenOutline />

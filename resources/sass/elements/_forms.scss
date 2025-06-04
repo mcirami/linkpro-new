@@ -531,7 +531,6 @@ form .bottom_row a {
                         padding-bottom: 5px;
                         text-align: center;
                         margin-bottom: 5px;
-                        border-bottom: 1px solid $borderGray;
                     }
 
                     .default_icon.icon_col {
@@ -556,6 +555,10 @@ form .bottom_row a {
                             width: 30%;
                         }
 
+                        p:first-child {
+                            border-bottom: 1px solid $borderGray;
+                        }
+
                         img {
                             max-width: 94%;
                             margin: 4px auto 0;
@@ -578,7 +581,7 @@ form .bottom_row a {
                     -webkit-border-radius: 0;
                     -moz-border-radius: 0;
                     border: none;
-                    padding: 0;
+                    padding: 10px 0 0;
                 }
 
                 &.active {

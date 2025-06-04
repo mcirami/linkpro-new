@@ -163,8 +163,9 @@ const IconList = ({
         if(iconIndex !== activeIcon) {
             setActiveIcon(iconIndex);
 
-            let name = editLink.name;
-            if(el.dataset.name) {
+            let name = el.dataset.name || editLink.name;
+            setCharactersLeft(11 - name.length);
+            /*if(el.dataset.name) {
                 name = el.dataset.name;
                 setCharactersLeft(11 - name.length);
 
@@ -177,10 +178,10 @@ const IconList = ({
                 } else {
                     setEditLink((prev) => ({...prev, type: "url"}));
                 }
-            }
+            }*/
 
-            let value = null;
-            if(iconType === "url") {
+            let value = editLink[iconType];
+            if(iconType === "url" && showIconList.type === "standard") {
                 let icon = icons.find(icon => icon.name === name);
                 if (icon?.prefix) {
                     value = icon.prefix;
@@ -213,21 +214,22 @@ const IconList = ({
                     course_id: courseId
                 }
 
-                console.log("packets: ", packets);
-            console.log("linkId: ", linkId);
+                console.log("selectIcon packets: ", packets);
+            console.log("selectIcon linkId: ", linkId);
 
-            setTimeout(function(){
+            /*setTimeout(function(){*/
                 if (linkId) {
                     updateLink(packets, linkId).then((data) => {
                         if(data.success) {
                             dispatch({
                                 type: LINKS_ACTIONS.UPDATE_LINK,
                                 payload: {
-                                    editID: linkId,
-                                    currentLink: editLink,
+                                    id: linkId,
+                                    editLink: editLink,
                                     [`${iconType}`]: value,
                                     type: iconType,
-                                    icon: source
+                                    icon: source,
+                                    name: name,
                                 }
                             })
 
@@ -244,7 +246,7 @@ const IconList = ({
                 } else {
                     addLink(packets).then((data) => {
                         if (data.success) {
-                            let newLinks = [...userLinks];
+                            /*let newLinks = [...userLinks];
                             const newLinkObject = {
                                 name: name,
                                 icon: source,
@@ -255,7 +257,7 @@ const IconList = ({
                                 position: data.position,
                                 active_status: true,
                                 folder_id: editLink.folder_id,
-                            }
+                            }*/
 
                             setEditLink(prevState => ({
                                 ...prevState,
@@ -267,7 +269,7 @@ const IconList = ({
                                 course_id: courseId,
                             }))
 
-                            if (editLink.folder_id) {
+                           /* if (editLink.folder_id) {
                                 newLinks.map((link, index) => {
                                     if (link.id === editLink.folder_id) {
                                         link.links.push(newLinkObject);
@@ -283,11 +285,22 @@ const IconList = ({
                                 payload: {
                                     links: newLinks
                                 }
+                            })*/
+
+                            dispatch({
+                                type: LINKS_ACTIONS.UPDATE_LINK,
+                                payload: {
+                                    id: linkId,
+                                    /*editLink: editLink,*/
+                                    [`${iconType}`]: value,
+                                    type: iconType,
+                                    icon: source
+                                }
                             })
                         }
                     });
                 }
-            }, 1000)
+            /*}, 1000)*/
 
         } else {
             setActiveIcon(null);

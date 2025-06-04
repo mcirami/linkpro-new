@@ -266,6 +266,16 @@
                     -moz-border-radius: 20%;
                     position: relative;
 
+                    &.no_icon {
+                        border: 1px solid $blue;
+
+                        p {
+                            font-size: .5rem !important;
+                            padding: 12px 5px;
+                            text-align: center;
+                        }
+                    }
+
                     &:hover {
                         cursor: pointer;
 

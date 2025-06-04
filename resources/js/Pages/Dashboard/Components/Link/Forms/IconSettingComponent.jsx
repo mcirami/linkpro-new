@@ -51,7 +51,59 @@ const IconSettingComponent = ({
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (editLink[elementName] != null) {
+        if (isEditing?.value) {
+            const packets = {
+                [`${isEditing.section}`]: isEditing.value,
+                page_id: pageSettings.id,
+                type: isEditing.type,
+            };
+
+            if(isEditing.id) {
+                updateLink(packets, isEditing.id).then((data) => {
+                    if (data.success) {
+                        dispatch({
+                            type: LINKS_ACTIONS.UPDATE_LINK,
+                            payload: {
+                                id: isEditing.id,
+                                editLink: editLink,
+                                [`${isEditing.section}`]: isEditing.value
+                            }
+                        })
+
+                        setIsEditing &&
+                        setIsEditing({
+                            active: false,
+                            section: "",
+                            value: "",
+                            id: null,
+                            type: null
+                        });
+                    }
+                });
+            } else {
+                addLink(packets).then((data) => {
+                    if (data.success) {
+                        dispatch({
+                            type: LINKS_ACTIONS.UPDATE_LINK,
+                            payload: {
+                                id: isEditing.id,
+                                editLink: editLink,
+                                [`${isEditing.section}`]: isEditing.value
+                            }
+                        })
+
+                        setIsEditing &&
+                        setIsEditing({
+                            active: false,
+                            section: "",
+                            value: "",
+                            id: null,
+                            type: null
+                        });
+                    }
+                })
+            }
+        } else if (editLink[elementName]) {
 
             const packets = {
                 [`${elementName}`]: editLink[elementName],
@@ -60,7 +112,6 @@ const IconSettingComponent = ({
                 type: editLink.type,
             };
 
-            console.log("editLink: ", editLink);
             if(editLink.id) {
 
                 updateLink(packets, editLink.id).then((data) => {
@@ -79,7 +130,7 @@ const IconSettingComponent = ({
                 addLink(packets).then((data) => {
                     if (data.success) {
                         const linkId = data.link_id;
-                        const newLinkObject = {
+                        /*const newLinkObject = {
                             [`${elementName}`]: editLink[elementName],
                             type: editLink.type,
                             course_id: editLink.course_id,
@@ -87,13 +138,15 @@ const IconSettingComponent = ({
                             position: data.position,
                             active_status: true,
                             folder_id: editLink.folder_id,
-                        }
+                        }*/
                         setEditLink(prev => ({
                             ...prev,
                             id: linkId,
                             position: data.position,
                             active_status: true,
                         }));
+
+                        /*
                         let newLinks = [...userLinks];
 
                         if (editLink.folder_id) {
@@ -112,38 +165,19 @@ const IconSettingComponent = ({
                             payload: {
                                 links: newLinks
                             }
+                        })*/
+
+                        dispatch({
+                            type: LINKS_ACTIONS.UPDATE_LINK,
+                            payload: {
+                                [`${elementName}`]: editLink[elementName],
+                                editID: linkId,
+                                editLink: editLink,
+                            }
                         })
                     }
                 });
             }
-        } else {
-            const packets = {
-                [`${isEditing.section}`]: isEditing.value,
-                page_id: pageSettings.id,
-                type: isEditing.type,
-            };
-
-            updateLink(packets, isEditing.id).then((data) => {
-                if (data.success) {
-                    dispatch({
-                        type: LINKS_ACTIONS.UPDATE_LINK,
-                        payload: {
-                            editID: isEditing.id,
-                            [`${isEditing.section}`]: isEditing.value
-                        }
-                    })
-
-                    setIsEditing &&
-                        setIsEditing({
-                            active: false,
-                            section: "",
-                            value: "",
-                            id: null,
-                            type: null
-                        });
-                }
-            });
-
         }
     }
 
@@ -154,7 +188,8 @@ const IconSettingComponent = ({
                     className={`${editLink[elementName] ? "active" : ""}`}
                     name={elementName}
                     type={inputType === "phone" ? "tel" : inputType}
-                    value={editLink[elementName] || isEditing?.value || ""}
+                    value={isEditing?.value}
+                    autoFocus={isEditing?.section === elementName}
                     onChange={(e) => handleChange(e)}
                     onFocus={(e) => HandleFocus(e.target)}
                     onBlur={(e) => {HandleBlur(e.target); handleSubmit(e); }}

@@ -49,9 +49,6 @@ const Links = ({
     const { dispatchFolderLinks } = useContext(FolderLinksContext);
     const {pageSettings} = usePageContext();
     const [formRow, setFormRow] = useState(null);
-
-    console.log("formRow: ", formRow);
-    console.log("editLink: ", editLink);
     //const targetRef = useRef(null);
 
     const sensors = useSensors(
@@ -249,7 +246,7 @@ const Links = ({
                                 pageSettings['page_layout'] === "layout_one")
                                 &&
                                 <Link
-                                    key={link.id}
+                                    key={link.id || index}
                                     link={link}
                                     handleOnClick={handleOnClick}
                                     fetchFolderLinks={fetchFolderLinks}

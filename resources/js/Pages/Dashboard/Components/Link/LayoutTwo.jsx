@@ -24,21 +24,24 @@ const LayoutTwo = ({
         active: false,
         section: "",
         value: "",
-        id: id,
-        type: type
+        id: null,
+        type: ""
     });
 
     return (
         <div className="link_content">
-
-            <div className="icon_wrap"
-                 onClick={(e) => {
-                handleOnClick(e, id, index + 1)
-            }}>
-                <div className="image_wrap">
-                    <img src={displayIcon} alt=""/>
+            {displayIcon ?
+                <div className="icon_wrap"
+                     onClick={(e) => {
+                    handleOnClick(e, id, index + 1)
+                }}>
+                    <div className={`image_wrap`}>
+                        <img src={displayIcon} alt=""/>
+                    </div>
                 </div>
-            </div>
+                :
+                ""
+            }
             <div className="left_col">
 
                 {isEditing.active && isEditing.section === "name" ?
@@ -53,13 +56,14 @@ const LayoutTwo = ({
                     />
                     :
                     <div className="flex gap-1 items-start">
-                        <h3>{name}</h3>
+                        <h3>{name || "Enter Name"}</h3>
                         <span className="edit_icon edit_setting" onClick={(e) => {
                             setIsEditing({
                                 active: true,
                                 section: "name",
                                 value: name,
-                                id: id
+                                id: id,
+                                type: type,
                             });
                         }}>
                             <FaEdit />
@@ -83,9 +87,9 @@ const LayoutTwo = ({
                     :
                     <div className="flex gap-1 items-start">
                         <p>
-                            {(type === "url" || type === "offer") && url}
-                            {type === "email" && email}
-                            {type === "phone" && phone}
+                            {((type === "url" || type === "offer")) && (url || "Enter URL")}
+                            {type === "email" && (email || "Enter Email")}
+                            {type === "phone" && (phone || "Enter Phone Number")}
                         </p>
                         {type !== "offer" && type !== "mailchimp" &&
                             <span className="edit_icon edit_setting" onClick={(e) => {
@@ -93,7 +97,8 @@ const LayoutTwo = ({
                                     active: true,
                                     section: type,
                                     value: type === "url" ? url : type === "email" ? email : type === "phone" ? phone : "",
-                                    id: id
+                                    id: id,
+                                    type: type
                                 });
                             }}>
                                 <FaEdit />

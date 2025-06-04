@@ -9,6 +9,7 @@ import toBoolean from 'validator/es/lib/toBoolean.js';
  */
 export const addLink = async (packets) => {
 
+    console.log("addLink Packets:", packets);
     return await axios.post(route('link.store'), packets)
     .then(
         (response) => {
@@ -62,7 +63,8 @@ export const addLink = async (packets) => {
  * return object
  */
 export const updateLink = (packets, editID) => {
-
+    console.log("updateLink Packets:", packets);
+    console.log("updateLink editID:", editID);
     return axios.put('/dashboard/links/update/' + editID, packets).then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);

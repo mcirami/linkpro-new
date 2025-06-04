@@ -110,9 +110,10 @@ export function reducer(userLinks, action) {
         case LINKS_ACTIONS.UPDATE_LINK:
 
             return userLinks.map((item) => {
-                if (item.id === action.payload.editID ) {
+                if (item.id === action.payload.id ) {
                     //console.log("item", action.payload);
-                    const { editID, editLink, ...restPayload } = action.payload;
+                    const { id, editLink, ...restPayload } = action.payload;
+
                     return {
                         ...item,
                         ...(editLink || {}),

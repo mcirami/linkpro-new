@@ -62,6 +62,7 @@ const ImageUploader = ({
     }
 
     const uploadImage = async (e) => {
+
         e.preventDefault();
         const image = getFileToUpload(previewCanvasRef?.current);
         image.then((value) => {
@@ -97,7 +98,7 @@ const ImageUploader = ({
                     dispatch({
                         type: LINKS_ACTIONS.UPDATE_LINK,
                         payload: {
-                            editID: editLink.id,
+                            id: editLink.id,
                             [`${elementName}`]: data.imagePath[elementName],
                         }})
 
