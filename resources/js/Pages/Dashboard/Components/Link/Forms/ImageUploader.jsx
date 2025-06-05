@@ -200,7 +200,7 @@ const ImageUploader = ({
                             </div>
                             :
                             <>
-                                <p className="mb-2 text-center">Upload a {elementName === "bg_image" ? "background image" : "icon"} for your button</p>
+                                <p className="mt-2 text-center">Upload a {elementName === "bg_image" ? "background image" : "icon"} for your button</p>
                                 <label htmlFor="custom_icon_upload" className="custom !uppercase button blue">
                                     Select Image
                                 </label>
@@ -208,8 +208,8 @@ const ImageUploader = ({
                         }
                         <input id="custom_icon_upload" type="file" className="custom" onChange={selectImage} accept="image/png, image/jpeg, image/jpg, image/gif"/>
                         <div className="my_row info_text file_types text-center mb-2 !pl-0 !pr-0">
-                            <p className="m-0 char_count w-100">Allowed File Types: <span>png, jpg, jpeg, gif</span>
-                            </p>
+                            <small className="m-0 char_count w-100">Allowed File Types: <span>png, jpg, jpeg, gif</span>
+                            </small>
                         </div>
 
                     </div>

@@ -218,16 +218,19 @@ class LinkService {
      *
      * @return string
      */
-    public function updateLinkStatus($request, $link): string {
+    public function updateItemStatus($request, $link): string {
+        $keys = collect($request->all())->keys();
+        $link->update([
+            $keys[0] =>  $request[$keys[0]]
+        ]);
 
-        $link->update($request->only(['active_status']));
-        if ($request->active_status == true ) {
+        /*if ($request->active_status ) {
             $message = "Icon Enabled";
         } else {
             $message = "Icon Disabled";
-        }
+        }*/
 
-        return $message;
+        return "Updated";
     }
 
     /**

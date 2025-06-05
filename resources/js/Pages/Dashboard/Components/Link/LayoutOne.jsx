@@ -1,5 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import IOSSwitch from '@/Utils/IOSSwitch.jsx';
+import {
+    handleSwitchChange
+} from '@/Services/LinksRequest.jsx';
+import {
+    UserLinksContext,
+} from '@/Pages/Dashboard/Dashboard.jsx';
 
 const LayoutOne = ({
                        fetchFolderLinks,
@@ -10,11 +16,12 @@ const LayoutOne = ({
                        displayIcon,
                        handleOnClick,
                        link,
-                       handleChange,
-                       index
+                       index,
+                       setShowUpgradePopup
 }) => {
 
     const {type, id, active_status} = link;
+    const { dispatch } = useContext(UserLinksContext);
 
     return (
         <>
@@ -64,7 +71,7 @@ const LayoutOne = ({
                     <div>
                         <div className="switch_wrap">
                             <IOSSwitch
-                                onChange={() => handleChange(link, hasLinks, type)}
+                                onChange={() => handleSwitchChange(link, dispatch, subStatus, hasLinks, setShowUpgradePopup)}
                                 checked={Boolean(active_status)}
                             />
                             <div className="hover_text switch">

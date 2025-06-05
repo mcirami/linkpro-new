@@ -16,7 +16,6 @@ const Link = ({
                   link,
                   handleOnClick,
                   fetchFolderLinks,
-                  handleChange,
                   subStatus,
                   setShowConfirmPopup,
                   editLink,
@@ -24,13 +23,14 @@ const Link = ({
                   index,
                   setShowLoader,
                   formRow,
-                  setFormRow
+                  setFormRow,
+                  setShowUpgradePopup
 }) => {
 
     const {type, id, icon, links} = link;
     const {pageSettings} = usePageContext();
 
-    let hasLinks = true;
+    let hasLinks = false;
     let displayIcon;
     if (type === "folder") {
         hasLinks = links.length > 0;
@@ -78,17 +78,15 @@ const Link = ({
                             displayIcon={displayIcon}
                             link={link}
                             handleOnClick={handleOnClick}
-                            handleChange={handleChange}
                             index={index}
+                            setShowUpgradePopup={setShowUpgradePopup}
                         />
                         :
                         type !== "folder" &&
                             <LayoutTwo
-                                hasLinks={hasLinks}
                                 displayIcon={displayIcon}
                                 link={link}
                                 handleOnClick={handleOnClick}
-                                handleChange={handleChange}
                                 setShowConfirmPopup={setShowConfirmPopup}
                                 editLink={editLink}
                                 setEditLink={setEditLink}

@@ -470,13 +470,13 @@ function Dashboard({
 
                                                     {editLink.id || showLinkForm.show || editLink.folder_id ?
                                                         <div className="my_row icon_links" id="scrollTo">
-                                                            <p className="form_title">
+                                                           {/* <p className="form_title">
                                                                 {editLink.id || (editLink.folder_id && !showLinkForm.show) ? "Editing " : "" }
                                                                 {showLinkForm.show ? "Adding " : "" }
                                                                 {(editLink.folder_id && !editLink.id && !showLinkForm.show) ? "Folder" : "Icon"}
-                                                            </p>
+                                                            </p>*/}
                                                             <div className="links_row">
-                                                                <FormBreadcrumbs
+                                                                {/*<FormBreadcrumbs
                                                                     setShowLinkForm={setShowLinkForm}
                                                                     editLink={editLink}
                                                                     setEditLink={setEditLink}
@@ -484,8 +484,8 @@ function Dashboard({
                                                                     setInputType={setInputType}
                                                                     showLinkForm={showLinkForm}
                                                                     showLinkTypeRadio={showLinkTypeRadio}
-                                                                />
-                                                                { (editLink.id || editLink.folder_id && !showLinkForm.show) &&
+                                                                />*/}
+                                                                { (editLink.folder_id && !showLinkForm.show) &&
                                                                     <div className="delete_icon">
                                                                         <DeleteIcon
                                                                             setShowConfirmPopup={setShowConfirmPopup}

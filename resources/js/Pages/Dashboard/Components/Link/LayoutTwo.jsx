@@ -1,17 +1,21 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {FaEdit} from 'react-icons/fa';
 import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import DeleteIcon from '@/Pages/Dashboard/Components/Link/Forms/DeleteIcon.jsx';
 import IconSettingComponent
     from '@/Pages/Dashboard/Components/Link/Forms/IconSettingComponent.jsx';
 import {capitalize, toUpper} from 'lodash';
+import {
+    handleSwitchChange
+} from '@/Services/LinksRequest.jsx';
+import {
+    UserLinksContext,
+} from '@/Pages/Dashboard/Dashboard.jsx';
 
 const LayoutTwo = ({
-                       hasLinks,
                        displayIcon,
                        handleOnClick,
                        link,
-                       handleChange,
                        setShowConfirmPopup,
                        editLink,
                        setEditLink,
@@ -27,6 +31,8 @@ const LayoutTwo = ({
         id: null,
         type: ""
     });
+
+    const { dispatch } = useContext(UserLinksContext);
 
     return (
         <div className="link_content">
@@ -124,7 +130,7 @@ const LayoutTwo = ({
                     </span>
                     <div className="switch_wrap">
                         <IOSSwitch
-                            onChange={() => handleChange(link, hasLinks, type)}
+                            onChange={() => handleSwitchChange(link, setEditLink, dispatch, "active_status")}
                             checked={Boolean(active_status)}
                         />
                         <div className="hover_text switch">

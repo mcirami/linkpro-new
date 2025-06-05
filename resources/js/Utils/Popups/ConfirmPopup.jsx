@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import {MdCheckCircle} from 'react-icons/md';
 import {
     deleteLink,
-    updateLinkStatus,
+    updateLinkItemStatus,
 } from '@/Services/LinksRequest.jsx';
 import {UserLinksContext, FolderLinksContext} from '../../Pages/Dashboard/Dashboard.jsx';
 import {
@@ -108,7 +108,7 @@ export const ConfirmPopup = ({
                                 active_status: folderActive,
                             };
 
-                            updateLinkStatus(packets, iconId, url);
+                            updateLinkItemStatus(packets, iconId, url);
                         }
 
                         dispatch({ type: LINKS_ACTIONS.UPDATE_LINKS_POSITIONS, payload: {links: newArray, folderActive: folderActive, folderID: iconId} })

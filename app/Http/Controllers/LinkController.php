@@ -76,12 +76,12 @@ class LinkController extends Controller
      *
      * @return JsonResponse
      */
-    public function updateStatus(Request $request, Link $link, LinkService $linkService): JsonResponse {
+    public function updateLinkItemStatus(Request $request, Link $link, LinkService $linkService): JsonResponse {
         if ($link->user_id != Auth::id()) {
             return abort(403);
         }
 
-        $message = $linkService->updateLinkStatus($request, $link);
+        $message = $linkService->updateItemStatus($request, $link);
 
         return response()->json(['message' => $message]);
 

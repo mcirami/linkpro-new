@@ -780,6 +780,26 @@ form .bottom_row a {
                 }
             }
 
+            .form_nav_content {
+                 p {
+                     @include ossemibold;
+                     font-size: .9rem;
+                     text-align: left;
+                     text-transform: uppercase;
+                     margin-bottom: 10px;
+                 }
+
+                .image_wrap, img {
+                    border-radius: 8px;
+                    -webkit-border-radius: 8px;
+                    -moz-border-radius: 8px;
+                }
+
+                .image_wrap {
+                    border: 2px solid $black;
+                }
+            }
+
             .link_form {
                 width: 100%;
                 background: $white;

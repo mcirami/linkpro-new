@@ -16,6 +16,8 @@ const LinkTypeRadio = ({
             ...prev,
             type: type,
             page_id: pageId,
+            icon_active: false,
+            bg_active: false
         }));
         //setShowLinkForm({show: true});
         setShowLinkTypeRadio(false);

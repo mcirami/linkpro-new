@@ -9,9 +9,7 @@ import {
 import {usePageContext} from '@/Context/PageContext.jsx';
 import {
     updateLinksPositions,
-    updateLinkStatus,
 } from '@/Services/LinksRequest.jsx';
-import EventBus from '@/Utils/Bus';
 
 import {
     DndContext,
@@ -57,43 +55,6 @@ const Links = ({
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
-
-    const handleChange = (currentItem, hasLinks, type) => {
-
-        if(hasLinks) {
-
-            if ((currentItem.type && currentItem.type === "folder") && !subStatus) {
-                setShowUpgradePopup({
-                    show: true,
-                    text: "enable your folders"
-                });
-            } else {
-                const newStatus = !currentItem.active_status;
-
-                let url = "";
-
-                if (currentItem.type && currentItem.type === "folder") {
-                    url = "/dashboard/folder/status/";
-                } else {
-                    url = "/dashboard/links/status/"
-                }
-
-                const packets = {
-                    active_status: newStatus,
-                };
-
-                updateLinkStatus(packets, currentItem.id, url)
-                .then((data) => {
-
-                    if (data.success) {
-                        dispatch( { type: LINKS_ACTIONS.UPDATE_LINKS_STATUS, payload: {id: currentItem.id}} )
-                    }
-                })
-            }
-        } else {
-            EventBus.dispatch("error", {message: "Add Icons Before Enabling"});
-        }
-    };
 
     const handleOnClick = (e, linkID, row) => {
 
@@ -250,7 +211,6 @@ const Links = ({
                                     link={link}
                                     handleOnClick={handleOnClick}
                                     fetchFolderLinks={fetchFolderLinks}
-                                    handleChange={handleChange}
                                     subStatus={subStatus}
                                     setShowConfirmPopup={setShowConfirmPopup}
                                     editLink={editLink}
@@ -259,6 +219,7 @@ const Links = ({
                                     setShowLoader={setShowLoader}
                                     formRow={formRow}
                                     setFormRow={setFormRow}
+                                    setShowUpgradePopup={setShowUpgradePopup}
                                 />
                             )
                         })}

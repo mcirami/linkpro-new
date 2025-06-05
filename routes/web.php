@@ -97,7 +97,7 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'dashboard'], function () {
         Route::post('/links/new', [LinkController::class, 'store'])->name('link.store');
         Route::put('/links/update/{link}', [LinkController::class, 'update']);
-        Route::patch('/links/status/{link}', [LinkController::class, 'updateStatus']);
+        Route::patch('/links/item-status/{link}', [LinkController::class, 'updateLinkItemStatus']);
         Route::patch('/links/update-positions', [LinkController::class, 'updatePositions']);
         Route::put('/links/delete/{link}', [LinkController::class, 'destroy']);
 

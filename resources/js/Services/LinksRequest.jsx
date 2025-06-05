@@ -2,6 +2,7 @@ import axios from 'axios';
 import EventBus from '../Utils/Bus';
 import {icons} from './IconObjects';
 import toBoolean from 'validator/es/lib/toBoolean.js';
+import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
 
 /**
  * Submit a request to add a new link
@@ -9,7 +10,6 @@ import toBoolean from 'validator/es/lib/toBoolean.js';
  */
 export const addLink = async (packets) => {
 
-    console.log("addLink Packets:", packets);
     return await axios.post(route('link.store'), packets)
     .then(
         (response) => {
@@ -63,8 +63,7 @@ export const addLink = async (packets) => {
  * return object
  */
 export const updateLink = (packets, editID) => {
-    console.log("updateLink Packets:", packets);
-    console.log("updateLink editID:", editID);
+
     return axios.put('/dashboard/links/update/' + editID, packets).then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
@@ -127,7 +126,7 @@ export const updateLinksPositions = (packets) => {
  * Submit a request to update a link
  * return object
  */
-export const updateLinkStatus = (packets, itemID, url) => {
+export const updateLinkItemStatus = (packets, itemID, url) => {
 
     return axios.patch(url + itemID, packets)
     .then(
@@ -153,6 +152,62 @@ export const updateLinkStatus = (packets, itemID, url) => {
 
     });
 }
+
+export const handleSwitchChange = (
+    currentItem,
+    setEditLink,
+    dispatch,
+    element,
+    subStatus = null,
+    hasLinks = null,
+    setShowUpgradePopup = null
+) => {
+
+    if (currentItem.type === "folder") {
+
+        if (!subStatus) {
+            setShowUpgradePopup &&
+            setShowUpgradePopup({
+                show: true,
+                text: "enable your folders"
+            });
+        } else if (!hasLinks) {
+            EventBus.dispatch("error", {message: "Add Icons Before Enabling"});
+        }
+
+    } else {
+        const newStatus = !currentItem[element];
+
+        let url = "";
+
+        if (currentItem.type && currentItem.type === "folder") {
+            url = "/dashboard/folder/status/";
+        } else {
+            url = "/dashboard/links/item-status/"
+        }
+
+        const packets = {
+            [`${element}`]: newStatus,
+        };
+
+        updateLinkItemStatus(packets, currentItem.id, url)
+        .then((data) => {
+
+            if (data.success) {
+                dispatch( {
+                    type: LINKS_ACTIONS.UPDATE_LINKS_ITEM_STATUS,
+                    payload: {
+                        id: currentItem.id,
+                        [`${element}`]: newStatus
+                }} )
+                setEditLink((prev) => ({
+                    ...prev,
+                    [`${element}`]: newStatus
+                }))
+            }
+        })
+    }
+};
 
 /**
  * Submit a request to delete a link

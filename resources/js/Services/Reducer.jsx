@@ -3,7 +3,7 @@
 export const LINKS_ACTIONS = {
     SET_LINKS: 'set-links',
     SET_FOLDER_LINKS_ORDER: 'set-folder-links-order',
-    UPDATE_LINKS_STATUS: 'update-links-status',
+    UPDATE_LINKS_ITEM_STATUS: 'update-links-status',
     UPDATE_LINKS_STATUS_FROM_FOLDER: 'update-links-status-from-folder',
     ADD_NEW_IN_FOLDER: 'add-new-in-folder',
     UPDATE_FOLDER_NAME: 'update-folder-name',
@@ -35,15 +35,15 @@ export function reducer(userLinks, action) {
                 return item
             });
 
-        case LINKS_ACTIONS.UPDATE_LINKS_STATUS:
+        case LINKS_ACTIONS.UPDATE_LINKS_ITEM_STATUS:
 
             return userLinks.map(item => {
 
                 if (item.id === action.payload.id) {
-
+                    const { id, ...restPayload } = action.payload;
                     return {
                         ...item,
-                        active_status: !item.active_status,
+                        ...restPayload,
                     }
 
                 }

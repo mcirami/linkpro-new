@@ -143,13 +143,15 @@ const Preview = ({
                                         email,
                                         phone,
                                         icon,
+                                        icon_active,
                                         active_status,
                                         links,
                                         bg_image,
+                                        bg_active
                                     } = linkItem;
 
                                     let styles = {};
-                                    if (bg_image && pageSettings.page_layout === "layout_two") {
+                                    if (bg_image && bg_active && pageSettings.page_layout === "layout_two") {
                                         styles = {
                                             backgroundImage: `url(${bg_image})`,
                                             backgroundRepeat: "no-repeat",
@@ -188,7 +190,7 @@ const Preview = ({
                                             ""
                                         }`
                                     } else {
-                                        colClasses = `icon_col ${bg_image && pageSettings.page_layout ==="layout_two" ?
+                                        colClasses = `icon_col ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ?
                                             "bg_image"
                                             :
                                             ""
@@ -260,12 +262,12 @@ const Preview = ({
                                                                     }`}
                                                                        target="_blank"
                                                                        href={url || "#"}>
-                                                                        <div className={`${bg_image ?
+                                                                        <div className={`${ (bg_image && bg_active) ?
                                                                             "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
                                                                             :
                                                                             "flex items-center justify-between w-full"}`}>
                                                                             <span className="flex items-center justify-start">
-                                                                                {displayIcon ?
+                                                                                { (displayIcon && icon_active) ?
                                                                                     <img src={displayIcon} alt=""/>
                                                                                         :
                                                                                         ""

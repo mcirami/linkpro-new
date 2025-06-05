@@ -229,6 +229,7 @@ const IconList = ({
                                     [`${iconType}`]: value,
                                     type: iconType,
                                     icon: source,
+                                    icon_active: true,
                                     name: name,
                                 }
                             })
@@ -237,6 +238,7 @@ const IconList = ({
                                 ...prevState,
                                 name: name,
                                 icon: source,
+                                icon_active: true,
                                 [`${iconType}`]: value,
                                 type: iconType,
                                 course_id: courseId,
@@ -610,7 +612,7 @@ const IconList = ({
                 }
 
                 {showIconList.type === "custom" &&
-                    <div className="flex flex-wrap justify-end mt-5 relative">
+                    <div className="flex flex-wrap justify-end relative">
                         <div className="w-full">
                             <ImageUploader
                                 editLink={editLink}

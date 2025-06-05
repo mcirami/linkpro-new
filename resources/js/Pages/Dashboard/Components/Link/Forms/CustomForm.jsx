@@ -23,7 +23,7 @@ import {
     addLink,
     checkURL,
     updateLink,
-    updateLinkStatus,
+    updateLinkItemStatus,
 } from '@/Services/LinksRequest.jsx';
 import {
     FOLDER_LINKS_ACTIONS,
@@ -299,7 +299,7 @@ const CustomForm = ({
                                         active_status: folderActive,
                                     };
 
-                                    updateLinkStatus(packets, folderId,
+                                    updateLinkItemStatus(packets, folderId,
                                         url);
                                 }
 
@@ -527,7 +527,7 @@ const CustomForm = ({
                                         active_status: folderActive,
                                     };
 
-                                    updateLinkStatus(packets, folderId, url);
+                                    updateLinkItemStatus(packets, folderId, url);
                                 }
 
                                 dispatch({

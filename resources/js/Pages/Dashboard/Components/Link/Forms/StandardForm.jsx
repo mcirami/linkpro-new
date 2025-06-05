@@ -10,8 +10,9 @@ import InputTypeRadio from './InputTypeRadio';
 import {
     addLink,
     checkURL,
+    handleSwitchChange,
     updateLink,
-    updateLinkStatus,
+    updateLinkItemStatus,
 } from '@/Services/LinksRequest.jsx';
 import {
     FOLDER_LINKS_ACTIONS,
@@ -37,6 +38,7 @@ import IconSettingComponent
     from '@/Pages/Dashboard/Components/Link/Forms/IconSettingComponent.jsx';
 import {capitalize} from 'lodash';
 import {IoCloseSharp} from 'react-icons/io5';
+import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 
 const StandardForm = ({
                           editLink,
@@ -81,6 +83,8 @@ const StandardForm = ({
                 folder_id: editLink.folder_id,
                 description: null,
                 type: editLink.type,
+                icon_active: editLink.icon_active,
+                bg_active: editLink.bg_active,
             }
         );
     }, []);
@@ -296,7 +300,7 @@ const StandardForm = ({
                                     active_status: folderActive,
                                 };
 
-                                updateLinkStatus(packets, folderId, url);
+                                updateLinkItemStatus(packets, folderId, url);
                             }
 
                             dispatch({
@@ -440,7 +444,28 @@ const StandardForm = ({
                 pageLayout={pageSettings.page_layout}
             />
                 {showBGUpload &&
-                <div className="flex flex-wrap justify-end mt-5 relative">
+                <div className="form_nav_content flex flex-wrap justify-end relative p-5">
+                    {editLink.bg_image &&
+                        <>
+                            <div className="switch_wrap">
+                                <IOSSwitch
+                                    onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "bg_active")}
+                                    checked={Boolean(editLink.bg_active)}
+                                />
+                                <div className="hover_text switch">
+                                    <p>
+                                        {Boolean(editLink.bg_active) ? "Disable" : "Enable"} BG
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="w-full">
+                                <p className="uppercase">Current Image:</p>
+                                <div className="image_wrap">
+                                    <img src={editLink.bg_image} alt=""/>
+                                </div>
+                            </div>
+                        </>
+                    }
                     <div className="w-full">
                         <ImageUploader
                             editLink={editLink}
@@ -460,7 +485,18 @@ const StandardForm = ({
                     />
                 }
                 {(showIconList.show || pageSettings.page_layout === "layout_one") &&
-                <div className="link_form">
+                <div className="link_form form_nav_content">
+                    <div className="switch_wrap">
+                        <IOSSwitch
+                            onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "icon_active")}
+                            checked={Boolean(editLink.icon_active)}
+                        />
+                        <div className="hover_text switch">
+                            <p>
+                                {Boolean(editLink.icon_active) ? "Hide" : "Show"} Icon
+                            </p>
+                        </div>
+                    </div>
                     <div className="icon_row">
                         <div className="icon_box">
                             <IconList

@@ -45,41 +45,44 @@ const InputTypeRadio = ({
      }
 
     return (
-        <div className="my_row radios_wrap input_types mb-1">
-            <div className={editLink.type === "url" || !editLink.type ? "radio_wrap active" : "radio_wrap" }>
-                <label htmlFor="url">
-                    <input id="url"
-                           type="radio"
-                           value="url"
-                           name="input_type"
-                           checked={editLink.type === "url" || !editLink.type}
-                           onChange={(e) => {handleOnChange(e) }}/>
-                    URL
-                </label>
-            </div>
-            <div className={editLink.type === "email" ? "radio_wrap active" : "radio_wrap" }>
-                <label htmlFor="email">
-                    <input id="email"
-                           type="radio"
-                           value="email"
-                           name="input_type"
-                           onChange={(e) => { handleOnChange(e) }}
-                           checked={editLink.type === "email"}
-                    />
-                    Email
-                </label>
-            </div>
-            <div className={editLink.type === "phone" ? "radio_wrap active" : "radio_wrap" }>
-                <label htmlFor="phone">
-                    <input id="phone"
-                           type="radio"
-                           value="phone"
-                           name="input_type"
-                           onChange={(e) => { handleOnChange(e) }}
-                           checked={editLink.type === "phone"}
-                    />
-                    Phone
-                </label>
+        <div className="my_row form_nav_content input_types">
+            <p className="pt-5 pl-5">Link Type</p>
+            <div className="radios_wrap">
+                <div className={editLink.type === "url" || !editLink.type ? "radio_wrap active" : "radio_wrap" }>
+                    <label htmlFor="url">
+                        <input id="url"
+                               type="radio"
+                               value="url"
+                               name="input_type"
+                               checked={editLink.type === "url" || !editLink.type}
+                               onChange={(e) => {handleOnChange(e) }}/>
+                        URL
+                    </label>
+                </div>
+                <div className={editLink.type === "email" ? "radio_wrap active" : "radio_wrap" }>
+                    <label htmlFor="email">
+                        <input id="email"
+                               type="radio"
+                               value="email"
+                               name="input_type"
+                               onChange={(e) => { handleOnChange(e) }}
+                               checked={editLink.type === "email"}
+                        />
+                        Email
+                    </label>
+                </div>
+                <div className={editLink.type === "phone" ? "radio_wrap active" : "radio_wrap" }>
+                    <label htmlFor="phone">
+                        <input id="phone"
+                               type="radio"
+                               value="phone"
+                               name="input_type"
+                               onChange={(e) => { handleOnChange(e) }}
+                               checked={editLink.type === "phone"}
+                        />
+                        Phone
+                    </label>
+                </div>
             </div>
         </div>
     );

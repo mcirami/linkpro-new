@@ -8,7 +8,7 @@ import {
 } from '../../Dashboard.jsx';
 import {
     updateLinksPositions,
-    updateLinkStatus,
+    updateLinkItemStatus,
 } from '@/Services/LinksRequest.jsx';
 import {
     LINKS_ACTIONS,
@@ -60,7 +60,7 @@ const FolderLinks = ({
 
         const url = "/dashboard/links/status/"
 
-        updateLinkStatus(packets, currentItem.id, url)
+        updateLinkItemStatus(packets, currentItem.id, url)
         .then((data) => {
 
             if(data.success) {
