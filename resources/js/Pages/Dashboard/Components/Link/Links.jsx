@@ -40,7 +40,8 @@ const Links = ({
                    subStatus,
                    pageLayoutRef,
                    setShowConfirmPopup,
-                   setShowLoader
+                   setShowLoader,
+                   affStatus
 }) => {
 
     const { userLinks, dispatch } = useContext(UserLinksContext);
@@ -220,6 +221,7 @@ const Links = ({
                                     formRow={formRow}
                                     setFormRow={setFormRow}
                                     setShowUpgradePopup={setShowUpgradePopup}
+                                    affStatus={affStatus}
                                 />
                             )
                         })}

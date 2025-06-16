@@ -46,7 +46,7 @@ const InputTypeRadio = ({
 
     return (
         <div className="my_row form_nav_content input_types">
-            <p className="pt-5 pl-5">Link Type</p>
+            <p className="pt-5 pl-5 label">Link Type</p>
             <div className="radios_wrap">
                 <div className={editLink.type === "url" || !editLink.type ? "radio_wrap active" : "radio_wrap" }>
                     <label htmlFor="url">

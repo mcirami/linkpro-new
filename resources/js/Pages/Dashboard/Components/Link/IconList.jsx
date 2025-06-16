@@ -1,9 +1,5 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {icons} from '@/Services/IconObjects.jsx';
-import {
-    getIcons,
-} from '@/Services/IconRequests.jsx';
-import {getIconPaths} from '@/Services/ImageService.jsx';
 import {getCourseCategories} from '@/Services/CourseRequests.jsx';
 import DropdownComponent from './Forms/DropdownComponent';
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
@@ -23,6 +19,9 @@ const IconList = ({
                       showIconList,
                       setShowIconList,
                       setShowLoader,
+                      customIconArray,
+                      setCustomIconArray,
+                      isLoading
 }) => {
 
     const { auth } = usePage().props;
@@ -31,34 +30,17 @@ const IconList = ({
     const { userLinks, dispatch } = useContext(UserLinksContext);
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
 
-    const [isDefaultIcon, setIsDefaultIcon] = useState(false);
-
     const [searchInput, setSearchInput] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
 
-    const [iconList, setIconList] = useState([]);
     const [filteredIcons, setFilteredIcons] = useState([]);
     const [filteredByCat, setFilteredByCat] = useState([]);
     const [courseCategories, setCourseCategories] = useState([]);
 
     const [activeIcon, setActiveIcon] = useState(null)
-    const [customIconArray, setCustomIconArray] = useState([]);
+
+    //const [isLoading, setIsLoading] = useState(true);
+
     const [iconsWrapClasses, setIconsWrapClasses] = useState("");
-
-    useEffect(() => {
-        if (str.includes(editLink.icon, "custom-icons") ) {
-            setShowIconList((prev) => ({
-                ...prev,
-                type: "custom"
-            }));
-        } else {
-            setShowIconList((prev) => ({
-                ...prev,
-                type: "standard"
-            }));
-        }
-
-    },[editLink])
 
     useEffect(() => {
 
@@ -72,63 +54,8 @@ const IconList = ({
     },[editLink])
 
     useEffect(() => {
-        let url = '/get-standard-icons';
-        if(showIconList.type === "custom") {
-            url = '/get-custom-icons';
-        }
-
-        getIcons(url).then((data) => {
-            if(data.success) {
-                if (showIconList.type === "custom") {
-                    setCustomIconArray(data.iconData);
-                } else {
-                    setIconList(getIconPaths(data.iconData));
-                }
-                setIsLoading(false);
-            }
-        });
-
-        /*let url;
-
-        switch(accordionValue) {
-            case "offer":
-                url = '/get-aff-icons';
-                break;
-            case "custom":
-            case "integration":
-                url = '/get-custom-icons';
-                break;
-            case "standard":
-                url = '/get-standard-icons'
-                break;
-            default:
-                break;
-        }
-
-        getIcons(url).then((data) => {
-            if(data.success) {
-
-                if (accordionValue === "standard") {
-                    setIconList(getIconPaths(data.iconData));
-                } else if (accordionValue === "custom" || accordionValue === "integration") {
-                    setCustomIconArray(data.iconData);
-                } else {
-                    //offerArray = data.iconData;
-                    setIconList(data.iconData)
-                }
-
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 500)
-            }
-        })*/
-
-    },[showIconList])
-
-    useEffect(() => {
 
         if (!editLink.id && editLink.type === "mailchimp" || editLink.type === "shopify") {
-            setIsDefaultIcon(true)
 
             if (editLink.type === "mailchimp") {
                 setEditLink(prevState => ({
@@ -147,9 +74,9 @@ const IconList = ({
             }
         }
 
-        setTimeout(() => {
+        /*setTimeout(() => {
             setIsLoading(false);
-        }, 500)
+        }, 500)*/
 
     },[editLink])
 
@@ -191,7 +118,6 @@ const IconList = ({
             if(iconType === "offer") {
                 //url = window.location.origin + "/" + el.dataset.creator + "/course-page/" + el.dataset.slug + "?a=" + authUser;
                 value = window.location.origin + "/offers/" + el.dataset.offer + "/" + authUser
-                setEditLink((prev) => ({...prev, type: "offer"}));
             }
 
             setTimeout(function(){
@@ -214,19 +140,20 @@ const IconList = ({
                     course_id: courseId
                 }
 
-                console.log("selectIcon packets: ", packets);
+               /* console.log("selectIcon packets: ", packets);
             console.log("selectIcon linkId: ", linkId);
-
+*/
             /*setTimeout(function(){*/
                 if (linkId) {
                     updateLink(packets, linkId).then((data) => {
                         if(data.success) {
+                            const valueKey = iconType === "offer" ? "url" : iconType;
                             dispatch({
                                 type: LINKS_ACTIONS.UPDATE_LINK,
                                 payload: {
                                     id: linkId,
                                     editLink: editLink,
-                                    [`${iconType}`]: value,
+                                    [`${valueKey}`]: value,
                                     type: iconType,
                                     icon: source,
                                     icon_active: true,
@@ -239,7 +166,7 @@ const IconList = ({
                                 name: name,
                                 icon: source,
                                 icon_active: true,
-                                [`${iconType}`]: value,
+                                [`${valueKey}`]: value,
                                 type: iconType,
                                 course_id: courseId,
                             }))
@@ -260,13 +187,13 @@ const IconList = ({
                                 active_status: true,
                                 folder_id: editLink.folder_id,
                             }*/
-
+                            const valueKey = iconType === "offer" ? "url" : iconType;
                             setEditLink(prevState => ({
                                 ...prevState,
                                 id: data.link_id,
                                 name: name,
                                 icon: source,
-                                [`${iconType}`]: value,
+                                [`${valueKey}`]: value,
                                 type: iconType,
                                 course_id: courseId,
                             }))
@@ -294,7 +221,7 @@ const IconList = ({
                                 payload: {
                                     id: linkId,
                                     /*editLink: editLink,*/
-                                    [`${iconType}`]: value,
+                                    [`${valueKey}`]: value,
                                     type: iconType,
                                     icon: source
                                 }
@@ -310,13 +237,34 @@ const IconList = ({
     },[]);
 
     const handleChange = (e) => {
-        setSearchInput(e.target.value);
-    }
-
-    useEffect(() => {
+        const value = e.target.value;
+        setSearchInput(value);
 
         if (editLink.type === "url" || editLink.type === "email" || editLink.type === "phone") {
-            setFilteredIcons(iconList?.filter((i) => {
+            setFilteredIcons(showIconList?.list?.filter((i) => {
+                const iconName = i.name && i.name.toLowerCase().replace(" ", "");
+                const userInput = value.toLowerCase().replace(" ", "");
+                return iconName && iconName.match(userInput);
+            }))
+        } else {
+
+            const filterList = filteredByCat.length > 0 ?
+                filteredByCat :
+                showIconList.list;
+
+            setFilteredIcons(filterList?.filter((i) => {
+                const offerName = i.name && i.name.toLowerCase().replace(" ", "");
+                const userInput = value.toLowerCase().replace(" ", "");
+                return offerName && offerName.match(userInput);
+            }))
+
+        }
+    }
+
+    /*useEffect(() => {
+
+        if (editLink.type === "url" || editLink.type === "email" || editLink.type === "phone") {
+            setFilteredIcons(showIconList?.list?.filter((i) => {
                 const iconName = i.name && i.name.toLowerCase().replace(" ", "");
                 const userInput = searchInput.toLowerCase().replace(" ", "");
                 return iconName && iconName.match(userInput);
@@ -325,7 +273,7 @@ const IconList = ({
 
             const filterList = filteredByCat.length > 0 ?
                 filteredByCat :
-                iconList;
+                showIconList.list;
 
             setFilteredIcons(filterList?.filter((i) => {
                 const offerName = i.name && i.name.toLowerCase().replace(" ", "");
@@ -335,57 +283,21 @@ const IconList = ({
 
         }
 
-    },[iconList, searchInput])
+    },[editLink, searchInput]);*/
 
-    /*useEffect(() => {
+    const handleTabClick = useCallback ((e, type) => {
+        e.preventDefault();
+        setShowIconList((prev) => ({
+            ...prev,
+            type: type,
+        }))
+    },[]);
 
-        let classes = "outer";
-
-        if(activeIcon !== null ||
-            (customIconArray && customIconArray.length < 5 &&
-                (editLink.type === "url" ||
-                    editLink.type === "email" ||
-                    editLink.type === "phone" ||
-                    editLink.type === "mailchimp") ) ) {
-            classes += " active";
-        }
-
-        setIconsWrapClasses(classes);
-
-    },[activeIcon, customIconArray]);*/
 
     const switchIconsList = () => {
-
-        const mapArray = filteredIcons.length > 0 ? filteredIcons : iconList;
-
-        switch(showIconList.type) {
-
-            /*case "custom" :
-
-                return (
-                    !isEmpty(customIconArray) ? customIconArray.map((iconPath, index) => {
-                        const newPath = iconPath?.replace("public", "/storage");
-
-                        return (
-                            <div key={index} className="icon_col">
-                                <img alt=""
-                                     className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
-                                     data-icontype={editLink.type}
-                                     data-index={index}
-                                     src={newPath}
-                                     onClick={(e) => {
-                                         selectIcon(e, newPath)
-                                     }}/>
-                            </div>
-                        )
-
-                        })
-                        :
-                        <div className="info_message">
-                            <p>You don't have any icons to display.</p>
-                            <p>Click 'Upload Image' above to add a custom icon.</p>
-                        </div>
-                )*/
+        const mapArray = filteredIcons?.length > 0 ? filteredIcons : showIconList.list;
+        console.log("switchIconsList showIconList.list", showIconList.list);
+        /*switch(showIconList.type) {*/
 
                 /*case "mailchimp":
 
@@ -442,7 +354,7 @@ const IconList = ({
                         </>
                     )*/
 
-                default:
+               /* default:*/
 
                     return (
                         <>
@@ -461,16 +373,15 @@ const IconList = ({
                         <div className="custom_icons">
                             <div className="form_nav icons relative">
                                 <div className="relative">
-                                    <a className={`relative block tab_link ${showIconList.type === "standard" ? "active" : ""}`}
+                                    <a className={`relative block tab_link
+                                    ${showIconList.type === "standard" ||
+                                    showIconList.type === "offer" ? "active" : ""}`}
                                        href="#"
                                        onClick={(e) => {
-                                           e.preventDefault()
-                                           setShowIconList((prev) => ({
-                                               ...prev,
-                                               type: "standard"
-                                           }))
+                                           e.preventDefault();
+                                           handleTabClick(e, editLink.type === "offer" ? "offer" : "standard");
                                        }}>
-                                        Standard Icons
+                                        {editLink.type === "offer" ? "Offer" : "Standard"} Icons
                                     </a>
                                 </div>
                                 <div className="relative">
@@ -478,10 +389,7 @@ const IconList = ({
                                        href="#"
                                        onClick={(e) => {
                                            e.preventDefault()
-                                           setShowIconList((prev) => ({
-                                               ...prev,
-                                               type: "custom"
-                                           }))
+                                           handleTabClick(e, "custom")
                                        }}>
                                         Custom Icons
                                     </a>
@@ -489,8 +397,8 @@ const IconList = ({
                             </div>
 
                             <div className="icons_wrap inner">
-                                {showIconList.type === "custom" ?
-                                    !isEmpty(customIconArray) ? customIconArray.map((iconPath, index) => {
+                                {!isEmpty(customIconArray) ?
+                                    customIconArray.map((iconPath, index) => {
                                             const newPath = iconPath?.replace("public", "/storage");
 
                                             return (
@@ -507,11 +415,6 @@ const IconList = ({
                                             )
 
                                         })
-                                        :
-                                        <div className="info_message">
-                                            <p>You don't have any icons to display.</p>
-                                            <p>Click 'Upload Image' below to add a custom icon.</p>
-                                        </div>
                                     :
                                     /* filteredIcons ?
                                          filteredIcons.map((icon, index) => {
@@ -541,39 +444,45 @@ const IconList = ({
                                              </div>
                                          )
                                      })*/
-                                    mapArray.map((icon, index) => {
+                                    !isEmpty(mapArray) ?
+                                        mapArray?.map((icon, index) => {
 
-                                        return (
-                                            <div key={index} className="icon_col">
-                                                <img
-                                                    className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
-                                                    src={icon.path}
-                                                    onClick={(e) => {
-                                                        selectIcon(e, icon.path)
-                                                    }}
-                                                    data-name={icon.name}
-                                                    data-creator={icon.creator || ""}
-                                                    data-slug={icon.slug || ""}
-                                                    data-course={icon.course_id || ""}
-                                                    data-icontype={icon.type || ""}
-                                                    data-offer={icon.offer_id || ""}
-                                                    data-index={index}
-                                                    alt=""
-                                                />
-                                                <div className="hover_text icon_text">
-                                                    <p>
-                                                        {icon.name}
-                                                    </p>
+                                            return (
+                                                <div key={index} className="icon_col">
+                                                    <img
+                                                        className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
+                                                        src={icon.path}
+                                                        onClick={(e) => {
+                                                            selectIcon(e, icon.path)
+                                                        }}
+                                                        data-name={icon.name}
+                                                        data-creator={icon.creator || ""}
+                                                        data-slug={icon.slug || ""}
+                                                        data-course={icon.course_id || ""}
+                                                        data-icontype={icon.type || ""}
+                                                        data-offer={icon.offer_id || ""}
+                                                        data-index={index}
+                                                        alt=""
+                                                    />
+                                                    <div className="hover_text icon_text">
+                                                        <p>
+                                                            {icon.name}
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )
-                                    })
+                                            )
+                                        })
+                                        :
+                                        <div className="info_message">
+                                            <p>You don't have any icons to display.</p>
+                                            <p>Click 'Upload Image' below to add a custom icon.</p>
+                                        </div>
                                 }
                             </div>
                         </div>
                         </>
                     )
-        }
+        /*}*/
     }
 
     return (
@@ -587,13 +496,13 @@ const IconList = ({
                 {editLink.type === "offer" &&
                     <DropdownComponent
                         data={courseCategories}
-                        iconList={iconList}
+                        iconList={showIconList.list}
                         setSearchInput={setSearchInput}
                         setFilteredIcons={setFilteredIcons}
                         setFilteredByCat={setFilteredByCat}
                     />
                 }
-                {showIconList.type === "standard" &&
+                { (showIconList.type === "standard" || showIconList.type === "offer") &&
 
                     <div className="relative mb-3 my_row">
                         <input
@@ -612,7 +521,7 @@ const IconList = ({
                 }
 
                 {showIconList.type === "custom" &&
-                    <div className="flex flex-wrap justify-end relative">
+                    <div className="flex flex-wrap w-full relative">
                         <div className="w-full">
                             <ImageUploader
                                 editLink={editLink}

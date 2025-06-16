@@ -128,13 +128,15 @@ function LivePage({links, page, subscribed}) {
                                         email,
                                         phone,
                                         icon,
+                                        icon_active,
                                         active_status,
                                         links,
-                                        bg_image
+                                        bg_image,
+                                        bg_active
                                     } = linkItem;
 
                                     let styles = {};
-                                    if (bg_image && page_layout === "layout_two") {
+                                    if (bg_image && bg_active && page_layout === "layout_two") {
                                         styles = {
                                             backgroundImage: `url(${bg_image})`,
                                             backgroundRepeat: "no-repeat",
@@ -162,13 +164,13 @@ function LivePage({links, page, subscribed}) {
                                     let colClasses = "";
                                     if (type === "folder" || type === "mailchimp" || type === "shopify" || type === "advanced") {
                                         colClasses=`icon_col folder
-                                        ${bg_image && page_layout ==="layout_two" ?
+                                        ${bg_image && bg_active && page_layout ==="layout_two" ?
                                             "bg_image"
                                             :
                                             ""
                                         }`
                                     } else {
-                                        colClasses = `icon_col ${bg_image && page_layout ==="layout_two" ?
+                                        colClasses = `icon_col ${bg_image && bg_active && page_layout ==="layout_two" ?
                                             "bg_image"
                                             :
                                             ""
@@ -201,7 +203,6 @@ function LivePage({links, page, subscribed}) {
                                                             <div className={` ${colClasses} `}>
                                                             </div>
                                                         )
-                                                    case "standard":
                                                     case "offer":
                                                     case "url":
                                                     case "email":
@@ -229,12 +230,14 @@ function LivePage({links, page, subscribed}) {
                                                                             ${ (!url || !displayIcon) ? "default" : ""}`}
                                                                                target="_blank"
                                                                                href={url || "#"}>
-                                                                                <div className={`${bg_image ?
+                                                                                <div className={`${bg_image && bg_active ?
                                                                                     "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
                                                                                     :
                                                                                     "flex items-center justify-between w-full"}`}>
                                                                                     <span className="flex items-center justify-start">
-                                                                                        <img src={displayIcon} alt=""/>
+                                                                                        {!!icon_active &&
+                                                                                            <img src={displayIcon} alt=""/>
+                                                                                        }
                                                                                         <h3>{name || "Link Name"}</h3>
                                                                                     </span>
                                                                                     <IoOpenOutline />

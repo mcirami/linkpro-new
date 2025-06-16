@@ -1,52 +1,40 @@
 import React, {
-    useCallback,
     useEffect,
     useState,
-    useContext, useRef,
+    useContext
 } from 'react';
 import IconList from '../IconList';
-import InputComponent from './InputComponent';
 import InputTypeRadio from './InputTypeRadio';
 import {
-    addLink,
-    checkURL,
     handleSwitchChange,
-    updateLink,
-    updateLinkItemStatus,
 } from '@/Services/LinksRequest.jsx';
-import {
-    FOLDER_LINKS_ACTIONS,
-    LINKS_ACTIONS,
-} from '@/Services/Reducer.jsx';
 import {
     FolderLinksContext,
     UserLinksContext,
 } from '../../../Dashboard.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
 
-import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
 import {acceptTerms} from '@/Services/UserService.jsx';
 import IconDescription from './IconDescription.jsx';
-import { FaImage } from "react-icons/fa";
-import { CiImageOn } from "react-icons/ci";
-import HoverText from '@/Utils/HoverText.jsx';
 
 import ImageUploader
     from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
 import FormTabs from '@/Pages/Dashboard/Components/Link/Forms/FormTabs.jsx';
 import IconSettingComponent
     from '@/Pages/Dashboard/Components/Link/Forms/IconSettingComponent.jsx';
-import {capitalize} from 'lodash';
+import str, {capitalize} from 'lodash';
 import {IoCloseSharp} from 'react-icons/io5';
 import IOSSwitch from '@/Utils/IOSSwitch.jsx';
+import {getIcons} from '@/Services/IconRequests.jsx';
+import {getIconPaths} from '@/Services/ImageService.jsx';
 
 const StandardForm = ({
                           editLink,
                           setEditLink,
                           setShowLoader,
                           setFormRow,
-                          affiliateStatus = null,
-                          setAffiliateStatus = null,
+                          affiliateStatus,
+                          setAffiliateStatus,
 
 }) => {
 
@@ -55,10 +43,15 @@ const StandardForm = ({
     const  { pageSettings } = usePageContext();
     const [ showTerms, setShowTerms ] = useState(false);
     const [ showBGUpload, setShowBGUpload ] = useState(false);
+    const [customIconArray, setCustomIconArray] = useState([]);
+
+    const [isLoading, setIsLoading] = useState(true);
+
     //const {id, folderId} = editLink;
     const [ showIconList, setShowIconList ] = useState({
         show: true,
-        type: 'standard'
+        type: '',
+        list: []
     });
 
     useEffect(() => {
@@ -91,6 +84,87 @@ const StandardForm = ({
 
     const [charactersLeft, setCharactersLeft] = useState(11);
 
+    useEffect(() => {
+        console.log("use effect std form - editLink.type", editLink.type);
+        switch (editLink.type) {
+            case "url":
+            case "email":
+            case "phone":
+                const type = editLink.icon.includes("custom-icons") ? "custom" : "standard";
+                setShowIconList((prev) => ({
+                    ...prev,
+                    type: type,
+                }));
+                break;
+            case "offer":
+                const offerIconType = editLink.icon.includes("custom-icons") ? "custom" : "offer"
+                setShowIconList((prev) => ({
+                    ...prev,
+                    type: offerIconType,
+                }));
+                break;
+            default:
+                setShowIconList((prev) => ({
+                    ...prev,
+                    type: "standard",
+                }));
+                break;
+        }
+
+    }, []);
+
+    useEffect(() => {
+
+        if (!showIconList.type) return;
+
+        // Clear the icon list before loading new icons
+        setShowIconList((prev) => ({
+            ...prev,
+            list: []
+        }));
+        setCustomIconArray([]);
+
+        let url = '';
+        switch(showIconList.type) {
+            case "standard":
+                url = '/get-standard-icons';
+                break;
+            case "custom":
+                url = '/get-custom-icons';
+                break;
+            case "offer":
+                url = '/get-aff-icons';
+                break;
+            default:
+                url = '/get-standard-icons';
+                break;
+        }
+
+        getIcons(url).then((data) => {
+            if(data.success) {
+
+                /*console.log("data from getIcons", data);
+                console.log("use effect std form - showIconList.type", showIconList.type);*/
+                if (showIconList.type === "custom") {
+                    setCustomIconArray(data.iconData);
+                } else if (showIconList.type === "standard")  {
+                    const iconPaths = getIconPaths(data.iconData);
+                    setShowIconList((prev) => ({
+                        ...prev,
+                        list: iconPaths,
+                    }));
+                } else if (showIconList.type === "offer") {
+                    setShowIconList((prev) => ({
+                        ...prev,
+                        list: data.iconData,
+                    }));
+                }
+
+                setIsLoading(false);
+            }
+        });
+    }, [showIconList.type]);
+
     /*const [descChecked, setDescChecked] = useState(
         Boolean(
             currentLink.description &&
@@ -106,33 +180,6 @@ const StandardForm = ({
         }
 
     },[charactersLeft])
-
-    useEffect(() => {
-
-        if(accordionValue === "standard") {
-            if (currentLink.phone) {
-                setInputType("phone")
-            } else if (currentLink.email) {
-                setInputType("email")
-            } else {
-                setInputType("url")
-            }
-        } else if (accordionValue === "offer") {
-            setInputType("offer")
-        }
-
-    },[])
-
-    const handleLinkName = useCallback( (e) => {
-            let value = e.target.value;
-
-            setCharactersLeft(11 - value.length);
-
-            setCurrentLink((prev) => ({
-                ...prev,
-                name: value
-            }))
-        },[]);
 */
     /*const handleOnClick = () => {
 
@@ -144,237 +191,6 @@ const StandardForm = ({
         }
     }*/
 
-    /*const handleSubmit = (e) => {
-        e.preventDefault();
-
-        let URL = currentLink.url;
-        let data;
-
-        if (URL && currentLink.name) {
-            data = checkURL(URL, currentLink.name, null, subStatus);
-        } else {
-            data = {
-                success: true,
-                url: URL
-            }
-        }
-
-        if (data["success"]) {
-
-            URL = data["url"];
-            let packets;
-            let descValue = null;
-            let iconType = inputType;
-
-            /!*if (currentLink.description && currentLink.description !== "") {
-                if(descChecked) {
-                    iconType = "advanced";
-                }
-                descValue = getJsonValue(currentLink.description);
-            }*!/
-
-            switch (inputType) {
-                case "url":
-                    packets = {
-                        name: currentLink.name,
-                        url: URL,
-                        icon: currentLink.icon,
-                        page_id: pageSettings["id"],
-                        folder_id: folderId,
-                        description: descValue,
-                        type: iconType,
-                    };
-                    break;
-                case "email":
-                    packets = {
-                        name: currentLink.name,
-                        email: currentLink.email,
-                        icon: currentLink.icon,
-                        page_id: pageSettings["id"],
-                        folder_id: folderId,
-                        description: descValue,
-                        type: iconType,
-                    };
-                    break;
-                case "phone":
-                    packets = {
-                        name: currentLink.name,
-                        phone: currentLink.phone,
-                        icon: currentLink.icon,
-                        page_id: pageSettings["id"],
-                        folder_id: folderId,
-                        description: descValue,
-                        type: iconType,
-                    };
-                    break;
-                case "offer":
-                    packets = {
-                        name: currentLink.name,
-                        icon: currentLink.icon,
-                        url: URL,
-                        page_id: pageSettings["id"],
-                        course_id: currentLink.course_id,
-                        folder_id: folderId,
-                        description: descValue,
-                        type: iconType,
-                    };
-                    break;
-                default:
-                    packets = {
-                        name: currentLink.name,
-                        url: URL,
-                        icon: currentLink.icon,
-                        page_id: pageSettings["id"],
-                        folder_id: folderId,
-                        description: descValue,
-                        type: iconType,
-                    };
-                    break;
-            }
-
-            const func = id ? updateLink(packets, id) : addLink(packets);
-
-            func.then((data) => {
-
-                if (data.success) {
-
-                    if (folderId) {
-
-                        if (id) {
-                            dispatchFolderLinks({
-                                type: FOLDER_LINKS_ACTIONS.UPDATE_FOLDER_LINKS,
-                                payload: {
-                                    editID: id,
-                                    currentLink: currentLink,
-                                    url: URL,
-                                    type: iconType,
-                                    iconPath: currentLink.icon
-                                }
-                            })
-
-                            dispatch({
-                                type: LINKS_ACTIONS.UPDATE_LINK_IN_FOLDER,
-                                payload: {
-                                    folderID: folderId,
-                                    editID: id,
-                                    currentLink: currentLink,
-                                    url: URL,
-                                    type: iconType,
-                                    iconPath: currentLink.icon
-                                }
-                            })
-
-                        } else {
-                            let newFolderLinks = [...folderLinks];
-
-                            const newLinkObject = {
-                                id: data.link_id,
-                                folder_id: folderId,
-                                name: currentLink.name,
-                                url: URL,
-                                email: currentLink.email,
-                                phone: currentLink.phone,
-                                type: iconType,
-                                icon: currentLink.icon,
-                                course_id: currentLink.course_id,
-                                position: data.position,
-                                description: currentLink.description,
-                                active_status: true
-                            }
-
-                            newFolderLinks = newFolderLinks.concat(
-                                newLinkObject);
-
-                            dispatchFolderLinks({
-                                type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS,
-                                payload: {
-                                    links: newFolderLinks
-                                }
-                            });
-
-                            let folderActive = null;
-                            if (newFolderLinks.length === 1) {
-                                folderActive = true;
-                                const url = "/dashboard/folder/status/";
-                                const packets = {
-                                    active_status: folderActive,
-                                };
-
-                                updateLinkItemStatus(packets, folderId, url);
-                            }
-
-                            dispatch({
-                                type: LINKS_ACTIONS.ADD_NEW_IN_FOLDER,
-                                payload: {
-                                    newLinkObject: newLinkObject,
-                                    folderActive: folderActive,
-                                    folderID: folderId
-                                }
-                            })
-
-                        }
-
-                    } else {
-
-                        if (id) {
-                            dispatch({
-                                type: LINKS_ACTIONS.UPDATE_LINK,
-                                payload: {
-                                    editID: id,
-                                    currentLink: currentLink,
-                                    url: URL,
-                                    type: iconType,
-                                    iconPath: currentLink.icon
-                                }
-                            })
-
-                        } else {
-                            let newLinks = [...userLinks];
-
-                            const newLinkObject = {
-                                id: data.link_id,
-                                name: currentLink.name,
-                                url: URL,
-                                email: currentLink.email,
-                                phone: currentLink.phone,
-                                type: iconType,
-                                icon: currentLink.icon,
-                                course_id: currentLink.course_id,
-                                position: data.position,
-                                description: currentLink.description,
-                                active_status: true
-                            }
-
-                            dispatch({
-                                type: LINKS_ACTIONS.SET_LINKS,
-                                payload: {
-                                    links: newLinks.concat(newLinkObject)
-                                }
-                            })
-                        }
-                    }
-
-                    if (!id) {
-                        setShowBGUpload({
-                            show: false,
-                            initialMessage: true
-                        })
-                    }
-                    setCurrentLink((prev)=> ({
-                        ...prev,
-                        id: data.link_id,
-                    }));
-
-                    //setAccordionValue(null);
-                    //setShowLinkForm(false);
-                    //setInputType(null);
-                    //setEditLink(prev => Object.fromEntries(Object.keys(prev).map(key => [key, null])));
-                }
-            })
-        }
-    };
-
-*/
     const handleSubmitTerms = (e) => {
         e.preventDefault()
 
@@ -437,29 +253,27 @@ const StandardForm = ({
                 <a className="text-xl hide_button" href="#" onClick={(e) => handleCloseForm(e)}><IoCloseSharp/></a>
             </div>
             <FormTabs
-                currentLink={editLink}
                 setShowIconList={setShowIconList}
-                showBGUpload={showBGUpload}
                 setShowBGUpload={setShowBGUpload}
                 pageLayout={pageSettings.page_layout}
             />
                 {showBGUpload &&
-                <div className="form_nav_content flex flex-wrap justify-end relative p-5">
+                <div className="form_nav_content flex flex-wrap relative p-5">
                     {editLink.bg_image &&
                         <>
-                            <div className="switch_wrap">
+                            <div className="switch_wrap mb-4">
                                 <IOSSwitch
                                     onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "bg_active")}
                                     checked={Boolean(editLink.bg_active)}
                                 />
                                 <div className="hover_text switch">
                                     <p>
-                                        {Boolean(editLink.bg_active) ? "Disable" : "Enable"} BG
+                                        {Boolean(editLink.bg_active) ? "Disable" : "Enable"} Background
                                     </p>
                                 </div>
                             </div>
                             <div className="w-full">
-                                <p className="uppercase">Current Image:</p>
+                                <p className="label">Current Image:</p>
                                 <div className="image_wrap">
                                     <img src={editLink.bg_image} alt=""/>
                                 </div>
@@ -486,7 +300,7 @@ const StandardForm = ({
                 }
                 {(showIconList.show || pageSettings.page_layout === "layout_one") &&
                 <div className="link_form form_nav_content">
-                    <div className="switch_wrap">
+                    <div className="switch_wrap mb-3">
                         <IOSSwitch
                             onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "icon_active")}
                             checked={Boolean(editLink.icon_active)}
@@ -506,6 +320,9 @@ const StandardForm = ({
                                 showIconList={showIconList}
                                 setShowIconList={setShowIconList}
                                 setShowLoader={setShowLoader}
+                                customIconArray={customIconArray}
+                                setCustomIconArray={setCustomIconArray}
+                                isLoading={isLoading}
                             />
                         </div>
                     </div>

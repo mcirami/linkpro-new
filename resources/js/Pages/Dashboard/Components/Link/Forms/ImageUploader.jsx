@@ -200,7 +200,7 @@ const ImageUploader = ({
                             </div>
                             :
                             <>
-                                <p className="mt-2 text-center">Upload a {elementName === "bg_image" ? "background image" : "icon"} for your button</p>
+                                <p className="mt-2 text-center label">Upload a {elementName === "bg_image" ? "background image" : "icon"} for your button</p>
                                 <label htmlFor="custom_icon_upload" className="custom !uppercase button blue">
                                     Select Image
                                 </label>

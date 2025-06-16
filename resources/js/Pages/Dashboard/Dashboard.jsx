@@ -63,7 +63,6 @@ function Dashboard({
 }) {
 
     const {links, page, userPages, allPageNames, userSub, affStatus} = userData;
-    const [affiliateStatus, setAffiliateStatus] = useState(affStatus);
 
     const [userLinks, dispatch] = useReducer(reducer, links);
 
@@ -718,6 +717,7 @@ function Dashboard({
                                                                     pageLayoutRef={pageLayoutRef}
                                                                     setShowConfirmPopup={setShowConfirmPopup}
                                                                     setShowLoader={setShowLoader}
+                                                                    affStatus={affStatus}
                                                                 />
                                                             </ErrorBoundary>
                                                     }

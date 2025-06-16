@@ -44,6 +44,7 @@ class IconController extends Controller
                                $catArray[] = strtolower( $category->name );
                           }
                           $data->categories =  $catArray;
+                          $data->type = "offer";
                       }
 
         return response()->json([

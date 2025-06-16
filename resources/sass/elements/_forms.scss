@@ -781,7 +781,7 @@ form .bottom_row a {
             }
 
             .form_nav_content {
-                 p {
+                 p.label {
                      @include ossemibold;
                      font-size: .9rem;
                      text-align: left;

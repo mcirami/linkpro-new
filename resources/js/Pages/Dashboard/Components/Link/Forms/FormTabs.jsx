@@ -1,14 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {CiImageOn} from 'react-icons/ci';
 import {FaImage} from 'react-icons/fa';
+import {getIcons} from '@/Services/IconRequests.jsx';
+import {getIconPaths} from '@/Services/ImageService.jsx';
 
 const FormTabs = ({
-                     currentLink,
-                     setShowIconList,
-                     showBGUpload,
-                     setShowBGUpload,
-                     pageLayout
-
+                      setShowIconList,
+                      setShowBGUpload,
+                      pageLayout
                  }) => {
 
     const handleOnClick = (e, type) => {
@@ -31,6 +30,7 @@ const FormTabs = ({
             e.target.classList.add('active');
         }
     }
+
 
     return (
         <div className="form_nav relative">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {MdDragHandle} from 'react-icons/md';
 import { FaEdit } from "react-icons/fa";
 import {checkIcon} from '@/Services/UserService.jsx';
@@ -24,11 +24,13 @@ const Link = ({
                   setShowLoader,
                   formRow,
                   setFormRow,
-                  setShowUpgradePopup
+                  setShowUpgradePopup,
+                  affStatus
 }) => {
 
     const {type, id, icon, links} = link;
     const {pageSettings} = usePageContext();
+    const [affiliateStatus, setAffiliateStatus] = useState(affStatus);
 
     let hasLinks = false;
     let displayIcon;
@@ -105,6 +107,8 @@ const Link = ({
                                 setEditLink={setEditLink}
                                 setShowLoader={setShowLoader}
                                 setFormRow={setFormRow}
+                                affiliateStatus={affiliateStatus}
+                                setAffiliateStatus={setAffiliateStatus}
                             />
                         </div>
                     </div>
@@ -121,6 +125,8 @@ const Link = ({
                     setEditLink={setEditLink}
                     setShowLoader={setShowLoader}
                     setFormRow={setFormRow}
+                    affiliateStatus={affiliateStatus}
+                    setAffiliateStatus={setAffiliateStatus}
                 />
             </div>
                 :
