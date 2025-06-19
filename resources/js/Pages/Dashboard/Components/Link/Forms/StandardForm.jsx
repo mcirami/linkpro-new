@@ -85,7 +85,7 @@ const StandardForm = ({
     const [charactersLeft, setCharactersLeft] = useState(11);
 
     useEffect(() => {
-        console.log("use effect std form - editLink.type", editLink.type);
+
         switch (editLink.type) {
             case "url":
             case "email":
@@ -143,8 +143,6 @@ const StandardForm = ({
         getIcons(url).then((data) => {
             if(data.success) {
 
-                /*console.log("data from getIcons", data);
-                console.log("use effect std form - showIconList.type", showIconList.type);*/
                 if (showIconList.type === "custom") {
                     setCustomIconArray(data.iconData);
                 } else if (showIconList.type === "standard")  {

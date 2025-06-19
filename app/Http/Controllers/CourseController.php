@@ -313,7 +313,16 @@ class CourseController extends Controller
      */
     public function getCourseCategories(): JsonResponse {
 
-        $categories = Category::with('children')->whereNull('parent_id')->get();
+        $categories = Category::with(['children' => function ($query) {
+            $query->whereIn('id', function ($q) {
+                $q->select('category_id')->from('category_course');
+            });
+        }])->whereNull('parent_id')
+           ->whereIn('id', function ($query) {
+               $query->select('category_id')
+                     ->from('category_course');
+           })
+           ->get();
 
         return response()->json(['categories' => $categories]);
     }

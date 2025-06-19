@@ -140,9 +140,6 @@ const IconList = ({
                     course_id: courseId
                 }
 
-               /* console.log("selectIcon packets: ", packets);
-            console.log("selectIcon linkId: ", linkId);
-*/
             /*setTimeout(function(){*/
                 if (linkId) {
                     updateLink(packets, linkId).then((data) => {
@@ -240,14 +237,13 @@ const IconList = ({
         const value = e.target.value;
         setSearchInput(value);
 
-        if (editLink.type === "url" || editLink.type === "email" || editLink.type === "phone") {
+        /*if (editLink.type === "url" || editLink.type === "email" || editLink.type === "phone") {*/
             setFilteredIcons(showIconList?.list?.filter((i) => {
                 const iconName = i.name && i.name.toLowerCase().replace(" ", "");
                 const userInput = value.toLowerCase().replace(" ", "");
                 return iconName && iconName.match(userInput);
             }))
-        } else {
-
+        /*} else {
             const filterList = filteredByCat.length > 0 ?
                 filteredByCat :
                 showIconList.list;
@@ -258,7 +254,7 @@ const IconList = ({
                 return offerName && offerName.match(userInput);
             }))
 
-        }
+        }*/
     }
 
     /*useEffect(() => {
@@ -296,193 +292,135 @@ const IconList = ({
 
     const switchIconsList = () => {
         const mapArray = filteredIcons?.length > 0 ? filteredIcons : showIconList.list;
-        console.log("switchIconsList showIconList.list", showIconList.list);
-        /*switch(showIconList.type) {*/
 
-                /*case "mailchimp":
+            return (
+                <>
+                <div className="icon_col default_icon">
+                    <p>Current Icon</p>
+                    {editLink.icon ?
+                        <img alt=""
+                             className={`active img-fluid icon_image`}
+                             src={editLink.icon}
+                        />
+                        :
+                        <p>No Icon Selected</p>
+                    }
+                </div>
 
-                    return (
-                        <>
-                        <div className="icon_col default_icon">
-                            <p>Default Icon</p>
-                            <img alt=""
-                                 className={`
-                                     ${isDefaultIcon ?
-                                     "active img-fluid icon_image" :
-                                     "img-fluid icon_image"}
-                                     ${parseInt(activeIcon) === parseInt(-1) ? "active" : ""}
-                                     `}
-                                 src={integrationType === "mailchimp" ?
-                                     "https://local-lp-user-images.s3.us-east-2.amazonaws.com/icons/Mailchimp.png" :
-                                     "https://lp-production-images.s3.us-east-2.amazonaws.com/icons/Shopify.png"}
-                                 data-icontype="default"
-                                 data-index={-1}
-                                 onClick={(e) => {
-                                     selectIcon(e, e.target.src)
-                                 }}/>
+                <div className="custom_icons">
+                    <div className="form_nav icons relative">
+                        <div className="relative">
+                            <a className={`relative block tab_link
+                            ${showIconList.type === "standard" ||
+                            showIconList.type === "offer" ? "active" : ""}`}
+                               href="#"
+                               onClick={(e) => {
+                                   e.preventDefault();
+                                   handleTabClick(e, editLink.type === "offer" ? "offer" : "standard");
+                               }}>
+                                {editLink.type === "offer" ? "Offer" : "Standard"} Icons
+                            </a>
                         </div>
-                        <div className="custom_icons">
-                            <p>Custom Icons</p>
-                            <div className="icons_wrap inner">
-                                {!isEmpty(customIconArray) ?
-                                    customIconArray.map((iconPath, index) => {
-                                        const newPath = iconPath.replace("public", "/storage");
+                        <div className="relative">
+                            <a className={`relative block tab_link ${showIconList.type === "custom" ? "active" : ""}`}
+                               href="#"
+                               onClick={(e) => {
+                                   e.preventDefault()
+                                   handleTabClick(e, "custom")
+                               }}>
+                                Custom Icons
+                            </a>
+                        </div>
+                    </div>
+
+                    <div className="icons_wrap inner">
+                        {!isEmpty(customIconArray) ?
+                            customIconArray.map((iconPath, index) => {
+                                    const newPath = iconPath?.replace("public", "/storage");
+
+                                    return (
+                                        <div key={index} className="icon_col">
+                                            <img alt=""
+                                                 className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
+                                                 data-icontype={editLink.type}
+                                                 data-index={index}
+                                                 src={newPath}
+                                                 onClick={(e) => {
+                                                     selectIcon(e, newPath)
+                                                 }}/>
+                                        </div>
+                                    )
+
+                                })
+                            :
+                            !isEmpty(filteredIcons) ?
+                                 filteredIcons.map((icon, index) => {
+
+                                     return (
+                                         <div key={index} className="icon_col">
+                                             <img
+                                                 className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
+                                                 src={icon.path}
+                                                 onClick={(e) => {
+                                                     selectIcon(e, icon.path)
+                                                 }}
+                                                 data-name={icon.name}
+                                                 data-creator={icon.creator || ""}
+                                                 data-slug={icon.slug || ""}
+                                                 data-course={icon.course_id || ""}
+                                                 data-icontype={icon.type}
+                                                 data-offer={icon.offer_id || ""}
+                                                 data-index={index}
+                                                 alt=""
+                                             />
+                                             <div className="hover_text icon_text">
+                                                 <p>
+                                                     {icon.name}
+                                                 </p>
+                                             </div>
+                                         </div>
+                                     )
+                                 })
+                                :
+                                !isEmpty(mapArray) ?
+                                    mapArray?.map((icon, index) => {
 
                                         return (
-                                            <div key={index}
-                                                 className={`icon_col`}
-                                            >
-                                                <img alt=""
-                                                     data-index={index}
-                                                     className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
-                                                     src={newPath}
-                                                     data-icontype={editLink.type}
-                                                     onClick={(e) => {
-                                                         selectIcon(e, newPath)
-                                                     }}/>
+                                            <div key={index} className="icon_col">
+                                                <img
+                                                    className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
+                                                    src={icon.path}
+                                                    onClick={(e) => {
+                                                        selectIcon(e, icon.path)
+                                                    }}
+                                                    data-name={icon.name}
+                                                    data-creator={icon.creator || ""}
+                                                    data-slug={icon.slug || ""}
+                                                    data-course={icon.course_id || ""}
+                                                    data-icontype={icon.type || ""}
+                                                    data-offer={icon.offer_id || ""}
+                                                    data-index={index}
+                                                    alt=""
+                                                />
+                                                <div className="hover_text icon_text">
+                                                    <p>
+                                                        {icon.name}
+                                                    </p>
+                                                </div>
                                             </div>
                                         )
                                     })
                                     :
                                     <div className="info_message">
                                         <p>You don't have any icons to display.</p>
-                                        <p>Click 'Upload Image' above to add a custom icon.</p>
+                                        <p>Click 'Upload Image' below to add a custom icon.</p>
                                     </div>
-                                }
-                            </div>
-                        </div>
-                        </>
-                    )*/
 
-               /* default:*/
-
-                    return (
-                        <>
-                        <div className="icon_col default_icon">
-                            <p>Current Icon</p>
-                            {editLink.icon ?
-                                <img alt=""
-                                     className={`active img-fluid icon_image`}
-                                     src={editLink.icon}
-                                />
-                                :
-                                <p>No Icon Selected</p>
-                            }
-                        </div>
-
-                        <div className="custom_icons">
-                            <div className="form_nav icons relative">
-                                <div className="relative">
-                                    <a className={`relative block tab_link
-                                    ${showIconList.type === "standard" ||
-                                    showIconList.type === "offer" ? "active" : ""}`}
-                                       href="#"
-                                       onClick={(e) => {
-                                           e.preventDefault();
-                                           handleTabClick(e, editLink.type === "offer" ? "offer" : "standard");
-                                       }}>
-                                        {editLink.type === "offer" ? "Offer" : "Standard"} Icons
-                                    </a>
-                                </div>
-                                <div className="relative">
-                                    <a className={`relative block tab_link ${showIconList.type === "custom" ? "active" : ""}`}
-                                       href="#"
-                                       onClick={(e) => {
-                                           e.preventDefault()
-                                           handleTabClick(e, "custom")
-                                       }}>
-                                        Custom Icons
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div className="icons_wrap inner">
-                                {!isEmpty(customIconArray) ?
-                                    customIconArray.map((iconPath, index) => {
-                                            const newPath = iconPath?.replace("public", "/storage");
-
-                                            return (
-                                                <div key={index} className="icon_col">
-                                                    <img alt=""
-                                                         className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
-                                                         data-icontype={editLink.type}
-                                                         data-index={index}
-                                                         src={newPath}
-                                                         onClick={(e) => {
-                                                             selectIcon(e, newPath)
-                                                         }}/>
-                                                </div>
-                                            )
-
-                                        })
-                                    :
-                                    /* filteredIcons ?
-                                         filteredIcons.map((icon, index) => {
-
-                                         return (
-                                             <div key={index} className="icon_col">
-                                                 <img
-                                                     className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
-                                                     src={icon.path}
-                                                     onClick={(e) => {
-                                                         selectIcon(e, icon.path)
-                                                     }}
-                                                     data-name={icon.name}
-                                                     data-creator={icon.creator || ""}
-                                                     data-slug={icon.slug || ""}
-                                                     data-course={icon.course_id || ""}
-                                                     data-icontype={icon.type}
-                                                     data-offer={icon.offer_id || ""}
-                                                     data-index={index}
-                                                     alt=""
-                                                 />
-                                                 <div className="hover_text icon_text">
-                                                     <p>
-                                                         {icon.name}
-                                                     </p>
-                                                 </div>
-                                             </div>
-                                         )
-                                     })*/
-                                    !isEmpty(mapArray) ?
-                                        mapArray?.map((icon, index) => {
-
-                                            return (
-                                                <div key={index} className="icon_col">
-                                                    <img
-                                                        className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
-                                                        src={icon.path}
-                                                        onClick={(e) => {
-                                                            selectIcon(e, icon.path)
-                                                        }}
-                                                        data-name={icon.name}
-                                                        data-creator={icon.creator || ""}
-                                                        data-slug={icon.slug || ""}
-                                                        data-course={icon.course_id || ""}
-                                                        data-icontype={icon.type || ""}
-                                                        data-offer={icon.offer_id || ""}
-                                                        data-index={index}
-                                                        alt=""
-                                                    />
-                                                    <div className="hover_text icon_text">
-                                                        <p>
-                                                            {icon.name}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })
-                                        :
-                                        <div className="info_message">
-                                            <p>You don't have any icons to display.</p>
-                                            <p>Click 'Upload Image' below to add a custom icon.</p>
-                                        </div>
-                                }
-                            </div>
-                        </div>
-                        </>
-                    )
-        /*}*/
+                        }
+                    </div>
+                </div>
+                </>
+            )
     }
 
     return (
@@ -491,9 +429,11 @@ const IconList = ({
         { (editLink.type === "url" ||
                 editLink.type === "offer" ||
                 editLink.type === "email" ||
-                editLink.type === "phone") &&
+                editLink.type === "phone" ||
+                editLink.type === "mailchimp"
+            ) &&
             <div className="uploader">
-                {editLink.type === "offer" &&
+                { (editLink.type === "offer" && showIconList.type !== "custom") &&
                     <DropdownComponent
                         data={courseCategories}
                         iconList={showIconList.list}
@@ -502,7 +442,7 @@ const IconList = ({
                         setFilteredByCat={setFilteredByCat}
                     />
                 }
-                { (showIconList.type === "standard" || showIconList.type === "offer") &&
+                { (showIconList.type === "standard") &&
 
                     <div className="relative mb-3 my_row">
                         <input
@@ -513,10 +453,7 @@ const IconList = ({
                             onFocus={(e) => HandleFocus(e.target)}
                             onBlur={(e) => HandleBlur(e.target)}
                             value={searchInput}/>
-                        <label htmlFor="search">Search {
-                            editLink.type === "url" || editLink.type === "email" || editLink.type === "phone"
-                                ?
-                                "Icons" : "Offers"}</label>
+                        <label htmlFor="search">Search Icons</label>
                     </div>
                 }
 
@@ -538,20 +475,18 @@ const IconList = ({
             </div>
         }
 
-            <div className={`icons_wrap my_row outer`}>
+        <div className={`icons_wrap my_row outer`}>
 
-                {isLoading &&
-                    <div id="loading_spinner" className="active">
-                        <img src={Vapor.asset('images/spinner.svg')} alt="" />
-                    </div>
-                }
+            {isLoading &&
+                <div id="loading_spinner" className="active">
+                    <img src={Vapor.asset('images/spinner.svg')} alt="" />
+                </div>
+            }
 
-                {switchIconsList()}
-            </div>
+            {switchIconsList()}
+        </div>
 
         </>
-
-
     );
 }
 
