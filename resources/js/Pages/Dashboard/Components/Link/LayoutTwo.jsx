@@ -117,7 +117,6 @@ const LayoutTwo = ({
                 }
             </div>
 
-
             <div className={`right_col`}>
                 <div className={`edit_wrap flex items-center gap-2`}>
                     <span className="edit_icon" onClick={(e) => {

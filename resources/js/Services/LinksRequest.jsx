@@ -64,6 +64,8 @@ export const addLink = async (packets) => {
  */
 export const updateLink = (packets, editID) => {
 
+    console.log("packets", packets );
+
     return axios.put('/dashboard/links/update/' + editID, packets).then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
@@ -174,6 +176,10 @@ export const handleSwitchChange = (
         } else if (!hasLinks) {
             EventBus.dispatch("error", {message: "Add Icons Before Enabling"});
         }
+
+    } else if (currentItem.type === "mailchimp" && !currentItem.mailchimp_list_id) {
+
+        EventBus.dispatch("error", {message: "Connect Mailchimp Account Before Enabling"});
 
     } else {
         const newStatus = !currentItem[element];
@@ -380,15 +386,10 @@ export const getColWidth = (type) => {
     return colWidth;
 }
 
-export const setStorage = (editID, integrationType, pageID) => {
+export const setStorage = (editID, pageID, formRow) => {
 
-    if (editID) {
-        localStorage.setItem('editID', editID);
-    } else {
-        localStorage.setItem('showLinkForm', toBoolean(true));
-    }
-
-    localStorage.setItem('integrationType', integrationType);
+    localStorage.setItem('editID', editID);
+    localStorage.setItem('formRow', formRow);
 
     const date = new Date();
     date.setTime(date.getTime() + (24*60*60*1000));

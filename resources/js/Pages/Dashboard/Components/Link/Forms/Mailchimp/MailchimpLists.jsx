@@ -1,23 +1,46 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
-    removeMailchimpConnection
+    getMailchimpLists,
+    removeMailchimpConnection,
 } from '@/Services/UserService.jsx';
-import {isEmpty} from 'lodash';
+import {isEmpty, toInteger} from 'lodash';
+import {updateLink} from '@/Services/LinksRequest.jsx';
+import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
+import {UserLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
 
 const MailchimpLists = ({
                             currentLink,
                             setCurrentLink,
                             lists,
                             setLists,
-                            name,
 }) => {
+
+    const { dispatch } = useContext(UserLinksContext);
 
     const handleChange = (e) => {
 
-        setCurrentLink((prev) => ({
-            ...prev,
-            mailchimp_list_id: e.target.value,
-        }));
+        const value = e.target.value;
+        const packets = {
+            mailchimp_list_id: value,
+        };
+        updateLink(packets, currentLink.id).then((data) => {
+            if (data.success) {
+
+                setCurrentLink((prev) => ({
+                    ...prev,
+                    mailchimp_list_id: value,
+                }));
+
+                dispatch({
+                    type: LINKS_ACTIONS.UPDATE_LINK,
+                    payload: {
+                        id: currentLink.id,
+                        editLink: currentLink,
+                        mailchimp_list_id: value,
+                    }
+                })
+            }
+        });
     }
 
     const handleClick = (e) => {
@@ -30,17 +53,27 @@ const MailchimpLists = ({
                     setCurrentLink((prev) => ({
                         ...prev,
                         active_status: 0,
+                        mailchimp_list_id: null,
                     }))
+
+                    dispatch({
+                        type: LINKS_ACTIONS.UPDATE_LINK,
+                        payload: {
+                            id: currentLink.id,
+                            editLink: currentLink,
+                            mailchimp_list_id: null,
+                        }
+                    })
                 }
             }
         )
     }
 
     return (
-        <>
-            <label htmlFor="mailchimp_list_id">Mailchimp List</label>
+        <div className="my_row relative form_nav_content p-5">
+            <p className="label">Mailchimp List</p>
             <select
-                name={name}
+                name={"mailchimp_list_id"}
                 onChange={(e) => handleChange(e)}
                 required
                 value={currentLink.mailchimp_list_id || undefined}
@@ -50,19 +83,20 @@ const MailchimpLists = ({
                     return (
                         <option
                             key={list.list_id}
-                            value={list.list_id}>{list.list_name}
+                            value={list.list_id}>
+                            {list.list_name}
                         </option>
                     )
                 })}
             </select>
             {!isEmpty(lists) &&
                 <div className="my_row remove_link">
-                    <a href="#" onClick={(e) => handleClick(e)}>
+                    <a className="text-red-500 flex justify-end text-sm mt-2" href="#" onClick={(e) => handleClick(e)}>
                         Remove Connection
                     </a>
                 </div>
             }
-        </>
+        </div>
     );
 };
 

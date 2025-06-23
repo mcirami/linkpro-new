@@ -35,7 +35,6 @@ const FolderLinks = ({
                          folder_id,
                          subStatus,
                          setEditLink,
-                         setAccordionValue
 
                }) => {
 

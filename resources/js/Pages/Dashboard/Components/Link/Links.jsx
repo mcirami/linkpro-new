@@ -41,13 +41,16 @@ const Links = ({
                    pageLayoutRef,
                    setShowConfirmPopup,
                    setShowLoader,
-                   affStatus
+                   affStatus,
+                   connectionError,
+                   formRow,
+                   setFormRow
 }) => {
 
     const { userLinks, dispatch } = useContext(UserLinksContext);
     const { dispatchFolderLinks } = useContext(FolderLinksContext);
     const {pageSettings} = usePageContext();
-    const [formRow, setFormRow] = useState(null);
+
     //const targetRef = useRef(null);
 
     const sensors = useSensors(
@@ -65,7 +68,10 @@ const Links = ({
                 setFormRow(null)
                 setEditLink({});
             } else {
-                document.querySelector('.column_content.open').classList.remove('open');
+                const openedDiv = document.querySelector('.column_content.open');
+                if (openedDiv) {
+                    openedDiv.classList.remove('open');
+                }
                 e.target.closest('.column_content').classList.add('open');
                 setEditLink(userLinks.find(function(e) {
                     return e.id === linkID
@@ -123,7 +129,7 @@ const Links = ({
 
             dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks["links"]} })
             setEditLink(prev => ({...prev, folder_id: linkID}));
-            setRow(prev => ({...prev, row: 0}))
+            //setRow(prev => ({...prev, row: 0}))
             setValue(prev => ({...prev, index: 0, url: null}));
 
             setTimeout(function(){
@@ -149,7 +155,7 @@ const Links = ({
 
         if (active.id !== over.id) {
 
-            setRow(null)
+            //setRow(null)
             setValue({
                 index: null,
                 url: null
@@ -222,6 +228,7 @@ const Links = ({
                                     setFormRow={setFormRow}
                                     setShowUpgradePopup={setShowUpgradePopup}
                                     affStatus={affStatus}
+                                    connectionError={connectionError}
                                 />
                             )
                         })}

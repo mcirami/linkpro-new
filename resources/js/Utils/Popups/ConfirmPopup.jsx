@@ -16,9 +16,6 @@ export const ConfirmPopup = ({
                                  setEditLink,
                                  showConfirmPopup,
                                  setShowConfirmPopup,
-                                 setInputType,
-                                 setIntegrationType,
-                                 setAccordionValue
                              }) => {
 
     const {id, type, folderId} = editLink;
@@ -124,9 +121,6 @@ export const ConfirmPopup = ({
                         id: null,
                         type: null,
                     })
-                    setIntegrationType(null);
-                    setInputType(null);
-                    setAccordionValue(null);
                 }
             })
         }

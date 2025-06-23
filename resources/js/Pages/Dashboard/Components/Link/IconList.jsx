@@ -13,7 +13,6 @@ import ImageUploader
 
 const IconList = ({
                       setCharactersLeft,
-                      integrationType = null,
                       setEditLink,
                       editLink,
                       showIconList,

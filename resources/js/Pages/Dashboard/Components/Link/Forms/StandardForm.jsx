@@ -22,11 +22,12 @@ import ImageUploader
 import FormTabs from '@/Pages/Dashboard/Components/Link/Forms/FormTabs.jsx';
 import IconSettingComponent
     from '@/Pages/Dashboard/Components/Link/Forms/IconSettingComponent.jsx';
-import str, {capitalize} from 'lodash';
+import {capitalize} from 'lodash';
 import {IoCloseSharp} from 'react-icons/io5';
 import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import {getIcons} from '@/Services/IconRequests.jsx';
 import {getIconPaths} from '@/Services/ImageService.jsx';
+import MailChimp from '@/Pages/Dashboard/Components/Link/Forms/Mailchimp/MailChimp.jsx';
 
 const StandardForm = ({
                           editLink,
@@ -35,6 +36,8 @@ const StandardForm = ({
                           setFormRow,
                           affiliateStatus,
                           setAffiliateStatus,
+                          connectionError,
+                          index
 
 }) => {
 
@@ -42,8 +45,10 @@ const StandardForm = ({
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
     const  { pageSettings } = usePageContext();
     const [ showTerms, setShowTerms ] = useState(false);
-    const [ showBGUpload, setShowBGUpload ] = useState(false);
+
     const [customIconArray, setCustomIconArray] = useState([]);
+
+    const [ showFormTab, setShowFormTab ] = useState("icon");
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -204,7 +209,10 @@ const StandardForm = ({
 
     const handleCloseForm = (e) => {
         e.preventDefault();
-        document.querySelector('.column_content.open').classList.remove('open');
+        const openedDiv = document.querySelector('.column_content.open');
+        if (openedDiv) {
+            openedDiv.classList.remove('open');
+        }
         setFormRow(0);
         setEditLink({});
     }
@@ -252,51 +260,18 @@ const StandardForm = ({
             </div>
             <FormTabs
                 setShowIconList={setShowIconList}
-                setShowBGUpload={setShowBGUpload}
+                showFormTab={showFormTab}
+                setShowFormTab={setShowFormTab}
                 pageLayout={pageSettings.page_layout}
+                editLink={editLink}
             />
-                {showBGUpload &&
-                <div className="form_nav_content flex flex-wrap relative p-5">
-                    {editLink.bg_image &&
-                        <>
-                            <div className="switch_wrap mb-4">
-                                <IOSSwitch
-                                    onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "bg_active")}
-                                    checked={Boolean(editLink.bg_active)}
-                                />
-                                <div className="hover_text switch">
-                                    <p>
-                                        {Boolean(editLink.bg_active) ? "Disable" : "Enable"} Background
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="w-full">
-                                <p className="label">Current Image:</p>
-                                <div className="image_wrap">
-                                    <img src={editLink.bg_image} alt=""/>
-                                </div>
-                            </div>
-                        </>
-                    }
-                    <div className="w-full">
-                        <ImageUploader
-                            editLink={editLink}
-                            setEditLink={setEditLink}
-                            setShowLoader={setShowLoader}
-                            elementName="bg_image"
-                            imageCrop={{unit: "%", width: 100, aspect: 16 / 5 }}
-                            imageAspectRatio={16 / 5}
-                        />
-                    </div>
-                </div>
-                }
-                { (editLink.type !== "offer" && editLink.type !== "mailchimp" && !showBGUpload) &&
+                { (editLink.type !== "offer" && editLink.type !== "mailchimp" && showFormTab === "icon") &&
                     <InputTypeRadio
                         editLink={editLink}
                         setEditLink={setEditLink}
                     />
                 }
-                {(showIconList.show || pageSettings.page_layout === "layout_one") &&
+                {(pageSettings.page_layout === "layout_one" || showFormTab === "icon") &&
                 <div className="link_form form_nav_content">
                     <div className="switch_wrap mb-3">
                         <IOSSwitch
@@ -377,6 +352,49 @@ const StandardForm = ({
                         <a className="help_link" href="mailto:help@link.pro"><small>Need Help?</small></a>
                     </div>
                 </div>
+                }
+                {showFormTab === "image" &&
+                    <div className="form_nav_content flex flex-wrap relative p-5 w-full">
+                        {editLink.bg_image &&
+                            <>
+                                <div className="switch_wrap mb-4">
+                                    <IOSSwitch
+                                        onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "bg_active")}
+                                        checked={Boolean(editLink.bg_active)}
+                                    />
+                                    <div className="hover_text switch">
+                                        <p>
+                                            {Boolean(editLink.bg_active) ? "Disable" : "Enable"} Background
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="w-full">
+                                    <p className="label">Current Image:</p>
+                                    <div className="image_wrap">
+                                        <img src={editLink.bg_image} alt=""/>
+                                    </div>
+                                </div>
+                            </>
+                        }
+                        <div className="w-full">
+                            <ImageUploader
+                                editLink={editLink}
+                                setEditLink={setEditLink}
+                                setShowLoader={setShowLoader}
+                                elementName="bg_image"
+                                imageCrop={{unit: "%", width: 100, aspect: 16 / 5 }}
+                                imageAspectRatio={16 / 5}
+                            />
+                        </div>
+                    </div>
+                }
+                {showFormTab === "integration" &&
+                    <MailChimp
+                        editLink={editLink}
+                        setEditLink={setEditLink}
+                        connectionError={connectionError}
+                        index={index}
+                    />
                 }
                 </>
     );

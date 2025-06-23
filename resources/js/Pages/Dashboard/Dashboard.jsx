@@ -32,13 +32,8 @@ import {
 } from '@/Services/Reducer.jsx';
 import InfoText from '../../Utils/ToolTips/InfoText';
 import {MessageAlertPopup} from '@/Utils/Popups/MessageAlertPopup';
-import StandardForm from './Components/Link/Forms/StandardForm';
-import FormBreadcrumbs from './Components/Link/Forms/FormBreadcrumbs';
 import DeleteIcon from './Components/Link/Forms/DeleteIcon';
 import FolderNameInput from './Components/Folder/FolderNameInput';
-import AccordionLink from './Components/Link/Forms/AccordionLink';
-import CustomForm from './Components/Link/Forms/CustomForm';
-import IntegrationForm from './Components/Link/Forms/IntegrationForm';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PageContext from '@/Context/PageContext.jsx';
 export const UserLinksContext = createContext(undefined);
@@ -80,24 +75,14 @@ function Dashboard({
 
     const [allUserPages, setAllUserPages] = useState(userPages);
 
-    const [inputType, setInputType] = useState("url");
-
     const [editLink, setEditLink] = useState({
         id: null,
         type: null,
         inputType: null,
         folder_id: null
     });
-
-    const [showLinkForm, setShowLinkForm] = useState({
-        show: false,
-    });
-
+    const [formRow, setFormRow] = useState(null);
     const [showLinkTypeRadio, setShowLinkTypeRadio] = useState(false);
-
-    const [accordionValue, setAccordionValue] = useState(null);
-
-    const [integrationType, setIntegrationType] = useState("mailchimp");
 
     const [storeID, setStoreID] = useState(null);
     const [shopifyStores, setShopifyStores] = useState([]);
@@ -179,8 +164,6 @@ function Dashboard({
 
     }, [])
 
-    const [redirectedType, setRedirectedType] = useState(null);
-
     useEffect(() => {
 
         const data = getUrlParams();
@@ -190,16 +173,12 @@ function Dashboard({
         const error = data.urlParams?.get('connection_error');
 
         if (redirected && redirected !== "") {
-            setInputType(localStorage.getItem('inputType') || null)
-            //setAccordionValue("integration");
-            setRedirectedType(redirected);
-            setIntegrationType(localStorage.getItem('integrationType') || null);
+            setEditLink(prev => ({
+                ...prev,
+                id: JSON.parse(localStorage.getItem('editID')) || null
+            }));
 
-            setEditLink(prev => ({ ...prev, id: JSON.parse(localStorage.getItem('editID')) || null }));
-            //setShowLinkForm(JSON.parse(localStorage.getItem('showLinkForm')) || false)
-            setShowLinkForm({
-                show: true
-            });
+            setFormRow(JSON.parse(localStorage.getItem('formRow')));
 
             if(storeID && storeID !== "") {
                 setStoreID(storeID)
@@ -328,9 +307,6 @@ function Dashboard({
                                             setEditLink={setEditLink}
                                             showConfirmPopup={showConfirmPopup}
                                             setShowConfirmPopup={setShowConfirmPopup}
-                                            setInputType={setInputType}
-                                            setIntegrationType={setIntegrationType}
-                                            setAccordionValue={setAccordionValue}
                                         />
                                     }
 
@@ -467,24 +443,10 @@ function Dashboard({
                                                         }
                                                     </div>
 
-                                                    {editLink.id || showLinkForm.show || editLink.folder_id ?
+                                                    {editLink.id || editLink.folder_id ?
                                                         <div className="my_row icon_links" id="scrollTo">
-                                                           {/* <p className="form_title">
-                                                                {editLink.id || (editLink.folder_id && !showLinkForm.show) ? "Editing " : "" }
-                                                                {showLinkForm.show ? "Adding " : "" }
-                                                                {(editLink.folder_id && !editLink.id && !showLinkForm.show) ? "Folder" : "Icon"}
-                                                            </p>*/}
                                                             <div className="links_row">
-                                                                {/*<FormBreadcrumbs
-                                                                    setShowLinkForm={setShowLinkForm}
-                                                                    editLink={editLink}
-                                                                    setEditLink={setEditLink}
-                                                                    setIntegrationType={setIntegrationType}
-                                                                    setInputType={setInputType}
-                                                                    showLinkForm={showLinkForm}
-                                                                    showLinkTypeRadio={showLinkTypeRadio}
-                                                                />*/}
-                                                                { (editLink.folder_id && !showLinkForm.show) &&
+                                                                { (editLink.folder_id) &&
                                                                     <div className="delete_icon">
                                                                         <DeleteIcon
                                                                             setShowConfirmPopup={setShowConfirmPopup}
@@ -533,7 +495,6 @@ function Dashboard({
                                                     }*/}
                                                     {showLinkTypeRadio &&
                                                         <LinkTypeRadio
-                                                            setShowLinkForm={setShowLinkForm}
                                                             setEditLink={setEditLink}
                                                             setShowLinkTypeRadio={setShowLinkTypeRadio}
                                                             pageId={pageSettings.id}
@@ -689,7 +650,6 @@ function Dashboard({
 
                                                     { (editLink.folder_id &&
                                                         !editLink.id &&
-                                                        !showLinkForm.show &&
                                                         !showLinkTypeRadio
                                                     ) ?
 
@@ -698,7 +658,6 @@ function Dashboard({
                                                                 folder_id={editLink.folder_id}
                                                                 subStatus={subStatus}
                                                                 setEditLink={setEditLink}
-                                                                setAccordionValue={setAccordionValue}
                                                             />
                                                         </ErrorBoundary>
 
@@ -718,6 +677,9 @@ function Dashboard({
                                                                     setShowConfirmPopup={setShowConfirmPopup}
                                                                     setShowLoader={setShowLoader}
                                                                     affStatus={affStatus}
+                                                                    connectionError={connectionError}
+                                                                    formRow={formRow}
+                                                                    setFormRow={setFormRow}
                                                                 />
                                                             </ErrorBoundary>
                                                     }

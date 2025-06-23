@@ -4,7 +4,6 @@ import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
 import addLink from '@/Services/LinksRequest.jsx';
 
 const LinkTypeRadio = ({
-                           setShowLinkForm,
                            setEditLink,
                            setShowLinkTypeRadio,
                            pageId,
@@ -19,7 +18,6 @@ const LinkTypeRadio = ({
             icon_active: false,
             bg_active: false
         }));
-        //setShowLinkForm({show: true});
         setShowLinkTypeRadio(false);
 
         const packets = {

@@ -25,7 +25,8 @@ const Link = ({
                   formRow,
                   setFormRow,
                   setShowUpgradePopup,
-                  affStatus
+                  affStatus,
+                  connectionError
 }) => {
 
     const {type, id, icon, links} = link;
@@ -109,6 +110,8 @@ const Link = ({
                                 setFormRow={setFormRow}
                                 affiliateStatus={affiliateStatus}
                                 setAffiliateStatus={setAffiliateStatus}
+                                connectionError={connectionError}
+                                index={index}
                             />
                         </div>
                     </div>
@@ -127,6 +130,8 @@ const Link = ({
                     setFormRow={setFormRow}
                     affiliateStatus={affiliateStatus}
                     setAffiliateStatus={setAffiliateStatus}
+                    connectionError={connectionError}
+                    index={index}
                 />
             </div>
                 :

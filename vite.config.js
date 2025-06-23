@@ -1,6 +1,8 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import react from "@vitejs/plugin-react";
+import fs from 'fs';
+import path from 'path';
 export default defineConfig({
     plugins: [
         laravel({
@@ -13,13 +15,28 @@ export default defineConfig({
         host: 'linkpro-new.test', // <- this is the key
         port: 5173,
         cors: true, // Add this
-        https: false, // or true, if you want to try again with SSL later
-        origin: 'http://linkpro-new.test:5173',
+        https: {
+            key: fs.readFileSync(
+                path.resolve(
+                    process.env.HOME,
+                    'Library/Application Support/Herd/Config/valet/Certificates/linkpro-new.test.key'
+                )
+            ),
+            cert: fs.readFileSync(
+                path.resolve(
+                    process.env.HOME,
+                    'Library/Application Support/Herd/Config/valet/Certificates/linkpro-new.test.crt'
+                )
+            ),
+        },
+        origin: 'https://linkpro-new.test:5173',
         headers: {
             'Access-Control-Allow-Origin': '*', // Allow from all origins
         },
         hmr: {
+            protocol: 'wss', // Use secure WebSocket
             host: 'linkpro-new.test',
+            port: 5173,
         },
     },
     build: {

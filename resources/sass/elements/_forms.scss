@@ -753,6 +753,11 @@ form .bottom_row a {
                         background: $blue;
                         color:$white;
                     }
+
+                    &.disabled {
+                        background: $gray;
+                        color:$white;
+                    }
                 }
 
                 &.icons {
@@ -1320,10 +1325,7 @@ form .bottom_row a {
     min-height: 200px;
 
     h3 {
-        text-align: center;
         margin-bottom: 20px;
-        border-bottom: 1px solid $borderGray;
-        padding-bottom: 10px;
         font-size: 20px;
         text-shadow: 1px 0.02em $borderGray;
     }

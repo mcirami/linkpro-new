@@ -31,7 +31,7 @@ class LinkRequest extends FormRequest
             'url'               => 'sometimes|nullable|string',
             'email'             => 'sometimes|nullable|email',
             'phone'             => 'sometimes|nullable|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
-            'mailchimp_list_id' => 'sometimes|nullable|integer',
+            'mailchimp_list_id' => 'sometimes|nullable|string',
             'shopify_products'  => 'sometimes|nullable|json',
             'description'       => 'sometimes|nullable|string',
             'icon'              => 'sometimes|nullable|string',

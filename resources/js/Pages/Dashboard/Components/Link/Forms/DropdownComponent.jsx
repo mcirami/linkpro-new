@@ -13,6 +13,7 @@ const DropdownComponent = ({
         setSearchInput("");
         const value = e.target.value.toLowerCase();
 
+        console.log(iconList);
         if (value === "all") {
             setFilteredByCat(iconList);
             setFilteredIcons(iconList);
@@ -54,7 +55,7 @@ const DropdownComponent = ({
                             </optgroup>
 
                             :
-                            <option key={id} value={id}>{name}</option>
+                            <option key={id} value={name}>{name}</option>
                     )
                 })}
             </select>

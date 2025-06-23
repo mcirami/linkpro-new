@@ -3,9 +3,9 @@ import {setStorage} from '@/Services/LinksRequest.jsx';
 
 const MailchimpIntegration = ({
                                   connectionError,
-                                  integrationType,
                                   editID,
-                                  pageID
+                                  pageID,
+                                  index,
 }) => {
 
     const handleMailchimpClick = (e) => {
@@ -13,7 +13,7 @@ const MailchimpIntegration = ({
 
         const url = "/auth/mailchimp";
         let myPromise = new Promise((resolve, reject) => {
-            setStorage(editID, integrationType, pageID);
+            setStorage(editID, pageID, index + 1);
             resolve(url);
             reject("Error");
         })
@@ -29,7 +29,7 @@ const MailchimpIntegration = ({
     }
 
     return (
-        <div className="integration_wrap">
+        <div className="integration_wrap p-5">
             <h3>Add your Mailchimp account as a LinkPro button!</h3>
             <p className="mb-4">Connect your Mailchimp account by clicking the button below.</p>
             <p className="small">Note: You will be redirected away from Link Pro to log into Mailchimp. You will need to either already have or create a new MailChimp account of your own to use this integration.</p>
