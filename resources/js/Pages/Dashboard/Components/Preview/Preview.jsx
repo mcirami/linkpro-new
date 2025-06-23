@@ -101,6 +101,7 @@ const Preview = ({
                             backgroundImage: pageSettings.main_img_type === "page" ? "url(" + pageSettings["page_img"] + ")" : "",
                             backgroundRepeat: "no-repeat",
                             backgroundSize: "cover",
+                            backgroundPosition: "center",
                             height: "100%",
                             width: "100%",
                     }}>

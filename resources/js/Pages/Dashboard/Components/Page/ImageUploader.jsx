@@ -18,6 +18,7 @@ import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import CropTools from '@/Utils/CropTools';
 import EventBus from '@/Utils/Bus';
 import {resizeFile} from '@/Services/ImageService.jsx';
+import Compressor from 'compressorjs';
 
 const ImageUploader = forwardRef(function ImageUploader(props, ref) {
 
@@ -71,8 +72,14 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
         }
 
         await resizeFile(file[0]).then((image) => {
-            createImage(image, setUpImg);
-
+            new Compressor(image, {
+                quality: 0.8,
+                success(result) {
+                    /*const formData = new FormData();
+                    formData.append('file', result, result.name);*/
+                    createImage(result, setUpImg);
+                },
+            });
             setCrop(undefined);
             setDisableButton(false);
             const el = document.querySelector(`form.${elementName} .bottom_section`);

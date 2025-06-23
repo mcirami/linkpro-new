@@ -64,6 +64,7 @@ function Dashboard({
     const [folderLinks, dispatchFolderLinks] = useReducer(folderLinksReducer, []);
 
     const [pageSettings, setPageSettings] = useState(page);
+    console.log("Page", page);
     const [infoText, setInfoText] = useState({section:'', text:[]});
     const [infoTextOpen, setInfoTextOpen] = useState(false)
     const [infoLocation, setInfoLocation] = useState({})

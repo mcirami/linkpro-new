@@ -11,6 +11,7 @@ import {updateLink} from '@/Services/LinksRequest.jsx';
 import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
 import {UserLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
+import Compressor from "compressorjs";
 
 const ImageUploader = ({
                            editLink,
@@ -55,7 +56,14 @@ const ImageUploader = ({
         }
 
         await resizeFile(files[0]).then((image) => {
-            createImage(image, setUpImg);
+            new Compressor(image, {
+                quality: 0.8,
+                success(result) {
+                    /*const formData = new FormData();
+                    formData.append('file', result, result.name);*/
+                    createImage(result, setUpImg);
+                },
+            });
             setCrop(undefined)
             setImageSelected(true);
         })

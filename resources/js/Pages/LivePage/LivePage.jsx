@@ -52,6 +52,7 @@ function LivePage({links, page, subscribed}) {
             setPageStyle({
                 background: 'url(' + page_img + ') no-repeat',
                 backgroundSize: 'cover',
+                backgroundPosition: 'center',
                 height: "100%",
                 width: "100%",
                 paddingTop: "20px"

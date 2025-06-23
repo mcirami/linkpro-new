@@ -190,7 +190,7 @@ class PageService {
         $updateData = [];
         $updateData[$request->element] = $amazonPath;
 
-        $page->update(['profile_img' => $amazonPath]);
+        $page->update([$request->element => $amazonPath]);
 
         if ($page->default && $request->element == "profile_img") {
             $user = $page->user()->first();
