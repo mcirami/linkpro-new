@@ -8,7 +8,6 @@ const ProfileImage = ({
 
     const {pageSettings} = usePageContext();
 
-    console.log("pageSettings: ", pageSettings);
     return (
 
         <>

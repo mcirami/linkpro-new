@@ -13,7 +13,6 @@ const DropdownComponent = ({
         setSearchInput("");
         const value = e.target.value.toLowerCase();
 
-        console.log(iconList);
         if (value === "all") {
             setFilteredByCat(iconList);
             setFilteredIcons(iconList);
@@ -29,7 +28,7 @@ const DropdownComponent = ({
 
     return (
 
-        <div className="my_row relative">
+        <div className="my_row relative mb-3">
             <select
                 className="active"
                 id="category_select"

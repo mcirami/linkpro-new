@@ -1,7 +1,8 @@
 import React, {
     useEffect,
     useState,
-    useContext
+    useContext,
+    useRef,
 } from 'react';
 import IconList from '../IconList';
 import InputTypeRadio from './InputTypeRadio';
@@ -54,10 +55,11 @@ const StandardForm = ({
 
     //const {id, folderId} = editLink;
     const [ showIconList, setShowIconList ] = useState({
-        show: true,
         type: '',
         list: []
     });
+
+    const iconCacheRef = useRef({});
 
     useEffect(() => {
         setEditLink(
@@ -102,10 +104,10 @@ const StandardForm = ({
                 }));
                 break;
             case "offer":
-                const offerIconType = editLink.icon.includes("custom-icons") ? "custom" : "offer"
+                const offerIconType = editLink.icon.includes("custom-icons") ? "custom" : "offers"
                 setShowIconList((prev) => ({
                     ...prev,
-                    type: offerIconType,
+                    type: "offers",
                 }));
                 break;
             default:
@@ -122,7 +124,26 @@ const StandardForm = ({
 
         if (!showIconList.type) return;
 
-        // Clear the icon list before loading new icons
+        console.log("type: ", showIconList.type);
+
+        if (iconCacheRef.current[showIconList.type]) {
+            const cachedList = iconCacheRef.current[showIconList.type];
+
+            console.log("cachedList: ", cachedList);
+            if (showIconList.type === 'custom') {
+                setCustomIconArray(cachedList);
+            } else {
+                setShowIconList((prev) => ({
+                    ...prev,
+                    list: cachedList,
+                }));
+            }
+
+            setIsLoading(false);
+            return;
+        }
+
+        // Clear previous lists before loading new
         setShowIconList((prev) => ({
             ...prev,
             list: []
@@ -137,7 +158,7 @@ const StandardForm = ({
             case "custom":
                 url = '/get-custom-icons';
                 break;
-            case "offer":
+            case "offers":
                 url = '/get-aff-icons';
                 break;
             default:
@@ -149,14 +170,17 @@ const StandardForm = ({
             if(data.success) {
 
                 if (showIconList.type === "custom") {
+                    iconCacheRef.current['custom'] = data.iconData;
                     setCustomIconArray(data.iconData);
                 } else if (showIconList.type === "standard")  {
                     const iconPaths = getIconPaths(data.iconData);
+                    iconCacheRef.current['standard'] = iconPaths;
                     setShowIconList((prev) => ({
                         ...prev,
                         list: iconPaths,
                     }));
-                } else if (showIconList.type === "offer") {
+                } else if (showIconList.type === "offers") {
+                    iconCacheRef.current['offers'] = data.iconData;
                     setShowIconList((prev) => ({
                         ...prev,
                         list: data.iconData,
@@ -164,6 +188,8 @@ const StandardForm = ({
                 }
 
                 setIsLoading(false);
+
+                console.log("iconCacheRef.current: ", iconCacheRef.current);
             }
         });
     }, [showIconList.type]);
@@ -259,9 +285,9 @@ const StandardForm = ({
                 <a className="text-xl hide_button" href="#" onClick={(e) => handleCloseForm(e)}><IoCloseSharp/></a>
             </div>
             <FormTabs
-                setShowIconList={setShowIconList}
                 showFormTab={showFormTab}
                 setShowFormTab={setShowFormTab}
+                setShowIconList={setShowIconList}
                 pageLayout={pageSettings.page_layout}
                 editLink={editLink}
             />
@@ -271,34 +297,40 @@ const StandardForm = ({
                         setEditLink={setEditLink}
                     />
                 }
-                {(pageSettings.page_layout === "layout_one" || showFormTab === "icon") &&
+
                 <div className="link_form form_nav_content">
-                    <div className="switch_wrap mb-3">
-                        <IOSSwitch
-                            onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "icon_active")}
-                            checked={Boolean(editLink.icon_active)}
-                        />
-                        <div className="hover_text switch">
-                            <p>
-                                {Boolean(editLink.icon_active) ? "Hide" : "Show"} Icon
-                            </p>
-                        </div>
-                    </div>
-                    <div className="icon_row">
-                        <div className="icon_box">
-                            <IconList
-                                setCharactersLeft={setCharactersLeft}
-                                editLink={editLink}
-                                setEditLink={setEditLink}
-                                showIconList={showIconList}
-                                setShowIconList={setShowIconList}
-                                setShowLoader={setShowLoader}
-                                customIconArray={customIconArray}
-                                setCustomIconArray={setCustomIconArray}
-                                isLoading={isLoading}
+                    {(pageSettings.page_layout === "layout_two" && showFormTab === "icon") &&
+                        <div className="switch_wrap mb-3">
+                            <p className="label">Show/Hide Icon</p>
+                            <IOSSwitch
+                                onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "icon_active")}
+                                checked={Boolean(editLink.icon_active)}
                             />
+                            <div className="hover_text switch">
+                                <p>
+                                    {Boolean(editLink.icon_active) ? "Hide" : "Show"} Icon
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    }
+                    {showFormTab === "icon" &&
+                        <div className="icon_row">
+                            <div className="icon_box">
+                                <IconList
+                                    setCharactersLeft={setCharactersLeft}
+                                    editLink={editLink}
+                                    setEditLink={setEditLink}
+                                    showIconList={showIconList}
+                                    setShowIconList={setShowIconList}
+                                    setShowLoader={setShowLoader}
+                                    customIconArray={customIconArray}
+                                    setCustomIconArray={setCustomIconArray}
+                                    isLoading={isLoading}
+                                    showFormTab={showFormTab}
+                                />
+                            </div>
+                        </div>
+                    }
 
                     {pageSettings.page_layout === "layout_one" &&
                         <div className="my_row mb-4">
@@ -344,19 +376,12 @@ const StandardForm = ({
                             setDescChecked={setDescChecked}
                         />
                     }*/}
-
-                    <div className="button_row w-full mt-1 flex flex-nowrap justify-between">
-                        <div className="info_text file_types text-center !pl-0">
-                            <a href="mailto:help@link.pro" className="mx-auto m-0 char_count">Don't See Your Icon? Contact Us!</a>
-                        </div>
-                        <a className="help_link" href="mailto:help@link.pro"><small>Need Help?</small></a>
-                    </div>
                 </div>
-                }
                 {showFormTab === "image" &&
-                    <div className="form_nav_content flex flex-wrap relative p-5 w-full">
+                    <div className="form_nav_content relative p-5 w-full">
                         {editLink.bg_image &&
                             <>
+                                <p className="label">Show/Hide Background</p>
                                 <div className="switch_wrap mb-4">
                                     <IOSSwitch
                                         onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "bg_active")}
@@ -395,6 +420,25 @@ const StandardForm = ({
                         connectionError={connectionError}
                         index={index}
                     />
+                }
+                {showFormTab === "offers" &&
+
+                    <div className="icon_row link_form form_nav_content">
+                        <div className="icon_box">
+                            <IconList
+                                setCharactersLeft={setCharactersLeft}
+                                editLink={editLink}
+                                setEditLink={setEditLink}
+                                showIconList={showIconList}
+                                setShowIconList={setShowIconList}
+                                setShowLoader={setShowLoader}
+                                customIconArray={customIconArray}
+                                setCustomIconArray={setCustomIconArray}
+                                isLoading={isLoading}
+                                showFormTab={showFormTab}
+                            />
+                        </div>
+                    </div>
                 }
                 </>
     );

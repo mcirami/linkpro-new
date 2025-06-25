@@ -34,7 +34,6 @@ const MailChimp = ({
             }
         )
     }
-    console.log("lists: ", lists);
     return (
 
        isEmpty(lists) ?

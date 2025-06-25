@@ -185,7 +185,7 @@ const IconSettingComponent = ({
         <>
             <div className="input_wrap mt-2">
                 <input
-                    className={`${editLink[elementName] ? "active" : ""}`}
+                    className={`w-full ${editLink[elementName] ? "active" : ""}`}
                     name={elementName}
                     type={inputType === "phone" ? "tel" : inputType}
                     value={isEditing?.value}

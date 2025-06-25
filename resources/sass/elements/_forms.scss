@@ -356,35 +356,43 @@ form .bottom_row a {
     }
 }
 
+.icons_wrap .edit_form {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
 #links_page .grid_item {
     .form_wrapper {
         padding-left: 31px;
         display: inline-block;
-
-        .edit_form.link {
-            @include boxShadow;
-            flex-wrap: wrap;
-            -ms-flex-wrap: wrap;
-            -webkit-flex-wrap: wrap;
-            border-radius: 20px;
-            -webkit-border-radius:20px;
-            -moz-border-radius: 20px;
-            margin-bottom: 10px;
-
-            .link_form {
-                padding: 20px;
-                border-top: 0;
-                border-top-left-radius: 0;
-                -webkit-border-top-left-radius: 0;
-                -moz-border-radius-topleft: 0;
-                border-top-right-radius: 0;
-                -webkit-border-top-right-radius: 0;
-                -moz-border-radius-topright: 0;
-            }
-        }
+        width: 100%;
     }
 }
 
+.edit_form.link {
+    @include boxShadow;
+    width: 100%;
+    flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    border-radius: 20px;
+    -webkit-border-radius:20px;
+    -moz-border-radius: 20px;
+    margin-bottom: 10px;
+
+    .link_form {
+        padding: 20px;
+        border-top: 0;
+        border-top-left-radius: 0;
+        -webkit-border-top-left-radius: 0;
+        -moz-border-radius-topleft: 0;
+        border-top-right-radius: 0;
+        -webkit-border-top-right-radius: 0;
+        -moz-border-radius-topright: 0;
+    }
+}
 
 
 
@@ -593,6 +601,43 @@ form .bottom_row a {
 
                     @include query(550) {
                         height: 90px;
+                    }
+                }
+
+                &.offer_list {
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-orient: vertical;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: column;
+                    flex-direction: column;
+                    -ms-flex-wrap: nowrap;
+                    flex-wrap: nowrap;
+                    padding: 0;
+                    height: auto;
+
+                    .custom_icons {
+                        width: 100%;
+                    }
+
+                    .icon_col {
+                        width: 100%;
+                        gap: 10px;
+                        border-bottom: 1px solid;
+                        border-color: rgba(155,155,155,.2);
+                        border-radius: 0;
+                        -webkit-border-radius: 0;
+                        -moz-border-radius: 0;
+                        padding-bottom: 10px;
+
+                        p {
+                            font-size: 1rem;
+                        }
+
+                        img {
+                            max-width: 50px;
+                        }
                     }
                 }
             }

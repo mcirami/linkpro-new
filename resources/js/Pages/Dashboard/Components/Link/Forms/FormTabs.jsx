@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import EventBus from '@/Utils/Bus.jsx';
 
 const FormTabs = ({
-                      setShowIconList,
                       showFormTab,
                       setShowFormTab,
+                      setShowIconList,
                       pageLayout,
                       editLink
                  }) => {
@@ -12,13 +12,19 @@ const FormTabs = ({
     const [hasList, setHasList] = useState(true);
 
     useEffect(() => {
-        if(editLink.type === "mailchimp" && !editLink.mailchimp_list_id) {
-            setHasList(false);
-            setShowFormTab("integration");
-        } else if (editLink.type === "mailchimp") {
-            setHasList(true);
+        if (editLink.type === "mailchimp") {
+            if (!editLink.mailchimp_list_id) {
+                setHasList(false);
+                setShowFormTab("integration");
+            } else {
+                setHasList(true);
+            }
         }
-    },[editLink])
+
+        if (editLink.type === "offer") {
+            setShowFormTab("offers");
+        }
+    },[])
 
     const handleOnClick = (e, type) => {
         e.preventDefault();
@@ -28,25 +34,10 @@ const FormTabs = ({
         } else if (!e.target.classList.contains("active")) {
             document.querySelector('.tab_link.active').classList.remove('active');
             setShowFormTab(type);
-            if (type === "icon") {
-                setShowIconList((prev) => ({
-                    ...prev,
-                    show: true,
-                }));
-            }
-            if (type === "image") {
-                setShowIconList((prev) => ({
-                    ...prev,
-                    show: false,
-                }));
-            }
-            if (type === "integration") {
-                setShowIconList((prev) => ({
-                    ...prev,
-                    show: false,
-                }));
-            }
-
+            setShowIconList((prev) => ({
+                ...prev,
+                type: type,
+            }));
             e.target.classList.add('active');
         }
     }
@@ -54,11 +45,20 @@ const FormTabs = ({
 
     return (
         <div className="form_nav relative">
+            { editLink.type === "offer" &&
+                <div className="relative">
+                    <a className={`relative block tab_link ${showFormTab === "offers" ? "active" : ""} `}
+                       href="#"
+                       onClick={(e) => handleOnClick(e, "offers")}>
+                        Offer List
+                    </a>
+                </div>
+            }
             <div className="relative">
                 <a className={`relative block tab_link ${
                      editLink.type === "mailchimp" && !hasList ? "disabled" :
                         (editLink.type === "mailchimp" && hasList && showFormTab !== "integration") ||
-                        editLink.type !== "mailchimp"  ? "active" : ""
+                        editLink.type !== "mailchimp" && editLink.type !== "offer" ? "active" : ""
                 }`}
                    href="#"
                    onClick={(e) => handleOnClick(e, "icon")}
