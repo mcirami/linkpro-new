@@ -247,6 +247,37 @@
                 @media screen and (max-width: 768px) {
                     padding: 10px 5px;
                 }
+
+                &.open {
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        bottom: -30px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        border-left: 15px solid transparent;
+                        border-right: 15px solid transparent;
+                        border-bottom: 15px solid #fff;
+                        width: 0;
+                        height: 0;
+                        z-index: 1;
+                    }
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        bottom: -33px; /* Just behind the :before triangle */
+                        left: 50%;
+                        transform: translateX(-50%);
+                        border-left: 15px solid transparent;
+                        border-right: 15px solid transparent;
+                        border-bottom: 15px solid rgba(0, 0, 0, 0.2); /* Simulated shadow color */
+                        width: 0;
+                        height: 0;
+                        z-index: -1; /* Place it behind the primary triangle */
+                    }
+
+                }
             }
 
             .icon_wrap {
