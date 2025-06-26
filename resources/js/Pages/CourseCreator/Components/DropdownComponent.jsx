@@ -51,9 +51,9 @@ const DropdownComponent = ({
 
                     return (
 
-                        children.length > 0 ?
+                        children?.length > 0 ?
                             <optgroup key={id} label={name} data-parent={parent_id}>
-                                {children.map((child) => {
+                                {children?.map((child) => {
                                     const {id, name} = child;
                                     return (
                                         <option key={id} value={id}>{name}</option>

@@ -1,4 +1,4 @@
-export default function PrimaryButton({ className = '', disabled, children, ...props }) {
+export default function PrimaryButton({ className = '', disabled, children = null, ...props }) {
     return (
         <button
             {...props}
@@ -9,7 +9,7 @@ export default function PrimaryButton({ className = '', disabled, children, ...p
             }
             disabled={disabled}
         >
-            {children}
+            {children || "Submit"}
         </button>
     );
 }

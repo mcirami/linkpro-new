@@ -68,8 +68,6 @@ const IconList = ({
                 type: "standard",
             }))
         }
-
-        console.log("useEffectTesting")
     },[editLink])
 
     useEffect(() => {
@@ -316,7 +314,6 @@ const IconList = ({
     const switchIconsList = () => {
         const mapArray = filteredIcons?.length > 0 ? filteredIcons : showIconList.list;
 
-        console.log("mapArray", mapArray);
             return (
                 <>
                     {showFormTab !== "offers" &&

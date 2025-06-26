@@ -2,7 +2,7 @@ import React from 'react';
 import AuthenticatedFooter from '@/Layouts/AuthenticatedFooter.jsx';
 import {isEmpty} from 'lodash';
 
-const CourseLayout = ({auth, children, course}) => {
+const CourseLayout = ({auth, children = null, course}) => {
 
     return (
         <div id="app_wrap" className={`my_row ${!isEmpty(auth.user.userInfo) ? "member" : ""} landing_page`}>
@@ -21,7 +21,7 @@ const CourseLayout = ({auth, children, course}) => {
                 </header>
 
                 <main>
-                    {children}
+                    {children || ""}
                 </main>
             </div>
         </div>

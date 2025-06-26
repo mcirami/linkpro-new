@@ -5,7 +5,7 @@ import Menu from '@/Menu/Menu.jsx';
 import AuthenticatedFooter from '@/Layouts/AuthenticatedFooter.jsx';
 import InputAnimations from '@/Utils/InputAnimations.jsx';
 
-export default function Authenticated({ children }) {
+export default function Authenticated({ children = null }) {
 
     return (
         <div id="app_wrap" className="member">
@@ -32,7 +32,7 @@ export default function Authenticated({ children }) {
                     </nav>
                 </header>
 
-                <main>{children}</main>
+                <main>{children || ""}</main>
                 <AuthenticatedFooter />
             </div>
         </div>

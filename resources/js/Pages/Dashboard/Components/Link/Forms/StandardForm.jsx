@@ -124,12 +124,9 @@ const StandardForm = ({
 
         if (!showIconList.type) return;
 
-        console.log("type: ", showIconList.type);
-
         if (iconCacheRef.current[showIconList.type]) {
             const cachedList = iconCacheRef.current[showIconList.type];
 
-            console.log("cachedList: ", cachedList);
             if (showIconList.type === 'custom') {
                 setCustomIconArray(cachedList);
             } else {
@@ -188,8 +185,6 @@ const StandardForm = ({
                 }
 
                 setIsLoading(false);
-
-                console.log("iconCacheRef.current: ", iconCacheRef.current);
             }
         });
     }, [showIconList.type]);

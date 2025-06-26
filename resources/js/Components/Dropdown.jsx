@@ -4,7 +4,7 @@ import { Transition } from '@headlessui/react';
 
 const DropDownContext = createContext();
 
-const Dropdown = ({ children }) => {
+const Dropdown = ({ children = null }) => {
     const [open, setOpen] = useState(false);
 
     const toggleOpen = () => {
@@ -13,24 +13,24 @@ const Dropdown = ({ children }) => {
 
     return (
         <DropDownContext.Provider value={{ open, setOpen, toggleOpen }}>
-            <div className="relative">{children}</div>
+            <div className="relative">{children || ""}</div>
         </DropDownContext.Provider>
     );
 };
 
-const Trigger = ({ children }) => {
+const Trigger = ({ children = null }) => {
     const { open, setOpen, toggleOpen } = useContext(DropDownContext);
 
     return (
         <>
-            <div onClick={toggleOpen}>{children}</div>
+            <div onClick={toggleOpen}>{children || ""}</div>
 
             {open && <div className="fixed inset-0 z-40" onClick={() => setOpen(false)}></div>}
         </>
     );
 };
 
-const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-white', children }) => {
+const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-white', children = null }) => {
     const { open, setOpen } = useContext(DropDownContext);
 
     let alignmentClasses = 'origin-top';
@@ -63,14 +63,14 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-whit
                     className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
                     onClick={() => setOpen(false)}
                 >
-                    <div className={`rounded-md ring-1 ring-black ring-opacity-5 ` + contentClasses}>{children}</div>
+                    <div className={`rounded-md ring-1 ring-black ring-opacity-5 ` + contentClasses}>{children || ""}</div>
                 </div>
             </Transition>
         </>
     );
 };
 
-const DropdownLink = ({ className = '', children, ...props }) => {
+const DropdownLink = ({ className = '', children = null, ...props }) => {
     return (
         <Link
             {...props}
@@ -79,7 +79,7 @@ const DropdownLink = ({ className = '', children, ...props }) => {
                 className
             }
         >
-            {children}
+            {children || ""}
         </Link>
     );
 };

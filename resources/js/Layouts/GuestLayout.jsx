@@ -4,7 +4,7 @@ import GuestFooter from '@/Layouts/GuestFooter.jsx';
 import InputAnimations from '@/Utils/InputAnimations.jsx';
 import {useEffect, useState} from 'react';
 
-export default function Guest({ children, ...props }) {
+export default function Guest({ children = null, ...props }) {
 
     const {course} = props;
 
@@ -59,7 +59,7 @@ export default function Guest({ children, ...props }) {
                 </div>
             </header>
             <main className="w-full">
-                {children}
+                {children || ""}
             </main>
             <GuestFooter />
         </div>

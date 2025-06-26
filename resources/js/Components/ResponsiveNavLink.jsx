@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 
-export default function ResponsiveNavLink({ active = false, className = '', children, ...props }) {
+export default function ResponsiveNavLink({ active = false, className = '', children = null, ...props }) {
     return (
         <Link
             {...props}
@@ -10,7 +10,7 @@ export default function ResponsiveNavLink({ active = false, className = '', chil
                     : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300'
             } text-base font-medium focus:outline-none transition duration-150 ease-in-out ${className}`}
         >
-            {children}
+            {children || ""}
         </Link>
     );
 }

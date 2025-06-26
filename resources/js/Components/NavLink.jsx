@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 
-export default function NavLink({ active = false, className = '', children, ...props }) {
+export default function NavLink({ active = false, className = '', children = null, ...props }) {
     return (
         <Link
             {...props}
@@ -12,7 +12,7 @@ export default function NavLink({ active = false, className = '', children, ...p
                 className
             }
         >
-            {children}
+            {children || ""}
         </Link>
     );
 }
