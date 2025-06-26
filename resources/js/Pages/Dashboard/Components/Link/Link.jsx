@@ -1,13 +1,9 @@
 import React, {useState} from 'react';
 import {MdDragHandle} from 'react-icons/md';
-import { FaEdit } from "react-icons/fa";
 import {checkIcon} from '@/Services/UserService.jsx';
-import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import DeleteIcon from '@/Pages/Dashboard/Components/Link/Forms/DeleteIcon.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
-import {MdEdit} from 'react-icons/md';
 import LayoutOne from '@/Pages/Dashboard/Components/Link/LayoutOne.jsx';
 import LayoutTwo from '@/Pages/Dashboard/Components/Link/LayoutTwo.jsx';
 import StandardForm

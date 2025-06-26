@@ -1,9 +1,7 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect} from 'react';
 import {MdCheckCircle, MdCancel} from 'react-icons/md';
 
 export const Flash = ({msg, type, removeFlash}) => {
-
-   //const { userLinks } = useContext(UserLinksContext);
 
     useEffect(() => {
 

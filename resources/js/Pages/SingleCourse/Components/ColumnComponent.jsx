@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {BiLock} from 'react-icons/bi';
 import {FaCirclePlay} from 'react-icons/fa6';
-import {getFileParts} from '@/Services/FileService.jsx';
 import isJSON from 'validator/es/lib/isJSON.js';
 import {convertText} from '@/Services/CreatorServices.jsx';
 import draftToHtml from 'draftjs-to-html';

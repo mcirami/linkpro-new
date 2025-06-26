@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {registerUser} from '@/Services/UserService.jsx';
 import InputAnimations from '@/Utils/InputAnimations.jsx';
 import SetFlash from '@/Utils/SetFlash.jsx';

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {FiThumbsDown, FiThumbsUp} from 'react-icons/fi';
 import {usePageContext} from '@/Context/PageContext.jsx';
 import {updatePageName} from '@/Services/PageRequests.jsx';

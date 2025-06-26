@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, router} from '@inertiajs/react';
+import {router} from '@inertiajs/react';
 import {BiChevronLeft} from 'react-icons/bi';
 import {PayPalButtons, usePayPalScriptReducer, PayPalScriptProvider} from "@paypal/react-paypal-js";
 import {

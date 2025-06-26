@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useState} from 'react';
 import {isEmpty} from 'lodash';
 import {HiMinusSm, HiOutlinePlusSm} from 'react-icons/hi';
 import {FaSort, FaSortDown, FaSortUp} from 'react-icons/fa';

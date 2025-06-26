@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import { Head } from "@inertiajs/react";
 import { FaArrowRightLong } from "react-icons/fa6";
-import { func } from "prop-types";
 
 function ConnectShopify({ domain, errors = null }) {
     const handleConnect = () => {

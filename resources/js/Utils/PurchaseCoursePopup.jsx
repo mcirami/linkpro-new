@@ -1,5 +1,4 @@
 import React from 'react';
-import {IoMdAlert} from 'react-icons/io';
 import {FaMoneyCheckAlt} from 'react-icons/fa';
 
 const PurchaseCoursePopup = ({purchasePopup, setPurchasePopup}) => {
