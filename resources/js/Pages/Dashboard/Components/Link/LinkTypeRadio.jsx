@@ -1,5 +1,5 @@
-import React, {useContext} from 'react';
-import {UserLinksContext} from '../../Dashboard.jsx';
+import React from 'react';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
 import addLink from '@/Services/LinksRequest.jsx';
 
@@ -9,7 +9,7 @@ const LinkTypeRadio = ({
                            pageId,
 }) => {
 
-    const { userLinks, dispatch } = useContext(UserLinksContext);
+    const { userLinks, dispatch } = useUserLinksContext();
     const handleOnChange = (type) => {
         setEditLink((prev) => ({
             ...prev,

@@ -60,10 +60,10 @@ const PageName = ({pageNames}) => {
         const regex = /^[A-Za-z0-9-_.]+$/;
 
         setRegexMatch(regex.test(value));
-        if (value.length > 2 && value === pageSettings["name"]) {
+        if (value?.length > 2 && value === pageSettings["name"]) {
             setAvailability(true);
             setCurrentMatch(true);
-        } else if (match < 0 && value.length > 2 && regex.test(value)) {
+        } else if (match < 0 && value?.length > 2 && regex.test(value)) {
             setAvailability(true);
             setCurrentMatch(false);
         } else {

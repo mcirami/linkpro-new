@@ -1,9 +1,9 @@
-import {useCallback, useContext} from 'react';
-import {UserLinksContext} from '../Pages/Dashboard/Dashboard.jsx';
+import {useCallback} from 'react';
+import {useUserLinksContext} from "@/Context/UserLinksContext";
 
 export const gridLayout = (width, height) => {
 
-    const { userLinks, setUserLinks } = useContext(UserLinksContext);
+    const { userLinks, setUserLinks } = useUserLinksContext();
 
     let array = [];
 

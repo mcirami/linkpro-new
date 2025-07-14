@@ -34,7 +34,7 @@ const PageNav = ({
 
             if ( subStatus && name === "premier") {
 
-                if (allUserPages.length === 5) {
+                if (allUserPages?.length === 5) {
                     enablePopup("a custom plan to add more links");
                 } else {
                     setIsEditing(true);
@@ -64,8 +64,8 @@ const PageNav = ({
             </div>
             <div className="menu_wrap">
 
-                <div className={allUserPages.length > 1 ? "menu_icon add_border" : "menu_icon"}>
-                    {allUserPages.length > 1 ?
+                <div className={allUserPages?.length > 1 ? "menu_icon add_border" : "menu_icon"}>
+                    {allUserPages?.length > 1 ?
                         <FiChevronDown/>
                         :
                         <MdAddCircleOutline/>

@@ -36,7 +36,8 @@ import DeleteIcon from './Components/Link/Forms/DeleteIcon';
 import FolderNameInput from './Components/Folder/FolderNameInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PageContext from '@/Context/PageContext.jsx';
-export const UserLinksContext = createContext(undefined);
+import UserLinksContext from '@/Context/UserLinksContext.jsx';
+//export const UserLinksContext = createContext(undefined);
 export const FolderLinksContext = createContext(undefined);
 //export const PageContext = createContext(undefined);
 
@@ -51,6 +52,7 @@ import ImageUploader from '@/Pages/Dashboard/Components/Page/ImageUploader.jsx';
 import SwitchComponent
     from '@/Pages/Dashboard/Components/Page/SwitchComponent.jsx';
 import LinkTypeRadio from '@/Pages/Dashboard/Components/Link/LinkTypeRadio.jsx';
+
 
 function Dashboard({
                        message = null,
@@ -671,7 +673,6 @@ function Dashboard({
                                                                     editLink={editLink}
                                                                     setEditLink={setEditLink}
                                                                     subStatus={subStatus}
-                                                                    setRow={setRow}
                                                                     setValue={setValue}
                                                                     setShowUpgradePopup={setShowUpgradePopup}
                                                                     pageLayoutRef={pageLayoutRef}

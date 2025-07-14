@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {FaEdit} from 'react-icons/fa';
 import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import DeleteIcon from '@/Pages/Dashboard/Components/Link/Forms/DeleteIcon.jsx';
@@ -8,9 +8,8 @@ import {capitalize, toUpper} from 'lodash';
 import {
     handleSwitchChange
 } from '@/Services/LinksRequest.jsx';
-import {
-    UserLinksContext,
-} from '@/Pages/Dashboard/Dashboard.jsx';
+
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 
 const LayoutTwo = ({
                        displayIcon,
@@ -32,7 +31,7 @@ const LayoutTwo = ({
         type: ""
     });
 
-    const { dispatch } = useContext(UserLinksContext);
+    const { dispatch } = useUserLinksContext();
 
     return (
         <div className="link_content">

@@ -36,13 +36,13 @@ const DropdownComponent = ({
                 onChange={(e) => handleChange(e)}
             >
                 <option value="all">All</option>
-                {data?.map((index, category) => {
+                {data?.map((category, index) => {
 
                     const {id, name, children, parent_id} = category;
 
                     return (
 
-                        children.length > 0 ?
+                        children && children.length > 0 ?
                             <optgroup key={id} label={name} data-parent={parent_id}>
                                 <option key={index} value={name}>All {name}</option>
                                 {children.map((child) => {
@@ -52,7 +52,6 @@ const DropdownComponent = ({
                                     )
                                 })}
                             </optgroup>
-
                             :
                             <option key={id} value={name}>{name}</option>
                     )

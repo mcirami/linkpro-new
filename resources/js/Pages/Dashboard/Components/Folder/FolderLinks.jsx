@@ -3,7 +3,6 @@ import React, {
     useContext,
 } from 'react';
 import {
-    UserLinksContext,
     FolderLinksContext,
 } from '../../Dashboard.jsx';
 import {
@@ -14,6 +13,7 @@ import {
     LINKS_ACTIONS,
     FOLDER_LINKS_ACTIONS,
 } from '@/Services/Reducer.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 
 import {
     DndContext,
@@ -38,7 +38,7 @@ const FolderLinks = ({
 
                }) => {
 
-    const { dispatch  } = useContext(UserLinksContext);
+    const { dispatch  } = useUserLinksContext();
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
 
     const targetRef = useRef(null);
@@ -113,9 +113,9 @@ const FolderLinks = ({
 
     return (
 
-        <div ref={targetRef} className={`icons_wrap add_icons icons folder ${folderLinks.length === 0 ? "no_icons" : ""}`}>
+        <div ref={targetRef} className={`icons_wrap add_icons icons folder ${folderLinks?.length === 0 ? "no_icons" : ""}`}>
 
-            {folderLinks.length === 0 ?
+            {folderLinks?.length === 0 ?
                 <div className="info_message">
                     <p>You don't have any icons to display in this folder.</p>
                     <p>Click 'Add Icon' above to start adding links.</p>
@@ -131,7 +131,7 @@ const FolderLinks = ({
                         items={folderLinks.map((i) => i?.id)}
                         strategy={rectSortingStrategy}
                     >
-                            {folderLinks.length > 0 && folderLinks.map(link => {
+                            {folderLinks?.length > 0 && folderLinks.map(link => {
 
                                 return (
                                     <FolderLink

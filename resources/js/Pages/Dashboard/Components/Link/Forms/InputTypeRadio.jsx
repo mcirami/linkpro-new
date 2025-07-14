@@ -1,13 +1,13 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
-import {UserLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 
 const InputTypeRadio = ({
                             editLink,
                             setEditLink
 }) => {
 
-    const { userLinks, dispatch } = useContext(UserLinksContext);
+    const { dispatch } = useUserLinksContext();
 
     useEffect(() => {
         if (editLink.url) {

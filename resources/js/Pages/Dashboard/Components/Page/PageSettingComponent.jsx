@@ -22,7 +22,7 @@ const PageSettingComponent = ({
     const handleChange = (e) => {
         const value = e.target.value;
 
-        setCharactersLeft(maxChar - value.length);
+        setCharactersLeft(maxChar - value?.length);
 
         setPageSettings({
             ...pageSettings,

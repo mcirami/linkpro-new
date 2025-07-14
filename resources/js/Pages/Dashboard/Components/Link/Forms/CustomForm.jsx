@@ -16,9 +16,9 @@ import {
 } from '@/Services/ImageService.jsx';
 import {
     FolderLinksContext,
-    UserLinksContext,
 } from '../../../Dashboard.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import {
     addLink,
     checkURL,
@@ -53,7 +53,7 @@ const CustomForm = ({
 
     const {id, folderId} = editLink;
     const [customIconArray, setCustomIconArray] = useState([]);
-    const { userLinks, dispatch } = useContext(UserLinksContext);
+    const { userLinks, dispatch } = useUserLinksContext();
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
     const  { pageSettings } = usePageContext();
     const [ showBGUpload, setShowBGUpload ] = useState({
@@ -292,7 +292,7 @@ const CustomForm = ({
                                 });
 
                                 let folderActive = null;
-                                if (newFolderLinks.length === 1) {
+                                if (newFolderLinks?.length === 1) {
                                     folderActive = true;
                                     const url = "/dashboard/folder/status/";
                                     const packets = {
@@ -520,7 +520,7 @@ const CustomForm = ({
                                 }
 
                                 let folderActive = null;
-                                if (newFolderLinks.length === 1) {
+                                if (newFolderLinks?.length === 1) {
                                     folderActive = true;
                                     const url = "/dashboard/folder/status/";
                                     const packets = {

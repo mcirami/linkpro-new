@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import CropTools from '@/Utils/CropTools.jsx';
 import ReactCrop from 'react-image-crop';
 import {
@@ -9,8 +9,8 @@ import {
 } from '@/Services/ImageService.jsx';
 import {updateLink} from '@/Services/LinksRequest.jsx';
 import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
-import {UserLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import Compressor from "compressorjs";
 
 const ImageUploader = ({
@@ -23,7 +23,7 @@ const ImageUploader = ({
                            setCustomIconArray = null
 }) => {
 
-    const { userLinks, dispatch } = useContext(UserLinksContext);
+    const { userLinks, dispatch } = useUserLinksContext();
     const  { pageSettings } = usePageContext();
     const [completedIconCrop, setCompletedIconCrop] = useState({});
     const [scale, setScale] = useState(1)

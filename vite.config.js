@@ -31,26 +31,25 @@ export default defineConfig({
             /* input: {
                 admin: "resources/js/Admin/admin.jsx",
             }, */
-            output: {
-                manualChunks(id) {
-                    /*if (id.includes("node_modules")) {
-                        return id
-                            .toString()
-                            .split("node_modules/")[1]
-                            .split("/")[0]
-                            .toString();
-                    }*/
-                    if (id.includes("node_modules/react")) return "react";
-                    if (id.includes("node_modules/@icons")) return "icons";
-                },
+            // output: {
+            //     manualChunks(id) {
+            //         if (id.includes("node_modules")) {
+            //             return id
+            //                 .toString()
+            //                 .split("node_modules/")[1]
+            //                 .split("/")[0]
+            //                 .toString();
+            //         }
+                    /*if (id.includes("node_modules/react")) return "react";
+                    if (id.includes("node_modules/@icons")) return "icons";*/
+                /*},*/
                 /* format: "es",
                 strict: true,
                 entryFileNames: "admin.jsx",
                 dir: "public/js/admin", */
-            },
+            /*},*/
         },
     },
-
     resolve: {
         alias: {
             $: "jQuery",

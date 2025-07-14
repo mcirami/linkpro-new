@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b695bb6655224482f889bf2c71e743de",
+    "content-hash": "c6f7859401e5cd96e07b1c8424495191",
     "packages": [
         {
             "name": "arrilot/laravel-widgets",
@@ -2675,16 +2675,16 @@
         },
         {
             "name": "laravel/vapor-cli",
-            "version": "v1.65.6",
+            "version": "v1.65.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/vapor-cli.git",
-                "reference": "4997b56672772948dd1534cf7160cd1eb3c6dffc"
+                "reference": "b2dfaa121d7b9d0b56553f5a2d05df525516cc4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/vapor-cli/zipball/4997b56672772948dd1534cf7160cd1eb3c6dffc",
-                "reference": "4997b56672772948dd1534cf7160cd1eb3c6dffc",
+                "url": "https://api.github.com/repos/laravel/vapor-cli/zipball/b2dfaa121d7b9d0b56553f5a2d05df525516cc4f",
+                "reference": "b2dfaa121d7b9d0b56553f5a2d05df525516cc4f",
                 "shasum": ""
             },
             "require": {
@@ -2738,22 +2738,22 @@
                 "vapor"
             ],
             "support": {
-                "source": "https://github.com/laravel/vapor-cli/tree/v1.65.6"
+                "source": "https://github.com/laravel/vapor-cli/tree/v1.65.7"
             },
-            "time": "2025-02-18T18:40:39+00:00"
+            "time": "2025-05-15T15:10:35+00:00"
         },
         {
             "name": "laravel/vapor-core",
-            "version": "v2.37.11",
+            "version": "v2.38.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/vapor-core.git",
-                "reference": "74363854bf038ba2fe56eb1ff2140d946686596d"
+                "reference": "72aafc72d03d12ffc0d1840b071e1f724a35d815"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/vapor-core/zipball/74363854bf038ba2fe56eb1ff2140d946686596d",
-                "reference": "74363854bf038ba2fe56eb1ff2140d946686596d",
+                "url": "https://api.github.com/repos/laravel/vapor-core/zipball/72aafc72d03d12ffc0d1840b071e1f724a35d815",
+                "reference": "72aafc72d03d12ffc0d1840b071e1f724a35d815",
                 "shasum": ""
             },
             "require": {
@@ -2818,9 +2818,9 @@
                 "vapor"
             ],
             "support": {
-                "source": "https://github.com/laravel/vapor-core/tree/v2.37.11"
+                "source": "https://github.com/laravel/vapor-core/tree/v2.38.2"
             },
-            "time": "2025-02-26T12:13:41+00:00"
+            "time": "2025-07-04T07:51:51+00:00"
         },
         {
             "name": "league/commonmark",
@@ -7854,7 +7854,7 @@
         },
         {
             "name": "symfony/psr-http-message-bridge",
-            "version": "v7.2.0",
+            "version": "v7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/psr-http-message-bridge.git",
@@ -7917,7 +7917,7 @@
                 "psr-7"
             ],
             "support": {
-                "source": "https://github.com/symfony/psr-http-message-bridge/tree/v7.2.0"
+                "source": "https://github.com/symfony/psr-http-message-bridge/tree/v7.3.0"
             },
             "funding": [
                 {

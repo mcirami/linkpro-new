@@ -1,9 +1,8 @@
 import React, {
-    useContext,
     useState,
     useEffect,
 } from 'react';
-import {UserLinksContext} from '../../Dashboard.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
 import {IoIosCloseCircleOutline} from 'react-icons/io';
 import AccordionLinks from '@/Components/LinkComponents/AccordionLinks.jsx';
@@ -35,11 +34,11 @@ const Preview = ({
                      profileImgActive
 }) => {
 
-    const { userLinks } = useContext(UserLinksContext);
+    const { userLinks } = useUserLinksContext();
     const {pageSettings} = usePageContext();
     const loadPreviewHeight = UseLoadPreviewHeight();
     const resizePreviewHeight = UseResizePreviewHeight();
-    const [iconCount, setIconCount] = useState(userLinks.length);
+    const [iconCount, setIconCount] = useState(userLinks?.length);
     const [clickType, setClickType] = useState(null);
 
     useEffect(() => {
@@ -47,7 +46,7 @@ const Preview = ({
         if(userSub && !subStatus) {
             setIconCount(8)
         } else {
-            setIconCount(userLinks.length)
+            setIconCount(userLinks?.length)
         }
 
     }, [userLinks]);

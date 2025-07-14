@@ -21,7 +21,7 @@
         "laravel/socialite": "^5.9",
         "laravel/tinker": "^2.8",
         "laravel/vapor-cli": "^1.65",
-        "laravel/vapor-core": "^2.37",
+        "laravel/vapor-core": "^2.38",
         "league/flysystem-aws-s3-v3": "^3.16",
         "mailchimp/marketing": "^3.0",
         "mchev/banhammer": "^2.3",

@@ -3,7 +3,9 @@ import {HandleBlur, HandleFocus} from '@/Utils/InputAnimations.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
 import {addLink, updateLink} from '@/Services/LinksRequest.jsx';
 import {FOLDER_LINKS_ACTIONS, LINKS_ACTIONS} from '@/Services/Reducer.jsx';
-import {UserLinksContext, FolderLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
+import {FolderLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
+
 const IconSettingComponent = ({
                                   inputType,
                                   editLink,
@@ -17,7 +19,7 @@ const IconSettingComponent = ({
 
     const [charactersLeft, setCharactersLeft] = useState(maxChar);
     const { pageSettings } = usePageContext();
-    const { userLinks, dispatch } = useContext(UserLinksContext);
+    const { dispatch } = useUserLinksContext();
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
 
     useEffect(() => {
@@ -30,7 +32,7 @@ const IconSettingComponent = ({
         const value = e.target.value;
 
         if (maxChar) {
-            setCharactersLeft(maxChar - value.length);
+            setCharactersLeft(maxChar - value?.length);
         }
 
         if (isEditing?.active) {

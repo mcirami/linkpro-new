@@ -1,6 +1,5 @@
 import { ImPlus } from "react-icons/im";
-import {useContext} from 'react';
-import {UserLinksContext} from '../../Dashboard.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 
 const AddLink = ({
                      subStatus,
@@ -8,7 +7,7 @@ const AddLink = ({
                      setShowLinkTypeRadio
 }) => {
 
-    const { userLinks } = useContext(UserLinksContext);
+    const { userLinks } = useUserLinksContext();
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -16,7 +15,7 @@ const AddLink = ({
         const newUserLinks = userLinks.filter( (element) =>
             element.type !== "folder" && element.type !== "mailchimp" && element.type !== "shopify"
         );
-        const count = newUserLinks.length;
+        const count = newUserLinks?.length;
 
         if (count < 8 || subStatus ) {
 

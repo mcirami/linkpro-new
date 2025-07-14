@@ -33,11 +33,11 @@ const AllProducts = ({
     // from an API endpoint with useEffect and useState)
     const endOffset = itemOffset + itemsPerPage;
     const currentItems = allProducts.slice(itemOffset, endOffset);
-    const pageCount = Math.ceil(allProducts.length / itemsPerPage);
+    const pageCount = Math.ceil(allProducts?.length / itemsPerPage);
 
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * itemsPerPage) % allProducts.length;
+        const newOffset = (event.selected * itemsPerPage) % allProducts?.length;
         setItemOffset(newOffset);
     };
 

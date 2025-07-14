@@ -7,7 +7,8 @@ import str, {isEmpty} from 'lodash';
 import {usePage} from '@inertiajs/react';
 import {addLink, updateLink} from '@/Services/LinksRequest.jsx';
 import {FOLDER_LINKS_ACTIONS, LINKS_ACTIONS} from '@/Services/Reducer.jsx';
-import {UserLinksContext, FolderLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
+import {FolderLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import ImageUploader
     from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
 
@@ -27,7 +28,7 @@ const IconList = ({
     const { auth } = usePage().props;
     const authUser = auth.user.userInfo?.id;
 
-    const { userLinks, dispatch } = useContext(UserLinksContext);
+    const {dispatch } = useUserLinksContext();
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
 
     const [searchInput, setSearchInput] = useState("");
@@ -37,10 +38,6 @@ const IconList = ({
     const [courseCategories, setCourseCategories] = useState([]);
 
     const [activeIcon, setActiveIcon] = useState(null)
-
-    //const [isLoading, setIsLoading] = useState(true);
-
-    const [iconsWrapClasses, setIconsWrapClasses] = useState("");
 
     useEffect(() => {
 

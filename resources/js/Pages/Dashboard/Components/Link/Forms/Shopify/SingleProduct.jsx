@@ -43,7 +43,7 @@ const SingleProduct = ({product, setSelectedProducts, selectedProducts}) => {
                 image_url: e.target.dataset.image,
                 product_url: e.target.dataset.url,
                 price: e.target.dataset.price,
-                position: newProducts.length + 1
+                position: newProducts?.length + 1
             }
             newProducts = newProducts.concat(newObject)
         }
@@ -54,7 +54,7 @@ const SingleProduct = ({product, setSelectedProducts, selectedProducts}) => {
 
     const getPosition = (productID) => {
 
-        const product = selectedProducts.length > 0 && selectedProducts?.find(function (e) {
+        const product = selectedProducts?.length > 0 && selectedProducts?.find(function (e) {
             return e.id === productID
         })
 

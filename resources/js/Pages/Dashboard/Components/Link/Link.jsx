@@ -32,7 +32,7 @@ const Link = ({
     let hasLinks = false;
     let displayIcon;
     if (type === "folder") {
-        hasLinks = links.length > 0;
+        hasLinks = links?.length > 0;
     } else {
         displayIcon = checkIcon(icon, "", subStatus);
     }

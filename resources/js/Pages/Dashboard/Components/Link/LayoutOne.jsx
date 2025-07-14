@@ -1,11 +1,9 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import {
     handleSwitchChange
 } from '@/Services/LinksRequest.jsx';
-import {
-    UserLinksContext,
-} from '@/Pages/Dashboard/Dashboard.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 
 const LayoutOne = ({
                        fetchFolderLinks,
@@ -21,7 +19,7 @@ const LayoutOne = ({
 }) => {
 
     const {type, id, active_status} = link;
-    const { dispatch } = useContext(UserLinksContext);
+    const { dispatch } = useUserLinksContext();
 
     return (
         <>

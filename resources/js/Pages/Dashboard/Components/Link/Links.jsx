@@ -1,12 +1,12 @@
 import React, {
-    useContext, useState,
+    useContext
 } from 'react';
 import Link from './Link';
 import {
-    UserLinksContext,
     FolderLinksContext,
 } from '../../Dashboard.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import {
     updateLinksPositions,
 } from '@/Services/LinksRequest.jsx';
@@ -34,7 +34,6 @@ import {
 const Links = ({
                    editLink,
                    setEditLink,
-                   setRow,
                    setValue,
                    setShowUpgradePopup,
                    subStatus,
@@ -47,7 +46,7 @@ const Links = ({
                    setFormRow
 }) => {
 
-    const { userLinks, dispatch } = useContext(UserLinksContext);
+    const { userLinks, dispatch } = useUserLinksContext();
     const { dispatchFolderLinks } = useContext(FolderLinksContext);
     const {pageSettings} = usePageContext();
 
@@ -129,7 +128,7 @@ const Links = ({
 
             dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks["links"]} })
             setEditLink(prev => ({...prev, folder_id: linkID}));
-            //setRow(prev => ({...prev, row: 0}))
+
             setValue(prev => ({...prev, index: 0, url: null}));
 
             setTimeout(function(){
@@ -155,7 +154,6 @@ const Links = ({
 
         if (active.id !== over.id) {
 
-            //setRow(null)
             setValue({
                 index: null,
                 url: null
@@ -187,9 +185,9 @@ const Links = ({
     }
 
     return (
-        <section id={pageSettings['page_layout']} ref={pageLayoutRef} className={`icons_wrap add_icons icons ${userLinks.length === 0 ? "no_icons" : ""} `}>
+        <section id={pageSettings['page_layout']} ref={pageLayoutRef} className={`icons_wrap add_icons icons ${userLinks?.length === 0 ? "no_icons" : ""} `}>
 
-            {userLinks.length === 0 ?
+            {userLinks?.length === 0 ?
                 <div className="info_message">
                     <p>You don't have any icons to display.</p>
                     <p>Click 'Add Icon' above to start adding links.</p>

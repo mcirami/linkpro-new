@@ -11,9 +11,9 @@ import {
 } from '@/Services/LinksRequest.jsx';
 import {
     FolderLinksContext,
-    UserLinksContext,
 } from '../../../Dashboard.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 
 import {acceptTerms} from '@/Services/UserService.jsx';
 import IconDescription from './IconDescription.jsx';
@@ -42,7 +42,7 @@ const StandardForm = ({
 
 }) => {
 
-    const { userLinks, dispatch } = useContext(UserLinksContext);
+    const { userLinks, dispatch } = useUserLinksContext();
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
     const  { pageSettings } = usePageContext();
     const [ showTerms, setShowTerms ] = useState(false);

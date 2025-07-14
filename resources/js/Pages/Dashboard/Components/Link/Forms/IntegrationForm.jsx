@@ -1,4 +1,4 @@
-import React, {useContext, createRef, useState, useRef, useEffect, useCallback} from 'react';
+import React, {createRef, useState, useRef, useEffect, useCallback} from 'react';
 import IntegrationType from './IntegrationType';
 import {isEmpty} from 'lodash';
 import MailchimpIntegration from './Mailchimp/MailchimpIntegration';
@@ -6,10 +6,8 @@ import ShopifyIntegration from './Shopify/ShopifyIntegration';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
 import IconList from '../IconList';
-import {
-    UserLinksContext,
-} from '@/Pages/Dashboard/Dashboard.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import {
     canvasPreview,
     useDebounceEffect,
@@ -55,7 +53,7 @@ const IntegrationForm = ({
 }) => {
 
     const [customIconArray, setCustomIconArray] = useState([]);
-    const { userLinks, dispatch } = useContext(UserLinksContext);
+    const { userLinks, dispatch } = useUserLinksContext();
     const  { pageSettings } = usePageContext();
     const iconRef = createRef()
     const [completedIconCrop, setCompletedIconCrop] = useState(null);
@@ -80,7 +78,7 @@ const IntegrationForm = ({
     // Mailchimp integration
     const [lists, setLists] = useState([]);
 
-    const [charactersLeft, setCharactersLeft] = useState();
+    const [charactersLeft, setCharactersLeft] = useState(11);
 
     //Shopify Integration
     const [allProducts, setAllProducts] = useState([]);
@@ -129,7 +127,7 @@ const IntegrationForm = ({
 
     useEffect(() => {
         if(currentLink.name) {
-            setCharactersLeft(11 - currentLink.name.length);
+            setCharactersLeft(11 - currentLink?.name?.length);
         } else {
             setCharactersLeft(11);
         }
@@ -166,17 +164,13 @@ const IntegrationForm = ({
         if (checkForMailchimpForm() === undefined || !checkForMailchimpForm() || integrationType === "shopify") {
 
             if (iconSelected) {
-
                 const image = getFileToUpload(previewCanvasRef?.current)
                 image.then((value) => {
                     submitWithCustomIcon(value);
                 })
-
-
             } else {
 
                 let URL = currentLink.url;
-
                 let packets;
 
                 switch (integrationType) {
@@ -402,7 +396,7 @@ const IntegrationForm = ({
 
     const handleLinkName = useCallback ( (e) => {
         let value = e.target.value;
-        setCharactersLeft(11 - value.length);
+        setCharactersLeft(11 - value?.length);
 
         setCurrentLink((prevState) => ({
             ...prevState,

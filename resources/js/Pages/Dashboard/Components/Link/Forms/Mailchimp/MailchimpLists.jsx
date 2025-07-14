@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React from 'react';
 import {
     getMailchimpLists,
     removeMailchimpConnection,
@@ -6,7 +6,7 @@ import {
 import {isEmpty, toInteger} from 'lodash';
 import {updateLink} from '@/Services/LinksRequest.jsx';
 import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
-import {UserLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 
 const MailchimpLists = ({
                             currentLink,
@@ -15,7 +15,7 @@ const MailchimpLists = ({
                             setLists,
 }) => {
 
-    const { dispatch } = useContext(UserLinksContext);
+    const { dispatch } = useUserLinksContext();
 
     const handleChange = (e) => {
 

@@ -1,14 +1,14 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import {updateFolderName} from '@/Services/FolderRequests.jsx';
 import {
     LINKS_ACTIONS,
 } from '@/Services/Reducer.jsx';
-import {UserLinksContext} from '../../Dashboard.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 
 const FolderNameInput = ({folder_id}) => {
 
-    const [charactersLeft, setCharactersLeft] = useState();
-    const { userLinks, dispatch } = useContext(UserLinksContext);
+    const [charactersLeft, setCharactersLeft] = useState(11);
+    const { userLinks, dispatch } = useUserLinksContext();
     //const { dispatchOrig } = useContext(OriginalArrayContext);
 
     const [ currentFolder, setCurrentFolder ] = useState(
@@ -18,7 +18,7 @@ const FolderNameInput = ({folder_id}) => {
 
     useEffect(() => {
         if(currentFolder.name) {
-            setCharactersLeft(11 - currentFolder.name.length);
+            setCharactersLeft(11 - currentFolder?.name?.length);
         } else {
             setCharactersLeft(11);
         }
@@ -44,7 +44,7 @@ const FolderNameInput = ({folder_id}) => {
     const handleFolderName = (e) => {
         let value = e.target.value;
 
-        setCharactersLeft(11 - value.length);
+        setCharactersLeft(11 - value?.length);
 
         setCurrentFolder({
             ...currentFolder,

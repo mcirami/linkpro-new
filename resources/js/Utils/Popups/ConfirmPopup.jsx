@@ -4,7 +4,8 @@ import {
     deleteLink,
     updateLinkItemStatus,
 } from '@/Services/LinksRequest.jsx';
-import {UserLinksContext, FolderLinksContext} from '../../Pages/Dashboard/Dashboard.jsx';
+import {FolderLinksContext} from '../../Pages/Dashboard/Dashboard.jsx';
+import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import {
     LINKS_ACTIONS,
     FOLDER_LINKS_ACTIONS,
@@ -19,7 +20,7 @@ export const ConfirmPopup = ({
                              }) => {
 
     const {id, type, folderId} = editLink;
-    const { userLinks, dispatch  } = useContext(UserLinksContext);
+    const { userLinks, dispatch  } = useUserLinksContext();
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
 
     const deleteItem = (e) => {
