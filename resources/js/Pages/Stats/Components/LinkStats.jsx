@@ -41,14 +41,17 @@ const LinkStats = ({
     const columns = useMemo(
         () => [
             {
+                id: 'current_icons',
                 Header: "Current Icons",
                 accessor: "icon",
             },
             {
+                id: 'icon_name',
                 Header: "Icon Name",
                 accessor: "iconName",
             },
             {
+                id: 'icon_clicks',
                 Header: "Icon Clicks",
                 accessor: "visits",
             },
@@ -58,14 +61,17 @@ const LinkStats = ({
     const deletedColumns = useMemo(
         () => [
             {
+                id: 'past_icons',
                 Header: "Past Icons",
                 accessor: "icon",
             },
             {
+                id: 'icon_name',
                 Header: "Icon Name",
                 accessor: "iconName",
             },
             {
+                id: 'icon_clicks',
                 Header: "Icon Clicks",
                 accessor: "visits",
             },

@@ -1,5 +1,10 @@
-import React, {useState} from 'react';
-import { useTable, useSortBy } from 'react-table';
+import React from 'react';
+import {
+    useReactTable,
+    getCoreRowModel,
+    getSortedRowModel,
+    flexRender,
+} from '@tanstack/react-table';
 import {FaSort, FaSortDown, FaSortUp} from 'react-icons/fa';
 import {isEmpty} from 'lodash';
 
@@ -11,62 +16,78 @@ export const Table = ({
                    totals
 }) => {
 
-    const {
-        getTableProps, // table props from react-table
-        getTableBodyProps, // table body props from react-table
-        headerGroups, // headerGroups, if your table has groupings
-        rows, // rows for the table based on the data passed
-        prepareRow // Prepare the row (this function needs to be called for each row before getting the row props)
-    } = useTable(
+    const tableInstance = useReactTable(
         {
             columns,
-            data: data ? data : null
-        },
-        useSortBy
+            data: data ? data : null,
+            getCoreRowModel: getCoreRowModel(),
+            getSortedRowModel: getSortedRowModel(),
+
+        }
     );
 
+    const { getHeaderGroups, getRowModel } = tableInstance;
+
     return (
-        <table className="table table-borderless" {...getTableProps()}>
+        <table className="table table-borderless">
             <thead>
-            {headerGroups?.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map(column => (
-                        <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+            {getHeaderGroups().map(headerGroup => (
+                <tr key={headerGroup.id}>
+                    {headerGroup.headers.map(header => (
+                        <th key={header.id}>
                             <h5>
-                                <span>{column.render("Header")}</span>
-                                {
-                                    column.isSorted
-                                        ? column.isSortedDesc
-                                            ? <FaSortDown />
-                                            : <FaSortUp />
-                                        : <FaSort />
-                                }
+                                <span>
+                                    {flexRender(
+                                        header.column.columnDef.header,
+                                        header.getContext()
+                                    )}
+                                </span>
+                                {/* Sorting logic */}
+                                {header.column.getCanSort() && (
+                                    <span
+                                        {...header.column.getToggleSortingProps()}
+                                        className="sorting-icon">
+                                      {header.column.getIsSorted()
+                                          ? header.column.getIsSorted() === 'desc'
+                                              ? <FaSortDown />
+                                              : <FaSortUp />
+                                          : <FaSort />}
+                                    </span>
+                                )}
                             </h5>
                         </th>
                     ))}
                 </tr>
             ))}
             </thead>
-            <tbody {...getTableBodyProps()}>
+            <tbody>
             {isEmpty(data) ?
                 <tr>
                     <td className={ isLoading ? "hidden no_stats" : "no_stats"} colSpan="5"><h3>No Stats Available</h3></td>
                 </tr>
                 :
                 <>
-                    {rows?.map((row, index) => {
-                        prepareRow(row);
+                    {getRowModel().rows?.map((row) => {
                         return (
-                            <React.Fragment key={index}>
-                                <tr key={index} {...row.getRowProps()}>
-                                    {row.cells.map((cell) => {
+                            <React.Fragment key={row.id}>
+                                <tr key={row.id}>
+                                    {row.getVisibleCells().map((cell) => {
                                         return (
-                                            <td {...cell.getCellProps()}>
-                                                { (cell.column.Header === "Offer" || cell.column.Header === "Current Icons") ?
-                                                    <img src={cell.value} alt=""/>
-                                                    :
-                                                    <p className={`${animate ? "animate hide" : "animate"}`}>{cell.render("Cell")}</p>
-                                                }
+                                            <td key={cell.id}>
+                                                {['Offer', 'Current Icons'].includes(
+                                                    cell.column.columnDef.header
+                                                ) ? (
+                                                    <img src={cell.getValue()} alt="" />
+                                                ) : (
+                                                    <p
+                                                        className={`${animate ? 'animate hide' : 'animate'}`}
+                                                    >
+                                                        {flexRender(
+                                                            cell.column.columnDef.cell,
+                                                            cell.getContext()
+                                                        )}
+                                                    </p>
+                                                )}
                                             </td>
                                         )
                                     })}
@@ -74,15 +95,33 @@ export const Table = ({
                             </React.Fragment>
                         )
                     })}
-                    {totals &&
+                    {totals && (
                         <tr className="totals">
-                            <td><h3>Totals</h3></td>
-                            <td><h3 className={`${animate ? "animate hide" : "animate"}`}>{totals["totalRaw"]}</h3></td>
-                            <td><h3 className={`${animate ? "animate hide" : "animate"}`}>{totals["totalUnique"]}</h3></td>
-                            <td><h3 className={`${animate ? "animate hide" : "animate"}`}>{totals["totalConversions"]}</h3></td>
-                            <td><h3 className={`${animate ? "animate hide" : "animate"}`}>${totals["totalPayout"]}</h3></td>
+                            <td>
+                                <h3>Totals</h3>
+                            </td>
+                            <td>
+                                <h3 className={`${animate ? 'animate hide' : 'animate'}`}>
+                                    {totals['totalRaw']}
+                                </h3>
+                            </td>
+                            <td>
+                                <h3 className={`${animate ? 'animate hide' : 'animate'}`}>
+                                    {totals['totalUnique']}
+                                </h3>
+                            </td>
+                            <td>
+                                <h3 className={`${animate ? 'animate hide' : 'animate'}`}>
+                                    {totals['totalConversions']}
+                                </h3>
+                            </td>
+                            <td>
+                                <h3 className={`${animate ? 'animate hide' : 'animate'}`}>
+                                    ${totals['totalPayout']}
+                                </h3>
+                            </td>
                         </tr>
-                    }
+                    )}
                 </>
             }
             </tbody>

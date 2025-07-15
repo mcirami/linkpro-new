@@ -40,8 +40,3 @@ vapor.yml
 production.Dockerfile
 staging.Dockerfile
 /data
-.env.staging-new
-.env.prod
-.env.production-new
-.env.newStaging
-.env.stag-standard

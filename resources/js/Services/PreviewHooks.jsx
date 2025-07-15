@@ -1,12 +1,15 @@
-import {useLayoutEffect, useState, useEffect} from 'react';
+import {useLayoutEffect, useState} from 'react';
 
 export function UseLoadPreviewHeight (altPxToMinus = null) {
 
     let [previewHeight, setPreviewHeight] = useState(null);
 
     useLayoutEffect(() => {
-        setPreviewHeight(resizePreviewHeight(altPxToMinus));
-    }, []);
+        if (typeof window !== 'undefined' && document.getElementById('preview_wrap')) {
+
+            setPreviewHeight(resizePreviewHeight(altPxToMinus));
+        }
+    }, [altPxToMinus]);
 
     return previewHeight
 }
@@ -17,15 +20,18 @@ export function UseResizePreviewHeight(altPxToMinus = null) {
 
     useLayoutEffect(() => {
 
-        function handlePreviewHeight() {
-            setPreviewHeight(resizePreviewHeight(altPxToMinus))
-        }
+        if (typeof window !== 'undefined') {
 
-        window.addEventListener('resize', handlePreviewHeight);
-        return () => {
-            window.removeEventListener('resize', handlePreviewHeight);
+            function handlePreviewHeight() {
+                setPreviewHeight(resizePreviewHeight(altPxToMinus))
+            }
+
+            window.addEventListener('resize', handlePreviewHeight);
+            return () => {
+                window.removeEventListener('resize', handlePreviewHeight);
+            }
         }
-    }, []);
+    }, [altPxToMinus]);
 
     return previewHeight
 }

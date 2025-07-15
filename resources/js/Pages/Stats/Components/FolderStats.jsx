@@ -39,14 +39,17 @@ const FolderStats = ({
     const columns = useMemo(
         () => [
             {
+                id: 'current_icons',
                 Header: "Current Icons",
                 accessor: "icon",
             },
             {
+                id: 'icon_name',
                 Header: "Icon Name",
                 accessor: "iconName",
             },
             {
+                id: 'icon_clicks',
                 Header: "Icon Clicks",
                 accessor: "visits",
             },

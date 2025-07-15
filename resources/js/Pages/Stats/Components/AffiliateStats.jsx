@@ -49,22 +49,27 @@ const AffiliateStats = ({
     const offerColumns = useMemo(
         () => [
             {
+                id: "offer",
                 Header: "Offer",
                 accessor: "icon",
             },
             {
+                id: "offer_name",
                 Header: "Raw Clicks",
                 accessor: "rawCount",
             },
             {
+                id: "unique_clicks",
                 Header: "Unique Clicks",
                 accessor: "uniqueCount",
             },
             {
+                id: "conversions",
                 Header: "Conversions",
                 accessor: "conversionCount",
             },
             {
+                id: "payout",
                 Header: "Payout",
                 accessor: "payout",
             },

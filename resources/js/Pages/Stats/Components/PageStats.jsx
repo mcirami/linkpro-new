@@ -36,14 +36,17 @@ const PageStats = ({
     const columns = useMemo(
         () => [
             {
+                id: "page_name",
                 Header: "Page Name",
                 accessor: "pageName",
             },
             {
+                id: "page_loads",
                 Header: "Page Loads",
                 accessor: "visits",
             },
             {
+                id: "icon_clicks",
                 Header: "Icon Clicks",
                 accessor: "linkVisits",
             },

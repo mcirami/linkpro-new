@@ -1,9 +1,6 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import react from "@vitejs/plugin-react";
-//import fs from 'fs';
-//import path from 'path';
-//const isProduction = process.env.NODE_ENV === 'production';
 
 export default defineConfig({
     plugins: [
@@ -27,35 +24,31 @@ export default defineConfig({
         },
     },
     build: {
-        rollupOptions: {
-            /* input: {
-                admin: "resources/js/Admin/admin.jsx",
-            }, */
-            // output: {
-            //     manualChunks(id) {
-            //         if (id.includes("node_modules")) {
-            //             return id
-            //                 .toString()
-            //                 .split("node_modules/")[1]
-            //                 .split("/")[0]
-            //                 .toString();
-            //         }
-                    /*if (id.includes("node_modules/react")) return "react";
-                    if (id.includes("node_modules/@icons")) return "icons";*/
-                /*},*/
-                /* format: "es",
-                strict: true,
-                entryFileNames: "admin.jsx",
-                dir: "public/js/admin", */
-            /*},*/
-        },
+        minify: 'esbuild',
+        /*rollupOptions: {
+            output: {
+                 manualChunks(id) {
+                    if (id.includes("node_modules")) {
+                        if (id.includes("react") ||
+                            id.includes('@react-icons')) {
+                            return "react-vendor"; // Group React and React-DOM into one chunk
+                        }
+                        return "vendor";
+                    }
+                },
+            },
+        },*/
+    },
+    optimizeDeps: {
+        include: ['react', 'react-dom'], // Ensures prebundling of these dependencies
     },
     resolve: {
         alias: {
             $: "jQuery",
         },
     },
+    /*
     define: {
         global: "globalThis",
-    },
+    },*/
 });
