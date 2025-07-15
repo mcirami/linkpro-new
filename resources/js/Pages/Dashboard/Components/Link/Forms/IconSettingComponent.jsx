@@ -121,7 +121,7 @@ const IconSettingComponent = ({
                         dispatch({
                             type: LINKS_ACTIONS.UPDATE_LINK,
                             payload: {
-                                editID: editLink.id,
+                                id: editLink.id,
                                 editLink: editLink,
                                 [`${elementName}`]: editLink[elementName]
                             }
@@ -190,7 +190,7 @@ const IconSettingComponent = ({
                     className={`w-full ${editLink[elementName] ? "active" : ""}`}
                     name={elementName}
                     type={inputType === "phone" ? "tel" : inputType}
-                    value={isEditing?.value}
+                    value={isEditing?.value || editLink[elementName] || ""}
                     autoFocus={isEditing?.section === elementName}
                     onChange={(e) => handleChange(e)}
                     onFocus={(e) => HandleFocus(e.target)}

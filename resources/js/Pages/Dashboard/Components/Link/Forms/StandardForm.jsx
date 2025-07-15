@@ -97,14 +97,14 @@ const StandardForm = ({
             case "url":
             case "email":
             case "phone":
-                const type = editLink.icon.includes("custom-icons") ? "custom" : "standard";
+                const type = editLink.icon?.includes("custom-icons") ? "custom" : "standard";
                 setShowIconList((prev) => ({
                     ...prev,
                     type: type,
                 }));
                 break;
             case "offer":
-                const offerIconType = editLink.icon.includes("custom-icons") ? "custom" : "offers"
+                //const offerIconType = editLink.icon?.includes("custom-icons") ? "custom" : "offers"
                 setShowIconList((prev) => ({
                     ...prev,
                     type: "offers",
@@ -287,10 +287,13 @@ const StandardForm = ({
                 editLink={editLink}
             />
                 { (editLink.type !== "offer" && editLink.type !== "mailchimp" && showFormTab === "icon") &&
-                    <InputTypeRadio
-                        editLink={editLink}
-                        setEditLink={setEditLink}
-                    />
+                    <div className="my_row form_nav_content input_types pl-5 pt-5">
+                        <p className="label">Link Type</p>
+                        <InputTypeRadio
+                            editLink={editLink}
+                            setEditLink={setEditLink}
+                        />
+                    </div>
                 }
 
                 <div className="link_form form_nav_content">

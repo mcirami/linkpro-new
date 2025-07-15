@@ -46,19 +46,6 @@ const RadioComponent = ({
                     </div>
                 )
             })}
-
-            {/*<div className="radio_wrap">
-                <label htmlFor="page">
-                    <input id="page"
-                           type="radio"
-                           value="page"
-                           name="img_type"
-                           onChange={(e) => { handleOnChange(e) }}
-                           checked={radioValue === 'page'}
-                    />
-                    Full Page
-                </label>
-            </div>*/}
         </div>
     );
 };

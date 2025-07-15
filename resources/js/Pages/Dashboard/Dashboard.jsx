@@ -345,7 +345,7 @@ function Dashboard({
                                                         <PageName
                                                             pageNames={allPageNames}
                                                         />
-
+                                                        <h3 className="label uppercase mb-2">Main Image</h3>
                                                         { (!completedCrop.header_img && !completedCrop.page_img) &&
                                                             <RadioComponent
                                                                 setRadioValue={setImageType}
@@ -378,26 +378,8 @@ function Dashboard({
                                                                 width: 30
                                                             }}
                                                         />
-
-                                                       {/* { !completedCrop.profile_img &&
-
-                                                            <ImageTypeRadio
-                                                                setRadioValue={setProfileImgActive}
-                                                                radioValue={profileImgActive}
-                                                                pageId={pageSettings.id}
-                                                                setPageSettings={setPageSettings}
-                                                                elementName="profile_img"
-                                                                label={{
-                                                                    true: "Enable Profile Image",
-                                                                    false: "Disable Profile Image"
-                                                                }}
-                                                                radioValues={[
-                                                                    true,
-                                                                    false
-                                                                ]}
-                                                            />
-                                                        }*/}
-
+                                                        <h3 className="label uppercase mb-2">Profile Image</h3>
+                                                        <h3 className="label uppercase mb-2 text-sm">Show/Hide Profile Image</h3>
                                                         <SwitchComponent
                                                             setSwitchValue={setProfileImgActive}
                                                             switchValue={profileImgActive}

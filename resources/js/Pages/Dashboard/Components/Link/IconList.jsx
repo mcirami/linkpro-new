@@ -49,7 +49,7 @@ const IconList = ({
             })
         }
 
-        if (editLink.type === "offer" && showFormTab !== "offers") {
+        if ( ((editLink.type === "offer" || editLink.icon?.includes("custom-icons") ) && showFormTab !== "offers")) {
             setShowIconList((prev) => ({
                 ...prev,
                 type: "custom",
@@ -96,12 +96,13 @@ const IconList = ({
 
     const selectIcon = useCallback((e, source) => {
         e.preventDefault();
-        const el = e.target;
+        const el = e.target.closest('a');
         const iconType = el.dataset.icontype;
         const iconIndex = el.dataset.index || null;
         const courseId = el.dataset.course || null;
 
         if(iconIndex !== activeIcon) {
+
             setActiveIcon(iconIndex);
 
             let name = el.dataset.name || editLink.name;
@@ -144,9 +145,11 @@ const IconList = ({
 
             const valueKey = iconType === "offer" ? "url" : iconType;
             let linkId = editLink.id;
+            let iconList = showIconList.list;
             if (source.includes("custom-icons")) {
                 value = editLink[valueKey];
                 name = editLink.name;
+                iconList = "custom";
             }
             const packets =
                 {
@@ -154,7 +157,7 @@ const IconList = ({
                     folder_id: editLink.folder_id,
                     name: name,
                     icon: source,
-                    [`${iconType}`]: value,
+                    [`${valueKey}`]: value,
                     type: iconType,
                     course_id: courseId
                 }
@@ -184,6 +187,11 @@ const IconList = ({
                                 [`${valueKey}`]: value,
                                 type: iconType,
                                 course_id: courseId,
+                            }))
+
+                            setShowIconList((prev) => ({
+                                ...prev,
+                                type: iconList,
                             }))
                         }
                     })
@@ -305,6 +313,7 @@ const IconList = ({
             ...prev,
             type: type,
         }))
+        setActiveIcon(null);
     },[]);
 
 
@@ -397,14 +406,18 @@ const IconList = ({
 
                                         return (
                                             <div key={index} className="icon_col">
-                                                <img alt=""
-                                                     className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
-                                                     data-icontype={editLink.type}
-                                                     data-index={index}
-                                                     src={newPath}
-                                                     onClick={(e) => {
-                                                         selectIcon(e, newPath)
-                                                     }}/>
+                                                <a href="#"
+                                                   data-icontype={editLink.type}
+                                                   data-index={index}
+                                                   onClick={(e) => {
+                                                       selectIcon(e, newPath)
+                                                   }}
+                                                >
+                                                    <img alt=""
+                                                         className={`img-fluid icon_image ${parseInt(activeIcon) === parseInt(index) ? "active" : ""}`}
+                                                         src={newPath}
+                                                    />
+                                                </a>
                                             </div>
                                         )
 

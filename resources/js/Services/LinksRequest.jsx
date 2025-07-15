@@ -15,7 +15,6 @@ export const addLink = async (packets) => {
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
             //EventBus.dispatch("success", {message: returnMessage});
-            console.log("response data", response.data);
             const link_id = response.data.link_id;
             const position = response.data.position;
             let iconPath = null;
@@ -64,15 +63,12 @@ export const addLink = async (packets) => {
  */
 export const updateLink = (packets, editID) => {
 
-    console.log("packets", packets );
-
     return axios.put('/dashboard/links/update/' + editID, packets).then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
             //EventBus.dispatch("success", {message: returnMessage});
             let imagePath = response.data.path;
 
-            console.log("response data", response.data);
             return {
                 success : true,
                 imagePath : imagePath
