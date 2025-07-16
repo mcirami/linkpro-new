@@ -72,13 +72,13 @@
 
     .icons_wrap, .folder_content {
         padding: 20px !important;
-        border: 1px solid rgba(0, 0, 0, 0.125);
+        border: 1px solid rgba(255, 255, 255, .8);
         border-radius: 20px;
         -webkit-border-radius: 20px;
         -moz-border-radius: 20px;
         text-align: center;
         margin-bottom: 20px;
-        background: $white;
+        background: rgba(25,25, 25,.8);
 
         @media screen and (max-width: 550px) {
             padding: 10px !important;

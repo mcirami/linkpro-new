@@ -14,6 +14,7 @@ const LayoutOne = ({
                        displayIcon,
                        handleOnClick,
                        link,
+                       setEditLink,
                        index,
                        setShowUpgradePopup
 }) => {
@@ -69,7 +70,15 @@ const LayoutOne = ({
                     <div>
                         <div className="switch_wrap">
                             <IOSSwitch
-                                onChange={() => handleSwitchChange(link, dispatch, subStatus, hasLinks, setShowUpgradePopup)}
+                                onChange={() => handleSwitchChange(
+                                    link,
+                                    setEditLink,
+                                    dispatch,
+                                    "active_status",
+                                    subStatus,
+                                    hasLinks,
+                                    setShowUpgradePopup
+                                )}
                                 checked={Boolean(active_status)}
                             />
                             <div className="hover_text switch">

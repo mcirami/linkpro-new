@@ -67,7 +67,7 @@ const IconSettingComponent = ({
                             type: LINKS_ACTIONS.UPDATE_LINK,
                             payload: {
                                 id: isEditing.id,
-                                editLink: editLink,
+                                editLink: null,
                                 [`${isEditing.section}`]: isEditing.value
                             }
                         })

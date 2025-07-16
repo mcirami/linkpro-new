@@ -10,6 +10,7 @@ import StandardForm
     from '@/Pages/Dashboard/Components/Link/Forms/StandardForm.jsx';
 const Link = ({
                   link,
+                  linkCount,
                   handleOnClick,
                   fetchFolderLinks,
                   subStatus,
@@ -34,7 +35,11 @@ const Link = ({
     if (type === "folder") {
         hasLinks = links?.length > 0;
     } else {
-        displayIcon = checkIcon(icon, "", subStatus);
+        if (!icon && pageSettings.page_layout === "layout_one") {
+            displayIcon = Vapor.asset('images/icon-placeholder.png');
+        } else {
+            displayIcon = checkIcon(icon, "", subStatus);
+        }
     }
 
     const {
@@ -76,6 +81,7 @@ const Link = ({
                             subStatus={subStatus}
                             displayIcon={displayIcon}
                             link={link}
+                            setEditLink={setEditLink}
                             handleOnClick={handleOnClick}
                             index={index}
                             setShowUpgradePopup={setShowUpgradePopup}
@@ -116,8 +122,8 @@ const Link = ({
             }
         </div>
             {(pageSettings.page_layout === "layout_one" &&
-                    Math.ceil((index + 1) / 4) === formRow &&
-                    (index + 1) % 4 === 0) ?
+            Math.ceil((index + 1) / 4) === formRow &&
+            ((index + 1) % 4 === 0 || index + 1 === linkCount)) ?
             <div className="edit_form link my_row">
                 <StandardForm
                     editLink={editLink}

@@ -286,6 +286,19 @@ const StandardForm = ({
                 pageLayout={pageSettings.page_layout}
                 editLink={editLink}
             />
+                {pageSettings.page_layout === "layout_one" &&
+                    <div className="my_row mt-4 mb-2 px-4">
+                        <IconSettingComponent
+                            inputType="text"
+                            editLink={editLink}
+                            setEditLink={setEditLink}
+                            elementName="name"
+                            label="Link Name"
+                            maxChar={11}
+                        />
+                    </div>
+                }
+
                 { (editLink.type !== "offer" && editLink.type !== "mailchimp" && showFormTab === "icon") &&
                     <div className="my_row form_nav_content input_types pl-5 pt-5">
                         <p className="label">Link Type</p>
@@ -293,6 +306,29 @@ const StandardForm = ({
                             editLink={editLink}
                             setEditLink={setEditLink}
                         />
+                    </div>
+                }
+
+                {pageSettings.page_layout === "layout_one" &&
+                    <div className="my_row mb-4 px-4">
+                        {editLink.type === "offer" ?
+                            <div className="external_link">
+                                <h3>Tracking Link:</h3>
+                                {editLink.url ?
+                                    <a className="inline-block" target="_blank" href={editLink.url}>{editLink.url}</a>
+                                    :
+                                    <p>Select An Icon Above</p>
+                                }
+                            </div>
+                            :
+                            <IconSettingComponent
+                                inputType={editLink.type}
+                                editLink={editLink}
+                                setEditLink={setEditLink}
+                                elementName={editLink.type}
+                                label={capitalize(editLink.type)}
+                            />
+                        }
                     </div>
                 }
 
@@ -327,42 +363,6 @@ const StandardForm = ({
                                     showFormTab={showFormTab}
                                 />
                             </div>
-                        </div>
-                    }
-
-                    {pageSettings.page_layout === "layout_one" &&
-                        <div className="my_row mb-4">
-                            <IconSettingComponent
-                                inputType="text"
-                                editLink={editLink}
-                                setEditLink={setEditLink}
-                                elementName="name"
-                                label="Link Name"
-                                maxChar={11}
-                            />
-                        </div>
-                    }
-
-                    {pageSettings.page_layout === "layout_one" &&
-                        <div className="my_row mb-4">
-                            {editLink.type === "offer" ?
-                                <div className="external_link">
-                                    <h3>Tracking Link:</h3>
-                                    {editLink.url ?
-                                        <a className="inline-block" target="_blank" href={editLink.url}>{editLink.url}</a>
-                                        :
-                                        <p>Select An Icon Above</p>
-                                    }
-                                </div>
-                                :
-                                <IconSettingComponent
-                                    inputType={editLink.type}
-                                    editLink={editLink}
-                                    setEditLink={setEditLink}
-                                    elementName={editLink.type}
-                                    label={capitalize(editLink.type)}
-                                />
-                            }
                         </div>
                     }
 

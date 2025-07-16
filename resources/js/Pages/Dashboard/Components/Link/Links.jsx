@@ -201,7 +201,7 @@ const Links = ({
                 >
                     <SortableContext
                         id={'grid-sort-contextbasic'}
-                        items={userLinks.map((i) => i?.id)}
+                        items={userLinks?.map((i) => i.id)}
                         strategy={rectSortingStrategy}
                     >
 
@@ -214,6 +214,7 @@ const Links = ({
                                 <Link
                                     key={link.id || index}
                                     link={link}
+                                    linkCount={userLinks.length}
                                     handleOnClick={handleOnClick}
                                     fetchFolderLinks={fetchFolderLinks}
                                     subStatus={subStatus}

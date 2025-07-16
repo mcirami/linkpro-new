@@ -409,6 +409,7 @@ const IconList = ({
                                                 <a href="#"
                                                    data-icontype={editLink.type}
                                                    data-index={index}
+                                                   data-name={editLink.name}
                                                    onClick={(e) => {
                                                        selectIcon(e, newPath)
                                                    }}

@@ -177,6 +177,8 @@ const Preview = ({
                                     let displayIcon = null;
                                     if (type !== "folder" && icon) {
                                         displayIcon = checkIcon(icon, "preview", subStatus);
+                                    } else if (type !== "folder" && !icon && pageSettings.page_layout === "layout_one") {
+                                        displayIcon = Vapor.asset('images/icon-placeholder-preview.png')
                                     }
 
                                     let colClasses = "";

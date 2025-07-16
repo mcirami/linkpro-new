@@ -23,6 +23,7 @@ const Folder = ({
     const folderClick = (e, index, viewType) => {
         e.preventDefault();
 
+        console.log("index", index);
         const clickedDiv = e.currentTarget.parentNode;
 
         if (clickedDiv.classList.contains('open')) {
@@ -33,6 +34,7 @@ const Folder = ({
             });
         } else {
             setRow(toInteger(clickedDiv.firstChild.dataset.row));
+            console.log("index", index);
             setValue((prev) => ({
                 ...prev,
                 index: index
@@ -40,7 +42,7 @@ const Folder = ({
             setClickType("folder");
 
             setTimeout(function(){
-                document.querySelector('.icons_wrap.inner .icon_col:last-child').scrollIntoView({
+                document.querySelector('.icons_wrap.inner .icon_col:last-child')?.scrollIntoView({
                     behavior: 'smooth',
                     block: "nearest",
                 });
@@ -53,7 +55,7 @@ const Folder = ({
 
     return (
 
-        <div className={ ` ${colClasses} ${mainIndex === value.index && clickType === "folder" ? " open" : "" } `}>
+        <div className={`${colClasses} ${mainIndex === value.index && clickType === "folder" ? " open" : "" }`}>
             {layout === "layout_one" ?
                 <>
                     <a className="inner_icon_wrap"
@@ -64,7 +66,7 @@ const Folder = ({
                        }}
                     >
                         <img className="bg_image" src={Vapor.asset('images/blank-folder-square.jpg')} alt=""/>
-                        <div className="folder_icons preview">
+                        <div className={`folder_icons ${viewType}`}>
                             {links.slice(0, 9).map(( innerLinkIcons, index ) => {
                                 return (
                                     <FolderLinks

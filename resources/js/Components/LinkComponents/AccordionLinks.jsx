@@ -8,6 +8,7 @@ const AccordionLinks = ({
                             viewType
 }) => {
 
+    console.log("AccordionLinks", icons);
     const {id, name, email, phone, icon, url, active_status} = icons
     let source;
     if (email) {

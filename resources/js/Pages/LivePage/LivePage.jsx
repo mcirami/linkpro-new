@@ -198,6 +198,7 @@ function LivePage({links, page, subscribed}) {
                                                                 setClickType={setClickType}
                                                                 subStatus={subscribed}
                                                                 viewType="live"
+                                                                layout={page_layout}
                                                             />
                                                             :
                                                             subscribed && page_layout !== "layout_two" &&

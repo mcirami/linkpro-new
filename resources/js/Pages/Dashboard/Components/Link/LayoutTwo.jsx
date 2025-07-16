@@ -4,7 +4,7 @@ import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import DeleteIcon from '@/Pages/Dashboard/Components/Link/Forms/DeleteIcon.jsx';
 import IconSettingComponent
     from '@/Pages/Dashboard/Components/Link/Forms/IconSettingComponent.jsx';
-import {capitalize, toUpper} from 'lodash';
+import {capitalize} from 'lodash';
 import {
     handleSwitchChange
 } from '@/Services/LinksRequest.jsx';

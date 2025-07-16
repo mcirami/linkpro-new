@@ -130,7 +130,7 @@ export const updateLinkItemStatus = (packets, itemID, url) => {
     .then(
         (response) => {
             const returnMessage = JSON.stringify(response.data.message);
-            EventBus.dispatch("success", { message: returnMessage });
+            //EventBus.dispatch("success", { message: returnMessage });
 
             return {
                 success : true,
