@@ -1,3 +1,6 @@
+@use "../partials/variables" as *;
+@use "../partials/mixins" as *;
+
 #upgrade_popup, #confirm_popup_link, #confirm_cancel_popup, #confirm_folder_popup_link {
     display: none;
     opacity: 0;

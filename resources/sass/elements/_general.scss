@@ -1,3 +1,6 @@
+@use "../partials/variables" as *;
+@use "../partials/mixins" as *;
+
 .error_page.form_page {
 
     .card {

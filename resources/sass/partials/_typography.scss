@@ -1,4 +1,5 @@
 // typography baselines and @font face setups
+@use "./mixins" as *;
 
 @font-face {
     font-family: "opensansregular";

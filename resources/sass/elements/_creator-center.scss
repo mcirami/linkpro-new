@@ -1,3 +1,6 @@
+@use "../partials/variables" as *;
+@use "../partials/mixins" as *;
+
 #creator_center, #pre_register{
     max-width: 1200px;
 

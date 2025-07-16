@@ -1,36 +1,33 @@
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Nunito");
 
 // Variables
-@import "./partials/variables";
+@use "./partials/variables" as *;
+@use "./partials/mixins" as *;
 
-// Bootstrap
-//@import '~bootstrap/scss/bootstrap';
-
-@import "./partials/mixins";
-@import "./partials/typography";
-@import "./partials/base";
-@import "./elements/header";
-@import "./elements/menu";
-@import "./elements/home";
-@import "./elements/links";
-@import "./elements/preview";
-@import "./elements/live";
-@import "./elements/guest";
-@import "./elements/forms";
-@import "./elements/plans";
-@import "./elements/popups";
-@import "./elements/general";
-@import "./elements/stats";
-@import "./elements/folders";
-@import "./elements/setup";
-@import "./elements/shopify";
-@import "./elements/creator";
-@import "./elements/creator-center";
-@import "./elements/course-creator";
-@import "./elements/live-lp";
-@import "./elements/single-course";
-@import "./elements/courses";
-@import "./elements/user";
-@import "./elements/tables";
-@import "./elements/footer";
+@use "./partials/typography";
+@use "./partials/base";
+@use "./elements/header";
+@use "./elements/menu";
+@use "./elements/home";
+@use "./elements/links";
+@use "./elements/preview";
+@use "./elements/live";
+@use "./elements/guest";
+@use "./elements/forms";
+@use "./elements/plans";
+@use "./elements/popups";
+@use "./elements/general";
+@use "./elements/stats";
+@use "./elements/folders";
+@use "./elements/setup";
+@use "./elements/shopify";
+@use "./elements/creator";
+@use "./elements/creator-center";
+@use "./elements/course-creator";
+@use "./elements/live-lp";
+@use "./elements/single-course";
+@use "./elements/courses";
+@use "./elements/user";
+@use "./elements/tables";
+@use "./elements/footer";
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Nunito");

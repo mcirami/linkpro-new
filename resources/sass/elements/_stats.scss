@@ -1,3 +1,6 @@
+@use "../partials/variables" as *;
+@use "../partials/mixins" as *;
+
 .my_row.form_page.stats .card {
     max-width: 1000px;
 

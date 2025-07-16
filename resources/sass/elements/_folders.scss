@@ -1,3 +1,6 @@
+@use "../partials/variables" as *;
+@use "../partials/mixins" as *;
+
 .icon_wrap.folder {
 
     .inner_icon_wrap {
