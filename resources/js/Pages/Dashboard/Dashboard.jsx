@@ -6,6 +6,7 @@ import React, {
     useRef,
     useMemo,
 } from 'react';
+import {BiChevronLeft} from 'react-icons/bi';
 import Preview from './Components/Preview/Preview';
 import Links from './Components/Link/Links';
 import PageName from './Components/Page/PageName';
@@ -37,9 +38,7 @@ import FolderNameInput from './Components/Folder/FolderNameInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PageContext from '@/Context/PageContext.jsx';
 import UserLinksContext from '@/Context/UserLinksContext.jsx';
-//export const UserLinksContext = createContext(undefined);
 export const FolderLinksContext = createContext(undefined);
-//export const PageContext = createContext(undefined);
 
 import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext.jsx';
 import {Head} from '@inertiajs/react';
@@ -250,25 +249,7 @@ function Dashboard({
         )
     }
 
-    const handleDisabledClick = (e) => {
-        const type = e.target.dataset.type;
-        if (!subStatus) {
-
-            let text;
-            if (type === "custom" ) {
-                text = "add custom icons"
-            } else if (type === "integration") {
-                text = "add an integration"
-            } else if (type === "offer") {
-                text = "earn money from an affiliate offer"
-            }
-
-            setShowUpgradePopup({
-                show: true,
-                text: text
-            });
-        }
-    }
+    console.log("userLInks", userLinks);
 
     return (
         <AuthenticatedLayout>
@@ -430,16 +411,34 @@ function Dashboard({
 
                                                     {editLink.id || editLink.folder_id ?
                                                         <div className="my_row icon_links" id="scrollTo">
-                                                            <div className="links_row">
-                                                                { (editLink.folder_id) &&
+                                                            { (editLink.folder_id) &&
+                                                                <div className="links_row">
+                                                                    <div>
+                                                                        <a className="back uppercase text-blue-800" href="#"
+                                                                           onClick={(e) => {
+                                                                               e.preventDefault();
+                                                                               setEditLink({
+                                                                                   id: null,
+                                                                                   type: null,
+                                                                                   inputType: null,
+                                                                                   folder_id: null
+                                                                               })
+                                                                           }}
+                                                                        >
+                                                                            <BiChevronLeft />
+                                                                            All Icons
+                                                                        </a>
+                                                                    </div>
                                                                     <div className="delete_icon">
                                                                         <DeleteIcon
                                                                             setShowConfirmPopup={setShowConfirmPopup}
                                                                             editId={editLink.id}
+                                                                            type={editLink.type}
                                                                         />
                                                                     </div>
-                                                                }
-                                                            </div>
+                                                                </div>
+                                                            }
+
                                                             {editLink.folder_id && !editLink.id ?
                                                                 <div className="folder_name my_row">
                                                                     <FolderNameInput
@@ -454,184 +453,35 @@ function Dashboard({
                                                         ""
                                                     }
 
-                                                    {/*{ !editLink.id && (!showLinkForm.show && !showLinkTypeRadio) ?*/}
-                                                        <div className="my_row link_row">
-                                                            <div className={`add_content_links ${pageSettings.page_layout === "layout_two" && "!border-0" } `}>
+                                                    <div className="my_row link_row">
+                                                        <div className={`add_content_links ${pageSettings.page_layout === "layout_two" && "!border-0" } `}>
+                                                            <div className="add_more_link">
+                                                                <AddLink
+                                                                    setShowLinkTypeRadio={setShowLinkTypeRadio}
+                                                                    subStatus={subStatus}
+                                                                    setShowUpgradePopup={setShowUpgradePopup}
+                                                                />
+                                                            </div>
+                                                            {(pageSettings.page_layout === "layout_one" && !editLink.folder_id) &&
                                                                 <div className="add_more_link">
-                                                                    <AddLink
-                                                                        setShowLinkTypeRadio={setShowLinkTypeRadio}
+                                                                    <AddFolder
                                                                         subStatus={subStatus}
                                                                         setShowUpgradePopup={setShowUpgradePopup}
+                                                                        setEditLink={setEditLink}
                                                                     />
                                                                 </div>
-                                                                {(pageSettings.page_layout === "layout_one" && !editLink.folder_id) &&
-                                                                    <div className="add_more_link">
-                                                                        <AddFolder
-                                                                            subStatus={subStatus}
-                                                                            setShowUpgradePopup={setShowUpgradePopup}
-                                                                            setEditLink={setEditLink}
-                                                                        />
-                                                                    </div>
-                                                                }
-                                                            </div>
+                                                            }
                                                         </div>
-                                                        {/*:
-                                                        ""
-                                                    }*/}
+                                                    </div>
+
                                                     {showLinkTypeRadio &&
                                                         <LinkTypeRadio
+                                                            editLink={editLink}
                                                             setEditLink={setEditLink}
                                                             setShowLinkTypeRadio={setShowLinkTypeRadio}
                                                             pageId={pageSettings.id}
                                                         />
                                                     }
-                                                    {/*{( showLinkForm.show || editLink.id) &&
-                                                        <div className="edit_form link my_row">
-                                                            {
-                                                                editLink.type ===  "url" ||
-                                                                editLink.type ===  "email" ||
-                                                                editLink.type ===  "phone" ?
-                                                                    <StandardForm
-                                                                        editLink={editLink}
-                                                                        setEditLink={setEditLink}
-                                                                        subStatus={subStatus}
-                                                                        showLinkForm={showLinkForm}
-                                                                        setShowLinkForm={setShowLinkForm}
-                                                                        setShowUpgradePopup={setShowUpgradePopup}
-                                                                        setShowLoader={setShowLoader}
-                                                                    />
-                                                                    :
-                                                                    ""
-                                                            }*/}
-                                                            {/*<div className={"my_row tab_content_wrap"}>
-                                                                <div className={`accordion_row my_row`}>
-                                                                    <AccordionLink
-                                                                        accordionValue={accordionValue}
-                                                                        setAccordionValue={setAccordionValue}
-                                                                        linkText="Standard Icon"
-                                                                        type="standard"
-                                                                    />
-                                                                    {accordionValue === "standard" &&
-                                                                        <div className={`inner_wrap ${accordionValue ===
-                                                                        "standard" && "open"}`}>
-
-                                                                            <StandardForm
-                                                                                setAccordionValue={setAccordionValue}
-                                                                                accordionValue={accordionValue}
-                                                                                inputType={inputType}
-                                                                                setInputType={setInputType}
-                                                                                editLink={editLink}
-                                                                                subStatus={subStatus}
-                                                                                setShowLinkForm={setShowLinkForm}
-                                                                                setEditLink={setEditLink}
-                                                                                setShowUpgradePopup={setShowUpgradePopup}
-                                                                                setShowLoader={setShowLoader}
-                                                                            />
-
-                                                                        </div>
-                                                                    }
-                                                                </div>
-                                                                <div data-type="offer"
-                                                                     className={`accordion_row my_row`}
-                                                                >
-                                                                    <AccordionLink
-                                                                        accordionValue={accordionValue}
-                                                                        setAccordionValue={setAccordionValue}
-                                                                        linkText="Affiliate Offers"
-                                                                        type="offer"
-                                                                    />
-                                                                    {accordionValue === "offer" &&
-                                                                        <div className={`inner_wrap ${accordionValue} ${accordionValue ===
-                                                                        "offer" && "open"}`}>
-
-                                                                            <StandardForm
-                                                                                accordionValue={accordionValue}
-                                                                                setAccordionValue={setAccordionValue}
-                                                                                inputType={inputType}
-                                                                                setInputType={setInputType}
-                                                                                editLink={editLink}
-                                                                                subStatus={subStatus}
-                                                                                setShowLinkForm={setShowLinkForm}
-                                                                                setEditLink={setEditLink}
-                                                                                setShowUpgradePopup={setShowUpgradePopup}
-                                                                                affiliateStatus={affiliateStatus}
-                                                                                setAffiliateStatus={setAffiliateStatus}
-                                                                            />
-
-                                                                        </div>
-                                                                    }
-                                                                </div>
-                                                                <div data-type="custom"
-                                                                     className={`accordion_row my_row ${!subStatus ? "disabled" : ""}`}
-                                                                     onClick={(e) => handleDisabledClick(e)}
-                                                                >
-                                                                    <AccordionLink
-                                                                        accordionValue={accordionValue}
-                                                                        setAccordionValue={setAccordionValue}
-                                                                        linkText="Custom Icon"
-                                                                        type="custom"
-                                                                    />
-                                                                    {accordionValue === "custom" &&
-                                                                        <div className={`inner_wrap ${accordionValue ===
-                                                                        "custom" && "open"}`}>
-
-                                                                            <CustomForm
-                                                                                accordionValue={accordionValue}
-                                                                                setAccordionValue={setAccordionValue}
-                                                                                inputType={inputType}
-                                                                                setInputType={setInputType}
-                                                                                editLink={editLink}
-                                                                                setShowLinkForm={setShowLinkForm}
-                                                                                setEditLink={setEditLink}
-                                                                                setShowLoader={setShowLoader}
-                                                                            // />
-
-                                                                        </div>
-                                                                    }
-                                                                </div>
-                                                                {!editLink.folder_id &&
-                                                                    <div data-type="integration"
-                                                                         className={`accordion_row my_row ${!subStatus ? "disabled" : ""}`}
-                                                                         onClick={(e) => handleDisabledClick(e)}
-                                                                    >
-                                                                        <AccordionLink
-                                                                            accordionValue={accordionValue}
-                                                                            setAccordionValue={setAccordionValue}
-                                                                            linkText="Integrations"
-                                                                            type="integration"
-                                                                        />
-                                                                        {accordionValue ===
-                                                                            "integration" &&
-                                                                            <div className={`inner_wrap ${accordionValue ===
-                                                                            "integration" &&
-                                                                            "open"}`}>
-
-                                                                                <IntegrationForm
-                                                                                    accordionValue={accordionValue}
-                                                                                    setAccordionValue={setAccordionValue}
-                                                                                    editID={editLink.id}
-                                                                                    setShowLinkForm={setShowLinkForm}
-                                                                                    setEditLink={setEditLink}
-                                                                                    setShowMessageAlertPopup={setShowMessageAlertPopup}
-                                                                                    setShowLoader={setShowLoader}
-                                                                                    setIntegrationType={setIntegrationType}
-                                                                                    integrationType={integrationType}
-                                                                                    connectionError={connectionError}
-                                                                                    shopifyStores={shopifyStores}
-                                                                                    setShopifyStores={setShopifyStores}
-                                                                                    redirectedType={redirectedType}
-                                                                                    setStoreID={setStoreID}
-                                                                                    storeID={storeID}
-                                                                                />
-
-                                                                            </div>
-                                                                        }
-                                                                    </div>
-                                                                }
-
-                                                            </div>*/}
-                                                        {/*</div>
-                                                    }*/}
 
                                                     { (editLink.folder_id &&
                                                         !editLink.id &&

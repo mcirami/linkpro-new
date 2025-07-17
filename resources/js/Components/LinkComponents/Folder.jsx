@@ -23,7 +23,6 @@ const Folder = ({
     const folderClick = (e, index, viewType) => {
         e.preventDefault();
 
-        console.log("index", index);
         const clickedDiv = e.currentTarget.parentNode;
 
         if (clickedDiv.classList.contains('open')) {
@@ -34,7 +33,6 @@ const Folder = ({
             });
         } else {
             setRow(toInteger(clickedDiv.firstChild.dataset.row));
-            console.log("index", index);
             setValue((prev) => ({
                 ...prev,
                 index: index

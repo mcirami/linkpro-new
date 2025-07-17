@@ -75,9 +75,9 @@ const Preview = ({
         setShowPreview(false);
     }
 
-    const accordionLinks = value.index !== null ? userLinks[value.index].links : null;
-    const mailchimpListId = value.index !== null ? userLinks[value.index].mailchimp_list_id : null;
-    const storeProducts = value.index !== null ? userLinks[value.index].shopify_products : null;
+    const accordionLinks = value.index !== null ? userLinks[value.index]?.links : null;
+    const mailchimpListId = value.index !== null ? userLinks[value.index]?.mailchimp_list_id : null;
+    const storeProducts = value.index !== null ? userLinks[value.index]?.shopify_products : null;
     //const description = value.index !== null ? userLinks[value.index].description : null;
 
     return (

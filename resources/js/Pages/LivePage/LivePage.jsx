@@ -85,10 +85,10 @@ function LivePage({links, page, subscribed}) {
 
     }, [profile_img_active]);
 
-    const accordionLinks = value.index ? links[value.index].links : null;
-    const mailchimpListId = value.index ? links[value.index].mailchimp_list_id : null;
-    const storeProducts = value.index ? links[value.index].shopify_products : null;
-    //const description = value.index ? links[value.index].description : null;
+    const accordionLinks = value.index !== null ? links[value.index].links : null;
+    const mailchimpListId = value.index  !== null ? links[value.index].mailchimp_list_id : null;
+    const storeProducts = value.index  !== null ? links[value.index].shopify_products : null;
+    //const description = value.index  !== null ? links[value.index].description : null;
 
     return (
         <main className="py-4">

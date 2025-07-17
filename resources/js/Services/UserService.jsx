@@ -34,7 +34,7 @@ export const checkSubStatus = (userSub) => {
 export const checkIcon = (icon, viewType, subStatus) => {
     let asset;
 
-    if(viewType === "preview") {
+    if(viewType === "preview" || viewType === "live") {
         asset = Vapor.asset('images/icon-placeholder-preview.png')
     } else {
         asset = Vapor.asset('images/icon-placeholder.png');
@@ -42,6 +42,8 @@ export const checkIcon = (icon, viewType, subStatus) => {
 
     if (icon && icon.toString().includes('custom')) {
         return subStatus ? icon : asset;
+    } else if (!icon) {
+        return asset;
     } else {
         return icon;
     }

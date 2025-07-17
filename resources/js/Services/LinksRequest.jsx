@@ -1,7 +1,6 @@
 import axios from 'axios';
 import EventBus from '../Utils/Bus';
 import {icons} from './IconObjects';
-import toBoolean from 'validator/es/lib/toBoolean.js';
 import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
 
 /**

@@ -38,7 +38,7 @@ const FolderLinks = ({
 
                }) => {
 
-    const { dispatch  } = useUserLinksContext();
+    const {userLinks, dispatch  } = useUserLinksContext();
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
 
     const targetRef = useRef(null);

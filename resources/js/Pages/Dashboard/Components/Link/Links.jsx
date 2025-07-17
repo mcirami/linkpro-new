@@ -127,7 +127,7 @@ const Links = ({
             const folderLinks = await response.json();
 
             dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks["links"]} })
-            setEditLink(prev => ({...prev, folder_id: linkID}));
+            setEditLink(prev => ({...prev, folder_id: linkID, type: "folder"}));
 
             setValue(prev => ({...prev, index: 0, url: null}));
 

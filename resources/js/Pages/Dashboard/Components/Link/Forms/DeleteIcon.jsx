@@ -4,7 +4,7 @@ import {MdDeleteForever} from 'react-icons/md';
 const DeleteIcon = ({
                         setShowConfirmPopup,
                         editId,
-                        type = null,
+                        type,
 }) => {
 
     const handleDeleteClick = e => {

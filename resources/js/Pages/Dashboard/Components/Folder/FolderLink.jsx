@@ -14,7 +14,11 @@ const FolderLink = ({
 
     const linkID = link.id;
     let displayIcon;
-    displayIcon = checkIcon(link.icon, "edit", subStatus);
+    if (!link.icon) {
+        displayIcon = Vapor.asset('images/icon-placeholder.png');
+    } else {
+        displayIcon = checkIcon(link.icon, "edit", subStatus);
+    }
 
     const {
         attributes,
