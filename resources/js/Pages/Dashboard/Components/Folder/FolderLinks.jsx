@@ -34,11 +34,16 @@ import FolderLink from './FolderLink';
 const FolderLinks = ({
                          folder_id,
                          subStatus,
+                         editLink,
                          setEditLink,
-
+                         setValue,
+                         formRow,
+                         setFormRow,
+                         affStatus,
+                         setShowLoader
                }) => {
 
-    const {userLinks, dispatch  } = useUserLinksContext();
+    const {dispatch  } = useUserLinksContext();
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
 
     const targetRef = useRef(null);
@@ -71,19 +76,49 @@ const FolderLinks = ({
         })
     };
 
-    const handleOnClick = (linkID) => {
-        setEditLink(folderLinks.find(function(e) {
-            return e.id === linkID
-        }));
+    const handleOnClick = (e, linkID, row) => {
+        if (formRow === row) {
+            if (e.target.closest('.column_content').classList.contains('open')) {
+                e.target.closest('.column_content').classList.remove('open');
+                setFormRow(null)
+                setEditLink({});
+            } else {
+                const openedDiv = document.querySelector('.column_content.open');
+                if (openedDiv) {
+                    openedDiv.classList.remove('open');
+                }
+                e.target.closest('.column_content').classList.add('open');
+                setEditLink(folderLinks.find(function(e) {
+                    return e.id === linkID
+                }));
+                setTimeout(function(){
+                    const closestScrollTo = e.target.closest('.grid_item');
 
-        setTimeout(function(){
-            document.querySelector('#scrollTo').scrollIntoView({
-                behavior: 'smooth',
-                block: "start",
-                inline: "nearest"
-            });
+                    closestScrollTo.scrollIntoView({
+                        behavior: 'smooth',
+                        block: "start",
+                        inline: "nearest"
+                    });
+                }, 300)
+            }
 
-        }, 800)
+        } else {
+            setFormRow(row);
+            setEditLink(folderLinks.find(function(e) {
+                return e.id === linkID
+            }));
+            e.target.closest('.column_content').classList.add('open');
+
+            setTimeout(function(){
+                const closestScrollTo = e.target.closest('.grid_item');
+
+                closestScrollTo.scrollIntoView({
+                    behavior: 'smooth',
+                    block: "start",
+                    inline: "nearest"
+                });
+            }, 300)
+        }
 
     }
 
@@ -131,15 +166,24 @@ const FolderLinks = ({
                         items={folderLinks.map((i) => i?.id)}
                         strategy={rectSortingStrategy}
                     >
-                            {folderLinks?.length > 0 && folderLinks.map(link => {
+                            {folderLinks?.length > 0 && folderLinks.map((link, index) => {
 
                                 return (
                                     <FolderLink
                                         key={link.id}
                                         link={link}
+                                        linkCount={folderLinks.length}
+                                        index={index}
                                         subStatus={subStatus}
                                         handleChange={handleChange}
                                         handleOnClick={handleOnClick}
+                                        setValue={setValue}
+                                        formRow={formRow}
+                                        setFormRow={setFormRow}
+                                        affStatus={affStatus}
+                                        editLink={editLink}
+                                        setEditLink={setEditLink}
+                                        setShowLoader={setShowLoader}
                                     />
                                 )
                             })}

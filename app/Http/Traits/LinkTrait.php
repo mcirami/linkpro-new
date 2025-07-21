@@ -8,7 +8,7 @@ use App\Models\ShopifyStore;
 
 trait LinkTrait {
 
-    public function getFolderLinks($page) {
+    public function getFolderLinks($page): array {
 
         $folderArray = [];
         $folders     = $page->folders()->orderBy( 'position', 'asc' )->get();
@@ -16,7 +16,7 @@ trait LinkTrait {
         if (!empty($folders)) {
             foreach ( $folders as $folder ) {
                 $mylinks = [];
-                if($folder->link_ids && !empty($folder->link_ids)) {
+                if( !empty($folder->link_ids) ) {
                     $mylinks = json_decode( $folder->link_ids );
                 }
 
@@ -36,14 +36,14 @@ trait LinkTrait {
                     'active_status' => $folder["active_status"]
                 ];
 
-                array_push( $folderArray, $linkObject );
+                $folderArray[] = $linkObject;
             }
         }
 
         return $folderArray;
     }
 
-    public function getAllLinks($page) {
+    public function getAllLinks($page): array {
 
         $allLinks = $page->links()->where('page_id', $page["id"])->where('folder_id', null)
              ->orderBy('position', 'asc')
@@ -70,7 +70,7 @@ trait LinkTrait {
                 $link["shopify_products"] = $productArray;
             }
 
-            array_push($newLinksArray, $link);
+            $newLinksArray[] = $link;
         }
 
         return $newLinksArray;

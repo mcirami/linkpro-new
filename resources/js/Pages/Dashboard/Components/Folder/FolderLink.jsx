@@ -1,15 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {MdDragHandle} from 'react-icons/md';
 import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import {checkIcon} from '@/Services/UserService.jsx';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
+import StandardForm
+    from '@/Pages/Dashboard/Components/Link/Forms/StandardForm.jsx';
 
 const FolderLink = ({
                         link,
+                        linkCount,
+                        index,
                         handleOnClick,
                         handleChange,
-                        subStatus
+                        subStatus,
+                        setValue,
+                        formRow,
+                        setFormRow,
+                        affStatus,
+                        editLink,
+                        setEditLink,
+                        setShowLoader
 }) => {
 
     const linkID = link.id;
@@ -19,6 +30,8 @@ const FolderLink = ({
     } else {
         displayIcon = checkIcon(link.icon, "edit", subStatus);
     }
+
+    const [affiliateStatus, setAffiliateStatus] = useState(affStatus);
 
     const {
         attributes,
@@ -34,6 +47,7 @@ const FolderLink = ({
     };
 
     return (
+        <>
         <div
             className="grid_item"
             ref={setNodeRef}
@@ -51,7 +65,7 @@ const FolderLink = ({
                 <div className="column_content">
 
                     <div className="icon_wrap" onClick={(e) => {
-                        handleOnClick(linkID)
+                        handleOnClick(e, linkID, Math.ceil((index + 1) / 3))
                     }}>
                         <div className="image_wrap">
                             <img src={displayIcon} alt=""/>
@@ -70,6 +84,23 @@ const FolderLink = ({
                 </div>
             </div>
         </div>
+        { Math.ceil((index + 1) / 3) === formRow &&
+            ((index + 1) % 3 === 0 || index + 1 === linkCount) ?
+            <div className="edit_form link my_row">
+                <StandardForm
+                    editLink={editLink}
+                    setEditLink={setEditLink}
+                    setShowLoader={setShowLoader}
+                    setFormRow={setFormRow}
+                    affiliateStatus={affiliateStatus}
+                    setAffiliateStatus={setAffiliateStatus}
+                    index={index}
+                />
+            </div>
+            :
+            ""
+        }
+        </>
     );
 };
 

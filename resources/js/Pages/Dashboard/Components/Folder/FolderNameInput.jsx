@@ -13,11 +13,11 @@ const FolderNameInput = ({folder_id}) => {
 
     const [ currentFolder, setCurrentFolder ] = useState(
         userLinks.find(function(e) {
-            return e.id === folder_id && e.type === "folder"
+            return e?.type === "folder" && e?.id === folder_id
         }) || null );
 
     useEffect(() => {
-        if(currentFolder.name) {
+        if(currentFolder?.name) {
             setCharactersLeft(11 - currentFolder?.name?.length);
         } else {
             setCharactersLeft(11);

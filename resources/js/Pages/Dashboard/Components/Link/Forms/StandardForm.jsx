@@ -37,7 +37,7 @@ const StandardForm = ({
                           setFormRow,
                           affiliateStatus,
                           setAffiliateStatus,
-                          connectionError,
+                          connectionError = null,
                           index
 
 }) => {
@@ -64,9 +64,9 @@ const StandardForm = ({
     useEffect(() => {
         setEditLink(
             userLinks.find(function(e) {
-                return e.id === editLink.id
+                return e?.id === editLink.id
             }) || folderLinks.find(function(e) {
-                return e.id === editLink.id
+                return e?.id === editLink.id
             }) ||
             {
                 id: null,
@@ -235,7 +235,10 @@ const StandardForm = ({
             openedDiv.classList.remove('open');
         }
         setFormRow(0);
-        setEditLink({});
+        setEditLink( prev => ({
+            ...prev,
+            id: null,
+        }));
     }
 
     return (

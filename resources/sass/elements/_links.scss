@@ -194,28 +194,34 @@
 
     .icons_wrap {
         position: relative;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: horizontal;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: row;
-        flex-direction: row;
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        -webkit-justify-content: flex-start;
-        align-items: stretch;
-        -webkit-align-items: stretch;
+        display: grid;
+        --n:5;
+        grid-template-columns: repeat(auto-fill, minmax(max(50px,100%/var(--n)), 1fr));
+        grid-gap: 5px 10px;
+        padding: 40px 5% 0;
+        transition: 800ms all ease-in-out;
+        -webkit-transition: 800ms all ease-in-out;
+        -moz-transition: 800ms all ease-in-out;
+        -o-transition: 800ms all ease-in-out;
+
+        .icon_col {
+            width: 100%;
+            position: relative;
+        }
+
+        &.folder {
+            --n:4;
+        }
+
+        &.icon_select {
+            display: flex;
+        }
 
         .icon_col {
             @include boxShadow;
             border-radius: 20px;
             -webkit-border-radius: 20px;
             -moz-border-radius: 20px;
-            /*position: relative;*/
-            /*background: $white;*/
-            width: 23%;
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
@@ -458,29 +464,6 @@
         }
 
         &.add_icons {
-            display: grid;
-            --n:5;
-            grid-template-columns: repeat(auto-fill, minmax(max(50px,100%/var(--n)), 1fr));
-            grid-gap: 20px;
-            padding: 40px 5% 0;
-            transition: 800ms all ease-in-out;
-            -webkit-transition: 800ms all ease-in-out;
-            -moz-transition: 800ms all ease-in-out;
-            -o-transition: 800ms all ease-in-out;
-
-
-            @media all and (max-width: 1199px) {
-                grid-gap: 15px;
-            }
-
-            @media all and (max-width: 768px) {
-                grid-gap: 10px;
-            }
-
-            .icon_col {
-                width: 100%;
-                position: relative;
-            }
 
             &.no_icons {
                 display: -webkit-box;
@@ -606,14 +589,6 @@
                             }
                         }
 
-                        &.folder {
-                            .link_content {
-                                width: 20%;
-                                justify-content: flex-end;
-                                -webkit-justify-content: flex-end;
-                            }
-                        }
-
                         .edit_icon {
                             margin-left: 0;
                             width: 25px;
@@ -731,6 +706,12 @@
         .edit_form {
             grid-column: span 4;
             grid-auto-flow: row dense;
+        }
+
+        &.folder {
+            .edit_form {
+                grid-column: span 3;
+            }
         }
     }
 }

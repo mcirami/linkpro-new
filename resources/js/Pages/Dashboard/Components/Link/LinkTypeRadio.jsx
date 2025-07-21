@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import {LINKS_ACTIONS, FOLDER_LINKS_ACTIONS} from '@/Services/Reducer.jsx';
-import addLink from '@/Services/LinksRequest.jsx';
+import {addLink, updateLinkStatus} from '@/Services/LinksRequest.jsx';
 import {
     FolderLinksContext,
 } from '../../Dashboard.jsx';
@@ -15,10 +15,8 @@ const LinkTypeRadio = ({
     const { userLinks, dispatch } = useUserLinksContext();
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
 
-    console.log("userLinks:", userLinks);
     const handleOnChange = (type) => {
 
-        console.log('editLink', editLink);
         setEditLink((prev) => ({
             ...prev,
             type: type,
@@ -57,26 +55,38 @@ const LinkTypeRadio = ({
                     position: data.position,
                     folder_id: editLink.folder_id,
                 }
-                let newLinks = [...userLinks];
+
                 //newLinks = newLinks.concat(newLinkObject)
 
-                setEditLink(prevState => ({
+                /*setEditLink(prevState => ({
                     ...prevState,
                     id: data.link_id,
                     position: data.position,
-                }))
+                }))*/
 
                 if (editLink.folder_id) {
                     let newFolderLinks = [...folderLinks];
                     newFolderLinks = newFolderLinks.concat(
                         newLinkObject);
 
-                     newLinks = newLinks.map((link, index) => {
+                     /*newLinks = newLinks.map((link, index) => {
                          if (link.id === editLink.folder_id) {
                              link.links.push(newLinkObject);
                          }
-                     })
+                     })*/
                     dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: newFolderLinks} })
+
+                    let folderActive = null;
+                    if (newFolderLinks.length === 1) {
+                        folderActive = true;
+                        const url = "/dashboard/folder/status/";
+                        const packets = {
+                            active_status: folderActive,
+                        };
+
+                        updateLinkStatus(packets, editLink.folder_id, url);
+                    }
+
                     dispatch({
                         type: LINKS_ACTIONS.ADD_NEW_IN_FOLDER,
                         payload: {
@@ -86,15 +96,15 @@ const LinkTypeRadio = ({
                         }
                     })
                 } else {
-                     newLinks = newLinks.concat(newLinkObject)
+                    let newLinks = [...userLinks];
+                    newLinks = newLinks.concat(newLinkObject)
+                    dispatch({
+                        type: LINKS_ACTIONS.SET_LINKS,
+                        payload: {
+                            links: newLinks
+                        }
+                    })
                  }
-
-                 dispatch({
-                     type: LINKS_ACTIONS.SET_LINKS,
-                     payload: {
-                         links: newLinks
-                     }
-                 })
 
                 setTimeout(function(){
                     window.scrollTo(0, document.body.scrollHeight);

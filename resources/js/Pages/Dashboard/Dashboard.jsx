@@ -249,8 +249,6 @@ function Dashboard({
         )
     }
 
-    console.log("userLInks", userLinks);
-
     return (
         <AuthenticatedLayout>
             <Head title="Dashboard" />
@@ -439,7 +437,7 @@ function Dashboard({
                                                                 </div>
                                                             }
 
-                                                            {editLink.folder_id && !editLink.id ?
+                                                            {editLink.folder_id ?
                                                                 <div className="folder_name my_row">
                                                                     <FolderNameInput
                                                                         folder_id={editLink.folder_id}
@@ -484,7 +482,6 @@ function Dashboard({
                                                     }
 
                                                     { (editLink.folder_id &&
-                                                        !editLink.id &&
                                                         !showLinkTypeRadio
                                                     ) ?
 
@@ -492,7 +489,13 @@ function Dashboard({
                                                             <FolderLinks
                                                                 folder_id={editLink.folder_id}
                                                                 subStatus={subStatus}
+                                                                editLink={editLink}
                                                                 setEditLink={setEditLink}
+                                                                setValue={setValue}
+                                                                formRow={formRow}
+                                                                setFormRow={setFormRow}
+                                                                affStatus={affStatus}
+                                                                setShowLoader={setShowLoader}
                                                             />
                                                         </ErrorBoundary>
 

@@ -107,20 +107,6 @@ const IconList = ({
 
             let name = el.dataset.name || editLink.name;
             setCharactersLeft(11 - name.length);
-            /*if(el.dataset.name) {
-                name = el.dataset.name;
-                setCharactersLeft(11 - name.length);
-
-                if( (name.toLowerCase().includes("mail") && !name.toLowerCase().includes("mailchimp") )
-                    || name.toLowerCase().includes("yahoo")
-                    || name.toLowerCase().includes("outlook") ) {
-                    setEditLink((prev) => ({...prev, type: "email"}));
-                } else if (name.toLowerCase() === "phone" || name.toLowerCase() === "facetime") {
-                    setEditLink((prev) => ({...prev, type: "phone"}));
-                } else {
-                    setEditLink((prev) => ({...prev, type: "url"}));
-                }
-            }*/
 
             let value = editLink[iconType];
             if(iconType === "url" && showIconList.type === "standard") {
@@ -166,18 +152,46 @@ const IconList = ({
                 if (linkId) {
                     updateLink(packets, linkId).then((data) => {
                         if(data.success) {
-                            dispatch({
-                                type: LINKS_ACTIONS.UPDATE_LINK,
-                                payload: {
-                                    id: linkId,
-                                    editLink: editLink,
-                                    [`${valueKey}`]: value,
-                                    type: iconType,
-                                    icon: source,
-                                    icon_active: true,
-                                    name: name,
-                                }
-                            })
+
+                            if (editLink.folder_id) {
+                                dispatchFolderLinks({
+                                    type: FOLDER_LINKS_ACTIONS.UPDATE_FOLDER_LINKS,
+                                    payload: {
+                                        id: editLink.id,
+                                        currentLink: editLink,
+                                        [`${valueKey}`]: value,
+                                        type: iconType,
+                                        icon: source,
+                                        name: name,
+                                    }
+                                })
+
+                                dispatch({
+                                    type: LINKS_ACTIONS.UPDATE_LINK_IN_FOLDER,
+                                    payload: {
+                                        folder_id: editLink.folder_id,
+                                        id: editLink.id,
+                                        currentLink: editLink,
+                                        [`${valueKey}`]: value,
+                                        icon: source,
+                                        type: iconType,
+                                        name: name,
+                                    }
+                                })
+                            } else {
+                                dispatch({
+                                    type: LINKS_ACTIONS.UPDATE_LINK,
+                                    payload: {
+                                        id: linkId,
+                                        editLink: editLink,
+                                        [`${valueKey}`]: value,
+                                        type: iconType,
+                                        icon: source,
+                                        icon_active: true,
+                                        name: name,
+                                    }
+                                })
+                            }
 
                             setEditLink(prevState => ({
                                 ...prevState,
@@ -198,18 +212,6 @@ const IconList = ({
                 } else {
                     addLink(packets).then((data) => {
                         if (data.success) {
-                            /*let newLinks = [...userLinks];
-                            const newLinkObject = {
-                                name: name,
-                                icon: source,
-                                [`${iconType}`]: value,
-                                type: iconType,
-                                course_id: courseId,
-                                id: data.link_id,
-                                position: data.position,
-                                active_status: true,
-                                folder_id: editLink.folder_id,
-                            }*/
                             const valueKey = iconType === "offer" ? "url" : iconType;
                             setEditLink(prevState => ({
                                 ...prevState,
@@ -221,29 +223,10 @@ const IconList = ({
                                 course_id: courseId,
                             }))
 
-                           /* if (editLink.folder_id) {
-                                newLinks.map((link, index) => {
-                                    if (link.id === editLink.folder_id) {
-                                        link.links.push(newLinkObject);
-                                    }
-                                })
-                                dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks.concat(newLinkObject)} })
-                            } else {
-                                newLinks = newLinks.concat(newLinkObject)
-                            }
-
-                            dispatch({
-                                type: LINKS_ACTIONS.SET_LINKS,
-                                payload: {
-                                    links: newLinks
-                                }
-                            })*/
-
                             dispatch({
                                 type: LINKS_ACTIONS.UPDATE_LINK,
                                 payload: {
                                     id: linkId,
-                                    /*editLink: editLink,*/
                                     [`${valueKey}`]: value,
                                     type: iconType,
                                     icon: source
@@ -522,7 +505,7 @@ const IconList = ({
             </div>
         }
 
-        <div className={`icons_wrap my_row outer ${showFormTab === "offers" && "offer_list"}`}>
+        <div className={`icons_wrap icon_select my_row outer ${showFormTab === "offers" ? "offer_list" : ""}`}>
 
             {isLoading &&
                 <div id="loading_spinner" className="active">

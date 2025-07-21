@@ -18,7 +18,6 @@ export function reducer(userLinks, action) {
 
         case LINKS_ACTIONS.SET_LINKS:
 
-            //console.log("action.payload.links",action.payload.links);
             return action.payload.links
 
         case LINKS_ACTIONS.SET_FOLDER_LINKS_ORDER:
@@ -110,8 +109,8 @@ export function reducer(userLinks, action) {
         case LINKS_ACTIONS.UPDATE_LINK:
 
             return userLinks.map((item) => {
-                if (item.id === action.payload.id ) {
-                    //console.log("item", action.payload);
+                if (item?.id === action.payload.id ) {
+
                     const { id, editLink, ...restPayload } = action.payload;
 
                     return {
@@ -131,20 +130,14 @@ export function reducer(userLinks, action) {
 
                     const newItemsLinks = item.links.map((linkItem) => {
 
-                        if (linkItem.id === action.payload.editID) {
+                        if (linkItem.id === action.payload.id) {
 
-                            return  {
-                                ...linkItem,
-                                name: action.payload.currentLink.name,
-                                url: action.payload.url,
-                                email: action.payload.currentLink.email,
-                                phone: action.payload.currentLink.phone,
-                                type: action.payload.type,
-                                mailchimp_list_id: action.payload.currentLink.mailchimp_list_id,
-                                shopify_products: action.payload.currentLink.shopify_products,
-                                shopify_id: action.payload.currentLink.shopify_id,
-                                description: action.payload.currentLink.description,
-                                icon: action.payload.iconPath
+                            const {id, currentLink, ...restPayload } = action.payload;
+
+                            return {
+                                ...item,
+                                ...(currentLink || {}),
+                                ...restPayload,
                             }
                         }
 
@@ -218,19 +211,13 @@ export function folderLinksReducer(folderLinks, action) {
         case FOLDER_LINKS_ACTIONS.UPDATE_FOLDER_LINKS:
 
             return folderLinks.map((item) => {
-                if (item.id === action.payload.editID) {
+                if (item.id === action.payload.id) {
+                    const {id, currentLink, ...restPayload } = action.payload;
+
                     return {
                         ...item,
-                        name: action.payload.currentLink.name,
-                        url: action.payload.url,
-                        email: action.payload.currentLink.email,
-                        phone: action.payload.currentLink.phone,
-                        mailchimp_list_id: action.payload.currentLink.mailchimp_list_id,
-                        shopify_products: action.payload.currentLink.shopify_products,
-                        shopify_id: action.payload.currentLink.shopify_id,
-                        type: action.payload.type,
-                        description: action.payload.currentLink.description,
-                        icon: action.payload.iconPath
+                        ...(currentLink || {}),
+                        ...restPayload,
                     }
                 }
 

@@ -30,7 +30,6 @@ const Link = ({
     const {pageSettings} = usePageContext();
     const [affiliateStatus, setAffiliateStatus] = useState(affStatus);
 
-    console.log("Links: ", links);
     let hasLinks = false;
     let displayIcon;
     if (type === "folder") {

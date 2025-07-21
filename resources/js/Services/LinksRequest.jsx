@@ -211,6 +211,37 @@ export const handleSwitchChange = (
 };
 
 /**
+ * Submit a request to update a link
+ * return object
+ */
+export const updateLinkStatus = (packets, itemID, url) => {
+
+    return axios.patch(url + itemID, packets)
+    .then(
+        (response) => {
+            const returnMessage = JSON.stringify(response.data.message);
+            EventBus.dispatch("success", { message: returnMessage });
+
+            return {
+                success : true,
+            }
+        }
+    )
+    .catch((error) => {
+        if (error.response !== undefined) {
+            console.error("ERROR:: ", error.response.data);
+        } else {
+            console.error("ERROR:: ", error);
+        }
+
+        return {
+            success : false,
+        }
+
+    });
+}
+
+/**
  * Submit a request to delete a link
  * return object
  */

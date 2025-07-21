@@ -122,11 +122,16 @@ const Links = ({
 
     const fetchFolderLinks = async (linkID) => {
         if(subStatus) {
-            const url = 'folder/links/' + linkID;
+            /*const url = 'folder/links/' + linkID;
             const response = await fetch(url);
-            const folderLinks = await response.json();
+            const folderLinks = await response.json();*/
+            const folderLinks = userLinks.find(function(e) {
+                if(e.id === linkID) {
+                    return e.links;
+                }
+            })
 
-            dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks["links"]} })
+            dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks.links} })
             setEditLink(prev => ({...prev, folder_id: linkID, type: "folder"}));
 
             setValue(prev => ({...prev, index: 0, url: null}));

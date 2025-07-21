@@ -130,12 +130,12 @@ class PageService {
 
         $userPages = $this->getUserPages($this->user);
 
-        $standardIcons = [];
+       /* $standardIcons = [];
         $iconNames = Storage::disk('s3')->allFiles("icons/");
         foreach($iconNames as $icon) {
-            $path = Storage::disk('s3')->url($icon);
-            array_push($standardIcons, $path);
-        }
+            $path            = Storage::disk('s3')->url($icon);
+            $standardIcons[] = $path;
+        }*/
 
         $linksArray = $this->getAllLinks($page);
 

@@ -132,8 +132,7 @@ const Preview = ({
                         </div>
                         <div className={`icons_wrap main ${pageSettings.page_layout} `}>
 
-                            {userLinks?.slice(0, iconCount).
-                                map((linkItem, index) => {
+                            {userLinks?.slice(0, iconCount).map((linkItem, index) => {
 
                                     let {
                                         id,
