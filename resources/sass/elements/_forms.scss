@@ -471,6 +471,7 @@ form .bottom_row a {
                 -ms-transition: height ease-in-out 0.5s;
 
                 .icon_col {
+                    width: 17.9%;
                     position: relative;
                     padding: 0;
                     box-shadow: none;
@@ -833,13 +834,13 @@ form .bottom_row a {
             }
 
             .form_nav_content {
-                 p.label {
-                     @include ossemibold;
-                     font-size: .9rem;
-                     text-align: left;
-                     text-transform: uppercase;
-                     margin-bottom: 10px;
-                 }
+                p.label {
+                    @include ossemibold;
+                    font-size: .9rem;
+                    text-align: left;
+                    text-transform: uppercase;
+                    margin-bottom: 10px;
+                }
 
                 .image_wrap, img {
                     border-radius: 8px;

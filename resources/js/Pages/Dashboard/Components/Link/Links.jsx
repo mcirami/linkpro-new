@@ -103,28 +103,10 @@ const Links = ({
                 });
             }, 300)
         }
-
-        /*if(currentLink.type === "shopify" || currentLink.type === "mailchimp") {
-            setAccordionValue("integration")
-        } else if (currentLink.icon?.includes("offer-images")) {
-            setAccordionValue("offer")
-        } else if (currentLink.icon?.includes("custom-icons")){
-            if(subStatus) {
-                setAccordionValue("custom")
-            } else {
-                setAccordionValue("standard")
-            }
-        } else {
-            setAccordionValue("standard")
-        }*/
-
     }
 
     const fetchFolderLinks = async (linkID) => {
         if(subStatus) {
-            /*const url = 'folder/links/' + linkID;
-            const response = await fetch(url);
-            const folderLinks = await response.json();*/
             const folderLinks = userLinks.find(function(e) {
                 if(e.id === linkID) {
                     return e.links;
@@ -132,8 +114,8 @@ const Links = ({
             })
 
             dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: folderLinks.links} })
-            setEditLink(prev => ({...prev, folder_id: linkID, type: "folder"}));
-
+            setEditLink(prev => ({...prev, id: null, folder_id: linkID, type: "folder"}));
+            setFormRow(null);
             setValue(prev => ({...prev, index: 0, url: null}));
 
             setTimeout(function(){

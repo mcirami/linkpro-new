@@ -62,7 +62,7 @@ const FolderLinks = ({
             active_status: newStatus,
         };
 
-        const url = "/dashboard/links/status/"
+        const url = "/dashboard/links/item-status/"
 
         updateLinkItemStatus(packets, currentItem.id, url)
         .then((data) => {
