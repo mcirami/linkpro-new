@@ -92,6 +92,7 @@ const ImageUploader = ({
                 const packets = {
                     [`${elementName}`]: response.key,
                     ext: response.extension,
+                    bg_active: elementName === "bg_image",
                 };
                 updateLink(packets, editLink.id)
                 .then((data) => {
@@ -108,11 +109,13 @@ const ImageUploader = ({
                         payload: {
                             id: editLink.id,
                             [`${elementName}`]: data.imagePath[elementName],
+                            bg_active: elementName === "bg_image"
                         }})
 
                     setEditLink((prev) => ({
                         ...prev,
                         [`${elementName}`]: data.imagePath[elementName],
+                        bg_active: elementName === "bg_image"
                     }))
                     if (elementName === "icon" && setCustomIconArray) {
                         setCustomIconArray((prev) => ([...prev, data.imagePath.icon]))
