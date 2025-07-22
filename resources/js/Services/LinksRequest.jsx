@@ -160,7 +160,7 @@ export const handleSwitchChange = (
     setShowUpgradePopup = null
 ) => {
 
-    if (currentItem.type === "folder") {
+    if ((currentItem.type === "folder") && (!subStatus || !hasLinks)) {
 
         if (!subStatus) {
             setShowUpgradePopup &&

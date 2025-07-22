@@ -204,6 +204,11 @@
         -moz-transition: 800ms all ease-in-out;
         -o-transition: 800ms all ease-in-out;
 
+        @include query(smallMobile) {
+            --n:5;
+            grid-template-columns: repeat(auto-fill, minmax(max(30px,100%/var(--n)), 1fr));
+        }
+
         .icon_col {
             width: 100%;
             position: relative;
@@ -243,7 +248,6 @@
                 border-radius: 20%;
                 -webkit-border-radius: 20%;
                 -moz-border-radius: 20%;
-                border: 1px solid $gray;
             }
 
             .column_content {
@@ -393,6 +397,7 @@
                 a {
                     position: relative;
                     overflow: hidden;
+                    height: 100%;
                 }
             }
         }

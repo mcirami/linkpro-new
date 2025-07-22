@@ -63,7 +63,7 @@ const Folder = ({
                             folderClick(e, mainIndex, viewType);
                        }}
                     >
-                        <img className="bg_image" src={Vapor.asset('images/blank-folder-square.jpg')} alt=""/>
+                        {/*<img className="bg_image" src={Vapor.asset('images/blank-folder-square.jpg')} alt=""/>*/}
                         <div className={`folder_icons ${viewType}`}>
                             {links.slice(0, 9).map(( innerLinkIcons, index ) => {
                                 return (

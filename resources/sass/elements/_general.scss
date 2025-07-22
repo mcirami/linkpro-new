@@ -577,19 +577,38 @@
         }
     }
 
-    &.preview {
-        grid-template-rows: repeat(3, 1.2em);
+    &.preview, &.live {
+        grid-template-rows: repeat(3, .6em);
         padding: 7%;
+        height: 100%;
+        border: 1px solid $white;
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        overflow: hidden;
+        grid-row-gap: 8px;
+        grid-column-gap: 3px;
 
         @media all and (max-width: 550px) {
-            grid-template-rows: repeat(3, 0.7em);
+            grid-template-rows: repeat(3, 0.4em);
         }
+
+        img {
+            max-width: 15px;
+        }
+
     }
 
     &.live {
+        grid-row-gap: 20px;
+
         @media screen and (max-width: 450px) {
             grid-template-rows: repeat(3, 5vw);
             padding: 1% 7%;
+        }
+
+        img {
+            max-width: 28px;
         }
     }
 
