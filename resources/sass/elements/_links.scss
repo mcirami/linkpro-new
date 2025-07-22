@@ -236,9 +236,9 @@
             }
 
             img {
-                border-radius: 20%;
-                -webkit-border-radius: 20%;
-                -moz-border-radius: 20%;
+                border-radius: 12%;
+                -webkit-border-radius: 12%;
+                -moz-border-radius: 12%;
             }
 
             .column_content {
@@ -366,12 +366,12 @@
                     position: absolute;
                     left: calc(50% - 7.5px);
                     transform: rotate(180deg);
-                    bottom: -10px;
+                    bottom: -11px;
                     z-index: 1;
                     border-left: 8px solid transparent;
                     border-right: 8px solid transparent;
                     border-top: 10px solid;
-                    border-top-color: $white;
+                    border-top-color: rgba(0,0,0, .7);
                     opacity: 0;
                     transition: all 100ms ease-in-out;
                     -webkit-transition: all 100ms ease-in-out;
@@ -792,6 +792,17 @@
 
             &.active {
                 border: 2px solid $blue;
+            }
+        }
+    }
+    .bg_image .icon_col {
+        p {
+            color: $white;
+        }
+
+        &.folder.open {
+            &:after {
+                border-top-color: $white;
             }
         }
     }

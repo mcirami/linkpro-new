@@ -435,8 +435,8 @@
         &:before {
             content: '';
             background: url('/images/preview-device-no-btm.png') no-repeat;
-            background-size: contain;
             background-position: top center;
+            background-size: contain;
             position: absolute;
             top: 0;
             right: 0;
@@ -461,11 +461,23 @@
             scrollbar-width: none;
             scroll-behavior: smooth;
 
+            .folder .icon_col {
+                p {
+                    color: $white;
+                }
+            }
+
             &.bg_image {
 
                 .icon_col {
-                    p{
+                    p {
                         color: $white;
+                    }
+
+                    &.folder.open {
+                        &:after {
+                            border-top-color: $white !important;
+                        }
                     }
                 }
 

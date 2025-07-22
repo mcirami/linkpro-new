@@ -571,9 +571,9 @@
         }
 
         img {
-            border-radius: 34% !important;
-            -webkit-border-radius: 34% !important;
-            -moz-border-radius: 34% !important;
+            border-radius: 15% !important;
+            -webkit-border-radius: 15% !important;
+            -moz-border-radius: 15% !important;
         }
     }
 
@@ -588,6 +588,7 @@
         overflow: hidden;
         grid-row-gap: 8px;
         grid-column-gap: 3px;
+        background: rgba(0,0,0,.6);
 
         @media all and (max-width: 550px) {
             grid-template-rows: repeat(3, 0.4em);
