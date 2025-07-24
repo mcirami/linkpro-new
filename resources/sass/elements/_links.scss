@@ -213,7 +213,6 @@
         }
 
         .icon_col {
-            @include boxShadow;
             width: 23%;
             border-radius: 20px;
             -webkit-border-radius: 20px;
@@ -228,6 +227,16 @@
             -ms-flex-wrap: nowrap;
             flex-wrap: nowrap;
             margin-bottom: 10px;
+            transition: .5s all linear;
+            -moz-transition: .5s all linear;
+            -webkit-transition: .5s all linear;
+            -o-transition: .5s all linear;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+
+            &:hover {
+                box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
+            }
 
             @media screen and (max-width: 350px) {
                 border-radius: 10%;
@@ -251,37 +260,12 @@
                 @media screen and (max-width: 768px) {
                     padding: 10px 5px;
                 }
+            }
 
-                &.open {
-                    &:before {
-                        content: '';
-                        position: absolute;
-                        bottom: -30px;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        border-left: 15px solid transparent;
-                        border-right: 15px solid transparent;
-                        border-bottom: 15px solid #fff;
-                        width: 0;
-                        height: 0;
-                        z-index: 1;
-                    }
-
-                    &:after {
-                        content: '';
-                        position: absolute;
-                        bottom: -33px; /* Just behind the :before triangle */
-                        left: 50%;
-                        transform: translateX(-50%);
-                        border-left: 15px solid transparent;
-                        border-right: 15px solid transparent;
-                        border-bottom: 15px solid rgba(0, 0, 0, 0.2); /* Simulated shadow color */
-                        width: 0;
-                        height: 0;
-                        z-index: -1; /* Place it behind the primary triangle */
-                    }
-
-                }
+            &:has(> .column_content.open) {
+                margin-bottom: 0;
+                border-bottom-right-radius: 0;
+                -webkit-border-bottom-right-radius: 0;
             }
 
             .icon_wrap {
@@ -393,6 +377,41 @@
             }
         }
 
+        &#layout_one {
+            .column_content {
+                &.open {
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        bottom: -30px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        border-left: 15px solid transparent;
+                        border-right: 15px solid transparent;
+                        border-bottom: 15px solid #fff;
+                        width: 0;
+                        height: 0;
+                        z-index: 1;
+                    }
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        bottom: -33px; /* Just behind the :before triangle */
+                        left: 50%;
+                        transform: translateX(-50%);
+                        border-left: 15px solid transparent;
+                        border-right: 15px solid transparent;
+                        border-bottom: 15px solid rgba(0, 0, 0, 0.2); /* Simulated shadow color */
+                        width: 0;
+                        height: 0;
+                        z-index: -1; /* Place it behind the primary triangle */
+                    }
+
+                }
+            }
+        }
+
         &.layout_two {
             display: -webkit-box;
             display: -ms-flexbox;
@@ -406,8 +425,6 @@
 
             .icon_col {
                 width: 100%;
-                flex-direction: row !important;
-                border: 1px solid $borderGray;
                 padding: 10px;
                 background: $white;
 

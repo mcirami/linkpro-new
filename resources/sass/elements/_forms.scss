@@ -249,6 +249,16 @@ form .bottom_row a {
         }
     }
 
+    > .form_content {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.06);
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
+    .hide_button {
+        font-size: 1.8rem;
+    }
+
     form {
         width: 100%;
 
@@ -368,21 +378,25 @@ form .bottom_row a {
 
 #links_page .grid_item {
     .form_wrapper {
-        padding-left: 31px;
+        padding-left: 50px;
         display: inline-block;
         width: 100%;
+        margin-bottom: 20px;
+        margin-top: 25px;
     }
 }
 
 .edit_form.link {
-    @include boxShadow;
     width: 100%;
     flex-wrap: wrap;
     -ms-flex-wrap: wrap;
     -webkit-flex-wrap: wrap;
-    border-radius: 20px;
-    -webkit-border-radius:20px;
-    -moz-border-radius: 20px;
+    border-bottom-right-radius: 20px;
+    -webkit-border-bottom-right-radius:20px;
+    -moz-border-radius-bottomright: 20px;
+    border-bottom-left-radius: 20px;
+    -webkit-border-bottom-left-radius:20px;
+    -moz-border-radius-bottomleft: 20px;
     margin-bottom: 10px;
 
     .link_form {
@@ -484,7 +498,7 @@ form .bottom_row a {
 
                 &.outer {
                     overflow-y: hidden;
-                    padding: 5px 10px 10px;
+                    padding: 0;
 
                     /* @media all and (max-width: 768px) {
                         overflow-y:  scroll;
@@ -539,18 +553,18 @@ form .bottom_row a {
                     p {
                         width: 100%;
                         font-size: 12px;
-                        padding-bottom: 5px;
+                        padding: 9px 5px;
                         text-align: center;
                         margin-bottom: 5px;
                     }
 
                     .default_icon.icon_col {
                         width: 16%;
-                        padding-right: 10px;
-                        padding-top: 5px;
                         flex-direction: column !important;
                         -webkit-flex-direction: column !important;
                         -ms-flex-direction: column !important;
+                        background: none !important;
+                        border: none !important;
 
                         @media all and (max-width: 1300px) and (min-width: 993px) {
                             width: 25%;
@@ -571,7 +585,7 @@ form .bottom_row a {
                         }
 
                         img {
-                            max-width: 94%;
+                            max-width: 80%;
                             margin: 4px auto 0;
 
                             @media all and (max-width: 1300px) and (min-width: 993px) {
@@ -777,29 +791,28 @@ form .bottom_row a {
                 flex-direction: row;
                 -ms-flex-wrap: nowrap;
                 flex-wrap: nowrap;
-                gap: .3rem;
                 width: 100%;
-                padding: 20px 20px 0 20px;
-                border-bottom: 1px solid $borderGray;
+                margin-bottom: 20px;
+                column-gap: 20px;
 
                 a {
-                    border-top: 1px solid $borderGray;
-                    border-left: 1px solid $borderGray;
-                    border-right: 1px solid $borderGray;
-                    border-top-left-radius: 6px;
-                    border-top-right-radius: 6px;
-                    -webkit-border-top-left-radius: 6px;
-                    -webkit-border-top-right-radius: 6px;
                     color: $black;
-                    font-size: .8rem;
-                    padding: 10px 15px;
+                    font-size: 0.8rem;
+                    padding: 5px 14px;
                     text-transform: uppercase;
-                    margin-bottom: -2px;
-                    background: $white;
+                    border-radius: 20px;
 
                     &.active {
                         background: $blue;
-                        color:$white;
+                        color: $white;
+                    }
+
+                    &:not(.active) {
+
+                        &:hover {
+                            background: $blue;
+                            color: $white;
+                        }
                     }
 
                     &.disabled {
@@ -810,25 +823,11 @@ form .bottom_row a {
 
                 &.icons {
                     padding: 0;
-                    gap: 0;
+                    margin-bottom: 0;
 
                     > div.relative {
                         width: 100%;
                         text-align: center;
-
-                        &:first-child {
-                            a {
-                                border-top-right-radius: 0;
-                                -webkit-border-top-right-radius: 0;
-                            }
-                        }
-
-                        &:last-child {
-                            a {
-                                border-top-left-radius: 0;
-                                -webkit-border-top-left-radius: 0;
-                            }
-                        }
                     }
                 }
             }
@@ -855,7 +854,6 @@ form .bottom_row a {
 
             .link_form {
                 width: 100%;
-                background: $white;
                 border-radius: 12px;
                 -webkit-border-radius: 12px;
                 -moz-border-radius: 12px;

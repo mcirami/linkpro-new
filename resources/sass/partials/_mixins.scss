@@ -33,9 +33,9 @@
 }
 
 @mixin boxShadowRight {
-    box-shadow: rgba(0, 0, 0, .1) 2px -1px 10px -1px;
-    -webkit-box-shadow: rgba(0, 0, 0, .1) 2px -1px 10px -1px;
-    -moz-box-shadow: rgba(0, 0, 0, .1) 2px -1px 10px -1px;
+    box-shadow: rgba(0, 0, 0, 0.1) 10px -3px 9px -3px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.1) 10px -3px 9px -3px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.1) 10px -3px 9px -3px;
 }
 
 @mixin boxShadowThin {

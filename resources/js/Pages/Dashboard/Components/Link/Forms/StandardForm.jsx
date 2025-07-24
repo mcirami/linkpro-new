@@ -279,79 +279,157 @@ const StandardForm = ({
                 </div>
             :
             <>
-            <div className="close_button absolute right-5 top-5 z-10">
-                <a className="text-xl hide_button" href="#" onClick={(e) => handleCloseForm(e)}><IoCloseSharp/></a>
-            </div>
-            <FormTabs
-                showFormTab={showFormTab}
-                setShowFormTab={setShowFormTab}
-                setShowIconList={setShowIconList}
-                pageLayout={pageSettings.page_layout}
-                editLink={editLink}
-            />
-                {pageSettings.page_layout === "layout_one" &&
-                    <div className="my_row mt-4 mb-2 px-4">
-                        <IconSettingComponent
-                            inputType="text"
-                            editLink={editLink}
-                            setEditLink={setEditLink}
-                            elementName="name"
-                            label="Link Name"
-                            maxChar={11}
-                        />
-                    </div>
-                }
-
-                { (editLink.type !== "offer" && editLink.type !== "mailchimp" && showFormTab === "icon") &&
-                    <div className="my_row form_nav_content input_types pl-5 pt-5">
-                        <p className="label">Link Type</p>
-                        <InputTypeRadio
-                            editLink={editLink}
-                            setEditLink={setEditLink}
-                        />
-                    </div>
-                }
-
-                {pageSettings.page_layout === "layout_one" &&
-                    <div className="my_row mb-4 px-4">
-                        {editLink.type === "offer" ?
-                            <div className="external_link">
-                                <h3>Tracking Link:</h3>
-                                {editLink.url ?
-                                    <a className="inline-block" target="_blank" href={editLink.url}>{editLink.url}</a>
-                                    :
-                                    <p>Select An Icon Above</p>
-                                }
-                            </div>
-                            :
+                <div className="close_button absolute right-0 top-0 z-10">
+                    <a className="hide_button" href="#" onClick={(e) => handleCloseForm(e)}><IoCloseSharp/></a>
+                </div>
+                <FormTabs
+                    showFormTab={showFormTab}
+                    setShowFormTab={setShowFormTab}
+                    setShowIconList={setShowIconList}
+                    pageLayout={pageSettings.page_layout}
+                    editLink={editLink}
+                />
+                <div className={`form_content w-full ${showFormTab === "integration" ? 'pb-5' : ""}`}>
+                    {pageSettings.page_layout === "layout_one" &&
+                        <div className="my_row mt-4 mb-2 px-4">
                             <IconSettingComponent
-                                inputType={editLink.type}
+                                inputType="text"
                                 editLink={editLink}
                                 setEditLink={setEditLink}
-                                elementName={editLink.type}
-                                label={capitalize(editLink.type)}
+                                elementName="name"
+                                label="Link Name"
+                                maxChar={11}
                             />
-                        }
-                    </div>
-                }
+                        </div>
+                    }
 
-                <div className="link_form form_nav_content">
-                    {(pageSettings.page_layout === "layout_two" && showFormTab === "icon") &&
-                        <div className="switch_wrap mb-3">
-                            <p className="label">Show/Hide Icon</p>
-                            <IOSSwitch
-                                onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "icon_active")}
-                                checked={Boolean(editLink.icon_active)}
+
+                    { (editLink.type !== "offer" && editLink.type !== "mailchimp" && showFormTab === "icon") &&
+                        <div className="my_row form_nav_content input_types pl-5 pt-5">
+                            <p className="label">Link Type</p>
+                            <InputTypeRadio
+                                editLink={editLink}
+                                setEditLink={setEditLink}
                             />
-                            <div className="hover_text switch">
-                                <p>
-                                    {Boolean(editLink.icon_active) ? "Hide" : "Show"} Icon
-                                </p>
+                        </div>
+                    }
+
+                    {pageSettings.page_layout === "layout_one" &&
+                        <div className="my_row mb-4 px-4">
+                            {editLink.type === "offer" ?
+                                <div className="external_link">
+                                    <h3>Tracking Link:</h3>
+                                    {editLink.url ?
+                                        <a className="inline-block" target="_blank" href={editLink.url}>{editLink.url}</a>
+                                        :
+                                        <p>Select An Icon Above</p>
+                                    }
+                                </div>
+                                :
+                                <IconSettingComponent
+                                    inputType={editLink.type}
+                                    editLink={editLink}
+                                    setEditLink={setEditLink}
+                                    elementName={editLink.type}
+                                    label={capitalize(editLink.type)}
+                                />
+                            }
+                        </div>
+                    }
+
+                    {showFormTab === "icon" &&
+                        <div className="link_form form_nav_content">
+                            {pageSettings.page_layout === "layout_two" &&
+                                <>
+                                    <div className="switch_wrap mb-3">
+                                        <p className="label">Show/Hide Icon</p>
+                                        <IOSSwitch
+                                            onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "icon_active")}
+                                            checked={Boolean(editLink.icon_active)}
+                                        />
+                                        <div className="hover_text switch">
+                                            <p>
+                                                {Boolean(editLink.icon_active) ? "Hide" : "Show"} Icon
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="icon_row">
+                                        <div className="icon_box">
+                                            <IconList
+                                                setCharactersLeft={setCharactersLeft}
+                                                editLink={editLink}
+                                                setEditLink={setEditLink}
+                                                showIconList={showIconList}
+                                                setShowIconList={setShowIconList}
+                                                setShowLoader={setShowLoader}
+                                                customIconArray={customIconArray}
+                                                setCustomIconArray={setCustomIconArray}
+                                                isLoading={isLoading}
+                                                showFormTab={showFormTab}
+                                            />
+                                        </div>
+                                    </div>
+                                </>
+                            }
+
+
+                            {/*{!folderID &&
+                                <IconDescription
+                                    currentLink={currentLink}
+                                    setCurrentLink={setCurrentLink}
+                                    descChecked={descChecked}
+                                    setDescChecked={setDescChecked}
+                                />
+                            }*/}
+                        </div>
+                    }
+                    {showFormTab === "image" &&
+                        <div className="form_nav_content relative p-5 w-full">
+                            {editLink.bg_image &&
+                                <>
+                                    <p className="label">Show/Hide Background</p>
+                                    <div className="switch_wrap mb-4">
+                                        <IOSSwitch
+                                            onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "bg_active")}
+                                            checked={Boolean(editLink.bg_active)}
+                                        />
+                                        <div className="hover_text switch">
+                                            <p>
+                                                {Boolean(editLink.bg_active) ? "Disable" : "Enable"} Background
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="w-full">
+                                        <p className="label">Current Image:</p>
+                                        <div className="image_wrap">
+                                            <img src={editLink.bg_image} alt=""/>
+                                        </div>
+                                    </div>
+                                </>
+                            }
+                            <div className="w-full">
+                                <ImageUploader
+                                    editLink={editLink}
+                                    setEditLink={setEditLink}
+                                    setShowLoader={setShowLoader}
+                                    elementName="bg_image"
+                                    imageCrop={{unit: "%", width: 100, aspect: 16 / 5 }}
+                                    imageAspectRatio={16 / 5}
+                                />
                             </div>
                         </div>
                     }
-                    {showFormTab === "icon" &&
-                        <div className="icon_row">
+                    {showFormTab === "integration" &&
+                        <MailChimp
+                            editLink={editLink}
+                            setEditLink={setEditLink}
+                            connectionError={connectionError}
+                            index={index}
+                        />
+                    }
+                    {showFormTab === "offers" &&
+
+                        <div className="icon_row link_form form_nav_content">
                             <div className="icon_box">
                                 <IconList
                                     setCharactersLeft={setCharactersLeft}
@@ -368,80 +446,8 @@ const StandardForm = ({
                             </div>
                         </div>
                     }
-
-                    {/*{!folderID &&
-                        <IconDescription
-                            currentLink={currentLink}
-                            setCurrentLink={setCurrentLink}
-                            descChecked={descChecked}
-                            setDescChecked={setDescChecked}
-                        />
-                    }*/}
                 </div>
-                {showFormTab === "image" &&
-                    <div className="form_nav_content relative p-5 w-full">
-                        {editLink.bg_image &&
-                            <>
-                                <p className="label">Show/Hide Background</p>
-                                <div className="switch_wrap mb-4">
-                                    <IOSSwitch
-                                        onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "bg_active")}
-                                        checked={Boolean(editLink.bg_active)}
-                                    />
-                                    <div className="hover_text switch">
-                                        <p>
-                                            {Boolean(editLink.bg_active) ? "Disable" : "Enable"} Background
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="w-full">
-                                    <p className="label">Current Image:</p>
-                                    <div className="image_wrap">
-                                        <img src={editLink.bg_image} alt=""/>
-                                    </div>
-                                </div>
-                            </>
-                        }
-                        <div className="w-full">
-                            <ImageUploader
-                                editLink={editLink}
-                                setEditLink={setEditLink}
-                                setShowLoader={setShowLoader}
-                                elementName="bg_image"
-                                imageCrop={{unit: "%", width: 100, aspect: 16 / 5 }}
-                                imageAspectRatio={16 / 5}
-                            />
-                        </div>
-                    </div>
-                }
-                {showFormTab === "integration" &&
-                    <MailChimp
-                        editLink={editLink}
-                        setEditLink={setEditLink}
-                        connectionError={connectionError}
-                        index={index}
-                    />
-                }
-                {showFormTab === "offers" &&
-
-                    <div className="icon_row link_form form_nav_content">
-                        <div className="icon_box">
-                            <IconList
-                                setCharactersLeft={setCharactersLeft}
-                                editLink={editLink}
-                                setEditLink={setEditLink}
-                                showIconList={showIconList}
-                                setShowIconList={setShowIconList}
-                                setShowLoader={setShowLoader}
-                                customIconArray={customIconArray}
-                                setCustomIconArray={setCustomIconArray}
-                                isLoading={isLoading}
-                                showFormTab={showFormTab}
-                            />
-                        </div>
-                    </div>
-                }
-                </>
+            </>
     );
 };
 

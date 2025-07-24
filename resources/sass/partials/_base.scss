@@ -126,7 +126,6 @@ main {
 }
 
 .card {
-    @include boxShadow;
     border: none;
     padding: 40px;
     border-radius: 20px;
