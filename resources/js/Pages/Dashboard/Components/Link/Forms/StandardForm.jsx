@@ -279,17 +279,18 @@ const StandardForm = ({
                 </div>
             :
             <>
-                <div className="close_button absolute right-0 top-0 z-10">
-                    <a className="hide_button" href="#" onClick={(e) => handleCloseForm(e)}><IoCloseSharp/></a>
-                </div>
-                <FormTabs
-                    showFormTab={showFormTab}
-                    setShowFormTab={setShowFormTab}
-                    setShowIconList={setShowIconList}
-                    pageLayout={pageSettings.page_layout}
-                    editLink={editLink}
-                />
                 <div className={`form_content w-full ${showFormTab === "integration" ? 'pb-5' : ""}`}>
+                    <div className="close_button absolute right-5 top-5 z-10">
+                        <a className="hide_button" href="#" onClick={(e) => handleCloseForm(e)}><IoCloseSharp/></a>
+                    </div>
+                    <FormTabs
+                        showFormTab={showFormTab}
+                        setShowFormTab={setShowFormTab}
+                        setShowIconList={setShowIconList}
+                        pageLayout={pageSettings.page_layout}
+                        editLink={editLink}
+                    />
+
                     {pageSettings.page_layout === "layout_one" &&
                         <div className="my_row mt-4 mb-2 px-4">
                             <IconSettingComponent

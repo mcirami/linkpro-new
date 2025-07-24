@@ -91,6 +91,10 @@ const Links = ({
             setEditLink(userLinks.find(function(e) {
                 return e.id === linkID
             }));
+            const openedDiv = document.querySelector('.column_content.open');
+            if (openedDiv) {
+                openedDiv.classList.remove('open');
+            }
             e.target.closest('.column_content').classList.add('open');
 
             setTimeout(function(){

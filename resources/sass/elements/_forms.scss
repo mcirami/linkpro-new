@@ -250,7 +250,8 @@ form .bottom_row a {
     }
 
     > .form_content {
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.06);
+        //box-shadow: 0 0 20px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
     }
@@ -382,7 +383,6 @@ form .bottom_row a {
         display: inline-block;
         width: 100%;
         margin-bottom: 20px;
-        margin-top: 25px;
     }
 }
 
@@ -792,8 +792,11 @@ form .bottom_row a {
                 -ms-flex-wrap: nowrap;
                 flex-wrap: nowrap;
                 width: 100%;
-                margin-bottom: 20px;
                 column-gap: 20px;
+                padding: 20px;
+                background: #fff;
+                border-bottom: .09rem solid;
+                border-color: rgba(155, 155, 155, .1);
 
                 a {
                     color: $black;
@@ -826,7 +829,6 @@ form .bottom_row a {
                     margin-bottom: 0;
 
                     > div.relative {
-                        width: 100%;
                         text-align: center;
                     }
                 }

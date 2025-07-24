@@ -5,9 +5,9 @@
 
     .inner_icon_wrap {
         border: 1px solid $blue;
-        border-radius: 20%;
-        -webkit-border-radius: 20%;
-        -moz-border-radius: 20%;
+        border-radius: 15px;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
         position: relative;
         overflow: hidden;
 
@@ -52,6 +52,7 @@
             max-height: 1000px;
             z-index: unset;
             animation: opacity 50ms forwards;
+            grid-column: span 4;
 
             &.shop {
                 max-height: unset;
@@ -81,19 +82,20 @@
 
         p {
             margin-bottom: 0;
+            color: $white;
         }
 
-        /*.icons_wrap {
+        .icons_wrap {
             display: grid;
             --n: 4 !important;
-            grid-template-columns: repeat(auto-fill, minmax(max(50px, 100% / var(--n)), 1fr)) !important;
+            grid-template-columns: repeat(auto-fill, minmax(max(30px, 100% / var(--n)), 1fr)) !important;
             grid-gap: 5px 10px;
             padding: 40px 5% 0;
             transition: 800ms all ease-in-out;
             -webkit-transition: 800ms all ease-in-out;
             -moz-transition: 800ms all ease-in-out;
             -o-transition: 800ms all ease-in-out;
-        }*/
+        }
 
         .icons_wrap, .folder_content {
             padding: 20px !important;
@@ -115,20 +117,6 @@
                 ul, ol {
                     list-style: revert-layer;
                     padding-left: 30px;
-                }
-            }
-
-            .icon_col {
-                width: 26.3% !important;
-                margin-bottom: 5px !important;
-                margin-right: 10.5% !important;
-
-                &:nth-child(3n) {
-                    margin-right: 0 !important;
-                }
-
-                &:nth-child(4n) {
-                    margin-right: 10.5% !important;
                 }
             }
         }

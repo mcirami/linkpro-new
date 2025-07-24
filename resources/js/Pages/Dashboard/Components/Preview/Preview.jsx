@@ -348,9 +348,8 @@ const Preview = ({
                                                             )*/
                                                         case "folder":
                                                             return (
-                                                                <div className={`my_row folder ${dataRow === row ?
-                                                                    "open" :
-                                                                    ""}`}>
+                                                                dataRow === row &&
+                                                                <div className={`my_row folder open`}>
                                                                     <div className="icons_wrap inner">
 
                                                                         {accordionLinks?.map(

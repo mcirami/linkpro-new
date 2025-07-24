@@ -536,15 +536,14 @@
     -webkit-justify-content: flex-start;
     align-items: flex-start;
     -webkit-align-items: flex-start;
-    row-gap: 3px;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    padding: 4% 7%;
+    padding: 7% 7% 4%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-row-gap: 3px;
+    gap: 5px;
 
     &.main {
         @media all and (max-width: 1199px) and (min-width: 992px)   {
@@ -582,9 +581,9 @@
         padding: 7%;
         height: 100%;
         border: 1px solid $white;
-        border-radius: 10px;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
         overflow: hidden;
         grid-row-gap: 8px;
         grid-column-gap: 3px;
@@ -602,6 +601,9 @@
 
     &.live {
         grid-row-gap: 20px;
+        border-radius: 15px;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
 
         @media screen and (max-width: 450px) {
             grid-template-rows: repeat(3, 5vw);

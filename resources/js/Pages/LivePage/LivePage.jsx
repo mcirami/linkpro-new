@@ -317,22 +317,26 @@ function LivePage({links, page, subscribed}) {
                                                             )*/
                                                         case "folder":
                                                             return (
-                                                                <div className={`my_row folder ${dataRow === row ? "open" : ""}`}>
-                                                                    <div className="icons_wrap inner">
+                                                                dataRow === row &&
+                                                                    <div className={`my_row folder open`}>
+                                                                        <div className="icons_wrap inner">
 
-                                                                        {accordionLinks?.map((innerLinkFull, index) => {
-                                                                            return (
-                                                                                <AccordionLinks
-                                                                                    key={index}
-                                                                                    icons={innerLinkFull}
-                                                                                    subStatus={subscribed}
-                                                                                    viewType="live"
-                                                                                />
-                                                                            )
-                                                                        })
-                                                                        }
+                                                                            {accordionLinks?.map(
+                                                                                (
+                                                                                    innerLinkFull,
+                                                                                    index) => {
+                                                                                    return (
+                                                                                        <AccordionLinks
+                                                                                            key={index}
+                                                                                            icons={innerLinkFull}
+                                                                                            subStatus={subscribed}
+                                                                                            viewType="live"
+                                                                                        />
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </div>
                                                                     </div>
-                                                                </div>
                                                             )
                                                     }
                                                 })()

@@ -194,7 +194,7 @@
 
     .icons_wrap {
         position: relative;
-        display: -webkit-box;
+        /*display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
         -webkit-box-orient: horizontal;
@@ -206,14 +206,17 @@
         justify-content: flex-start;
         -webkit-justify-content: flex-start;
         align-items: stretch;
-        -webkit-align-items: stretch;
+        -webkit-align-items: stretch;*/
+        display: grid;
+        --n:5;
+        grid-template-columns: repeat(auto-fill, minmax(max(40px,100%/var(--n)), 1fr));
+        grid-gap: 20px;
 
         &.icon_select {
             display: flex;
         }
 
         .icon_col {
-            width: 23%;
             border-radius: 20px;
             -webkit-border-radius: 20px;
             -moz-border-radius: 20px;
@@ -231,7 +234,6 @@
             -moz-transition: .5s all linear;
             -webkit-transition: .5s all linear;
             -o-transition: .5s all linear;
-            padding: 1rem;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 
             &:hover {
@@ -266,6 +268,8 @@
                 margin-bottom: 0;
                 border-bottom-right-radius: 0;
                 -webkit-border-bottom-right-radius: 0;
+                //box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 0px 35px rgba(0, 0, 0, 0.1);
             }
 
             .icon_wrap {
@@ -350,11 +354,11 @@
                     position: absolute;
                     left: calc(50% - 7.5px);
                     transform: rotate(180deg);
-                    bottom: -11px;
+                    bottom: -18px;
                     z-index: 1;
-                    border-left: 8px solid transparent;
-                    border-right: 8px solid transparent;
-                    border-top: 10px solid;
+                    border-left: 14px solid transparent;
+                    border-right: 14px solid transparent;
+                    border-top: 14px solid;
                     border-top-color: rgba(0,0,0, .7);
                     opacity: 0;
                     transition: all 100ms ease-in-out;
@@ -427,6 +431,7 @@
                 width: 100%;
                 padding: 10px;
                 background: $white;
+                padding: .5rem;
 
                 a.icon_wrap {
                     padding: 0;
@@ -765,6 +770,30 @@
 }
 
 #links_page {
+
+    .preview, .live_page {
+        .icons_wrap.layout_one {
+            gap: .4rem;
+
+            .icon_col {
+                box-shadow: none;
+                padding: 0;
+
+                img, a {
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+                    transition: .5s all linear;
+                    -moz-transition: .5s all linear;
+                    -webkit-transition: .5s all linear;
+                    -o-transition: .5s all linear;
+
+                    &:hover {
+                        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+                    }
+                }
+            }
+        }
+    }
+
 
     .icon_row {
         display: flex;
