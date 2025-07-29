@@ -171,7 +171,7 @@ function LivePage({links, page, subscribed}) {
                                             ""
                                         }`
                                     } else {
-                                        colClasses = `icon_col ${bg_image && bg_active && page_layout ==="layout_two" ?
+                                        colClasses = `icon_col ${!icon_active ? "no_icon" : "" } ${bg_image && bg_active && page_layout ==="layout_two" ?
                                             "bg_image"
                                             :
                                             ""
@@ -211,7 +211,7 @@ function LivePage({links, page, subscribed}) {
                                                     case "phone":
                                                         return (
                                                             (!active_status && page_layout=== "layout_one") || active_status ?
-                                                                <div className={` ${colClasses} `} style={styles}>
+                                                                <div className={` ${colClasses} `}>
                                                                     {active_status ? page_layout === "layout_one" ?
                                                                         <>
                                                                             <a className={!url || !displayIcon ? "default" : ""}
@@ -228,6 +228,8 @@ function LivePage({links, page, subscribed}) {
                                                                             </p>
                                                                         </>
                                                                         :
+                                                                        <>
+                                                                            <div className="bg_image_wrap" style={styles}></div>
                                                                             <a className={`icon_wrap
                                                                             ${ (!url || !displayIcon) ? "default" : ""}`}
                                                                                target="_blank"
@@ -236,7 +238,7 @@ function LivePage({links, page, subscribed}) {
                                                                                     "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
                                                                                     :
                                                                                     "flex items-center justify-between w-full"}`}>
-                                                                                    <span className="flex items-center justify-start">
+                                                                                    <span className="flex items-center justify-start gap-2">
                                                                                         {!!icon_active &&
                                                                                             <img src={displayIcon} alt=""/>
                                                                                         }
@@ -245,6 +247,8 @@ function LivePage({links, page, subscribed}) {
                                                                                     <IoOpenOutline />
                                                                                 </div>
                                                                             </a>
+                                                                        </>
+
                                                                         :
                                                                         ""
                                                                     }

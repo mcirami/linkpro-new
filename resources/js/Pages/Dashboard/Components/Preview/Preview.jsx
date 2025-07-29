@@ -156,6 +156,9 @@ const Preview = ({
                                             backgroundRepeat: "no-repeat",
                                             backgroundSize: "cover",
                                             backgroundPosition: "center",
+                                            display: "flex",
+                                            width: "100%",
+                                            height: "100%"
                                         }
                                     }
 
@@ -185,13 +188,13 @@ const Preview = ({
                                         "mailchimp" || type === "shopify" ||
                                         type === "advanced") {
                                         colClasses=`icon_col folder
-                                       ${bg_image && pageSettings.page_layout ==="layout_two" ?
+                                       ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ?
                                             "bg_image"
                                             :
                                             ""
                                         }`
                                     } else {
-                                        colClasses = `icon_col ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ?
+                                        colClasses = `icon_col ${!icon_active ? "no_icon" : "" } ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ?
                                             "bg_image"
                                             :
                                             ""
@@ -232,9 +235,7 @@ const Preview = ({
                                                         return (
 
                                                             (!active_status && pageSettings.page_layout === "layout_one") || active_status ?
-                                                            <div className={` ${colClasses} `}
-                                                                 style={styles}
-                                                            >
+                                                            <div className={` ${colClasses} `}>
                                                                 {active_status && pageSettings.page_layout === "layout_one" ?
                                                                     <>
                                                                         <a className={`
@@ -257,27 +258,30 @@ const Preview = ({
                                                                     </>
                                                                     :
                                                                     active_status ?
-                                                                    <a className={`icon_wrap flex items-center !justify-between
-                                                                    ${ (!url || !displayIcon) ? "default"
-                                                                        : ""
-                                                                    }`}
-                                                                       target="_blank"
-                                                                       href={url || "#"}>
-                                                                        <div className={`${ (bg_image && bg_active) ?
-                                                                            "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
-                                                                            :
-                                                                            "flex items-center justify-between w-full"}`}>
-                                                                            <span className="flex items-center justify-start">
-                                                                                { (displayIcon && icon_active) ?
-                                                                                    <img src={displayIcon} alt=""/>
-                                                                                        :
-                                                                                        ""
-                                                                                }
-                                                                                <h3>{name || "Link Name"}</h3>
-                                                                            </span>
-                                                                            <IoOpenOutline />
-                                                                        </div>
-                                                                    </a>
+                                                                        <>
+                                                                        <div className="bg_image_wrap" style={styles}></div>
+                                                                            <a className={`icon_wrap flex items-center !justify-between
+                                                                            ${ (!url || !displayIcon) ? "default"
+                                                                                : ""
+                                                                            }`}
+                                                                               target="_blank"
+                                                                               href={url || "#"}>
+                                                                                <div className={`${ (bg_image && bg_active) ?
+                                                                                    "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
+                                                                                    :
+                                                                                    "flex items-center justify-between w-full"}`}>
+                                                                                    <span className="flex items-center justify-start gap-2">
+                                                                                        { (displayIcon && icon_active) ?
+                                                                                            <img src={displayIcon} alt=""/>
+                                                                                                :
+                                                                                                ""
+                                                                                        }
+                                                                                        <h3>{name || "Link Name"}</h3>
+                                                                                    </span>
+                                                                                    <IoOpenOutline />
+                                                                                </div>
+                                                                            </a>
+                                                                        </>
                                                                         :
                                                                         ""
                                                                 }

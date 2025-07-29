@@ -421,6 +421,7 @@ function Dashboard({
                                                                                    inputType: null,
                                                                                    folder_id: null
                                                                                })
+                                                                               setFormRow(null)
                                                                            }}
                                                                         >
                                                                             <BiChevronLeft />

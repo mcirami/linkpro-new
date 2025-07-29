@@ -107,6 +107,10 @@ const FolderLinks = ({
             setEditLink(folderLinks.find(function(e) {
                 return e.id === linkID
             }));
+            const openedDiv = document.querySelector('.column_content.open');
+            if (openedDiv) {
+                openedDiv.classList.remove('open');
+            }
             e.target.closest('.column_content').classList.add('open');
 
             setTimeout(function(){
@@ -148,7 +152,7 @@ const FolderLinks = ({
 
     return (
 
-        <div ref={targetRef} className={`icons_wrap add_icons icons folder ${folderLinks?.length === 0 ? "no_icons" : ""}`}>
+        <div id="layout_one" ref={targetRef} className={`icons_wrap add_icons icons folder ${folderLinks?.length === 0 ? "no_icons" : ""}`}>
 
             {folderLinks?.length === 0 ?
                 <div className="info_message">

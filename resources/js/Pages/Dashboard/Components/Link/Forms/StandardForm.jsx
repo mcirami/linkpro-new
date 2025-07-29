@@ -234,7 +234,7 @@ const StandardForm = ({
         if (openedDiv) {
             openedDiv.classList.remove('open');
         }
-        setFormRow(0);
+        setFormRow(null);
         setEditLink( prev => ({
             ...prev,
             id: null,
@@ -306,12 +306,12 @@ const StandardForm = ({
 
 
                     { (editLink.type !== "offer" && editLink.type !== "mailchimp" && showFormTab === "icon") &&
-                        <div className="my_row form_nav_content input_types pl-5 pt-5">
-                            <p className="label">Link Type</p>
+                        <div className="my_row form_nav_content input_types px-5 pt-5">
                             <InputTypeRadio
                                 editLink={editLink}
                                 setEditLink={setEditLink}
                             />
+                            <p className="label">Link Type</p>
                         </div>
                     }
 
@@ -341,7 +341,6 @@ const StandardForm = ({
                     {showFormTab === "icon" &&
                         <div className="link_form form_nav_content">
                             {pageSettings.page_layout === "layout_two" &&
-                                <>
                                     <div className="switch_wrap mb-3">
                                         <p className="label">Show/Hide Icon</p>
                                         <IOSSwitch
@@ -354,25 +353,23 @@ const StandardForm = ({
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="icon_row">
-                                        <div className="icon_box">
-                                            <IconList
-                                                setCharactersLeft={setCharactersLeft}
-                                                editLink={editLink}
-                                                setEditLink={setEditLink}
-                                                showIconList={showIconList}
-                                                setShowIconList={setShowIconList}
-                                                setShowLoader={setShowLoader}
-                                                customIconArray={customIconArray}
-                                                setCustomIconArray={setCustomIconArray}
-                                                isLoading={isLoading}
-                                                showFormTab={showFormTab}
-                                            />
-                                        </div>
-                                    </div>
-                                </>
                             }
-
+                            <div className="icon_row w-full">
+                                <div className="icon_box">
+                                    <IconList
+                                        setCharactersLeft={setCharactersLeft}
+                                        editLink={editLink}
+                                        setEditLink={setEditLink}
+                                        showIconList={showIconList}
+                                        setShowIconList={setShowIconList}
+                                        setShowLoader={setShowLoader}
+                                        customIconArray={customIconArray}
+                                        setCustomIconArray={setCustomIconArray}
+                                        isLoading={isLoading}
+                                        showFormTab={showFormTab}
+                                    />
+                                </div>
+                            </div>
 
                             {/*{!folderID &&
                                 <IconDescription

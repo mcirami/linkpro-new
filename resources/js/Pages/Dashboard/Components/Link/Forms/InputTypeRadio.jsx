@@ -46,7 +46,7 @@ const InputTypeRadio = ({
      }
 
     return (
-        <div className="radios_wrap">
+        <div className="radios_wrap relative">
             <div className={editLink.type === "url" || !editLink.type ? "radio_wrap active" : "radio_wrap" }>
                 <label htmlFor="url">
                     <input id="url"
