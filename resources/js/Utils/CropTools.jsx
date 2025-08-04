@@ -14,6 +14,7 @@ const CropTools = ({
     return (
 
         <div className="crop_tools">
+            <p className="title">Crop Image</p>
             <div className="column">
                 <a href="#" className="number_control" onClick={(e) => handleScaleChange(e, scale, setScale, "decrease")}>
                     <HiMinus />
@@ -33,7 +34,6 @@ const CropTools = ({
                     <HiPlus />
                 </a>
             </div>
-            <p>Crop Image</p>
             <div className="column">
                 <a href="#" className="number_control" onClick={(e) => handleRotateChange(e, rotate, setRotate, "decrease")}>
                     <HiMinus />

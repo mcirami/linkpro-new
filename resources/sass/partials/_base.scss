@@ -134,8 +134,12 @@ main {
     margin: 0 auto;
     width: 100%;
 
-    @media screen and (max-width: 768px) {
+    @include query(mobile) {
         padding: 20px;
+    }
+
+    @include query(smallMobile) {
+        padding: 10px;
     }
 
     &.edit_page {
@@ -284,7 +288,6 @@ button {
     }
 
     &.transparent {
-        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 30%);
         color: $blue;
 
         &:hover {

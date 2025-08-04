@@ -22,7 +22,9 @@ const IconList = ({
                       customIconArray,
                       setCustomIconArray,
                       isLoading,
-                      showFormTab
+                      showFormTab,
+                      imageSelected,
+                      setImageSelected
 }) => {
 
     const { auth } = usePage().props;
@@ -497,6 +499,8 @@ const IconList = ({
                                 elementName="icon"
                                 imageCrop={{ unit: '%', width: 30 }}
                                 imageAspectRatio={1}
+                                imageSelected={imageSelected}
+                                setImageSelected={setImageSelected}
                                 setCustomIconArray={setCustomIconArray}
                             />
                         </div>
@@ -504,23 +508,25 @@ const IconList = ({
                 }
             </div>
         }
+            {!imageSelected &&
+                <>
+                    <div className={`icons_wrap icon_select my_row outer ${showFormTab === "offers" ? "offer_list" : ""}`}>
+                        {isLoading &&
+                            <div id="loading_spinner" className="active">
+                                <img src={Vapor.asset('images/spinner.svg')} alt="" />
+                            </div>
+                        }
 
-        <div className={`icons_wrap icon_select my_row outer ${showFormTab === "offers" ? "offer_list" : ""}`}>
-
-            {isLoading &&
-                <div id="loading_spinner" className="active">
-                    <img src={Vapor.asset('images/spinner.svg')} alt="" />
-                </div>
+                        {switchIconsList()}
+                    </div>
+                    <div className="button_row w-full mt-1 flex flex-nowrap justify-between">
+                        <div className="info_text file_types text-center !pl-0">
+                            <a href="mailto:help@link.pro" className="mx-auto m-0 char_count">Don't See Your Icon? Contact Us!</a>
+                        </div>
+                        <a className="help_link" href="mailto:help@link.pro"><small>Need Help?</small></a>
+                    </div>
+                </>
             }
-
-            {switchIconsList()}
-        </div>
-            <div className="button_row w-full mt-1 flex flex-nowrap justify-between">
-                <div className="info_text file_types text-center !pl-0">
-                    <a href="mailto:help@link.pro" className="mx-auto m-0 char_count">Don't See Your Icon? Contact Us!</a>
-                </div>
-                <a className="help_link" href="mailto:help@link.pro"><small>Need Help?</small></a>
-            </div>
         </>
     );
 }

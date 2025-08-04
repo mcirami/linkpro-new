@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import CropTools from '@/Utils/CropTools.jsx';
 import ReactCrop from 'react-image-crop';
 import {
@@ -12,6 +12,7 @@ import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
 import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import Compressor from "compressorjs";
+import {FiUploadCloud} from 'react-icons/fi';
 
 const ImageUploader = ({
                            editLink,
@@ -20,6 +21,8 @@ const ImageUploader = ({
                            elementName,
                            imageCrop,
                            imageAspectRatio,
+                           imageSelected,
+                           setImageSelected,
                            setCustomIconArray = null
 }) => {
 
@@ -29,9 +32,7 @@ const ImageUploader = ({
     const [scale, setScale] = useState(1)
     const [rotate, setRotate] = useState(0)
     const [aspect, setAspect] = useState(imageAspectRatio)
-
-    // if a custom icon is selected
-    const [imageSelected, setImageSelected] = useState(false);
+    const [dragActive, setDragActive] = useState(false);
 
     //image cropping
     const [upImg, setUpImg] = useState(null);
@@ -50,6 +51,7 @@ const ImageUploader = ({
     )
 
     const selectImage = async (e) => {
+        e.preventDefault();
         let files = e.target.files || e.dataTransfer.files;
         if (!files.length) {
             return;
@@ -210,14 +212,37 @@ const ImageUploader = ({
                                 </a>
                             </div>
                             :
-                            <>
+                            <div
+                                onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
+                                onDragLeave={() => setDragActive(false)}
+                                onDrop={selectImage}
+                                className={`rounded-xl border-2 border-dashed p-6 text-center transition
+                              ${dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-white'}
+                              relative`}
+                            >
+                                <FiUploadCloud size={48} className="mx-auto text-gray-400 mb-3"/>
+                                <p className="text-sm font-medium text-gray-600">
+                                    Drop your image here, or{' '}
+                                    <label htmlFor="file-upload" className="text-blue-600 underline cursor-pointer">
+                                        browse
+                                    </label>
+                                </p>
+                                <input
+                                    id="file-upload"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={selectImage}
+                                    className="hidden"
+                                />
+                            </div>
+                            /*<>
                                 <p className="mt-2 text-center label">Upload a {elementName === "bg_image" ? "background image" : "icon"} for your button</p>
                                 <label htmlFor="custom_icon_upload" className="custom !uppercase button blue">
                                     Select Image
                                 </label>
-                            </>
+                            </>*/
                         }
-                        <input id="custom_icon_upload" type="file" className="custom" onChange={selectImage} accept="image/png, image/jpeg, image/jpg, image/gif"/>
+                        {/*<input id="custom_icon_upload" type="file" className="custom" onChange={selectImage} accept="image/png, image/jpeg, image/jpg, image/gif"/>*/}
                         <div className="my_row info_text file_types text-center mb-2 !pl-0 !pr-0">
                             <small className="m-0 char_count w-100">Allowed File Types: <span>png, jpg, jpeg, gif</span>
                             </small>

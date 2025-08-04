@@ -59,6 +59,7 @@ const StandardForm = ({
         list: []
     });
 
+    const [imageSelected, setImageSelected] = useState(false);
     const iconCacheRef = useRef({});
 
     useEffect(() => {
@@ -280,42 +281,52 @@ const StandardForm = ({
             :
             <>
                 <div className={`form_content w-full ${showFormTab === "integration" ? 'pb-5' : ""}`}>
-                    <div className="close_button absolute right-5 top-5 z-10">
-                        <a className="hide_button" href="#" onClick={(e) => handleCloseForm(e)}><IoCloseSharp/></a>
-                    </div>
-                    <FormTabs
-                        showFormTab={showFormTab}
-                        setShowFormTab={setShowFormTab}
-                        setShowIconList={setShowIconList}
-                        pageLayout={pageSettings.page_layout}
-                        editLink={editLink}
-                    />
-
-                    {pageSettings.page_layout === "layout_one" &&
-                        <div className="my_row mt-4 mb-2 px-4">
-                            <IconSettingComponent
-                                inputType="text"
-                                editLink={editLink}
-                                setEditLink={setEditLink}
-                                elementName="name"
-                                label="Link Name"
-                                maxChar={11}
-                            />
+                    {!imageSelected &&
+                        <>
+                        <div className="close_button absolute right-5 top-5 z-10">
+                            <a className="hide_button" href="#" onClick={(e) => handleCloseForm(e)}><IoCloseSharp/></a>
                         </div>
+                        <FormTabs
+                            showFormTab={showFormTab}
+                            setShowFormTab={setShowFormTab}
+                            setShowIconList={setShowIconList}
+                            pageLayout={pageSettings.page_layout}
+                            editLink={editLink}
+                        />
+
+                        {pageSettings.page_layout === "layout_one" &&
+                            <div className="my_row mt-4 mb-2 px-4">
+                                <IconSettingComponent
+                                    inputType="text"
+                                    editLink={editLink}
+                                    setEditLink={setEditLink}
+                                    elementName="name"
+                                    label="Link Name"
+                                    maxChar={11}
+                                />
+                            </div>
+                        }
+                        </>
                     }
 
 
-                    { (editLink.type !== "offer" && editLink.type !== "mailchimp" && showFormTab === "icon") &&
+                    { (editLink.type !== "offer" &&
+                            editLink.type !== "mailchimp" &&
+                            showFormTab === "icon" &&
+                            !imageSelected
+                        ) ?
                         <div className="my_row form_nav_content input_types px-5 pt-5">
+                            <p className="label">Link Type</p>
                             <InputTypeRadio
                                 editLink={editLink}
                                 setEditLink={setEditLink}
                             />
-                            <p className="label">Link Type</p>
                         </div>
+                        :
+                        ""
                     }
 
-                    {pageSettings.page_layout === "layout_one" &&
+                    { (pageSettings.page_layout === "layout_one" && !imageSelected) ?
                         <div className="my_row mb-4 px-4">
                             {editLink.type === "offer" ?
                                 <div className="external_link">
@@ -336,11 +347,13 @@ const StandardForm = ({
                                 />
                             }
                         </div>
+                        :
+                        ""
                     }
 
-                    {showFormTab === "icon" &&
+                    { (showFormTab === "icon") ?
                         <div className="link_form form_nav_content">
-                            {pageSettings.page_layout === "layout_two" &&
+                            {(pageSettings.page_layout === "layout_two" && !imageSelected) &&
                                     <div className="switch_wrap mb-3">
                                         <p className="label">Show/Hide Icon</p>
                                         <IOSSwitch
@@ -367,6 +380,9 @@ const StandardForm = ({
                                         setCustomIconArray={setCustomIconArray}
                                         isLoading={isLoading}
                                         showFormTab={showFormTab}
+                                        imageSelected={imageSelected}
+                                        setImageSelected={setImageSelected}
+
                                     />
                                 </div>
                             </div>
@@ -380,10 +396,12 @@ const StandardForm = ({
                                 />
                             }*/}
                         </div>
+                        :
+                        ""
                     }
-                    {showFormTab === "image" &&
-                        <div className="form_nav_content relative p-5 w-full">
-                            {editLink.bg_image &&
+                    { showFormTab === "image" &&
+                        <div className="form_nav_content relative p-5 w-full bg-white">
+                            { (editLink.bg_image && !imageSelected) ?
                                 <>
                                     <p className="label">Show/Hide Background</p>
                                     <div className="switch_wrap mb-4">
@@ -404,6 +422,8 @@ const StandardForm = ({
                                         </div>
                                     </div>
                                 </>
+                                :
+                                ""
                             }
                             <div className="w-full">
                                 <ImageUploader
@@ -413,6 +433,8 @@ const StandardForm = ({
                                     elementName="bg_image"
                                     imageCrop={{unit: "%", width: 100, aspect: 16 / 5 }}
                                     imageAspectRatio={16 / 5}
+                                    imageSelected={imageSelected}
+                                    setImageSelected={setImageSelected}
                                 />
                             </div>
                         </div>
@@ -425,7 +447,7 @@ const StandardForm = ({
                             index={index}
                         />
                     }
-                    {showFormTab === "offers" &&
+                    { (showFormTab === "offers") &&
 
                         <div className="icon_row link_form form_nav_content">
                             <div className="icon_box">
@@ -440,6 +462,8 @@ const StandardForm = ({
                                     setCustomIconArray={setCustomIconArray}
                                     isLoading={isLoading}
                                     showFormTab={showFormTab}
+                                    imageSelected={imageSelected}
+                                    setImageSelected={setImageSelected}
                                 />
                             </div>
                         </div>

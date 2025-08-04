@@ -34,6 +34,12 @@
     z-index: 999;
 }
 
+.ReactCrop__crop-mask {
+    border-radius: 18px;
+    -webkit-border-radius: 18px;
+    -moz-border-radius: 18px;
+}
+
 input[type="text"],
 input[type="tel"],
 #card-element,
@@ -268,6 +274,7 @@ form .bottom_row a {
         box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
+        background: $white;
     }
 
     .hide_button {
@@ -841,21 +848,27 @@ form .bottom_row a {
                 }
 
                 .image_wrap, img {
-                    border-radius: 18px;
-                    -webkit-border-radius:18px;
-                    -moz-border-radius: 18px;
+                    border-radius: 15%;
+                    -webkit-border-radius: 15%;
+                    -moz-border-radius: 15%;
                 }
 
                 .image_wrap {
                     border: 2px solid $black;
                 }
+
+                .ReactCrop img {
+                    border-radius: 3%;
+                    -webkit-border-radius: 3%;
+                    -moz-border-radius: 3%;
+                }
             }
 
             .link_form {
                 width: 100%;
-                border-radius: 12px;
-                -webkit-border-radius: 12px;
-                -moz-border-radius: 12px;
+                border-radius: 15%;
+                -webkit-border-radius: 15%;
+                -moz-border-radius: 15%;
 
                 a.hide_button {
                     color: $darkGray;
@@ -1131,32 +1144,35 @@ form .bottom_row a {
     flex-direction: row;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    -webkit-justify-content: flex-start;
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
     align-items: center;
     -webkit-align-items: center;
+    border-top: 1px solid $borderGray;
+    padding-top: 20px;
 
-    @media all and (max-width: 1199px) {
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-    }
 
     .button {
+        width: 48%;
+
+        @include query(smallMobile) {
+            width: 100%;
+        }
+
         &:first-child {
             margin-right: 10px;
 
-            @media all and (max-width: 768px) {
+            @include query(mobile) {
                 margin-right: 4%;
+            }
+
+            @include query(smallMobile) {
+                margin-right: 0;
+                margin-bottom: 15px;
             }
         }
 
-        @media all and (max-width: 1199px) and (min-width: 993px) {
-            width: 48%;
-        }
 
-        @media all and (max-width: 768px) {
-            width: 48%;
-        }
     }
 
     .help_link {
