@@ -321,7 +321,7 @@ const Preview = ({
                                                 }
                                             })()}
 
-                                            { (( (index + 1) % 4 === 0) || index + 1 === iconCount) ||
+                                            { ((( (index + 1) % 4 === 0) || index + 1 === iconCount) && pageSettings.page_layout === "layout_one" ) ||
                                             (pageSettings.page_layout === "layout_two" && index + 1  === dataRow) ?
                                                 (() => {
                                                     switch (clickType) {
@@ -354,7 +354,7 @@ const Preview = ({
                                                             )*/
                                                         case "folder":
                                                             return (
-                                                                dataRow === row &&
+                                                                (dataRow === row && pageSettings.page_layout === "layout_one") &&
                                                                 <div className={`my_row folder open`}>
                                                                     <div className="icons_wrap inner">
 

@@ -3,7 +3,6 @@ import React, {
     useRef,
     forwardRef, useEffect,
 } from 'react';
-import {MdEdit} from 'react-icons/md';
 import {usePageContext} from '@/Context/PageContext.jsx';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
@@ -179,7 +178,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                             >
                                 <FiUploadCloud size={48} className="mx-auto text-gray-400 mb-3"/>
                                 <p className="text-sm font-medium text-gray-600">
-                                    Drop your image here, or{' '}
+                                    Drop your <span className="font-bold">{label}</span> here, or{' '}
                                     <label htmlFor="file-upload" className="text-blue-600 underline cursor-pointer">
                                         browse
                                     </label>

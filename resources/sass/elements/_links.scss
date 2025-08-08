@@ -917,13 +917,13 @@
     border-radius: 10px;
     display: inline-block;
     padding: 25px 20px 20px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 
     h3.label {
         font-size: 14px;
-        color: rgba(155, 155, 155, 0.4);
+        color: rgba(155, 155, 155, 0.6);
         position: absolute;
-        top: -10px;
+        top: -12px;
         background: $white;
     }
 
@@ -1327,9 +1327,15 @@
 
 .switch_wrap {
     position: relative;
+    padding: 15px 20px;
+    border: 1px solid $borderGray;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
 
     h3 {
         @include ossemibold;
+        text-transform: uppercase;
     }
 
     &:not(.two_columns) {

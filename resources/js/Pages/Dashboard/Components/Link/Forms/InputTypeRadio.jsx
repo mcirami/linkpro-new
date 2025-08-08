@@ -49,7 +49,46 @@ const InputTypeRadio = ({
 
     return (
         <div className="radios_wrap relative">
-            <div className={editLink.type === "url" || !editLink.type ? "radio_wrap active" : "radio_wrap" }>
+            <label
+                className="flex items-center space-x-4 cursor-pointer py-3 transition-all hover:bg-gray-50 rounded-lg"
+                onClick={(e) => handleOnClick(e, "url")}
+            >
+                      <span
+                          className={`w-5 h-5 rounded-full transition-all duration-200 ${
+                              editLink.type === "url"
+                                  ? "bg-[#424fcf]"
+                                  : "bg-[#d9e8eb]"
+                          }`}
+                      ></span>
+                <p className=" text-gray-800 uppercase">URL</p>
+            </label>
+            <label
+                className="flex items-center space-x-4 cursor-pointer py-3 transition-all hover:bg-gray-50 rounded-lg"
+                onClick={(e) => handleOnClick(e, "email")}
+            >
+                      <span
+                          className={`w-5 h-5 rounded-full transition-all duration-200 ${
+                              editLink.type === "email"
+                                  ? "bg-[#424fcf]"
+                                  : "bg-[#d9e8eb]"
+                          }`}
+                      ></span>
+                <p className=" text-gray-800 uppercase">Email</p>
+            </label>
+            <label
+                className="flex items-center space-x-4 cursor-pointer py-3 transition-all hover:bg-gray-50 rounded-lg"
+                onClick={(e) => handleOnClick(e, "phone")}
+            >
+                      <span
+                          className={`w-5 h-5 rounded-full transition-all duration-200 ${
+                              editLink.type === "phone"
+                                  ? "bg-[#424fcf]"
+                                  : "bg-[#d9e8eb]"
+                          }`}
+                      ></span>
+                <p className=" text-gray-800 uppercase">PHONE</p>
+            </label>
+            {/*<div className={editLink.type === "url" || !editLink.type ? "radio_wrap active" : "radio_wrap" }>
                 <button
                     className={`group mr-5 flex-1 rounded-lg border text-center transition
                         ${editLink.type === "url" ? 'border-indigo-600 bg-indigo-50 shadow-md active' : 'shadow-md '}
@@ -73,7 +112,7 @@ const InputTypeRadio = ({
                     onClick={(e) => {handleOnClick(e, "phone")}}
                 >
                     <p className="text-sm font-medium text-gray-800">Phone</p>
-                </button>
+                </button>*/}
                 {/*<label htmlFor="url">
                     <input id="url"
                            type="radio"
@@ -82,8 +121,8 @@ const InputTypeRadio = ({
                            checked={editLink.type === "url" || !editLink.type}
                            onChange={(e) => {handleOnChange(e) }}/>
                     URL
-                </label>*/}
-            </div>
+                </label>
+            </div>*/}
             {/*<div className={editLink.type === "email" ? "radio_wrap active" : "radio_wrap" }>
                 <label htmlFor="email">
                     <input id="email"

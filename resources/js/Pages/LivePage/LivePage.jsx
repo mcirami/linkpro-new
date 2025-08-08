@@ -239,8 +239,10 @@ function LivePage({links, page, subscribed}) {
                                                                                     :
                                                                                     "flex items-center justify-between w-full"}`}>
                                                                                     <span className="flex items-center justify-start gap-2">
-                                                                                        {!!icon_active &&
+                                                                                        {icon_active ?
                                                                                             <img src={displayIcon} alt=""/>
+                                                                                            :
+                                                                                            ""
                                                                                         }
                                                                                         <h3>{name || "Link Name"}</h3>
                                                                                     </span>
@@ -265,6 +267,7 @@ function LivePage({links, page, subscribed}) {
                                                                     id={id}
                                                                     colClasses={colClasses}
                                                                     displayIcon={displayIcon}
+                                                                    icon_active={icon_active}
                                                                     name={name}
                                                                     active_status={active_status}
                                                                     dataRow={dataRow}

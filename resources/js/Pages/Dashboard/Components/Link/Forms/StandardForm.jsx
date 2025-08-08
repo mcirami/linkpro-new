@@ -309,23 +309,6 @@ const StandardForm = ({
                         </>
                     }
 
-
-                    { (editLink.type !== "offer" &&
-                            editLink.type !== "mailchimp" &&
-                            showFormTab === "icon" &&
-                            !imageSelected
-                        ) ?
-                        <div className="my_row form_nav_content input_types px-5 pt-5">
-                            <p className="label">Link Type</p>
-                            <InputTypeRadio
-                                editLink={editLink}
-                                setEditLink={setEditLink}
-                            />
-                        </div>
-                        :
-                        ""
-                    }
-
                     { (pageSettings.page_layout === "layout_one" && !imageSelected) ?
                         <div className="my_row mb-4 px-4">
                             {editLink.type === "offer" ?
@@ -354,18 +337,35 @@ const StandardForm = ({
                     { (showFormTab === "icon") ?
                         <div className="link_form form_nav_content">
                             {(pageSettings.page_layout === "layout_two" && !imageSelected) &&
-                                    <div className="switch_wrap mb-3">
+                                    <div className="switch_wrap w-full flex justify-between">
                                         <p className="label">Show/Hide Icon</p>
                                         <IOSSwitch
                                             onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "icon_active")}
                                             checked={Boolean(editLink.icon_active)}
                                         />
-                                        <div className="hover_text switch">
+                                        {/*<div className="hover_text switch">
                                             <p>
                                                 {Boolean(editLink.icon_active) ? "Hide" : "Show"} Icon
                                             </p>
-                                        </div>
+                                        </div>*/}
                                     </div>
+                            }
+                            { (editLink.type !== "offer" &&
+                                editLink.type !== "mailchimp" &&
+                                showFormTab === "icon" &&
+                                !imageSelected
+                            ) ?
+                                <div className="my_row form_nav_content input_types pt-5">
+                                    <div className="setting_wrap w-full !mb-4">
+                                        <h3 className="label">Link Type</h3>
+                                        <InputTypeRadio
+                                            editLink={editLink}
+                                            setEditLink={setEditLink}
+                                        />
+                                    </div>
+                                </div>
+                                :
+                                ""
                             }
                             <div className="icon_row w-full">
                                 <div className="icon_box">
@@ -400,20 +400,22 @@ const StandardForm = ({
                         ""
                     }
                     { showFormTab === "image" &&
-                        <div className="form_nav_content relative p-5 w-full bg-white">
+                        <div className="form_nav_content inline-block relative p-5 w-full bg-white">
                             { (editLink.bg_image && !imageSelected) ?
                                 <>
-                                    <p className="label">Show/Hide Background</p>
-                                    <div className="switch_wrap mb-4">
-                                        <IOSSwitch
-                                            onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "bg_active")}
-                                            checked={Boolean(editLink.bg_active)}
-                                        />
-                                        <div className="hover_text switch">
-                                            <p>
-                                                {Boolean(editLink.bg_active) ? "Disable" : "Enable"} Background
-                                            </p>
+                                    <div className="w-full flex justify-between">
+                                        <div className="switch_wrap mb-4">
+                                            <IOSSwitch
+                                                onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "bg_active")}
+                                                checked={Boolean(editLink.bg_active)}
+                                            />
+                                            <div className="hover_text switch">
+                                                <p>
+                                                    {Boolean(editLink.bg_active) ? "Disable" : "Enable"} Background
+                                                </p>
+                                            </div>
                                         </div>
+                                        <p className="label">Show/Hide Background</p>
                                     </div>
                                     <div className="w-full">
                                         <p className="label">Current Image:</p>
@@ -435,6 +437,7 @@ const StandardForm = ({
                                     imageAspectRatio={16 / 5}
                                     imageSelected={imageSelected}
                                     setImageSelected={setImageSelected}
+                                    label="Background Image"
                                 />
                             </div>
                         </div>

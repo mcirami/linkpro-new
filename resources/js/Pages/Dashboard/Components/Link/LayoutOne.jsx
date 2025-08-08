@@ -65,7 +65,7 @@ const LayoutOne = ({
                     </div>
                 </div>
         }
-            <div className="link_content">
+            <div className="link_content w-full inline-block">
                 <div className={`right_col w-full block text-center`}>
                     <div>
                         <div className="switch_wrap">

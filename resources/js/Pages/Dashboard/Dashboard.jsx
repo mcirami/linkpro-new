@@ -367,7 +367,6 @@ function Dashboard({
                                                                 pageId={pageSettings.id}
                                                                 setPageSettings={setPageSettings}
                                                                 elementName="profile_img_active"
-                                                                hoverText="Profile Image"
                                                                 label="Show/Hide Profile Image"
                                                             />
                                                             <ImageUploader

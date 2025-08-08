@@ -497,6 +497,7 @@ const IconList = ({
                                 setEditLink={setEditLink}
                                 setShowLoader={setShowLoader}
                                 elementName="icon"
+                                label="Icon Image"
                                 imageCrop={{ unit: '%', width: 30 }}
                                 imageAspectRatio={1}
                                 imageSelected={imageSelected}

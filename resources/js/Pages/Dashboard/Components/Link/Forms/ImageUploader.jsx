@@ -19,6 +19,7 @@ const ImageUploader = ({
                            setEditLink,
                            setShowLoader,
                            elementName,
+                           label,
                            imageCrop,
                            imageAspectRatio,
                            imageSelected,
@@ -217,12 +218,12 @@ const ImageUploader = ({
                                 onDragLeave={() => setDragActive(false)}
                                 onDrop={selectImage}
                                 className={`rounded-xl border-2 border-dashed p-6 text-center transition
-                              ${dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-white'}
+                              ${dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-100 bg-white'}
                               relative`}
                             >
                                 <FiUploadCloud size={48} className="mx-auto text-gray-400 mb-3"/>
                                 <p className="text-sm font-medium text-gray-600">
-                                    Drop your image here, or{' '}
+                                    Drop your {label} here, or{' '}
                                     <label htmlFor="file-upload" className="text-blue-600 underline cursor-pointer">
                                         browse
                                     </label>

@@ -72,10 +72,11 @@ select {
     }
 
     ~ label {
+        @include osbold;
         color: rgba(155, 155, 155, 0.6);
         background: $white;
         position: absolute;
-        font-size: 16px;
+        font-size: 14px;
         top: 15px;
         left: 15px;
         transition:
@@ -91,7 +92,6 @@ select {
             color: rgba(66, 79, 207, 0.5);
             top: -6px;
             left: 15px;
-            font-size: 12px;
             z-index: 3;
         }
 
@@ -270,8 +270,7 @@ form .bottom_row a {
     }
 
     > .form_content {
-        //box-shadow: 0 0 20px rgba(0, 0, 0, 0.06);
-        box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 24px 30px rgba(0, 0, 0, 0.1);
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
         background: $white;
@@ -522,7 +521,6 @@ form .bottom_row a {
 
                     .custom_icons {
                         width: 82%;
-                        padding: 0 10px;
                         border-left: 1px solid $borderGray;
                         margin: 10px 0 0;
 
@@ -553,9 +551,10 @@ form .bottom_row a {
                     }
 
                     p {
+                        text-transform: uppercase;
                         width: 100%;
-                        font-size: 12px;
-                        padding: 9px 5px;
+                        font-size: 11px;
+                        padding: 10px 5px;
                         text-align: center;
                         margin-bottom: 5px;
                     }
@@ -608,7 +607,7 @@ form .bottom_row a {
                     -webkit-border-radius: 0;
                     -moz-border-radius: 0;
                     border: none;
-                    padding: 10px 0 0;
+                    padding: 10px;
                 }
 
                 &.active {
@@ -794,31 +793,28 @@ form .bottom_row a {
                 -ms-flex-wrap: nowrap;
                 flex-wrap: nowrap;
                 width: 100%;
-                column-gap: 20px;
-                padding: 20px;
                 background: #fff;
                 border-bottom: .09rem solid;
                 border-color: rgba(155, 155, 155, .1);
 
                 a {
-                    color: $black;
+                    color: $darkText;
                     font-size: 0.8rem;
-                    padding: 5px 14px;
+                    padding: 20px;
                     text-transform: uppercase;
-                    border-radius: 6px;
-                    -webkit-border-radius: 6px;
-                    -moz-border-radius: 6px;
+                    margin-bottom: -1px;
+                    border-bottom: 3px solid transparent;
 
                     &.active {
-                        background: $blue;
-                        color: $white;
+                        border-bottom: 3px solid $blue;
+                        color: $blue;
                     }
 
                     &:not(.active) {
 
                         &:hover {
-                            background: $blue;
-                            color: $white;
+                            color: $blue;
+                            border-bottom: 3px solid $blue;
                         }
                     }
 
@@ -835,16 +831,20 @@ form .bottom_row a {
                     > div.relative {
                         text-align: center;
                     }
+
+                    a.tab_link {
+                        padding: 4px 10px;
+                    }
                 }
             }
 
             .form_nav_content {
                 p.label {
                     @include ossemibold;
+                    color: $darkText;
                     font-size: .9rem;
                     text-align: left;
                     text-transform: uppercase;
-                    margin-bottom: 10px;
                 }
 
                 .image_wrap, img {

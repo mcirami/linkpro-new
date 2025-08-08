@@ -8,7 +8,7 @@ const SwitchComponent = ({
                              pageId,
                              setPageSettings,
                              elementName,
-                             hoverText,
+                             hoverText = null,
                              label = null
 }) => {
 
@@ -29,20 +29,22 @@ const SwitchComponent = ({
     }
 
     return (
-        <div className="switch_wrap w-full flex gap-2 mb-4">
+        <div className="switch_wrap w-full flex justify-between gap-2 mb-4">
+            {label &&
+                <h3 className="uppercase text-sm">{label}</h3>
+            }
             <IOSSwitch
                 onChange={(e) => handleOnChange(e)}
                 checked={Boolean(switchValue)}
             />
-            {label &&
-                <h3 className="uppercase mb-2 text-sm">{label}</h3>
+            {hoverText &&
+                <div className="hover_text switch inline-block">
+                    <p>
+                        {Boolean(switchValue) ? "Disable " : "Enable "}
+                        {hoverText}
+                    </p>
+                </div>
             }
-            <div className="hover_text switch inline-block">
-                <p>
-                    {Boolean(switchValue) ? "Disable " : "Enable "}
-                    {hoverText}
-                </p>
-            </div>
         </div>
     );
 };

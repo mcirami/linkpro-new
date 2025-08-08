@@ -84,7 +84,7 @@ const AdvancedIcon = ({
                             </p>
                         </>
                         :
-                        <a className={`icon_wrap !justify-start ${!displayIcon ?
+                        <a className={`icon_wrap !justify-start gap-2 ${!displayIcon ?
                             "default" :
                             ""}`}
                            target="_blank"
