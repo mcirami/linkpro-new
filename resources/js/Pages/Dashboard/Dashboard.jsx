@@ -324,62 +324,66 @@ function Dashboard({
                                                         <PageName
                                                             pageNames={allPageNames}
                                                         />
-                                                        <h3 className="label uppercase mb-2">Main Image</h3>
-                                                        { (!completedCrop.header_img && !completedCrop.page_img) &&
-                                                            <RadioComponent
-                                                                setRadioValue={setImageType}
-                                                                radioValue={imageType}
+                                                        <div className="setting_wrap w-full">
+                                                            <h3 className="label">Main Image</h3>
+                                                            { (!completedCrop.header_img && !completedCrop.page_img) &&
+                                                                <RadioComponent
+                                                                    setRadioValue={setImageType}
+                                                                    radioValue={imageType}
+                                                                    pageId={pageSettings.id}
+                                                                    setPageSettings={setPageSettings}
+                                                                    elementName="main_img_type"
+                                                                    label={{
+                                                                        header: "Header Only",
+                                                                        page: "Full Page"
+                                                                    }}
+                                                                    radioValues={[
+                                                                        "header",
+                                                                        "page"
+                                                                    ]}
+                                                                />
+                                                            }
+
+                                                            <ImageUploader
+                                                                ref={nodesRef}
+                                                                completedCrop={completedCrop}
+                                                                setCompletedCrop={setCompletedCrop}
+                                                                setShowLoader={setShowLoader}
+                                                                imageType={imageType}
+                                                                elementName={imageType === "header" ? "header_img" : "page_img"}
+                                                                label="Main Image"
+                                                                cropSettings={{
+                                                                    unit: '%',
+                                                                    aspect: imageType === "header" ? 16 / 9 : 6 / 8,
+                                                                    width: 30
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <div className="setting_wrap w-full">
+                                                            <h3 className="label mb-2">Profile Image</h3>
+                                                            <SwitchComponent
+                                                                setSwitchValue={setProfileImgActive}
+                                                                switchValue={profileImgActive}
                                                                 pageId={pageSettings.id}
                                                                 setPageSettings={setPageSettings}
-                                                                elementName="main_img_type"
-                                                                label={{
-                                                                    header: "Header Only",
-                                                                    page: "Full Page"
-                                                                }}
-                                                                radioValues={[
-                                                                    "header",
-                                                                    "page"
-                                                                ]}
+                                                                elementName="profile_img_active"
+                                                                hoverText="Profile Image"
+                                                                label="Show/Hide Profile Image"
                                                             />
-                                                        }
-
-                                                        <ImageUploader
-                                                            ref={nodesRef}
-                                                            completedCrop={completedCrop}
-                                                            setCompletedCrop={setCompletedCrop}
-                                                            setShowLoader={setShowLoader}
-                                                            imageType={imageType}
-                                                            elementName={imageType === "header" ? "header_img" : "page_img"}
-                                                            label="Main Image"
-                                                            cropSettings={{
-                                                                unit: '%',
-                                                                aspect: imageType === "header" ? 16 / 9 : 6 / 8,
-                                                                width: 30
-                                                            }}
-                                                        />
-                                                        <h3 className="label uppercase mb-2">Profile Image</h3>
-                                                        <h3 className="label uppercase mb-2 text-sm">Show/Hide Profile Image</h3>
-                                                        <SwitchComponent
-                                                            setSwitchValue={setProfileImgActive}
-                                                            switchValue={profileImgActive}
-                                                            pageId={pageSettings.id}
-                                                            setPageSettings={setPageSettings}
-                                                            elementName="profile_img_active"
-                                                            hoverText="Profile Image"
-                                                        />
-                                                        <ImageUploader
-                                                            ref={nodesRef}
-                                                            completedCrop={completedCrop}
-                                                            setCompletedCrop={setCompletedCrop}
-                                                            setShowLoader={setShowLoader}
-                                                            elementName="profile_img"
-                                                            label="Profile Image"
-                                                            cropSettings={{
-                                                                unit: '%',
-                                                                aspect: 1,
-                                                                width: 30
-                                                            }}
-                                                        />
+                                                            <ImageUploader
+                                                                ref={nodesRef}
+                                                                completedCrop={completedCrop}
+                                                                setCompletedCrop={setCompletedCrop}
+                                                                setShowLoader={setShowLoader}
+                                                                elementName="profile_img"
+                                                                label="Profile Image"
+                                                                cropSettings={{
+                                                                    unit: '%',
+                                                                    aspect: 1,
+                                                                    width: 30
+                                                                }}
+                                                            />
+                                                        </div>
 
                                                         <PageSettingComponent
                                                             element="title"

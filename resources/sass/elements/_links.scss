@@ -802,6 +802,11 @@
             height: 15px;
             margin-right: 5px;
         }
+
+        p {
+            @include ossemibold;
+            margin-left: 5px !important;
+        }
     }
 }
 
@@ -906,6 +911,28 @@
     }
 }
 
+.setting_wrap {
+    position: relative;
+    border: 1px solid $borderGray;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 25px 20px 20px;
+    margin-bottom: 20px;
+
+    h3.label {
+        font-size: 14px;
+        color: rgba(155, 155, 155, 0.4);
+        position: absolute;
+        top: -10px;
+        background: $white;
+    }
+
+    .tooltip_icon {
+        position: absolute;
+        right: 0;
+        top: -22px;
+    }
+}
 .link_row {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1300,8 +1327,10 @@
 
 .switch_wrap {
     position: relative;
-    margin-top: 5px;
-    display: inline-block;
+
+    h3 {
+        @include ossemibold;
+    }
 
     &:not(.two_columns) {
         .hover_text {

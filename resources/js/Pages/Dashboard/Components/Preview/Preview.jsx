@@ -188,6 +188,7 @@ const Preview = ({
                                         "mailchimp" || type === "shopify" ||
                                         type === "advanced") {
                                         colClasses=`icon_col folder
+                                        ${!icon_active ? "no_icon" : "" }
                                        ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ?
                                             "bg_image"
                                             :
@@ -298,6 +299,7 @@ const Preview = ({
                                                                 <AdvancedIcon
                                                                     colClasses={colClasses}
                                                                     displayIcon={displayIcon}
+                                                                    icon_active={icon_active}
                                                                     name={name}
                                                                     active_status={active_status}
                                                                     dataRow={dataRow}

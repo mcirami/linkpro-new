@@ -10,6 +10,7 @@ const AdvancedIcon = ({
                           id,
                           colClasses,
                           displayIcon,
+                          icon_active,
                           name,
                           active_status,
                           dataRow,
@@ -88,7 +89,11 @@ const AdvancedIcon = ({
                             ""}`}
                            target="_blank"
                            href={url || "#"}>
-                            <img src={displayIcon} alt=""/>
+                            {icon_active ?
+                                <img src={displayIcon} alt=""/>
+                                :
+                                ""
+                            }
                             <h3>{name || "Link Name"}</h3>
                         </a>
                     }

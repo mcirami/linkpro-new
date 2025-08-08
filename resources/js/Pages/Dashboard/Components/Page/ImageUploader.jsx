@@ -19,6 +19,7 @@ import CropTools from '@/Utils/CropTools';
 import EventBus from '@/Utils/Bus';
 import {resizeFile} from '@/Services/ImageService.jsx';
 import Compressor from 'compressorjs';
+import { FiUploadCloud } from "react-icons/fi";
 
 const ImageUploader = forwardRef(function ImageUploader(props, ref) {
 
@@ -35,6 +36,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
     const [cropSettingsArray, setCropSettingsArray] = useState(cropSettings)
     const {pageSettings, setPageSettings} = usePageContext();
     const [aspect, setAspect] = useState(cropSettingsArray.aspect)
+    const [dragActive, setDragActive] = useState(false);
 
     useEffect(() => {
         setAspect(cropSettingsArray.aspect || null);
@@ -161,30 +163,33 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
     };
 
     return (
-        <div className="my_row page_settings">
+        <div className="my_row ">
             <div className="column_wrap">
                 <form onSubmit={handleSubmit} className={elementName}>
                     {!upImg && (
                         <>
-                            <div className="top_section">
-                                <label
-                                    htmlFor={`${elementName}_upload`}
-                                    className="custom"
-                                >
-                                    Select {label}
-                                    <span className="edit_icon">
-                                        <MdEdit />
-                                        <div className="hover_text edit_image">
-                                            <p>Edit {label}</p>
-                                        </div>
-                                    </span>
-                                </label>
+                            <ToolTipIcon section={elementName} />
+                            <div
+                                onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
+                                onDragLeave={() => setDragActive(false)}
+                                onDrop={onSelectFile}
+                                className={`rounded-xl border-2 border-dashed p-6 text-center transition
+                              ${dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-100 bg-white'}
+                              relative`}
+                            >
+                                <FiUploadCloud size={48} className="mx-auto text-gray-400 mb-3"/>
+                                <p className="text-sm font-medium text-gray-600">
+                                    Drop your image here, or{' '}
+                                    <label htmlFor="file-upload" className="text-blue-600 underline cursor-pointer">
+                                        browse
+                                    </label>
+                                </p>
                                 <input
-                                    className="custom"
-                                    id={`${elementName}_upload`}
+                                    id="file-upload"
                                     type="file"
-                                    accept="image/png, image/jpeg, image/jpg, image/gif"
+                                    accept="image/*"
                                     onChange={onSelectFile}
+                                    className="hidden"
                                 />
                             </div>
                             <div className="my_row info_text file_types">
@@ -250,9 +255,6 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                     </div>
                 </form>
             </div>
-            {!upImg && (
-                <ToolTipIcon section={elementName} />
-            )}
         </div>
     );
 });
