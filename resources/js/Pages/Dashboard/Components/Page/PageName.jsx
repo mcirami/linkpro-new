@@ -10,7 +10,7 @@ const PageName = ({pageNames}) => {
 
     const [userPageNames, setUserPageNames] = useState(pageNames);
 
-    const [name, setName] = useState(pageSettings['name']);
+    const [name, setName] = useState(pageSettings['name'] || "");
 
     const [available, setAvailability] = useState(true);
     const [currentMatch, setCurrentMatch] = useState(true);
@@ -76,12 +76,12 @@ const PageName = ({pageNames}) => {
 
     return (
         <div className="edit_form page_name">
-            {!regexMatch &&
-                <p className="status not_available char_message">Only letters, numbers, dashes, underscores, periods allowed</p>
-            }
-            <label>Link.pro/</label>
+            <div className="prefix">Link.pro/</div>
            <form className="link_name">
-                <input name="name" type="text" defaultValue={name}
+                <input className={ name && "active" }
+                       name="name"
+                       id="name"
+                       type="text" defaultValue={name}
                        onChange={ checkPageName }
                        onKeyDown={ event => {
                                if(event.key === 'Enter') {
@@ -91,37 +91,41 @@ const PageName = ({pageNames}) => {
                        }
                        onBlur={(e) => handleSubmit(e)}
                 />
-
-               {available ?
-                   <div className={"info_text my_row"}>
-                       {currentMatch ?
-                           <p className="status">Current</p>
-                           :
-                           <>
-                               <a className="submit_circle" href="#"
-                                  onClick={(e) => handleSubmit(e)}
-                               >
-                                   <FiThumbsUp />
-                               </a>
-                               <p className="status">Available</p>
-                           </>
-                       }
-                   </div>
-                   :
-                   <div>
-                       <span className="cancel_icon">
-                           <FiThumbsDown />
-                       </span>
+               <label htmlFor="name" className="!pb-0">
+                   <span>Page Name</span>
+               </label>
+               <div className="flex justify-between">
+                   {available ?
                        <div className={"info_text my_row"}>
-                           <p className="status not_available">Not Available</p>
+                           {currentMatch ?
+                               <p className="status">Current</p>
+                               :
+                               <>
+                                   <a className="submit_circle" href="#"
+                                      onClick={(e) => handleSubmit(e)}
+                                   >
+                                       <FiThumbsUp />
+                                   </a>
+                                   <p className="status">Available</p>
+                               </>
+                           }
                        </div>
-                   </div>
-               }
-
+                       :
+                       <div>
+                           <span className="cancel_icon">
+                               <FiThumbsDown />
+                           </span>
+                           <div className={"info_text my_row"}>
+                               <p className="status not_available">Not Available</p>
+                           </div>
+                       </div>
+                   }
+                   {!regexMatch &&
+                       <p className="status not_available char_message">Only letters, numbers, dashes, underscores, periods allowed</p>
+                   }
+               </div>
            </form>
-
             <ToolTipIcon section="name" />
-
         </div>
 
     );

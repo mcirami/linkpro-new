@@ -63,7 +63,7 @@ const FormTabs = ({
                    href="#"
                    onClick={(e) => handleOnClick(e, "icon")}
                 >
-                    Button Icon
+                    {pageLayout === "layout_two" ? "Button" : "Icon"} Settings
                 </a>
             </div>
 

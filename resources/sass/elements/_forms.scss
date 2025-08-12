@@ -262,7 +262,8 @@ form .bottom_row a {
     }
 
     &.page_name {
-        label {
+        .prefix {
+            @include osbold;
             align-self: center;
             -webkit-align-self: center;
             padding-bottom: 20px;
@@ -375,9 +376,6 @@ form .bottom_row a {
         }
 
         &.char_message {
-            position: absolute;
-            right: 0;
-            top: -4px;
 
             @media all and (max-width: 1199px) {
                 font-size: 11px;
@@ -385,6 +383,8 @@ form .bottom_row a {
 
             &.register_page {
                 top: -25px;
+                position: absolute;
+                right: 0;
             }
         }
     }
@@ -836,6 +836,14 @@ form .bottom_row a {
                         padding: 4px 10px;
                     }
                 }
+            }
+
+            .switch_wrap {
+                padding: 15px 20px;
+                border: 1px solid $borderGray;
+                border-radius: 10px;
+                -webkit-border-radius: 10px;
+                -moz-border-radius: 10px;
             }
 
             .form_nav_content {

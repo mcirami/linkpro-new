@@ -21,18 +21,10 @@ const hoverText = [
         ]
     },
     {
-        section: 'page_img',
+        section: 'main_image',
         text: [
             {
-                description: ' Here you can choose to upload a header image or a full page image. After selecting a file (.jpg, .jpeg, .png, .gif) to upload, you can resize the image to perfection using the built-in cropping functionality.',
-            }
-        ]
-    },
-    {
-        section: 'header_img',
-        text: [
-            {
-                description: ' Here you can choose to upload a header image or a full page image. After selecting a file (.jpg, .jpeg, .png, .gif) to upload, you can resize the image to perfection using the built-in cropping functionality.',
+                description: ' Here you can choose to have either a header image or a full page background images. After selecting a file (.jpg, .jpeg, .png, .gif) to upload, you can resize the image to perfection using the built-in cropping functionality.',
             }
         ]
     },
@@ -40,7 +32,7 @@ const hoverText = [
         section: 'profile_img',
         text: [
             {
-                description: 'Here you can upload a profile image to your Page. After selecting a file (.jpg, .jpeg, .png, .gif) to upload, you can resize the image to perfection using the built-in cropping functionality.',
+                description: 'Here you can upload a profile image to your Page. You can also choose to hide the profile image to creat a different layout. After selecting a file (.jpg, .jpeg, .png, .gif) to upload, you can resize the image to perfection using the built-in cropping functionality.',
                 subTitle: 'Pro Tip!',
                 tip: 'A square profile image will be cropped to a circular shape on your page. Choose an image that will appropriately fit a circular shape!'
             }

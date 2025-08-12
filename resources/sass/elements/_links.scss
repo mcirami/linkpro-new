@@ -175,7 +175,7 @@
                 border-bottom-right-radius: 0;
                 -webkit-border-bottom-right-radius: 0;
                 //box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
-                box-shadow: 0 0px 35px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 0 35px rgba(0, 0, 0, 0.1);
             }
 
             .icon_wrap {
@@ -258,9 +258,9 @@
                     width: 15px;
                     height: 15px;
                     position: absolute;
-                    left: calc(50% - 7.5px);
+                    left: calc(50% - 12px);
                     transform: rotate(180deg);
-                    bottom: -18px;
+                    bottom: -17px;
                     z-index: 1;
                     border-left: 14px solid transparent;
                     border-right: 14px solid transparent;
@@ -281,26 +281,50 @@
 
                 a {
                     position: relative;
-                    overflow: hidden;
-                    height: 100%;
                 }
             }
         }
 
         &#layout_one {
+            .grid_item {
+                z-index: 2;
+            }
+
+            .icon_col {
+                &:has(> .column_content.open) {
+                    border-bottom-left-radius: 21px;
+                    -webkit-border-bottom-left-radius: 21px;
+                    border-bottom-right-radius: 21px;
+                    -webkit-border-bottom-right-radius: 21px;
+                }
+            }
+
+            .edit_form > .form_content {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                border-radius: 20px;
+                -webkit-border-radius: 20px;
+                -moz-border-radius: 20px;
+
+                .form_nav {
+                    border-radius: 20px;
+                    -webkit-border-radius: 20px;
+                    -moz-border-radius: 20px;
+                }
+            }
             .column_content {
                 z-index: 1;
                 &.open {
                     &:after {
                         content: '';
                         position: absolute;
-                        bottom: -45px; /* Just behind the :before triangle */
-                        left: 0;
-                        width: 100%;
-                        height: 60px;
-                        background: $white;
-                        z-index: -1; /* Place it behind the primary triangle */
-                        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+                        bottom: -28px;
+                        left: -5px;
+                        border-left: 79px solid transparent;
+                        border-right: 79px solid transparent;
+                        border-top: 40px solid #fff;
+                        border-radius: 50px;
+                        -webkit-border-radius: 50px;
+                        -moz-border-radius: 50px;
                     }
 
                 }
@@ -709,10 +733,20 @@
                     -moz-transition: .5s all linear;
                     -webkit-transition: .5s all linear;
                     -o-transition: .5s all linear;
+                    height: 100%;
 
                     &:hover {
                         box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
                     }
+                }
+            }
+
+            .folder_content {
+                color: $white;
+
+                input {
+                    border: 1px solid $white;
+                    color: $white;
                 }
             }
         }
@@ -1327,11 +1361,6 @@
 
 .switch_wrap {
     position: relative;
-    padding: 15px 20px;
-    border: 1px solid $borderGray;
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
 
     h3 {
         @include ossemibold;

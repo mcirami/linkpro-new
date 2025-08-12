@@ -13,7 +13,6 @@ import {
     createImage,
     getFileToUpload,
 } from '@/Services/ImageService.jsx';
-import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import CropTools from '@/Utils/CropTools';
 import EventBus from '@/Utils/Bus';
 import {resizeFile} from '@/Services/ImageService.jsx';
@@ -167,7 +166,6 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                 <form onSubmit={handleSubmit} className={elementName}>
                     {!upImg && (
                         <>
-                            <ToolTipIcon section={elementName} />
                             <div
                                 onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
                                 onDragLeave={() => setDragActive(false)}

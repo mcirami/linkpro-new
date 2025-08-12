@@ -188,14 +188,14 @@ const Preview = ({
                                         "mailchimp" || type === "shopify" ||
                                         type === "advanced") {
                                         colClasses=`icon_col folder
-                                        ${!icon_active ? "no_icon" : "" }
+                                        ${!icon_active && pageSettings.page_layout ==="layout_two" ? "no_icon" : "" }
                                        ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ?
                                             "bg_image"
                                             :
                                             ""
                                         }`
                                     } else {
-                                        colClasses = `icon_col ${!icon_active ? "no_icon" : "" } ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ?
+                                        colClasses = `icon_col ${!icon_active && pageSettings.page_layout ==="layout_two" ? "no_icon" : "" } ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ?
                                             "bg_image"
                                             :
                                             ""

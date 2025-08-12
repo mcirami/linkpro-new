@@ -579,7 +579,6 @@
     &.preview, &.live {
         grid-template-rows: repeat(3, .6em);
         padding: 7%;
-        height: 100%;
         border: 1px solid $white;
         border-radius: 8px;
         -webkit-border-radius: 8px;
@@ -588,6 +587,8 @@
         grid-row-gap: 8px;
         grid-column-gap: 3px;
         background: rgba(0,0,0,.6);
+        position: relative;
+        height: 100%;
 
         @media all and (max-width: 550px) {
             grid-template-rows: repeat(3, 0.4em);
