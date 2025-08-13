@@ -10,49 +10,49 @@ const MenuData = [
     {
         id: 'pages',
         name: 'pages',
-        url: '/dashboard/pages/',
+        pageUrl: '/dashboard/pages/',
         icon: <RiPagesLine/>,
         permission: 'view dashboard'
     },
     {
         id: 'creator_center_link',
         name: 'creator center',
-        url: '/creator-center',
+        pageUrl: '/creator-center',
         icon: <MdOutlineDashboard />,
         permission: 'view creator center'
     },
     {
         id: 'stats',
         name: 'stats',
-        url: '/stats',
+        pageUrl: '/stats',
         icon: <RiBarChart2Line/>,
         permission: 'view stats'
     },
     {
         id: 'courses',
         name: 'courses',
-        url: '/courses',
+        pageUrl: '/courses',
         icon: <MdOutlineSchool/>,
         permission: 'view courses'
     },
     {
         id: 'pre_register',
         name: 'pages',
-        url: '/pre-register-link-pro',
+        pageUrl: '/pre-register-link-pro',
         icon: <RiPagesLine/>,
         permission: 'view courses'
     },
     {
         id: 'settings',
         name: 'settings',
-        url: '/edit-account',
+        pageUrl: '/edit-account',
         icon: <RiUserSettingsLine />,
         permission: 'has permission'
     },
     {
         id: 'contact_us',
         name: 'contact us',
-        url: '/contact',
+        pageUrl: '/contact',
         icon: <RiMailLine/>,
         permission: 'all'
     },

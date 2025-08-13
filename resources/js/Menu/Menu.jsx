@@ -2,7 +2,6 @@ import {useState} from 'react';
 import {RiLogoutBoxRLine, RiInstagramLine} from 'react-icons/ri';
 import HoverText from '../Utils/HoverText';
 import MenuData from './MenuData';
-import {toUpper} from 'lodash';
 import MenuItem from './MenuItem';
 import {usePage} from '@inertiajs/react';
 
@@ -148,7 +147,7 @@ function Menu() {
                                                 </g>
                                             </svg>
                                         </span>
-                                        <span className="text">CONTACT {toUpper(creator)}</span>
+                                        <span className="text uppercase">CONTACT {creator}</span>
                                     </a>
                                     {!isOpen && isHovering.status &&
                                     isHovering.section === "follow us" ?

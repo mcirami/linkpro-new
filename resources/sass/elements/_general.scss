@@ -137,7 +137,6 @@
     p {
         margin: 0;
         font-size: .5em;
-        background: $lightGrayAlt;
         padding: 2px 5px;
         border-radius: 5px;
         -webkit-border-radius: 5px;
@@ -192,14 +191,18 @@
     }
 
     &.help {
+        @include boxShadowHoverBox;
         padding: 10px;
         right: -3px;
         align-items: flex-start;
         -webkit-align-items: flex-start;
         z-index: -999;
-        background: $lightGrayAlt;
+        background: $blue;
         position: fixed;
         max-width: 600px;
+        border-radius: 12px;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
 
         @media screen and (max-width: 768px) {
             max-width: 80%;
@@ -228,6 +231,7 @@
         p, h3 {
             font-size: 14px;
             padding: 0;
+            color: $white;
 
             @media screen and (max-width: 768px) {
                 font-size: 12px;
@@ -236,6 +240,7 @@
 
         h5 {
             margin: 5px 0;
+            color: $white;
 
             @media all and (max-width: 768px) {
                 font-size: 14px;
@@ -250,7 +255,7 @@
     height: 25px;
 
     svg {
-        color: $lightGrayAlt;
+        color: $blue;
         width: 100%;
         height: 100%;
     }
@@ -462,14 +467,14 @@
 
 
 .info_text {
-    display: flex;
+    /*display: flex;
     display: -moz-flex;
     display: -webkit-box;
     display: -ms-flexbox;
     -ms-flex-wrap: nowrap;
     flex-wrap: nowrap;
     justify-content: space-between;
-    -webkit-justify-content: space-between;
+    -webkit-justify-content: space-between;*/
 
     &.title {
         margin-top: 5px;
@@ -478,7 +483,8 @@
     .char_count {
         margin-bottom: 0;
         color: #908e8e;
-        font-size: 12px;
+        font-size: .7rem;
+        margin-top: 3px;
 
         @media screen and (max-width: 350px) {
             font-size: 10px;
@@ -508,7 +514,6 @@
     }
 
     &.file_types {
-        margin-top: 5px;
 
         span {
             color: #908e8e;

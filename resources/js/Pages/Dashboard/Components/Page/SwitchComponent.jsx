@@ -29,7 +29,7 @@ const SwitchComponent = ({
     }
 
     return (
-        <div className="switch_wrap w-full flex justify-between gap-2 mb-4">
+        <div className={`switch_wrap w-full flex gap-2 mb-4 ${label ? "justify-between" : "justify-end" } `}>
             {label &&
                 <h3 className="uppercase text-sm">{label}</h3>
             }

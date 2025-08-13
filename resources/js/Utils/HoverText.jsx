@@ -1,5 +1,4 @@
 import React, {createRef, useEffect} from 'react';
-import {toUpper} from 'lodash';
 
 const HoverText = ({ text }) => {
 
@@ -7,14 +6,14 @@ const HoverText = ({ text }) => {
 
     useEffect(() => {
 
-        const width = hoverText.current.clientWidth;
+        const width = hoverText.current.clientWidth + 15;
         hoverText.current.style.right = "-" + width + "px";
 
     },[])
 
     return (
-        <div className="hover_text" ref={hoverText}>
-            <p>{toUpper(text)}</p>
+        <div className="hover_text transition" ref={hoverText}>
+            <p className="uppercase">{text}</p>
         </div>
     );
 };

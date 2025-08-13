@@ -170,8 +170,8 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                 onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
                                 onDragLeave={() => setDragActive(false)}
                                 onDrop={onSelectFile}
-                                className={`rounded-xl border-2 border-dashed p-6 text-center transition
-                              ${dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-100 bg-white'}
+                                className={`rounded-xl border-2 border-dashed p-12 text-center transition
+                              ${dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-white'}
                               relative`}
                             >
                                 <FiUploadCloud size={48} className="mx-auto text-gray-400 mb-3"/>
@@ -181,6 +181,12 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                         browse
                                     </label>
                                 </p>
+                                <div className="my_row info_text file_types w-full text-center">
+                                    <p className="m-0 char_count  ">
+                                        Allowed File Types:{" "}
+                                        <span>png, jpg, jpeg, gif</span>
+                                    </p>
+                                </div>
                                 <input
                                     id="file-upload"
                                     type="file"
@@ -188,12 +194,6 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                     onChange={onSelectFile}
                                     className="hidden"
                                 />
-                            </div>
-                            <div className="my_row info_text file_types">
-                                <p className="m-0 char_count w-100 ">
-                                    Allowed File Types:{" "}
-                                    <span>png, jpg, jpeg, gif</span>
-                                </p>
                             </div>
                         </>
                     )}
@@ -224,7 +224,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                     alt="Crop Me" />
                             </ReactCrop>
                         </div>
-                        <div className="bottom_row">
+                        <div className="bottom_row w-full">
                             <button
                                 type="submit"
                                 className="button green"

@@ -75,57 +75,62 @@ const PageName = ({pageNames}) => {
     }
 
     return (
-        <div className="edit_form page_name">
-            <div className="prefix">Link.pro/</div>
-           <form className="link_name">
-                <input className={ name && "active" }
-                       name="name"
-                       id="name"
-                       type="text" defaultValue={name}
-                       onChange={ checkPageName }
-                       onKeyDown={ event => {
-                               if(event.key === 'Enter') {
-                                   handleSubmit(event);
+        <div className="page_name mb-8">
+            <div className="section_title w-full flex justify-start gap-2">
+                <h4>Page Name</h4>
+                <span>
+                    <ToolTipIcon section="name" />
+                </span>
+            </div>
+            <div className="edit_form">
+               <form className="link_name w-full relative">
+                   <div className="prefix absolute left-3 top-3.5">Link.pro/</div>
+                    <input className={`w-full !pl-20 name && "active" `}
+                           name="name"
+                           id="name"
+                           type="text" defaultValue={name}
+                           onChange={ checkPageName }
+                           onKeyDown={ event => {
+                                   if(event.key === 'Enter') {
+                                       handleSubmit(event);
+                                   }
                                }
                            }
-                       }
-                       onBlur={(e) => handleSubmit(e)}
-                />
-               <label htmlFor="name" className="!pb-0">
-                   <span>Page Name</span>
-               </label>
-               <div className="flex justify-between">
-                   {available ?
-                       <div className={"info_text my_row"}>
-                           {currentMatch ?
-                               <p className="status">Current</p>
-                               :
-                               <>
-                                   <a className="submit_circle" href="#"
-                                      onClick={(e) => handleSubmit(e)}
-                                   >
-                                       <FiThumbsUp />
-                                   </a>
-                                   <p className="status">Available</p>
-                               </>
-                           }
-                       </div>
-                       :
-                       <div>
-                           <span className="cancel_icon">
-                               <FiThumbsDown />
-                           </span>
+                           onBlur={(e) => handleSubmit(e)}
+                    />
+
+                   <div className="flex justify-between">
+                       {available ?
                            <div className={"info_text my_row"}>
-                               <p className="status not_available">Not Available</p>
+                               {currentMatch ?
+                                   <p className="status">Current</p>
+                                   :
+                                   <>
+                                       <a className="submit_circle" href="#"
+                                          onClick={(e) => handleSubmit(e)}
+                                       >
+                                           <FiThumbsUp />
+                                       </a>
+                                       <p className="status">Available</p>
+                                   </>
+                               }
                            </div>
-                       </div>
-                   }
-                   {!regexMatch &&
-                       <p className="status not_available char_message">Only letters, numbers, dashes, underscores, periods allowed</p>
-                   }
-               </div>
-           </form>
-            <ToolTipIcon section="name" />
+                           :
+                           <div>
+                               <span className="cancel_icon">
+                                   <FiThumbsDown />
+                               </span>
+                               <div className={"info_text my_row"}>
+                                   <p className="status not_available">Not Available</p>
+                               </div>
+                           </div>
+                       }
+                       {!regexMatch &&
+                           <p className="status not_available char_message">Only letters, numbers, dashes, underscores, periods allowed</p>
+                       }
+                   </div>
+               </form>
+            </div>
         </div>
 
     );

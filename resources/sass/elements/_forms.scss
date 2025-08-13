@@ -247,8 +247,8 @@ form .bottom_row a {
     -webkit-box-direction: normal;
     -ms-flex-direction: row;
     flex-direction: row;
-    -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
     align-items: center;
     -webkit-align-items: center;
     font-size: 18px;
@@ -263,7 +263,7 @@ form .bottom_row a {
 
     &.page_name {
         .prefix {
-            @include osbold;
+            @include ossemibold;
             align-self: center;
             -webkit-align-self: center;
             padding-bottom: 20px;
@@ -1252,14 +1252,7 @@ form .bottom_row a {
 }
 
 .tooltip_icon {
-    padding-left: 10px;
-    align-self: flex-start;
-    -webkit-align-self: flex-start;
-    margin-top: -16px;
 
-    @media screen and (max-width: 768px) {
-        padding-left: 5px;
-    }
 
     &:hover {
         cursor: help;

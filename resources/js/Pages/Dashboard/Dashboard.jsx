@@ -324,9 +324,14 @@ function Dashboard({
                                                         <PageName
                                                             pageNames={allPageNames}
                                                         />
-                                                        <div className="flex w-full">
-                                                            <div className="setting_wrap w-full">
-                                                                <h3 className="label">Main Image</h3>
+                                                        <div className="flex w-full mb-10">
+                                                            <div className="w-full">
+                                                                <div className="section_title w-full flex justify-start gap-2">
+                                                                    <h4>Main Image</h4>
+                                                                    { (!completedCrop.header_img && !completedCrop.page_img) &&
+                                                                        <ToolTipIcon section="main_image" />
+                                                                    }
+                                                                </div>
                                                                 { (!completedCrop.header_img && !completedCrop.page_img) &&
                                                                     <RadioComponent
                                                                         setRadioValue={setImageType}
@@ -360,21 +365,26 @@ function Dashboard({
                                                                     }}
                                                                 />
                                                             </div>
-                                                            { (!completedCrop.header_img && !completedCrop.page_img) &&
-                                                                <ToolTipIcon section="main_image" />
-                                                            }
+
                                                         </div>
-                                                        <div className="w-full flex">
+                                                        <div className="w-full flex mb-10">
                                                             <div className="setting_wrap w-full">
-                                                                <h3 className="label mb-2">Profile Image</h3>
-                                                                <SwitchComponent
-                                                                    setSwitchValue={setProfileImgActive}
-                                                                    switchValue={profileImgActive}
-                                                                    pageId={pageSettings.id}
-                                                                    setPageSettings={setPageSettings}
-                                                                    elementName="profile_img_active"
-                                                                    label="Show/Hide Profile Image"
-                                                                />
+                                                                <div className="flex flex-between w-full">
+                                                                    <div className="section_title w-full flex justify-start gap-2">
+                                                                        <h4>Profile Image</h4>
+                                                                        { (!completedCrop.header_img && !completedCrop.page_img) &&
+                                                                            <ToolTipIcon section="profile_img" />
+                                                                        }
+                                                                    </div>
+                                                                    <SwitchComponent
+                                                                        setSwitchValue={setProfileImgActive}
+                                                                        switchValue={profileImgActive}
+                                                                        pageId={pageSettings.id}
+                                                                        setPageSettings={setPageSettings}
+                                                                        elementName="profile_img_active"
+                                                                        hoverText="Show/Hide Profile Image"
+                                                                    />
+                                                                </div>
                                                                 <ImageUploader
                                                                     ref={nodesRef}
                                                                     completedCrop={completedCrop}
@@ -389,10 +399,6 @@ function Dashboard({
                                                                     }}
                                                                 />
                                                             </div>
-
-                                                            { (!completedCrop.header_img && !completedCrop.page_img) &&
-                                                                <ToolTipIcon section="profile_img" />
-                                                            }
                                                         </div>
 
                                                         <PageSettingComponent

@@ -45,14 +45,25 @@ const PageSettingComponent = ({
 
     return (
 
-        <div className="edit_form">
-            <form onSubmit={handleSubmit}>
+        <div className="edit_form !mb-10">
+            <div className="section_title w-full flex justify-between items-baseline gap-2">
+                <div  className="flex items-center justify-start gap-2">
+                    <h4 className="capitalize">Page {element}</h4>
+                    <ToolTipIcon section={element} />
+                </div>
+                <div className="info_text">
+                    <p className="char_count">
+                       <span className="count"> {charactersLeft} </span> / {maxChar}
+                    </p>
+                </div>
+            </div>
+            <form className="w-full" onSubmit={handleSubmit}>
                 <input
                     className="active"
                     maxLength={maxChar}
                     name={element}
                     type="text"
-                    placeholder={`Add ${capitalize(element)}`}
+                    placeholder={`Add ${element}`}
                     defaultValue={pageSettings[element] || ""}
                     onChange={(e) => handleChange(e) }
                     onKeyDown={ event => {
@@ -63,33 +74,26 @@ const PageSettingComponent = ({
                     }
                        onBlur={(e) => handleSubmit(e)}
                 />
-                <label htmlFor={element} >Page {capitalize(element)}</label>
                 {charactersLeft < maxChar ?
                     <a className="submit_circle" href="#"
                        onClick={(e) => handleSubmit(e)}
                     >
                         <FiThumbsUp />
-                        <div className="hover_text submit_button"><p>Submit {capitalize(element)} Text</p></div>
+                        <div className="hover_text submit_button"><p className="uppercase">Submit {element} Text</p></div>
                     </a>
                     :
                     <span className="cancel_icon">
                         <FiThumbsDown />
                     </span>
                 }
-                <div className="my_row info_text title">
-                    <p className="char_max">Max {maxChar} Characters</p>
-                    <p className="char_count">
-                        {charactersLeft < 0 ?
+                {charactersLeft < 0 &&
+                    <div className="my_row info_text title">
+                        <p className="char_count">
                             <span className="over">Over Character Limit</span>
-                            :
-                            <>
-                                Characters Left: <span className="count"> {charactersLeft} </span>
-                            </>
-                        }
-                    </p>
-                </div>
+                        </p>
+                    </div>
+                }
             </form>
-            <ToolTipIcon section={element} />
         </div>
 
     );

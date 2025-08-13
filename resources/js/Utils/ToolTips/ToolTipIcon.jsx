@@ -54,8 +54,8 @@ const ToolTipIcon = ({section}) => {
         const top = rect.top - 2;
         setInfoLocation({center, top});
 
-        const triangleTop = rect.top - 20;
-        const triangleLeft = rect.left - 1;
+        const triangleTop = rect.top - 25;
+        const triangleLeft = rect.left - 5;
         triangleRef.style.top = `${triangleTop}px`;
         triangleRef.style.bottom = `${rect.bottom}px`;
         triangleRef.style.left = `${triangleLeft}px`;
@@ -97,7 +97,7 @@ const ToolTipIcon = ({section}) => {
         <div
             className="tooltip_icon"
         >
-            <div className="icon_wrap"
+            <div className="icon_wrap relative"
                  onMouseLeave={() => {
                      handleMouseLeave()
                  }}
@@ -107,7 +107,13 @@ const ToolTipIcon = ({section}) => {
                  onMouseOver={(e) => handleMouseOver(e)}
                  data-section={section}
             >
-                <BiHelpCircle />
+                <span
+                    className="h-6 w-6 grid place-items-center rounded-full border border-gray-300 text-gray-500
+                   hover:text-indigo-600 hover:border-indigo-300 focus:outline-none focus:ring-2
+                   focus:ring-indigo-200 transition"
+                >
+                    ?
+                </span>
             </div>
 
         </div>

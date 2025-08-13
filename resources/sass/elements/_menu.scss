@@ -1,4 +1,5 @@
 @use "../partials/variables" as *;
+@use "../partials/mixins" as *;
 
 #off_canvas_menu {
 
@@ -130,12 +131,27 @@
 
         .menu {
             width: 100%;
-            padding-top: 15px;
+            padding: 3rem 0;
+            height: 100%;
 
             ul {
                 list-style: none;
                 padding: 0;
                 margin: 0;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                -ms-flex-wrap: nowrap;
+                flex-wrap: nowrap;
+                height: 100%;
+                justify-content: space-between;
+                -webkit-justify-content: space-between;
+                align-items: center;
+                -webkit-align-items: center;
 
                 li {
                     display: block;
@@ -143,36 +159,34 @@
                     position: relative;
 
                     .hover_text {
-                        top: 50%;
+                        top: 45%;
                         opacity: 1;
                         width: auto;
                         transform: translateY(-10px);
                         -ms-transform: translateY(-10px);
-                        border-bottom-left-radius: 0;
-                        -webkit-border-bottom-left-radius: 0;
-                        border-top-left-radius: 0;
-                        -webkit-border-top-left-radius: 0;
-                        border-top-right-radius: 2px;
-                        -webkit-border-top-right-radius: 2px;
-                        border-bottom-right-radius: 2px;
-                        -webkit-border-bottom-right-radius: 2px;
-
+                        border-radius: 4px;
+                        -webkit-border-radius: 4px;
+                        box-shadow: 1px 1px 5px 1px rgba(170, 170, 170, 0.5);
+                        -webkit-box-shadow: 1px 1px 5px 1px rgba(170, 170, 170, 0.5);
 
                         p {
-                            font-size: .9em;
+                            font-size: .8em;
+                            background: $blue;
+                            color: $white;
+                            padding: 5px 10px;
                         }
 
                         &:before {
                             content: "";
                             position: absolute;
                             display: inline-block;
-                            bottom: 0;
-                            left: -10px;
+                            bottom: 4px;
+                            left: -3px;
                             width: 0;
                             height: 0;
                             border-style: solid;
-                            border-width: 12px 12px 12px 0;
-                            border-color: transparent #eaeaea transparent transparent;
+                            border-width: 10px 8px 10px 0;
+                            border-color: transparent $blue transparent transparent;
                         }
                     }
 
@@ -190,7 +204,7 @@
                         -webkit-align-items: center;
                         color: $white;
                         width: 100%;
-                        padding: 20px 20px 20px 80px;
+                        padding: 0 20px 0 80px;
                         font-size: 1.3rem;
 
                         @media screen and (max-width: 768px) {
@@ -208,7 +222,7 @@
                             column-gap: 20px;
                             -webkit-column-gap: 20px;
                             -moz-column-gap: 20px;
-                            padding: 20px;
+                            padding: 0 20px;
                         }
 
                         .menu_icon {
@@ -235,6 +249,36 @@
                             }
                         }
 
+                        &:hover, &.active {
+                            color: $lightBlue;
+
+                            .menu_icon {
+                                color: $lightBlue;
+                            }
+
+                            /*&:after {
+                                content: '';
+                                width: 5px;
+                                height: 50px;
+                                background: $lightBlue;
+                                display: block;
+                                position: absolute;
+                                right: 0;
+                            }*/
+                        }
+
+                        &.active {
+                            &:after {
+                                content: '';
+                                width: 5px;
+                                height: 50px;
+                                background: $lightBlue;
+                                display: block;
+                                position: absolute;
+                                right: 0;
+                            }
+                        }
+
                         .text {
                             transition: margin-left ease-in-out 800ms;
                             -moz-transition: margin-left ease-in-out 800ms;
@@ -249,7 +293,6 @@
 
         .menu_bottom {
             margin-top: auto;
-            margin-bottom: 40px;
             border-top: 1px solid;
             border-color: rgba(255,255,255,.2);
 

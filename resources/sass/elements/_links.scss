@@ -58,6 +58,15 @@
         .top_section {
             padding: 0 5%;
 
+            .section_title {
+                margin-bottom: 10px;
+
+                h4 {
+                    @include ossemibold;
+                    font-size: 1.2rem;
+                }
+            }
+
             .layouts_wrap {
                 display: -webkit-box;
                 display: -ms-flexbox;
@@ -945,28 +954,6 @@
     }
 }
 
-.setting_wrap {
-    position: relative;
-    border: 1px solid $borderGray;
-    border-radius: 10px;
-    display: inline-block;
-    padding: 25px 20px 20px;
-    margin-bottom: 30px;
-
-    h3.label {
-        font-size: 14px;
-        color: rgba(155, 155, 155, 0.6);
-        position: absolute;
-        top: -12px;
-        background: $white;
-    }
-
-    .tooltip_icon {
-        position: absolute;
-        right: 0;
-        top: -22px;
-    }
-}
 .link_row {
     display: -webkit-box;
     display: -ms-flexbox;
