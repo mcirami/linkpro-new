@@ -339,14 +339,6 @@ function Dashboard({
                                                                         pageId={pageSettings.id}
                                                                         setPageSettings={setPageSettings}
                                                                         elementName="main_img_type"
-                                                                        label={{
-                                                                            header: "Header Only",
-                                                                            page: "Full Page"
-                                                                        }}
-                                                                        radioValues={[
-                                                                            "header",
-                                                                            "page"
-                                                                        ]}
                                                                     />
                                                                 }
 

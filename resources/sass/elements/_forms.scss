@@ -798,19 +798,9 @@ form .bottom_row a {
                 border-color: rgba(155, 155, 155, .1);
 
                 a {
-                    color: $darkText;
-                    font-size: 0.8rem;
-                    padding: 20px;
-                    text-transform: uppercase;
-                    margin-bottom: -1px;
                     border-bottom: 3px solid transparent;
 
-                    &.active {
-                        border-bottom: 3px solid $blue;
-                        color: $blue;
-                    }
-
-                    &:not(.active) {
+                    &.text-gray-800 {
 
                         &:hover {
                             color: $blue;
