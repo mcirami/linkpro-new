@@ -45,11 +45,11 @@ const RadioComponent = ({
             <div
                 role="tablist"
                 aria-label="Main image size"
-                className="overflow-hidde relative inline-flex w-full select-none rounded-xl border border-gray-200 bg-white p-2 shadow-sm"
+                className="overflow-hidden max-w-xs relative inline-flex w-full select-none rounded-xl border border-gray-200 bg-white p-2 shadow-sm"
             >
                 {/* Sliding pill */}
                 <span
-                    className={`pointer-events-none absolute inset-y-0 left-0 w-1/2 rounded-lg
+                    className={`absolute inset-y-0 left-0 w-1/2 rounded-lg
                     bg-[#424fcf] shadow transition-transform duration-300 ease-out
                   ${selected === radioValues[1] ? 'translate-x-full' : 'translate-x-0'}`}
                     aria-hidden="true"
