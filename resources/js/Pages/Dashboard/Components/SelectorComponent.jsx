@@ -5,6 +5,7 @@ export default function SelectorComponent({
                                               onChange,
                                               commit,
                                               options,
+                                              size = null,
                                               color = "#424fcf",
 }) {
     const idx = useMemo(
@@ -28,7 +29,7 @@ export default function SelectorComponent({
         <div
             role="tablist"
             aria-label="Segmented control"
-            className={`relative inline-flex w-full ${options.length > 2 ? "max-w-xl" : "max-w-xs"} rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden`}
+            className={`animated_tabs relative inline-flex w-full ${size} rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden`}
             onKeyDown={onKeyDown}
         >
             {/* Sliding pill */}

@@ -11,6 +11,8 @@ import {FolderLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
 import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import ImageUploader
     from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
+import SelectorComponent
+    from '@/Pages/Dashboard/Components/SelectorComponent.jsx';
 
 const IconList = ({
                       setCharactersLeft,
@@ -41,6 +43,27 @@ const IconList = ({
 
     const [activeIcon, setActiveIcon] = useState(null)
 
+    const [iconTabs, setIconTabs] = useState([]);
+    const [selected, setSelected] = useState(showIconList.type);
+
+    console.log("showIconList.type", showIconList.type)
+    useEffect(() => {
+        const optionsArray = [];
+        if(editLink.type !== "offer") {
+            optionsArray.push({
+                value: "standard",
+                label: "Standard Icons",
+            });
+        }
+
+        optionsArray.push({
+            value: "custom",
+            label: "Custom Icons"
+        })
+
+        setIconTabs(optionsArray);
+    },[])
+
     useEffect(() => {
 
         if (editLink.type === "offer" && showFormTab === "offers") {
@@ -56,16 +79,19 @@ const IconList = ({
                 ...prev,
                 type: "custom",
             }))
+            setSelected("custom");
         } else if (editLink.type === "offer") {
             setShowIconList((prev) => ({
                 ...prev,
                 type: "offers",
             }))
+            setSelected("offers");
         } else {
             setShowIconList((prev) => ({
                 ...prev,
                 type: "standard",
             }))
+            setSelected("standard");
         }
     },[editLink])
 
@@ -299,6 +325,7 @@ const IconList = ({
             type: type,
         }))
         setActiveIcon(null);
+        setSelected(type);
     },[]);
 
 
@@ -323,7 +350,14 @@ const IconList = ({
                     <div className="custom_icons">
                         {showFormTab !== "offers" &&
                             <div className="form_nav icons relative">
-                                {editLink.type !== "offer" &&
+                                <SelectorComponent
+                                    value={selected}
+                                    onChange={setSelected}
+                                    commit={handleTabClick}
+                                    options={iconTabs}
+                                    size="max-w-xl"
+                                />
+                                {/*{editLink.type !== "offer" &&
                                     <div className="relative">
                                         <a className={`relative block tab_link
                                         ${showIconList.type === "standard" && "active"}`}
@@ -345,7 +379,7 @@ const IconList = ({
                                        }}>
                                         Custom Icons
                                     </a>
-                                </div>
+                                </div>*/}
                             </div>
                         }
 

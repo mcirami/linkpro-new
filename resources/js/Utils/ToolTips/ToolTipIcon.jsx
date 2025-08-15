@@ -8,6 +8,7 @@ const ToolTipIcon = ({section}) => {
     const {
         setInfoText,
         setInfoTextOpen,
+        infoLocation,
         setInfoLocation,
         infoClicked,
         setInfoClicked,
@@ -49,17 +50,18 @@ const ToolTipIcon = ({section}) => {
         setInfoText(dataText);
         setInfoTextOpen(true);
 
+        const windowWidth = window.innerWidth;
         const rect = e.target.getBoundingClientRect();
         const center = (rect.left + rect.right) / 2;
-        const top = rect.top - 2;
+        const top = windowWidth < 850 ? rect.top - 2 : rect.top + 10;
         setInfoLocation({center, top});
 
-        const triangleTop = rect.top - 25;
-        const triangleLeft = rect.left - 5;
+        const triangleTop = windowWidth < 850 ? rect.top - 25 : rect.top;
+        const triangleLeft = windowWidth < 850 ? rect.left - 5 : rect.left + 38;
         triangleRef.style.top = `${triangleTop}px`;
         triangleRef.style.bottom = `${rect.bottom}px`;
         triangleRef.style.left = `${triangleLeft}px`;
-        triangleRef.style.right = `${rect.right}px`;
+        //triangleRef.style.right = `${rect.right}px`;
     }
 
     const handleClick = (e) => {
@@ -77,9 +79,10 @@ const ToolTipIcon = ({section}) => {
         setInfoText(dataText);
         setInfoTextOpen(true);
 
+        const windowWidth = window.innerWidth;
         const rect = e.target.getBoundingClientRect();
         const center = (rect.left + rect.right) / 2;
-        const top = rect.top - 2;
+        const top = windowWidth < 850 ? rect.top - 2 : rect.top;
         setInfoLocation({center, top});
 
         if (infoClicked === false) {

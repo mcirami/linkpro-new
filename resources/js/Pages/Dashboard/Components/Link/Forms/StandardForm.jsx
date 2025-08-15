@@ -24,11 +24,11 @@ import FormTabs from '@/Pages/Dashboard/Components/Link/Forms/FormTabs.jsx';
 import IconSettingComponent
     from '@/Pages/Dashboard/Components/Link/Forms/IconSettingComponent.jsx';
 import {capitalize} from 'lodash';
-import {IoCloseSharp} from 'react-icons/io5';
 import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import {getIcons} from '@/Services/IconRequests.jsx';
 import {getIconPaths} from '@/Services/ImageService.jsx';
 import MailChimp from '@/Pages/Dashboard/Components/Link/Forms/Mailchimp/MailChimp.jsx';
+import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon.jsx';
 
 const StandardForm = ({
                           editLink,
@@ -243,7 +243,12 @@ const StandardForm = ({
     }
 
     return (
-         (affiliateStatus !== "approved" || !affiliateStatus) && editLink.type === "offer" ?
+        <>
+        <div className="close_wrap w-full text-center">
+            <a className="close_button uppercase" href="#" onClick={(e) => handleCloseForm(e)}><small>close</small></a>
+        </div>
+
+            {(affiliateStatus !== "approved" || !affiliateStatus) && editLink.type === "offer" ?
             showTerms ?
                 <div className="aff_terms">
                     <h3>Terms and Conditions</h3>
@@ -283,9 +288,6 @@ const StandardForm = ({
                 <div className={`form_content w-full ${showFormTab === "integration" ? 'pb-5' : ""}`}>
                     {!imageSelected &&
                         <>
-                        <div className="close_button absolute right-5 top-5 z-10">
-                            <a className="hide_button" href="#" onClick={(e) => handleCloseForm(e)}><IoCloseSharp/></a>
-                        </div>
                         <FormTabs
                             showFormTab={showFormTab}
                             setShowFormTab={setShowFormTab}
@@ -338,16 +340,19 @@ const StandardForm = ({
                         <div className="link_form form_nav_content">
                             {(pageSettings.page_layout === "layout_two" && !imageSelected) &&
                                     <div className="switch_wrap w-full flex justify-between">
-                                        <p className="label">Show/Hide Icon</p>
+                                        <div className="section_title w-full flex justify-start gap-2 !mb-0">
+                                            <h4>Icon</h4>
+                                            <ToolTipIcon section="icon_status" />
+                                        </div>
                                         <IOSSwitch
                                             onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "icon_active")}
                                             checked={Boolean(editLink.icon_active)}
                                         />
-                                        {/*<div className="hover_text switch">
+                                        <div className="hover_text switch">
                                             <p>
                                                 {Boolean(editLink.icon_active) ? "Hide" : "Show"} Icon
                                             </p>
-                                        </div>*/}
+                                        </div>
                                     </div>
                             }
                             { (editLink.type !== "offer" &&
@@ -357,7 +362,10 @@ const StandardForm = ({
                             ) ?
                                 <div className="my_row form_nav_content input_types pt-5">
                                     <div className="setting_wrap w-full !mb-4">
-                                        <h3 className="label">Link Type</h3>
+                                        <div className="section_title w-full flex justify-start gap-2 !mb-4">
+                                            <h4>Link Type</h4>
+                                            <ToolTipIcon section="link_type" />
+                                        </div>
                                         <InputTypeRadio
                                             editLink={editLink}
                                             setEditLink={setEditLink}
@@ -473,6 +481,8 @@ const StandardForm = ({
                     }
                 </div>
             </>
+            }
+        </>
     );
 };
 

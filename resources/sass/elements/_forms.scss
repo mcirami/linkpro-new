@@ -277,9 +277,26 @@ form .bottom_row a {
         background: $white;
     }
 
-    .hide_button {
-        font-size: 1.8rem;
+    .close_wrap {
+        border-top: 1px solid $borderGray;
+
+        .close_button {
+            @include osbold;
+            font-size: 1rem;
+            position: absolute;
+            z-index: 1 ;
+            color: $borderGray;
+            top: -14px;
+            background: $white;
+            left: 50%;
+            transform: translateX(-20px);
+
+            &:hover {
+                color: $darkGray;
+            }
+        }
     }
+
 
     form {
         width: 100%;
@@ -441,7 +458,6 @@ form .bottom_row a {
         &.popup,
         &.link {
             margin-bottom: 0;
-            border-top: 1px solid $borderGray;
 
             .input_wrap {
                 position: relative;
@@ -521,8 +537,6 @@ form .bottom_row a {
 
                     .custom_icons {
                         width: 82%;
-                        border-left: 1px solid $borderGray;
-                        margin: 10px 0 0;
 
                         @media all and (max-width: 1300px) and (min-width: 993px) {
                             width: 73%;
@@ -539,7 +553,13 @@ form .bottom_row a {
                             width: 68%;
                         }
 
+                        .animated_tabs {
+                            border-top: 0 !important;
+                            border-right: 0 !important;
+                        }
+
                         .icons_wrap.inner {
+                            --n: 6;
                             overflow-y: scroll;
                             height: 190px;
                             border-left: 1px solid $borderGray;
@@ -547,6 +567,12 @@ form .bottom_row a {
                             -webkit-justify-content: flex-start;
                             align-items: flex-start;
                             -webkit-align-items: flex-start;
+                            margin-top: 10px;
+                            padding-top: 0;
+
+                            .icon_col {
+                                margin-bottom: 0;
+                            }
                         }
                     }
 
@@ -560,7 +586,7 @@ form .bottom_row a {
                     }
 
                     .default_icon.icon_col {
-                        width: 16%;
+                        width: 18%;
                         flex-direction: column !important;
                         -webkit-flex-direction: column !important;
                         -ms-flex-direction: column !important;
@@ -794,19 +820,13 @@ form .bottom_row a {
                 flex-wrap: nowrap;
                 width: 100%;
                 background: #fff;
-                border-bottom: .09rem solid;
-                border-color: rgba(155, 155, 155, .1);
+                padding: 20px 20px 0 20px;
+
+                .max-w-xs {
+                    max-width: 50% !important;
+                }
 
                 a {
-                    border-bottom: 3px solid transparent;
-
-                    &.text-gray-800 {
-
-                        &:hover {
-                            color: $blue;
-                            border-bottom: 3px solid $blue;
-                        }
-                    }
 
                     &.disabled {
                         background: $gray;
@@ -828,14 +848,6 @@ form .bottom_row a {
                 }
             }
 
-            .switch_wrap {
-                padding: 15px 20px;
-                border: 1px solid $borderGray;
-                border-radius: 10px;
-                -webkit-border-radius: 10px;
-                -moz-border-radius: 10px;
-            }
-
             .form_nav_content {
                 p.label {
                     @include ossemibold;
@@ -853,6 +865,11 @@ form .bottom_row a {
 
                 .image_wrap {
                     border: 2px solid $black;
+                }
+
+                .switch_wrap {
+                    border-bottom: 1px solid rgba(209, 213, 219, .4);
+                    padding-bottom: 15px;
                 }
 
                 .ReactCrop img {
@@ -1007,10 +1024,6 @@ form .bottom_row a {
             min-height: 660px;
         }
 
-        &.link {
-            border-top: none;
-        }
-
         &.password {
             margin-bottom: 0;
             width: 100%;
@@ -1146,7 +1159,6 @@ form .bottom_row a {
     -webkit-justify-content: space-between;
     align-items: center;
     -webkit-align-items: center;
-    border-top: 1px solid $borderGray;
     padding-top: 20px;
 
 
@@ -1483,5 +1495,22 @@ form .bottom_row a {
         column-gap: 20px;
         -moz-column-gap: 20px;
         -webkit-column-gap: 20px;
+    }
+}
+
+.animated_tabs {
+    a {
+        border-bottom: 3px solid transparent;
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+
+        &.text-gray-800 {
+
+            &:hover {
+                color: $blue;
+                border-bottom: 3px solid $blue;
+            }
+        }
     }
 }

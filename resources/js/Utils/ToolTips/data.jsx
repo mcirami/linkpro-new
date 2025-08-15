@@ -69,6 +69,22 @@ const hoverText = [
         ]
     },
     {
+        section: 'icon_status',
+        text: [
+            {
+                description: 'You can choose to hide the icon on the button to create a different style. You can have an all text button or an icon with text to add more of a style to your button',
+            }
+        ]
+    },
+    {
+        section: 'link_type',
+        text: [
+            {
+                description: 'Select a link type to either open to a URL, automatically open an email app when clicked with the email address filled in, or set as a phone number to automatically dial when clicked.',
+            }
+        ]
+    },
+    {
         section: 'creator_active',
         text: [
             {
