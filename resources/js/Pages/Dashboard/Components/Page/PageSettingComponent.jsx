@@ -79,7 +79,9 @@ const PageSettingComponent = ({
                        onClick={(e) => handleSubmit(e)}
                     >
                         <FiThumbsUp />
-                        <div className="hover_text submit_button"><p className="uppercase">Submit {element} Text</p></div>
+                        <div className="hover_text submit_button">
+                            <p>Submit {element} Text</p>
+                        </div>
                     </a>
                     :
                     <span className="cancel_icon">

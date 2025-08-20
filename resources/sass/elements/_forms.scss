@@ -576,15 +576,6 @@ form .bottom_row a {
                         }
                     }
 
-                    p {
-                        text-transform: uppercase;
-                        width: 100%;
-                        font-size: 11px;
-                        padding: 10px 5px;
-                        text-align: center;
-                        margin-bottom: 5px;
-                    }
-
                     .default_icon.icon_col {
                         width: 18%;
                         flex-direction: column !important;
@@ -609,6 +600,9 @@ form .bottom_row a {
 
                         p:first-child {
                             border-bottom: 1px solid $borderGray;
+                            padding: 10px 5px;
+                            margin-bottom: 5px;
+                            font-size: .8rem;
                         }
 
                         img {

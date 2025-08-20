@@ -83,7 +83,7 @@ const LayoutOne = ({
                             />
                             <div className="hover_text switch">
                                 <p>
-                                    {Boolean(active_status) ? "Disable" : "Enable"}
+                                    {Boolean(active_status) ? "Disable " : "Enable "}
                                     {type === "folder" ? "Folder" : "Icon"}
                                 </p>
                             </div>

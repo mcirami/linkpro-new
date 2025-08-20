@@ -35,7 +35,13 @@ function CreatorCenter({offers, landingPage}) {
             <Head title="Creator Center" />
 
             <div className="container">
-                <h2 className="page_title">Creator Center</h2>
+                <div className="px-6 pt-6">
+                    <div className="flex items-center">
+                        <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">Creator Center</h1>
+                    </div>
+                    <p className="mt-1 text-sm text-gray-500">Your hub for all your course landing pages. Change status, make public, or navigate to edit or add a new.</p>
+                    <div className="mt-3 border-b border-gray-100"></div>
+                </div>
                 <section id="creator_center" className="card edit_page">
                     <ToolTipContextProvider value={{
                         infoText,

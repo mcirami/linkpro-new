@@ -133,8 +133,8 @@ const LayoutTwo = ({
                         />
                         <div className="hover_text switch">
                             <p>
-                                {Boolean(active_status) ? "Disable" : "Enable"}
-                                {type === "folder" ? "Folder" : "Icon"}
+                                {Boolean(active_status) ? "Disable " : "Enable "}
+                                Button
                             </p>
                         </div>
                     </div>

@@ -253,19 +253,25 @@ function Dashboard({
         <AuthenticatedLayout>
             <Head title="Dashboard" />
             <div className="container">
-
-                <h2 className="page_title">Pages</h2>
+                <div className="px-6 pt-6">
+                    <div className="flex items-center">
+                        <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">Pages</h1>
+                    </div>
+                    <p className="mt-1 text-sm text-gray-500">Manage your public page title, images, and layout.</p>
+                    <div className="mt-3 border-b border-gray-100"></div>
+                </div>
                 <section className="card edit_page">
                     <div id="links_page">
                         <div className="my_row page_wrap">
 
-                            { (showLoader.show && showLoader.position === "fixed") &&
+                            {(showLoader.show && showLoader.position ===
+                                    'fixed') &&
                                 <Loader
                                     showLoader={showLoader}
                                 />
                             }
 
-                            <SetFlash />
+                            <SetFlash/>
 
                             {showUpgradePopup.show &&
                                 <UpgradePopup
@@ -280,8 +286,14 @@ function Dashboard({
                                     setShowMessageAlertPopup={setShowMessageAlertPopup}
                                 />
                             }
-                            <UserLinksContext.Provider value={{userLinks, dispatch }} >
-                                <FolderLinksContext.Provider value={{ folderLinks, dispatchFolderLinks}} >
+                            <UserLinksContext.Provider value={{
+                                userLinks,
+                                dispatch
+                            }}>
+                                <FolderLinksContext.Provider value={{
+                                    folderLinks,
+                                    dispatchFolderLinks
+                                }}>
 
                                     {showConfirmPopup.show &&
                                         <ConfirmPopup
@@ -328,11 +340,13 @@ function Dashboard({
                                                             <div className="w-full">
                                                                 <div className="section_title w-full flex justify-start gap-2">
                                                                     <h4>Main Image</h4>
-                                                                    { (!completedCrop.header_img && !completedCrop.page_img) &&
-                                                                        <ToolTipIcon section="main_image" />
+                                                                    {(!completedCrop.header_img &&
+                                                                            !completedCrop.page_img) &&
+                                                                        <ToolTipIcon section="main_image"/>
                                                                     }
                                                                 </div>
-                                                                { (!completedCrop.header_img && !completedCrop.page_img) &&
+                                                                {(!completedCrop.header_img &&
+                                                                        !completedCrop.page_img) &&
                                                                     <RadioComponent
                                                                         setRadioValue={setImageType}
                                                                         radioValue={imageType}
@@ -348,11 +362,19 @@ function Dashboard({
                                                                     setCompletedCrop={setCompletedCrop}
                                                                     setShowLoader={setShowLoader}
                                                                     imageType={imageType}
-                                                                    elementName={imageType === "header" ? "header_img" : "page_img"}
+                                                                    elementName={imageType ===
+                                                                    "header" ?
+                                                                        "header_img" :
+                                                                        "page_img"}
                                                                     label="Main Image"
                                                                     cropSettings={{
                                                                         unit: '%',
-                                                                        aspect: imageType === "header" ? 16 / 9 : 6 / 8,
+                                                                        aspect: imageType ===
+                                                                        "header" ?
+                                                                            16 /
+                                                                            9 :
+                                                                            6 /
+                                                                            8,
                                                                         width: 30
                                                                     }}
                                                                 />
@@ -364,8 +386,9 @@ function Dashboard({
                                                                 <div className="flex flex-between w-full">
                                                                     <div className="section_title w-full flex justify-start gap-2">
                                                                         <h4>Profile Image</h4>
-                                                                        { (!completedCrop.header_img && !completedCrop.page_img) &&
-                                                                            <ToolTipIcon section="profile_img" />
+                                                                        {(!completedCrop.header_img &&
+                                                                                !completedCrop.page_img) &&
+                                                                            <ToolTipIcon section="profile_img"/>
                                                                         }
                                                                     </div>
                                                                     <SwitchComponent
@@ -374,7 +397,7 @@ function Dashboard({
                                                                         pageId={pageSettings.id}
                                                                         setPageSettings={setPageSettings}
                                                                         elementName="profile_img_active"
-                                                                        hoverText="Show/Hide Profile Image"
+                                                                        hoverText="Profile Image"
                                                                     />
                                                                 </div>
                                                                 <ImageUploader
@@ -414,29 +437,33 @@ function Dashboard({
                                                             <PreviewButton setShowPreview={setShowPreview}/>
                                                         }
 
-                                                        { (userSub && !subStatus) &&
+                                                        {(userSub &&
+                                                                !subStatus) &&
                                                             <DowngradeAlert/>
                                                         }
                                                     </div>
 
-                                                    {editLink.id || editLink.folder_id ?
+                                                    {editLink.id ||
+                                                    editLink.folder_id ?
                                                         <div className="my_row icon_links" id="scrollTo">
-                                                            { (editLink.folder_id) &&
+                                                            {(editLink.folder_id) &&
                                                                 <div className="links_row">
                                                                     <div>
                                                                         <a className="back uppercase text-blue-800" href="#"
                                                                            onClick={(e) => {
                                                                                e.preventDefault();
-                                                                               setEditLink({
-                                                                                   id: null,
-                                                                                   type: null,
-                                                                                   inputType: null,
-                                                                                   folder_id: null
-                                                                               })
-                                                                               setFormRow(null)
+                                                                               setEditLink(
+                                                                                   {
+                                                                                       id: null,
+                                                                                       type: null,
+                                                                                       inputType: null,
+                                                                                       folder_id: null
+                                                                                   })
+                                                                               setFormRow(
+                                                                                   null)
                                                                            }}
                                                                         >
-                                                                            <BiChevronLeft />
+                                                                            <BiChevronLeft/>
                                                                             All Icons
                                                                         </a>
                                                                     </div>
@@ -465,7 +492,9 @@ function Dashboard({
                                                     }
 
                                                     <div className="my_row link_row">
-                                                        <div className={`add_content_links ${pageSettings.page_layout === "layout_two" && "!border-0" } `}>
+                                                        <div className={`add_content_links ${pageSettings.page_layout ===
+                                                        "layout_two" &&
+                                                        "!border-0"} `}>
                                                             <div className="add_more_link">
                                                                 <AddLink
                                                                     setShowLinkTypeRadio={setShowLinkTypeRadio}
@@ -473,7 +502,9 @@ function Dashboard({
                                                                     setShowUpgradePopup={setShowUpgradePopup}
                                                                 />
                                                             </div>
-                                                            {(pageSettings.page_layout === "layout_one" && !editLink.folder_id) &&
+                                                            {(pageSettings.page_layout ===
+                                                                    "layout_one" &&
+                                                                    !editLink.folder_id) &&
                                                                 <div className="add_more_link">
                                                                     <AddFolder
                                                                         subStatus={subStatus}
@@ -494,7 +525,7 @@ function Dashboard({
                                                         />
                                                     }
 
-                                                    { (editLink.folder_id &&
+                                                    {(editLink.folder_id &&
                                                         !showLinkTypeRadio
                                                     ) ?
 
@@ -514,24 +545,25 @@ function Dashboard({
 
                                                         :
 
-                                                        (!editLink.folder_id && !showLinkTypeRadio) &&
+                                                        (!editLink.folder_id &&
+                                                            !showLinkTypeRadio) &&
 
-                                                            <ErrorBoundary FallbackComponent={errorFallback} onError={myErrorHandler}>
-                                                                <Links
-                                                                    editLink={editLink}
-                                                                    setEditLink={setEditLink}
-                                                                    subStatus={subStatus}
-                                                                    setValue={setValue}
-                                                                    setShowUpgradePopup={setShowUpgradePopup}
-                                                                    pageLayoutRef={pageLayoutRef}
-                                                                    setShowConfirmPopup={setShowConfirmPopup}
-                                                                    setShowLoader={setShowLoader}
-                                                                    affStatus={affStatus}
-                                                                    connectionError={connectionError}
-                                                                    formRow={formRow}
-                                                                    setFormRow={setFormRow}
-                                                                />
-                                                            </ErrorBoundary>
+                                                        <ErrorBoundary FallbackComponent={errorFallback} onError={myErrorHandler}>
+                                                            <Links
+                                                                editLink={editLink}
+                                                                setEditLink={setEditLink}
+                                                                subStatus={subStatus}
+                                                                setValue={setValue}
+                                                                setShowUpgradePopup={setShowUpgradePopup}
+                                                                pageLayoutRef={pageLayoutRef}
+                                                                setShowConfirmPopup={setShowConfirmPopup}
+                                                                setShowLoader={setShowLoader}
+                                                                affStatus={affStatus}
+                                                                connectionError={connectionError}
+                                                                formRow={formRow}
+                                                                setFormRow={setFormRow}
+                                                            />
+                                                        </ErrorBoundary>
                                                     }
 
                                                 </div>

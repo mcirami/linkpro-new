@@ -244,10 +244,11 @@ const StandardForm = ({
 
     return (
         <>
-        <div className="close_wrap w-full text-center">
-            <a className="close_button uppercase" href="#" onClick={(e) => handleCloseForm(e)}><small>close</small></a>
-        </div>
-
+            {pageSettings.page_layout === "layout_two" &&
+                <div className="close_wrap w-full text-center">
+                    <a className="close_button uppercase" href="#" onClick={(e) => handleCloseForm(e)}><small>close</small></a>
+                </div>
+            }
             {(affiliateStatus !== "approved" || !affiliateStatus) && editLink.type === "offer" ?
             showTerms ?
                 <div className="aff_terms">
