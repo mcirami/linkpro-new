@@ -130,7 +130,7 @@ const IconSettingComponent = ({
 
     return (
         <>
-            <div className="input_wrap mt-2">
+            <div className="input_wrap mt-3 relative">
                 <input
                     className={`w-full ${editLink[elementName] ? "active" : ""}`}
                     name={elementName}
@@ -146,7 +146,7 @@ const IconSettingComponent = ({
                         }
                     }}
                 />
-                <label>{label}</label>
+                <label className="capitalize">{label}</label>
             </div>
             {(pageSettings.page_layout === "layout_one" && maxChar) &&
                 <div className="my_row info_text title">

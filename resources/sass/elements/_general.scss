@@ -139,24 +139,17 @@
 
     p {
         margin: 0;
-        font-size: .5em;
+        font-size: .8rem;
         padding: 2px 5px;
         border-radius: 5px;
         -webkit-border-radius: 5px;
         -moz-border-radius: 5px;
         color: $white;
+        text-transform: capitalize;
     }
 
     &.switch {
         top: -27px;
-
-        p {
-            font-size: 14px;
-
-            @media all and (min-width: 992px) and (max-width: 1199px) {
-                font-size: 1.2vw;
-            }
-        }
     }
 
     &.password {
@@ -170,14 +163,18 @@
         }
     }
 
-    &.edit_image, &.submit_button, &.switch {
-        top: -32px;
-        width: 150px;
-        right: -20px;
+    &.switch {
+        width: 100px;
+    }
 
-        p {
-            font-size: 14px;
-        }
+    &.edit_image, &.submit_button {
+        top: -32px;
+        width: 125px;
+        right: -20px;
+    }
+
+    &.switch.profile_img_active {
+        width: 150px;
     }
 
     &.icon_text {
@@ -657,13 +654,11 @@
         -webkit-justify-content: flex-end;
         top: -30px;
         right: 0;
-        //width: 200px;
+        width: 115px;
         z-index: -1;
 
         p {
             @include osregular;
-            font-size: 12px;
-            margin-left: auto;
             border: none;
         }
     }
@@ -741,6 +736,8 @@ a.delete {
 
     .hover_text {
         left: 0;
+        width: 50px;
+        z-index: 1;
     }
 
     svg {

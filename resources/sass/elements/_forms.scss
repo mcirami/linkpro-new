@@ -53,7 +53,8 @@ textarea,
 #cvv,
 #postal_code,
 select {
-    border: 1px solid $borderGray;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
@@ -63,12 +64,12 @@ select {
     position: relative;
     z-index: 2;
     color: $grayBlue;
+    border: none;
+    transition: all 500ms ease-in-out;
 
     &:focus {
-        border: 1px solid;
-        border-color: rgba(66, 79, 207, 0.4);
+        box-shadow: 0 1px 6px -1px rgba(0, 0, 0, 0.1), 0 0 10px -2px rgba(0, 0, 0, 0.1);
         outline: 0;
-        box-shadow: none;
     }
 
     ~ label {
@@ -106,6 +107,37 @@ select {
         border: 1px solid $red;
     }
 }
+.link_content {
+    input[type="text"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="email"], {
+        height: 35px;
+        padding: 5px 10px;
+        width: 50%;
+
+        ~ label {
+            font-size: .7rem;
+            top: 8px;
+            left: 15px;
+        }
+
+        &.active {
+            ~ label {
+                line-height: 1;
+                color: rgba(66, 79, 207, 0.5);
+                top: -6px;
+                left: 15px;
+                z-index: 3;
+            }
+        }
+
+        &:focus {
+            box-shadow: 0 1px 6px -1px rgba(0, 0, 0, 0.1), 0 0 10px -2px rgba(0, 0, 0, 0.1);
+        }
+    }
+}
+
 
 .radios_wrap {
     ~ label {

@@ -20,7 +20,7 @@ const DeleteIcon = ({
         <a className="delete" href="#"
            onClick={handleDeleteClick}>
             <MdDeleteForever />
-            <div className="hover_text delete_folder"><p>Delete {type === "folder" ? "Folder" : "Icon"}</p></div>
+            <div className="hover_text delete_folder"><p>Delete {type === "folder" ? "Folder" : "Button"}</p></div>
         </a>
     );
 };

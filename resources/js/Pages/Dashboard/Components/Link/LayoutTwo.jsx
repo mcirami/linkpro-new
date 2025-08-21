@@ -4,7 +4,6 @@ import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import DeleteIcon from '@/Pages/Dashboard/Components/Link/Forms/DeleteIcon.jsx';
 import IconSettingComponent
     from '@/Pages/Dashboard/Components/Link/Forms/IconSettingComponent.jsx';
-import {capitalize} from 'lodash';
 import {
     handleSwitchChange
 } from '@/Services/LinksRequest.jsx';
@@ -35,7 +34,7 @@ const LayoutTwo = ({
 
     return (
         <div className="link_content">
-            {displayIcon ?
+            {/*{displayIcon ?
                 <div className="icon_wrap"
                      onClick={(e) => {
                     handleOnClick(e, id, index + 1)
@@ -46,7 +45,7 @@ const LayoutTwo = ({
                 </div>
                 :
                 ""
-            }
+            }*/}
             <div className="left_col">
 
                 {isEditing.active && isEditing.section === "name" ?
@@ -57,10 +56,10 @@ const LayoutTwo = ({
                         isEditing={isEditing}
                         setIsEditing={setIsEditing}
                         elementName="name"
-                        label="Link Name"
+                        label="Button Text"
                     />
                     :
-                    <div className="flex gap-1 items-start">
+                    <div className="flex gap-1 items-start mb-2">
                         <h3>{name || "Enter Name"}</h3>
                         <span className="edit_icon edit_setting" onClick={(e) => {
                             setIsEditing({
@@ -72,9 +71,9 @@ const LayoutTwo = ({
                             });
                         }}>
                             <FaEdit />
-                           {/* <div className="hover_text edit_image">
+                            <div className="hover_text edit_image">
                                 <p>Edit Name</p>
-                            </div>*/}
+                            </div>
                         </span>
                     </div>
 
@@ -87,10 +86,10 @@ const LayoutTwo = ({
                         isEditing={isEditing}
                         setIsEditing={setIsEditing}
                         elementName={type}
-                        label={capitalize(type)}
+                        label={type}
                     />
                     :
-                    <div className="flex gap-1 items-start">
+                    <div className="flex gap-1 items-start mt-2">
                         <p>
                             {((type === "url" || type === "offer")) && (url || "Enter URL")}
                             {type === "email" && (email || "Enter Email")}
@@ -108,7 +107,7 @@ const LayoutTwo = ({
                             }}>
                                 <FaEdit />
                                 {/*<div className="hover_text edit_image">
-                                    <p>Edit {capitalize(type)}</p>
+                                    <p>Edit {type}</p>
                                 </div>*/}
                             </span>
                         }
@@ -123,7 +122,7 @@ const LayoutTwo = ({
                     }}>
                         <FaEdit />
                         <div className="hover_text edit_image">
-                            <p>Edit Icon</p>
+                            <p>Edit Button</p>
                         </div>
                     </span>
                     <div className="switch_wrap">
@@ -133,8 +132,7 @@ const LayoutTwo = ({
                         />
                         <div className="hover_text switch">
                             <p>
-                                {Boolean(active_status) ? "Disable " : "Enable "}
-                                Button
+                                {Boolean(active_status) ? "Disable " : "Enable "}Button
                             </p>
                         </div>
                     </div>

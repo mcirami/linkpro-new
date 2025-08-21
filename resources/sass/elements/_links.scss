@@ -335,7 +335,26 @@
                         -webkit-border-radius: 50px;
                         -moz-border-radius: 50px;
                     }
+                }
+            }
 
+            &.folder {
+                .column_content {
+                    &.open {
+                        &:after {
+                            content: '';
+                            position: absolute;
+                            bottom: -32px;
+                            left: -3px;
+                            border-left: 104px solid transparent;
+                            border-right: 104px solid transparent;
+                            border-top: 40px solid #fff;
+                            border-radius: 50px;
+                            -webkit-border-radius: 50px;
+                            -moz-border-radius: 50px;
+                        }
+
+                    }
                 }
             }
         }
@@ -637,9 +656,12 @@
                                 flex-wrap: wrap
                             }
 
-                            p, h3 {
-                                font-size: .9rem;
-                                word-break: break-word;
+                            .left_col {
+                                width: 100%;
+                                p, h3 {
+                                    font-size: .9rem;
+                                    word-break: break-word;
+                                }
                             }
 
                             a.delete {

@@ -38,10 +38,9 @@ const SwitchComponent = ({
                 checked={Boolean(switchValue)}
             />
             {hoverText &&
-                <div className="hover_text switch inline-block">
+                <div className={`hover_text switch inline-block ${elementName}`}>
                     <p>
-                        {Boolean(switchValue) ? "Disable " : "Enable "}
-                        {hoverText}
+                        {Boolean(switchValue) ? "Disable " : "Enable "}{hoverText}
                     </p>
                 </div>
             }
