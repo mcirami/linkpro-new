@@ -52,6 +52,8 @@ import SwitchComponent
     from '@/Pages/Dashboard/Components/Page/SwitchComponent.jsx';
 import LinkTypeRadio from '@/Pages/Dashboard/Components/Link/LinkTypeRadio.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
+import LivePageButton from '@/Pages/Dashboard/Components/LivePageButton.jsx';
+import PageHeader from '@/Components/PageHeader.jsx';
 
 function Dashboard({
                        message = null,
@@ -254,10 +256,12 @@ function Dashboard({
             <Head title="Dashboard" />
             <div className="container">
                 <div className="px-6 pt-6">
-                    <div className="flex items-center">
-                        <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">Pages</h1>
-                    </div>
-                    <p className="mt-1 text-sm text-gray-500">Manage your public page title, images, and layout.</p>
+                    <PageHeader
+                        heading="Pages"
+                        description="Manage your public page title, images, layout and links."
+                        pageName={pageSettings.name}
+                    />
+
                     <div className="mt-3 border-b border-gray-100"></div>
                 </div>
                 <section className="card edit_page">

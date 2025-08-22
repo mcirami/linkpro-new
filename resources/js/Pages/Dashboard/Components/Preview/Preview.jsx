@@ -16,7 +16,6 @@ import StoreProducts from '@/Components/LinkComponents/StoreProducts.jsx';
 import {UseLoadPreviewHeight, UseResizePreviewHeight} from '@/Services/PreviewHooks.jsx';
 import AdvancedIcon from '@/Components/LinkComponents/AdvancedIcon.jsx';
 //import IconDescription from '@/Components/LinkComponents/IconDescription.jsx';
-import LivePageButton from '@/Pages/Dashboard/Components/LivePageButton.jsx';
 import { IoOpenOutline } from "react-icons/io5";
 import PageBackground
     from '@/Pages/Dashboard/Components/Page/PageBackground.jsx';
@@ -385,9 +384,6 @@ const Preview = ({
                                 })}
                         </div>
                     </div>
-                </div>
-                <div className="view_live_link link_row mt-5">
-                    <LivePageButton pageName={pageSettings.name}/>
                 </div>
             </div>
         </div>

@@ -21,9 +21,9 @@
 }
 
 @mixin boxShadow {
-    -webkit-box-shadow: 0px 0px 35px 5px rgba(170,170,170,0.18);
-    -moz-box-shadow: 0px 0px 35px 5px rgba(170,170,170,0.18);
-    box-shadow: 0px 0px 35px 5px rgba(170,170,170,0.18);
+    -webkit-box-shadow: 0 0 18px -3px rgba(170,170,170,0.18);
+    -moz-box-shadow: 0 0 18px -3px rgba(170,170,170,0.18);
+    box-shadow: 0 0 18px -3px rgba(170,170,170,0.18);
 }
 
 @mixin boxShadowAlt {
@@ -33,9 +33,9 @@
 }
 
 @mixin boxShadowRight {
-    box-shadow: rgba(0, 0, 0, 0.1) 10px -1px 18px -3px;
-    -webkit-box-shadow: rgba(0, 0, 0, 0.1) 10px -1px 18px -3px;
-    -moz-box-shadow: rgba(0, 0, 0, 0.1) 10px -1px 18px -3px;
+    box-shadow: rgba(0, 0, 0, 0.1) 10px -1px 21px -9px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.1) 10px -1px 21px -9px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.1) 10px -1px 21px -9px;
 }
 
 @mixin boxShadowThin {

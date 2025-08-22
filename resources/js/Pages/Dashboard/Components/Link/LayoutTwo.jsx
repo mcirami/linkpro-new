@@ -1,17 +1,16 @@
 import React, {useState} from 'react';
-import {FaEdit} from 'react-icons/fa';
+import { RiEdit2Fill } from "react-icons/ri";
 import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import DeleteIcon from '@/Pages/Dashboard/Components/Link/Forms/DeleteIcon.jsx';
 import IconSettingComponent
     from '@/Pages/Dashboard/Components/Link/Forms/IconSettingComponent.jsx';
 import {
-    handleSwitchChange
+    handleSwitchChange,
 } from '@/Services/LinksRequest.jsx';
 
 import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 
 const LayoutTwo = ({
-                       displayIcon,
                        handleOnClick,
                        link,
                        setShowConfirmPopup,
@@ -34,21 +33,9 @@ const LayoutTwo = ({
 
     return (
         <div className="link_content">
-            {/*{displayIcon ?
-                <div className="icon_wrap"
-                     onClick={(e) => {
-                    handleOnClick(e, id, index + 1)
-                }}>
-                    <div className={`image_wrap`}>
-                        <img src={displayIcon} alt=""/>
-                    </div>
-                </div>
-                :
-                ""
-            }*/}
             <div className="left_col">
 
-                {isEditing.active && isEditing.section === "name" ?
+               {/* {isEditing.active && isEditing.section === "name" ?*/}
                     <IconSettingComponent
                         inputType="text"
                         editLink={editLink}
@@ -57,8 +44,9 @@ const LayoutTwo = ({
                         setIsEditing={setIsEditing}
                         elementName="name"
                         label="Button Text"
+                        currentValue={name}
                     />
-                    :
+               {/*     :
                     <div className="flex gap-1 items-start mb-2">
                         <h3>{name || "Enter Name"}</h3>
                         <span className="edit_icon edit_setting" onClick={(e) => {
@@ -70,15 +58,34 @@ const LayoutTwo = ({
                                 type: type,
                             });
                         }}>
-                            <FaEdit />
+                            <RiEdit2Fill />
                             <div className="hover_text edit_image">
                                 <p>Edit Name</p>
                             </div>
                         </span>
                     </div>
 
-                }
-                {isEditing.active && isEditing.section === type ?
+                }*/}
+                {/*{type === "offer" || type === "mailchimp" ?
+                    <p>{type === "offer" ? url : ""}</p>
+                    :
+                    <EditableField
+                        value={(type === "url" || type === "offer") ? url : type === "email" ? email : type === "phone" ? phone : ""}
+                        onSave={handleSubmit}
+                        type={type === "url" ? "text" : type === "email" ? "email" : type === "phone" ? "tel" : ""}
+                        placeholder={
+                            type === 'url' ? 'Enter URL' :
+                                type === 'email' ? 'Enter Email' :
+                                    'Enter Phone Number'
+                        }
+                        label={type}
+                    />
+                }*/}
+
+               {/* {isEditing.active && isEditing.section === type ?*/}
+                {type === "offer" || type === "mailchimp" ?
+                    <p>{type === "offer" ? url : ""}</p>
+                    :
                     <IconSettingComponent
                         inputType={type === "url" ? "text" : type === "email" ? "email" : type === "phone" ? "tel" : ""}
                         editLink={editLink}
@@ -87,8 +94,10 @@ const LayoutTwo = ({
                         setIsEditing={setIsEditing}
                         elementName={type}
                         label={type}
+                        currentValue={type === "url" ? url : type === "email" ? email : type === "phone" ? phone : ""}
                     />
-                    :
+                }
+                    {/*   :
                     <div className="flex gap-1 items-start mt-2">
                         <p>
                             {((type === "url" || type === "offer")) && (url || "Enter URL")}
@@ -105,14 +114,14 @@ const LayoutTwo = ({
                                     type: type
                                 });
                             }}>
-                                <FaEdit />
-                                {/*<div className="hover_text edit_image">
+                                <RiEdit2Fill />
+                                <div className="hover_text edit_image">
                                     <p>Edit {type}</p>
-                                </div>*/}
+                                </div>
                             </span>
                         }
                     </div>
-                }
+                }*/}
             </div>
 
             <div className={`right_col`}>
@@ -120,7 +129,7 @@ const LayoutTwo = ({
                     <span className="edit_icon" onClick={(e) => {
                         handleOnClick(e, id, index + 1)
                     }}>
-                        <FaEdit />
+                        <RiEdit2Fill />
                         <div className="hover_text edit_image">
                             <p>Edit Button</p>
                         </div>
