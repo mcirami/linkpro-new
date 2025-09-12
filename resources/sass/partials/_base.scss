@@ -143,6 +143,16 @@ main {
     }
 
     &.edit_page {
+        padding: 40px 0;
+
+        @include query(mobile) {
+            padding: 20px 0;
+        }
+
+        @include query(smallMobile) {
+            padding: 10px 0;
+        }
+
         @media screen and (max-width: 300px) {
             padding: 0;
         }

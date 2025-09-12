@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import CropTools from '@/Utils/CropTools.jsx';
 import ReactCrop from 'react-image-crop';
 import {
@@ -57,7 +57,7 @@ const ImageUploader = ({
         if (!files.length) {
             return;
         }
-
+        setImageSelected(true);
         await resizeFile(files[0]).then((image) => {
             new Compressor(image, {
                 quality: 0.8,
@@ -67,8 +67,14 @@ const ImageUploader = ({
                     createImage(result, setUpImg);
                 },
             });
-            setCrop(undefined)
-            setImageSelected(true);
+            setCrop(undefined);
+            const el = document.querySelector(`form.${elementName} .bottom_section`);
+            if (el) el.classList.remove("hidden");
+            if (window.innerWidth < 993) {
+                document.querySelector(`${elementName}`).scrollIntoView({
+                    behavior: "smooth",
+                });
+            }
         })
     }
 
@@ -129,9 +135,11 @@ const ImageUploader = ({
         });
     }
 
+    console.log("imageSelected", imageSelected);
+    console.log("upImg", upImg);
     return (
         <>
-            {imageSelected &&
+            {upImg &&
                 <div className={`crop_section ${pageSettings.page_layout}`}>
                     <CropTools
                         rotate={rotate}
@@ -200,7 +208,7 @@ const ImageUploader = ({
             <div className="icon_row">
                 <div className="icon_box">
                     <div className="uploader">
-                        {imageSelected ?
+                        {upImg ?
                             <div className="my_row button_row mt-2">
                                 <a className="!uppercase button blue" href="#" onClick={uploadImage}>
                                     Upload

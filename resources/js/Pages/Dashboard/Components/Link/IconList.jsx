@@ -46,7 +46,6 @@ const IconList = ({
     const [iconTabs, setIconTabs] = useState([]);
     const [selected, setSelected] = useState(showIconList.type);
 
-    console.log("showIconList.type", showIconList.type)
     useEffect(() => {
         const optionsArray = [];
         if(editLink.type !== "offer") {

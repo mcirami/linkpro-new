@@ -29,6 +29,13 @@
             width: 100%;
             padding-right: 0;
         }
+
+        form {
+            .bottom_row {
+                padding-bottom: 10px;
+                border-bottom: 1px solid $borderGray;
+            }
+        }
     }
 
     .right_column {
@@ -546,7 +553,7 @@
                         flex-direction: row;
                         -ms-flex-wrap: nowrap;
                         flex-wrap: nowrap;
-                        padding: 10px;
+                        padding: 10px 20px;
 
                         .icon_wrap {
                             padding: 0;
@@ -661,6 +668,10 @@
                                 p, h3 {
                                     font-size: .9rem;
                                     word-break: break-word;
+                                }
+
+                                p {
+                                    @include ossemibold;
                                 }
                             }
 
@@ -932,7 +943,6 @@
             .bottom_section {
                 height: auto;
                 margin: 0 auto;
-                padding: 40px;
 
                 @media all and (max-width: 768px) {
                     padding: 20px;

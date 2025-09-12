@@ -49,11 +49,13 @@ class addLinkType extends Command
             } else if ($link->shopify_id) {
                 $link->update(["type" => "shopify"]);
             } else if ($link->email) {
-                $link->update(["type" => "email"]);
+                $link->update( [ "type" => "email" ] );
+            } else if ($link->phone) {
+                    $link->update(["type" => "phone"]);
             } else if ($link->description) {
                 $link->update(["type" => "advanced"]);
             } else {
-                $link->update(["type" => "standard"]);
+                $link->update(["type" => "url"]);
             }
         }
 

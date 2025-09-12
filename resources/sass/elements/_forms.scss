@@ -114,7 +114,7 @@ select {
     input[type="email"], {
         height: 35px;
         padding: 5px 10px;
-        width: 50%;
+        max-width: 75%;
 
         ~ label {
             font-size: .7rem;
@@ -126,8 +126,8 @@ select {
             ~ label {
                 line-height: 1;
                 color: rgba(66, 79, 207, 0.5);
-                top: -6px;
-                left: 15px;
+                top: -4px;
+                left: 10px;
                 z-index: 3;
             }
         }
@@ -884,16 +884,20 @@ form .bottom_row a {
                 }
 
                 .image_wrap, img {
-                    border-radius: 15%;
-                    -webkit-border-radius: 15%;
-                    -moz-border-radius: 15%;
+                    border-radius: 8px;
+                    -webkit-border-radius: 8px;
+                    -moz-border-radius: 8px;
                 }
 
                 .image_wrap {
-                    border: 2px solid $black;
+                    margin-bottom: 20px;
                 }
 
-                .switch_wrap {
+                .image_wrap {
+                    border: 1px solid $black;
+                }
+
+                .setting_row {
                     border-bottom: 1px solid rgba(209, 213, 219, .4);
                     padding-bottom: 15px;
                 }

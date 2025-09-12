@@ -85,6 +85,14 @@ const hoverText = [
         ]
     },
     {
+        section: 'button_image',
+        text: [
+            {
+                description: 'You can choose to show or hide a background image on your button to create a different style on your page.',
+            }
+        ]
+    },
+    {
         section: 'creator_active',
         text: [
             {

@@ -224,7 +224,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                     alt="Crop Me" />
                             </ReactCrop>
                         </div>
-                        <div className="bottom_row w-full">
+                        <div className="bottom_row w-full flex justify-between items-center flex-wrap">
                             <button
                                 type="submit"
                                 className="button green"
@@ -243,7 +243,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                 Cancel
                             </a>
                             <a
-                                className="help_link"
+                                className="help_link w-full flex justify-end mt-3"
                                 href="mailto:help@link.pro"
                             >
                                 Need Help?

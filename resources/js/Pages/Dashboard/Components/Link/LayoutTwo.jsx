@@ -38,12 +38,14 @@ const LayoutTwo = ({
                {/* {isEditing.active && isEditing.section === "name" ?*/}
                     <IconSettingComponent
                         inputType="text"
+                        id={id}
                         editLink={editLink}
                         setEditLink={setEditLink}
                         isEditing={isEditing}
                         setIsEditing={setIsEditing}
                         elementName="name"
                         label="Button Text"
+                        placeholder="Enter Text"
                         currentValue={name}
                     />
                {/*     :
@@ -88,12 +90,15 @@ const LayoutTwo = ({
                     :
                     <IconSettingComponent
                         inputType={type === "url" ? "text" : type === "email" ? "email" : type === "phone" ? "tel" : ""}
+                        id={id}
                         editLink={editLink}
                         setEditLink={setEditLink}
                         isEditing={isEditing}
                         setIsEditing={setIsEditing}
                         elementName={type}
-                        label={type}
+                        label={
+                            type === 'url' ? 'Enter URL' : type === "email" ? 'Enter Email' : type === "phone" ? 'Enter Phone Number' : "Enter Text"
+                        }
                         currentValue={type === "url" ? url : type === "email" ? email : type === "phone" ? phone : ""}
                     />
                 }

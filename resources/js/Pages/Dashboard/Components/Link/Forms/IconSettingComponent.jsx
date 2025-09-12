@@ -19,9 +19,11 @@ const IconSettingComponent = ({
                                   elementName,
                                   label,
                                   currentValue,
+                                  placeholder,
                                   maxChar = null,
                                   isEditing = null,
-                                  setIsEditing = null
+                                  setIsEditing = null,
+                                  id = null,
 }) => {
 
     const { pageSettings } = usePageContext();
@@ -66,6 +68,7 @@ const IconSettingComponent = ({
 
     // ----- Commit logic (updateLink) mirrors your existing cases
     const commitValue = async (value) => {
+
         // Case A: inline quick-edit path using isEditing payload
         if (isEditing?.id && setIsEditing && isEditing?.section ===
             elementName) {
@@ -240,40 +243,40 @@ const IconSettingComponent = ({
 
     return (
         <>
-        <div className="relative mt-3">
+        <div className="relative">
             {/* Reserve height to prevent layout jump */}
-            <div className="min-h-[2.75rem]" />
+            <div className="min-h-[2.50rem]" />
             {/* READ LAYER */}
             <div
                 aria-hidden={isActive}
                 className={[
-                    'absolute inset-0 flex items-start gap-2',
+                    'absolute inset-0 flex items-center gap-2',
                     'transition-all duration-200 ease-out',
                     isActive ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100',
                 ].join(' ')}
             >
             <p className={`text-gray-900 ${currentValue ? '' : 'text-gray-400'}`}>
-                {currentValue ||
-                    (elementName === 'url' ? 'Enter URL' :
-                        elementName === 'email' ? 'Enter Email' :
-                            elementName === 'phone' ? 'Enter Phone Number' :
-                                'Enter text')}
+                {currentValue || placeholder}
             </p>
             {setIsEditing && (
-                <button
-                    type="button"
+                <a
+                    href="#"
                     className="edit_icon text-gray-500 hover:text-indigo-600 transition"
-                    onClick={() => setIsEditing({
-                        active: true,
-                        section: elementName,
-                        value: currentValue,
-                        id: editLink?.id ?? null,
-                        type: editLink?.type ?? inputType,
-                    })}
+                    onClick={(e) =>{
+                        e.preventDefault();
+                        setIsEditing({
+                            active: true,
+                            section: elementName,
+                            value: currentValue,
+                            id: editLink?.id ?? id,
+                            type: editLink?.type ? editLink?.type :
+                                inputType === "text" ? "url" :
+                                    inputType === "tel" ? "phone" : "url",
+                        })}}
                     aria-label={`Edit ${label || elementName}`}
                 >
                     <RiEdit2Fill />
-                </button>
+                </a>
             )}
         </div>
 
@@ -298,6 +301,7 @@ const IconSettingComponent = ({
                     onBlur={() => { HandleBlur(inputRef.current); onBlur(); }}
                     onKeyDown={onKeyDown}
                     autoFocus={isActive}
+                    placeholder={placeholder}
                 />
                 <label className="capitalize">{label}</label>
             </div>

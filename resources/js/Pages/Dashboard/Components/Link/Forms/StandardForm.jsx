@@ -305,6 +305,7 @@ const StandardForm = ({
                                     setEditLink={setEditLink}
                                     elementName="name"
                                     label="Link Name"
+                                    placeholder="Enter Link Name"
                                     maxChar={11}
                                 />
                             </div>
@@ -329,6 +330,7 @@ const StandardForm = ({
                                     editLink={editLink}
                                     setEditLink={setEditLink}
                                     elementName={editLink.type}
+                                    placeholder="Enter URL"
                                     label={capitalize(editLink.type)}
                                 />
                             }
@@ -340,11 +342,12 @@ const StandardForm = ({
                     { (showFormTab === "icon") ?
                         <div className="link_form form_nav_content">
                             {(pageSettings.page_layout === "layout_two" && !imageSelected) &&
-                                    <div className="switch_wrap w-full flex justify-between">
-                                        <div className="section_title w-full flex justify-start gap-2 !mb-0">
-                                            <h4>Icon</h4>
-                                            <ToolTipIcon section="icon_status" />
-                                        </div>
+                                <div className="setting_row w-full flex justify-between">
+                                    <div className="section_title w-full flex justify-start gap-2 !mb-0">
+                                        <h4>Icon</h4>
+                                        <ToolTipIcon section="icon_status" />
+                                    </div>
+                                    <div className="switch_wrap">
                                         <IOSSwitch
                                             onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "icon_active")}
                                             checked={Boolean(editLink.icon_active)}
@@ -355,13 +358,14 @@ const StandardForm = ({
                                             </p>
                                         </div>
                                     </div>
+                                </div>
                             }
                             { (editLink.type !== "offer" &&
                                 editLink.type !== "mailchimp" &&
                                 showFormTab === "icon" &&
                                 !imageSelected
                             ) ?
-                                <div className="my_row form_nav_content input_types pt-5">
+                                <div className="my_row form_nav_content input_types pt-5 pb-5">
                                     <div className="setting_wrap w-full !mb-4">
                                         <div className="section_title w-full flex justify-start gap-2 !mb-4">
                                             <h4>Link Type</h4>
@@ -412,7 +416,11 @@ const StandardForm = ({
                         <div className="form_nav_content inline-block relative p-5 w-full bg-white">
                             { (editLink.bg_image && !imageSelected) ?
                                 <>
-                                    <div className="w-full flex justify-between">
+                                    <div className="w-full flex justify-between setting_row mb-5">
+                                        <div className="section_title w-full flex justify-start gap-2 !mb-4">
+                                            <h4>Button Background</h4>
+                                            <ToolTipIcon section="button_image" />
+                                        </div>
                                         <div className="switch_wrap mb-4">
                                             <IOSSwitch
                                                 onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "bg_active")}
@@ -424,10 +432,9 @@ const StandardForm = ({
                                                 </p>
                                             </div>
                                         </div>
-                                        <p className="label">Show/Hide Background</p>
                                     </div>
                                     <div className="w-full">
-                                        <p className="label">Current Image:</p>
+                                        <p className="label">Current:</p>
                                         <div className="image_wrap">
                                             <img src={editLink.bg_image} alt=""/>
                                         </div>
