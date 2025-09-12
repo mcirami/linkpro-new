@@ -97,6 +97,7 @@ const ImageUploader = ({
                     }
                 }
             ).then(response => {
+
                 //console.log("Vapor Response: ", response);
                 const packets = {
                     [`${elementName}`]: response.key,
@@ -112,6 +113,7 @@ const ImageUploader = ({
                         progress: null
                     });
                     setImageSelected(false);
+                    setUpImg(null);
 
                     dispatch({
                         type: LINKS_ACTIONS.UPDATE_LINK,
@@ -135,8 +137,6 @@ const ImageUploader = ({
         });
     }
 
-    console.log("imageSelected", imageSelected);
-    console.log("upImg", upImg);
     return (
         <>
             {upImg &&
@@ -232,12 +232,12 @@ const ImageUploader = ({
                                 <FiUploadCloud size={48} className="mx-auto text-gray-400 mb-3"/>
                                 <p className="text-sm font-medium text-gray-600">
                                     Drop your {label} here, or{' '}
-                                    <label htmlFor="file-upload" className="text-blue-600 underline cursor-pointer">
+                                    <label htmlFor={elementName} className="text-blue-600 underline cursor-pointer">
                                         browse
                                     </label>
                                 </p>
                                 <input
-                                    id="file-upload"
+                                    id={elementName}
                                     type="file"
                                     accept="image/*"
                                     onChange={selectImage}
@@ -252,7 +252,7 @@ const ImageUploader = ({
                             </>*/
                         }
                         {/*<input id="custom_icon_upload" type="file" className="custom" onChange={selectImage} accept="image/png, image/jpeg, image/jpg, image/gif"/>*/}
-                        <div className="my_row info_text file_types text-center mb-2 !pl-0 !pr-0">
+                        <div className="my_row info_text file_types text-left mb-2 !pl-0 !pr-0">
                             <small className="m-0 char_count w-100">Allowed File Types: <span>png, jpg, jpeg, gif</span>
                             </small>
                         </div>

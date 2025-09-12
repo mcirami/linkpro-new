@@ -177,7 +177,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                 <FiUploadCloud size={48} className="mx-auto text-gray-400 mb-3"/>
                                 <p className="text-sm font-medium text-gray-600">
                                     Drop your <span className="font-bold">{label}</span> here, or{' '}
-                                    <label htmlFor="file-upload" className="text-blue-600 underline cursor-pointer">
+                                    <label htmlFor={elementName} className="text-blue-600 underline cursor-pointer">
                                         browse
                                     </label>
                                 </p>
@@ -188,7 +188,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                     </p>
                                 </div>
                                 <input
-                                    id="file-upload"
+                                    id={elementName}
                                     type="file"
                                     accept="image/*"
                                     onChange={onSelectFile}
@@ -224,15 +224,26 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                     alt="Crop Me" />
                             </ReactCrop>
                         </div>
-                        <div className="bottom_row w-full flex justify-between items-center flex-wrap">
-                            <button
+                        <div className="button_row w-full flex justify-between items-center flex-wrap gap-1">
+
+                            <a className="!uppercase button blue" href="#" onClick={handleSubmit}>
+                                Upload
+                            </a>
+                            {/*<button
                                 type="submit"
                                 className="button green"
                                 disabled={disableButton}
                             >
                                 Save
-                            </button>
-                            <a
+                            </button>*/}
+                            <a className="!uppercase button transparent gray" href="#"
+                               onClick={(e) => {
+                                   e.preventDefault();
+                                   handleCancel();
+                            }}>
+                                Cancel
+                            </a>
+                           {/* <a
                                 className="button transparent gray"
                                 href="#"
                                 onClick={(e) => {
@@ -241,7 +252,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                 }}
                             >
                                 Cancel
-                            </a>
+                            </a>*/}
                             <a
                                 className="help_link w-full flex justify-end mt-3"
                                 href="mailto:help@link.pro"

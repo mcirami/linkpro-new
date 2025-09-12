@@ -1191,7 +1191,6 @@ form .bottom_row a {
     -webkit-align-items: center;
     padding-top: 20px;
 
-
     .button {
         width: 48%;
 
@@ -1234,6 +1233,15 @@ form .bottom_row a {
             margin-top: 15px;
             margin-right: 10px;
         }
+    }
+}
+
+#links_page .top_section .button_row {
+    border-bottom: 1px solid $borderGray;
+    padding-bottom: 20px;
+
+    a.button {
+        width: 48% !important;
     }
 }
 
