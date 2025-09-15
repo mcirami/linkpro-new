@@ -305,6 +305,7 @@ const StandardForm = ({
                                     setEditLink={setEditLink}
                                     elementName="name"
                                     label="Link Name"
+                                    currentValue={editLink.name}
                                     placeholder="Enter Link Name"
                                     maxChar={11}
                                 />
@@ -330,6 +331,7 @@ const StandardForm = ({
                                     editLink={editLink}
                                     setEditLink={setEditLink}
                                     elementName={editLink.type}
+                                    currentValue={editLink.url}
                                     placeholder="Enter URL"
                                     label={capitalize(editLink.type)}
                                 />

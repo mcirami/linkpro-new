@@ -42,8 +42,10 @@ const IconSettingComponent = ({
     // ----- Character counter
     const [charactersLeft, setCharactersLeft] = useState(maxChar ?? 0);
     useEffect(() => {
+        console.log("draft", draft);
         if (maxChar != null) {
-            setCharactersLeft(maxChar - (draft?.length || 0));
+            const remainder = maxChar - (draft?.length);
+            setCharactersLeft(remainder < 0 ? 0 : remainder);
         }
     }, [draft, maxChar]);
 
@@ -241,118 +243,105 @@ const IconSettingComponent = ({
     };
     const isActive = Boolean(isEditing?.active && isEditing?.section === elementName);
 
+    console.log("currentValue", currentValue);
     return (
-        <>
-        <div className="relative">
-            {/* Reserve height to prevent layout jump */}
-            <div className="min-h-[2.50rem]" />
-            {/* READ LAYER */}
-            <div
-                aria-hidden={isActive}
-                className={[
-                    'absolute inset-0 flex items-center gap-2',
-                    'transition-all duration-200 ease-out',
-                    isActive ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100',
-                ].join(' ')}
-            >
-            <p className={`text-gray-900 ${currentValue ? '' : 'text-gray-400'}`}>
-                {currentValue || placeholder}
-            </p>
-            {setIsEditing && (
-                <a
-                    href="#"
-                    className="edit_icon text-gray-500 hover:text-indigo-600 transition"
-                    onClick={(e) =>{
-                        e.preventDefault();
-                        setIsEditing({
-                            active: true,
-                            section: elementName,
-                            value: currentValue,
-                            id: editLink?.id ?? id,
-                            type: editLink?.type ? editLink?.type :
-                                inputType === "text" ? "url" :
-                                    inputType === "tel" ? "phone" : "url",
-                        })}}
-                    aria-label={`Edit ${label || elementName}`}
-                >
-                    <RiEdit2Fill />
-                </a>
-            )}
-        </div>
-
-        {/* EDIT LAYER */}
-        <div
-            aria-hidden={!isActive}
-            className={[
-                'absolute inset-0 flex items-center',
-                'transition-all duration-200 ease-out',
-                isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none',
-            ].join(' ')}
-        >
-            <div className="input_wrap w-full">
-                <input
-                    ref={inputRef}
-                    className={`w-full ${currentValue ? 'active' : ''} rounded-lg border border-gray-300 px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500`}
-                    name={elementName}
-                    type={inputType === 'phone' ? 'tel' : inputType}
-                    value={draft}
-                    onChange={handleChange}
-                    onFocus={(e) => HandleFocus(e.target)}
-                    onBlur={() => { HandleBlur(inputRef.current); onBlur(); }}
-                    onKeyDown={onKeyDown}
-                    autoFocus={isActive}
-                    placeholder={placeholder}
-                />
-                <label className="capitalize">{label}</label>
-            </div>
-        </div>
-        </div>
-
-            {pageSettings.page_layout === 'layout_one' && maxChar != null && (
-                <div className="my_row info_text title">
-                    <p className="char_max">Max {maxChar} Characters Shown</p>
-                    <p className="char_count">
-                        {charactersLeft < 0 ? (
-                            <span className="over">Only {maxChar} Characters Will Be Shown</span>
-                        ) : (
-                            'Characters Left: ' + charactersLeft
+        pageSettings.page_layout === 'layout_two' ?
+                <div className="relative">
+                    {/* Reserve height to prevent layout jump */}
+                    <div className="min-h-[2.50rem]"/>
+                    {/* READ LAYER */}
+                    <div
+                        aria-hidden={isActive}
+                        className={[
+                            'absolute inset-0 flex items-center gap-2',
+                            'transition-all duration-200 ease-out',
+                            isActive ?
+                                'opacity-0 scale-95 pointer-events-none' :
+                                'opacity-100 scale-100',
+                        ].join(' ')}
+                    >
+                        <p className={`text-gray-900 ${currentValue ?
+                            '' :
+                            'text-gray-400'}`}>
+                            {currentValue || placeholder}
+                        </p>
+                        {setIsEditing && (
+                            <a
+                                href="#"
+                                className="edit_icon text-gray-500 hover:text-indigo-600 transition"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setIsEditing({
+                                        active: true,
+                                        section: elementName,
+                                        value: currentValue,
+                                        id: editLink?.id ?? id,
+                                        type: editLink?.type ? editLink?.type :
+                                            inputType === "text" ? "url" :
+                                                inputType === "tel" ?
+                                                    "phone" :
+                                                    "url",
+                                    })
+                                }}
+                                aria-label={`Edit ${label || elementName}`}
+                            >
+                                <RiEdit2Fill/>
+                            </a>
                         )}
-                    </p>
+                    </div>
                 </div>
-            )}
-            {/*<div className="input_wrap mt-3 relative">
-                <input
-                    className={`w-full ${editLink[elementName] ? "active" : ""}`}
-                    name={elementName}
-                    type={inputType === "phone" ? "tel" : inputType}
-                    value={isEditing?.value || editLink[elementName] || ""}
-                    autoFocus={isEditing?.section === elementName || false}
-                    onChange={(e) => handleChange(e)}
-                    onFocus={(e) => HandleFocus(e.target)}
-                    onBlur={(e) => {HandleBlur(e.target); commitValue(e.target.value); }}
-                    onKeyDown={ event => {
-                        if(event.key === 'Enter') {
-                            commitValue(e.target.value);
+                    :
+                    <div className="relative">
+                    {/* EDIT LAYER */}
+                    <div
+                        aria-hidden={!isActive}
+                        className={[
+                            'inset-0 flex items-center flex-wrap',
+                            'transition-all duration-200 ease-out',
+                        ].join(' ')}
+                    >
+                        {maxChar != null &&
+                            <div className="info_text w-full flex justify-end mb-2">
+                                <p className="char_count">
+                                    <span className="count"> {charactersLeft} </span> / {maxChar}
+                                </p>
+                            </div>
                         }
-                    }}
-                />
-                <label className="capitalize">{label}</label>
-            </div>
-            {(pageSettings.page_layout === "layout_one" && maxChar) &&
-                <div className="my_row info_text title">
-                    <p className="char_max">Max {maxChar} Characters Shown</p>
-                    <p className="char_count">
-                        {charactersLeft < 0 ?
-                            <span className="over">Only {maxChar} Characters Will Be Shown</span>
-                            :
-                            "Characters Left: " +
-                            charactersLeft
+                        <div className="input_wrap w-full">
+                            <input
+                                ref={inputRef}
+                                className={`w-full ${currentValue ?
+                                    'active' :
+                                    ''} rounded-lg border border-gray-300 px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500`}
+                                name={elementName}
+                                type={inputType === 'phone' ? 'tel' : inputType}
+                                value={draft}
+                                onChange={handleChange}
+                                onFocus={(e) => HandleFocus(e.target)}
+                                onBlur={() => {
+                                    HandleBlur(inputRef.current);
+                                    onBlur();
+                                }}
+                                onKeyDown={onKeyDown}
+                                autoFocus={isActive}
+                                placeholder={placeholder}
+                            />
+                            <label className="capitalize">{label}</label>
+                        </div>
+                    </div>
+                    <div className="my_row info_text title min-h-[1.5rem]">
+                        {maxChar != null &&
+                            <p className="char_count text-right">
+                                {charactersLeft < 0 ?
+                                    <span className="over">Only {maxChar} Characters Will Be Shown</span>
+                                    :
+                                    ""}
+                            </p>
                         }
-                    </p>
-                </div>
-            }
-            */}
-        </>
+                    </div>
+
+                    </div>
+
     );
 };
 
