@@ -770,6 +770,14 @@
 #links_page {
 
     .preview, .live_page {
+        .folder_content {
+            color: $white;
+
+            input {
+                border: 1px solid $white;
+                color: $white;
+            }
+        }
         .icons_wrap.layout_one {
             gap: .4rem;
 
@@ -788,15 +796,6 @@
                     &:hover {
                         box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
                     }
-                }
-            }
-
-            .folder_content {
-                color: $white;
-
-                input {
-                    border: 1px solid $white;
-                    color: $white;
                 }
             }
         }
