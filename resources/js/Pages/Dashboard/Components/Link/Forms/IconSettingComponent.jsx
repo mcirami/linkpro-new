@@ -15,7 +15,6 @@ import { RiEdit2Fill } from "react-icons/ri";
 const IconSettingComponent = ({
                                   inputType,
                                   editLink,
-                                  setEditLink,
                                   elementName,
                                   label,
                                   currentValue,
@@ -28,13 +27,7 @@ const IconSettingComponent = ({
 
     const { pageSettings } = usePageContext();
     const { dispatch } = useUserLinksContext();
-    const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
-
-    // ----- Value resolution
-    /*const currentValue = useMemo(() => {
-        // when editing this field, prefer live isEditing.value so typing is instant
-        return editLink?.[elementName]
-    }, [isEditing?.active, isEditing?.section, isEditing?.value, editLink, elementName]);*/
+    const { dispatchFolderLinks } = useContext(FolderLinksContext);
 
     const [draft, setDraft] = useState(editLink[elementName] ?? "");
     useEffect(() => setDraft(currentValue), [currentValue]);
@@ -42,10 +35,8 @@ const IconSettingComponent = ({
     // ----- Character counter
     const [charactersLeft, setCharactersLeft] = useState(maxChar ?? 0);
     useEffect(() => {
-        console.log("draft", draft);
         if (maxChar != null) {
-            const remainder = maxChar - (draft?.length);
-            setCharactersLeft(remainder < 0 ? 0 : remainder);
+            setCharactersLeft(maxChar - (draft?.length || 0));
         }
     }, [draft, maxChar]);
 
@@ -63,8 +54,6 @@ const IconSettingComponent = ({
         setDraft(value);
         if (isEditing?.active && setIsEditing) {
             setIsEditing((prev) => ({ ...prev, value }));
-        } else if (setEditLink) {
-            setEditLink((prev) => ({ ...prev, [elementName]: value }));
         }
     }
 
@@ -102,6 +91,7 @@ const IconSettingComponent = ({
         }
         // Case B: standard editLink path
         if (editLink?.id) {
+            console.log("editLink", editLink);
             const packets = {
                 [elementName]: value,
                 page_id: pageSettings.id,
@@ -142,83 +132,6 @@ const IconSettingComponent = ({
             }
         }
     }
-       /* const handleSubmit = (e) => {
-        e.preventDefault();
-
-        if (isEditing?.value && isEditing.id) {
-            const packets = {
-                [`${isEditing.section}`]: isEditing.value,
-                page_id: pageSettings.id,
-                type: isEditing.type,
-            };
-
-            updateLink(packets, isEditing.id).then((data) => {
-                if (data.success) {
-
-                    dispatch({
-                        type: LINKS_ACTIONS.UPDATE_LINK,
-                        payload: {
-                            id: isEditing.id,
-                            editLink: null,
-                            [`${isEditing.section}`]: isEditing.value
-                        }
-                    })
-
-                    setIsEditing &&
-                    setIsEditing({
-                        active: false,
-                        section: "",
-                        value: "",
-                        id: null,
-                        type: null
-                    });
-                }
-            });
-        } else if (editLink[elementName] && editLink.id) {
-
-            const packets = {
-                [`${elementName}`]: editLink[elementName],
-                page_id: pageSettings.id,
-                folder_id: editLink.folder_id,
-                type: editLink.type,
-            };
-
-            updateLink(packets, editLink.id).then((data) => {
-                if (data.success) {
-
-                    if (editLink.folder_id) {
-                        dispatchFolderLinks({
-                            type: FOLDER_LINKS_ACTIONS.UPDATE_FOLDER_LINKS,
-                            payload: {
-                                id: editLink.id,
-                                currentLink: editLink,
-                                [`${elementName}`]: editLink[elementName],
-                            }
-                        })
-
-                        dispatch({
-                            type: LINKS_ACTIONS.UPDATE_LINK_IN_FOLDER,
-                            payload: {
-                                folder_id: editLink.folder_id,
-                                id: editLink.id,
-                                currentLink: editLink,
-                                [`${elementName}`]: editLink[elementName]
-                            }
-                        })
-                    } else {
-                        dispatch({
-                            type: LINKS_ACTIONS.UPDATE_LINK,
-                            payload: {
-                                id: editLink.id,
-                                editLink: editLink,
-                                [`${elementName}`]: editLink[elementName]
-                            }
-                        })
-                    }
-                }
-            });
-        }
-    }*/
 
     // ----- Blur / Enter / Esc behavior
     const onBlur = async () => {
@@ -229,6 +142,9 @@ const IconSettingComponent = ({
     const onKeyDown = async (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
+
+            console.log("draft", draft);
+            console.log("currentValue", currentValue);
             if (draft !== currentValue) await commitValue(draft);
         }
         if (e.key === 'Escape') {
@@ -243,28 +159,31 @@ const IconSettingComponent = ({
     };
     const isActive = Boolean(isEditing?.active && isEditing?.section === elementName);
 
-    console.log("currentValue", currentValue);
     return (
-        pageSettings.page_layout === 'layout_two' ?
+        <>
                 <div className="relative">
                     {/* Reserve height to prevent layout jump */}
-                    <div className="min-h-[2.50rem]"/>
+                    {pageSettings.page_layout === 'layout_two' &&
+                        <div className="min-h-[2.50rem]"/>
+                    }
                     {/* READ LAYER */}
                     <div
-                        aria-hidden={isActive}
+                        /*aria-hidden={isActive}*/
                         className={[
-                            'absolute inset-0 flex items-center gap-2',
+                            `${pageSettings.page_layout === 'layout_two' && 'absolute'} inset-0 flex items-center gap-2`,
                             'transition-all duration-200 ease-out',
                             isActive ?
                                 'opacity-0 scale-95 pointer-events-none' :
                                 'opacity-100 scale-100',
                         ].join(' ')}
                     >
-                        <p className={`text-gray-900 ${currentValue ?
-                            '' :
-                            'text-gray-400'}`}>
-                            {currentValue || placeholder}
-                        </p>
+                        {pageSettings.page_layout === 'layout_two' &&
+                            <p className={`text-gray-900 ${currentValue ?
+                                '' :
+                                'text-gray-400'}`}>
+                                {currentValue || placeholder}
+                            </p>
+                        }
                         {setIsEditing && (
                             <a
                                 href="#"
@@ -289,21 +208,22 @@ const IconSettingComponent = ({
                             </a>
                         )}
                     </div>
-                </div>
-                    :
-                    <div className="relative">
+
                     {/* EDIT LAYER */}
                     <div
-                        aria-hidden={!isActive}
+                       /* aria-hidden={!isActive}*/
                         className={[
-                            'inset-0 flex items-center flex-wrap',
+                `${pageSettings.page_layout === 'layout_two' && 'absolute'}`,
+                            'inset-0 flex flex-wrap items-center',
                             'transition-all duration-200 ease-out',
+                            pageSettings.page_layout === 'layout_two' && (isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'),
                         ].join(' ')}
                     >
                         {maxChar != null &&
                             <div className="info_text w-full flex justify-end mb-2">
                                 <p className="char_count">
-                                    <span className="count"> {charactersLeft} </span> / {maxChar}
+                                    <span className="count">
+                                        {charactersLeft < 0 ? 0 : charactersLeft} </span> / {maxChar}
                                 </p>
                             </div>
                         }
@@ -319,8 +239,8 @@ const IconSettingComponent = ({
                                 onChange={handleChange}
                                 onFocus={(e) => HandleFocus(e.target)}
                                 onBlur={() => {
-                                    HandleBlur(inputRef.current);
                                     onBlur();
+                                    HandleBlur(inputRef.current);
                                 }}
                                 onKeyDown={onKeyDown}
                                 autoFocus={isActive}
@@ -329,19 +249,19 @@ const IconSettingComponent = ({
                             <label className="capitalize">{label}</label>
                         </div>
                     </div>
-                    <div className="my_row info_text title min-h-[1.5rem]">
-                        {maxChar != null &&
-                            <p className="char_count text-right">
-                                {charactersLeft < 0 ?
-                                    <span className="over">Only {maxChar} Characters Will Be Shown</span>
-                                    :
-                                    ""}
-                            </p>
+        </div>
+
+            {pageSettings.page_layout === 'layout_one' && maxChar != null && (
+                <div className="my_row info_text title min-h-[1.5rem] text-right">
+                    <p className="char_count">
+                        {draft?.length > maxChar ?
+                            <span className="over">Only {maxChar} Characters Will Be Shown</span>
+                         : ""
                         }
+                            </p>
                     </div>
-
-                    </div>
-
+            )}
+        </>
     );
 };
 

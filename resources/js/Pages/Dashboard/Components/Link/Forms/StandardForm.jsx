@@ -190,32 +190,6 @@ const StandardForm = ({
         });
     }, [showIconList.type]);
 
-    /*const [descChecked, setDescChecked] = useState(
-        Boolean(
-            currentLink.description &&
-            currentLink.description !== "" &&
-            currentLink.type === "advanced"
-        ));*/
-
-    /*
-
-    useEffect(() => {
-        if(currentLink.name) {
-            setCharactersLeft(11 - currentLink.name.length);
-        }
-
-    },[charactersLeft])
-*/
-    /*const handleOnClick = () => {
-
-        if (!subStatus) {
-            setShowUpgradePopup({
-                show: true,
-                text: "change link name"
-            });
-        }
-    }*/
-
     const handleSubmitTerms = (e) => {
         e.preventDefault()
 
@@ -302,7 +276,6 @@ const StandardForm = ({
                                 <IconSettingComponent
                                     inputType="text"
                                     editLink={editLink}
-                                    setEditLink={setEditLink}
                                     elementName="name"
                                     label="Link Name"
                                     currentValue={editLink.name}
@@ -329,7 +302,6 @@ const StandardForm = ({
                                 <IconSettingComponent
                                     inputType={editLink.type}
                                     editLink={editLink}
-                                    setEditLink={setEditLink}
                                     elementName={editLink.type}
                                     currentValue={editLink.url}
                                     placeholder="Enter URL"

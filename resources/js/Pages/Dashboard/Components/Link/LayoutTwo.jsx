@@ -48,45 +48,9 @@ const LayoutTwo = ({
                         placeholder="Enter Text"
                         currentValue={name}
                     />
-               {/*     :
-                    <div className="flex gap-1 items-start mb-2">
-                        <h3>{name || "Enter Name"}</h3>
-                        <span className="edit_icon edit_setting" onClick={(e) => {
-                            setIsEditing({
-                                active: true,
-                                section: "name",
-                                value: name,
-                                id: id,
-                                type: type,
-                            });
-                        }}>
-                            <RiEdit2Fill />
-                            <div className="hover_text edit_image">
-                                <p>Edit Name</p>
-                            </div>
-                        </span>
-                    </div>
 
-                }*/}
-                {/*{type === "offer" || type === "mailchimp" ?
-                    <p>{type === "offer" ? url : ""}</p>
-                    :
-                    <EditableField
-                        value={(type === "url" || type === "offer") ? url : type === "email" ? email : type === "phone" ? phone : ""}
-                        onSave={handleSubmit}
-                        type={type === "url" ? "text" : type === "email" ? "email" : type === "phone" ? "tel" : ""}
-                        placeholder={
-                            type === 'url' ? 'Enter URL' :
-                                type === 'email' ? 'Enter Email' :
-                                    'Enter Phone Number'
-                        }
-                        label={type}
-                    />
-                }*/}
-
-               {/* {isEditing.active && isEditing.section === type ?*/}
                 {type === "offer" || type === "mailchimp" ?
-                    <p>{type === "offer" ? url : ""}</p>
+                    <p>{type === "offer" ? url : "(mailchimp form)"}</p>
                     :
                     <IconSettingComponent
                         inputType={type === "url" ? "text" : type === "email" ? "email" : type === "phone" ? "tel" : ""}
@@ -102,31 +66,6 @@ const LayoutTwo = ({
                         currentValue={type === "url" ? url : type === "email" ? email : type === "phone" ? phone : ""}
                     />
                 }
-                    {/*   :
-                    <div className="flex gap-1 items-start mt-2">
-                        <p>
-                            {((type === "url" || type === "offer")) && (url || "Enter URL")}
-                            {type === "email" && (email || "Enter Email")}
-                            {type === "phone" && (phone || "Enter Phone Number")}
-                        </p>
-                        {type !== "offer" && type !== "mailchimp" &&
-                            <span className="edit_icon edit_setting" onClick={(e) => {
-                                setIsEditing({
-                                    active: true,
-                                    section: type,
-                                    value: type === "url" ? url : type === "email" ? email : type === "phone" ? phone : "",
-                                    id: id,
-                                    type: type
-                                });
-                            }}>
-                                <RiEdit2Fill />
-                                <div className="hover_text edit_image">
-                                    <p>Edit {type}</p>
-                                </div>
-                            </span>
-                        }
-                    </div>
-                }*/}
             </div>
 
             <div className={`right_col`}>
