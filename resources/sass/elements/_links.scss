@@ -32,10 +32,30 @@
 
         form {
             .bottom_row {
-                padding-bottom: 10px;
-                border-bottom: 1px solid $borderGray;
+                .button {
+                    width: 48%;
+                }
             }
         }
+
+        .top_section {
+            form {
+                .bottom_row {
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid $borderGray;
+                }
+            }
+        }
+
+        .icons_wrap  {
+            form {
+                .bottom_row {
+                    padding-top: 20px;
+                    border-top: 1px solid $borderGray;
+                }
+            }
+        }
+
     }
 
     .right_column {
@@ -1162,6 +1182,23 @@
     text-align: center;
 }
 
+form .canvas_wrap {
+    @include boxShadow;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    margin-top: 10px;
+
+    &.icon {
+        box-shadow: none !important;
+        max-width: 8rem !important;
+    }
+}
+
+form.icon {
+    margin-bottom: 20px;
+}
+
 .crop_section {
     width: 100%;
     text-align: center;
@@ -1226,19 +1263,6 @@
                 top: 0;
                 border-radius: 8px;
             }
-        }
-    }
-
-    .icon_col.icon {
-        box-shadow: none !important;
-        width: 125px !important;
-
-        .canvas_wrap {
-            @include boxShadow;
-            border-radius: 20px;
-            -webkit-border-radius: 20px;
-            -moz-border-radius: 20px;
-            margin-top: 10px;
         }
     }
 

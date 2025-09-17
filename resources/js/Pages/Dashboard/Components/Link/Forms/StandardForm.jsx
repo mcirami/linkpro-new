@@ -8,6 +8,7 @@ import IconList from '../IconList';
 import InputTypeRadio from './InputTypeRadio';
 import {
     handleSwitchChange,
+    updateLink
 } from '@/Services/LinksRequest.jsx';
 import {
     FolderLinksContext,
@@ -17,9 +18,8 @@ import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 
 import {acceptTerms} from '@/Services/UserService.jsx';
 import IconDescription from './IconDescription.jsx';
+import ImageUploader from '@/Components/ImageUploader.jsx';
 
-import ImageUploader
-    from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
 import FormTabs from '@/Pages/Dashboard/Components/Link/Forms/FormTabs.jsx';
 import IconSettingComponent
     from '@/Pages/Dashboard/Components/Link/Forms/IconSettingComponent.jsx';
@@ -29,7 +29,7 @@ import {getIcons} from '@/Services/IconRequests.jsx';
 import {getIconPaths} from '@/Services/ImageService.jsx';
 import MailChimp from '@/Pages/Dashboard/Components/Link/Forms/Mailchimp/MailChimp.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon.jsx';
-
+import { LINKS_ACTIONS } from '@/Services/Reducer.jsx';
 const StandardForm = ({
                           editLink,
                           setEditLink,
@@ -419,15 +419,34 @@ const StandardForm = ({
                             }
                             <div className="w-full">
                                 <ImageUploader
-                                    editLink={editLink}
-                                    setEditLink={setEditLink}
-                                    setShowLoader={setShowLoader}
                                     elementName="bg_image"
-                                    imageCrop={{unit: "%", width: 100, aspect: 16 / 5 }}
-                                    imageAspectRatio={16 / 5}
-                                    imageSelected={imageSelected}
-                                    setImageSelected={setImageSelected}
                                     label="Background Image"
+                                    cropSettings={{ unit: '%', width: 100 }}
+                                    aspect={16 / 5}
+                                    setShowLoader={setShowLoader}
+                                    onImageSelect={setImageSelected}
+                                    onUpload={(response) => {
+                                        const packets = {
+                                            bg_image: response.key,
+                                            ext: response.extension,
+                                            bg_active: true,
+                                        };
+                                        return updateLink(packets, editLink.id).then((data) => {
+                                            dispatch({
+                                                type: LINKS_ACTIONS.UPDATE_LINK,
+                                                payload: {
+                                                    id: editLink.id,
+                                                    bg_image: data.imagePath.bg_image,
+                                                    bg_active: true,
+                                                },
+                                            });
+                                            setEditLink((prev) => ({
+                                                ...prev,
+                                                bg_image: data.imagePath.bg_image,
+                                                bg_active: true,
+                                            }));
+                                        });
+                                    }}
                                 />
                             </div>
                         </div>

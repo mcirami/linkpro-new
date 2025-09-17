@@ -229,11 +229,11 @@
             position: absolute;
             left: 6px;
             top: 12px;
-            z-index: 5;
             opacity: 0;
             display: none;
             transition: 100ms opacity linear;
             -webkit-transition: 100ms opacity linear;
+            z-index: 999;
         }
 
         ul.page_menu {

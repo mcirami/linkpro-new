@@ -9,8 +9,7 @@ import {addLink, updateLink} from '@/Services/LinksRequest.jsx';
 import {FOLDER_LINKS_ACTIONS, LINKS_ACTIONS} from '@/Services/Reducer.jsx';
 import {FolderLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
 import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
-import ImageUploader
-    from '@/Pages/Dashboard/Components/Link/Forms/ImageUploader.jsx';
+import ImageUploader from '@/Components/ImageUploader.jsx';
 import SelectorComponent
     from '@/Pages/Dashboard/Components/SelectorComponent.jsx';
 
@@ -526,16 +525,32 @@ const IconList = ({
                     <div className="flex flex-wrap w-full relative">
                         <div className="w-full">
                             <ImageUploader
-                                editLink={editLink}
-                                setEditLink={setEditLink}
-                                setShowLoader={setShowLoader}
                                 elementName="icon"
                                 label="Icon Image"
-                                imageCrop={{ unit: '%', width: 30 }}
-                                imageAspectRatio={1}
-                                imageSelected={imageSelected}
-                                setImageSelected={setImageSelected}
-                                setCustomIconArray={setCustomIconArray}
+                                cropSettings={{ unit: '%', width: 30 }}
+                                aspect={1}
+                                setShowLoader={setShowLoader}
+                                onImageSelect={setImageSelected}
+                                onUpload={(response) => {
+                                    const packets = {
+                                        icon: response.key,
+                                        ext: response.extension,
+                                    };
+                                    return updateLink(packets, editLink.id).then((data) => {
+                                        dispatch({
+                                            type: LINKS_ACTIONS.UPDATE_LINK,
+                                            payload: { id: editLink.id, icon: data.imagePath.icon },
+                                        });
+                                        setEditLink((prev) => ({
+                                            ...prev,
+                                            icon: data.imagePath.icon,
+                                        }));
+                                        setCustomIconArray((prev) => ([
+                                            ...prev,
+                                            data.imagePath.icon,
+                                        ]));
+                                    });
+                                }}
                             />
                         </div>
                     </div>

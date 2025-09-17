@@ -1,7 +1,9 @@
 import React, {
     useState,
     useRef,
-    forwardRef, useEffect,
+    forwardRef,
+    useEffect,
+    useMemo
 } from 'react';
 import {usePageContext} from '@/Context/PageContext.jsx';
 import ReactCrop from 'react-image-crop';
@@ -19,6 +21,17 @@ import {resizeFile} from '@/Services/ImageService.jsx';
 import Compressor from 'compressorjs';
 import { FiUploadCloud } from "react-icons/fi";
 
+const cropKeys = ['unit', 'aspect', 'width', 'height', 'x', 'y'];
+
+const areCropsEqual = (a, b) => {
+    return cropKeys.every((key) => {
+        const aValue = a?.[key] ?? null;
+        const bValue = b?.[key] ?? null;
+
+        return aValue === bValue;
+    });
+};
+
 const ImageUploader = forwardRef(function ImageUploader(props, ref) {
 
     const {
@@ -31,28 +44,35 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
         label
     } = props;
 
-    const [cropSettingsArray, setCropSettingsArray] = useState(cropSettings)
+    const defaultCrop = useMemo(() => cropSettings ?? {}, [
+        imageType,
+        cropSettings?.unit,
+        cropSettings?.width,
+        cropSettings?.height,
+        cropSettings?.x,
+        cropSettings?.y,
+        cropSettings?.aspect,
+    ]);
     const {pageSettings, setPageSettings} = usePageContext();
-    const [aspect, setAspect] = useState(cropSettingsArray.aspect)
+    const [aspect, setAspect] = useState(defaultCrop?.aspect ?? null)
     const [dragActive, setDragActive] = useState(false);
 
     useEffect(() => {
-        setAspect(cropSettingsArray.aspect || null);
-    }, [cropSettingsArray]);
-
-    useEffect(() => {
-        setCropSettingsArray(cropSettings); // Update cropSettingsArray on imageType change
-    }, [imageType, cropSettings]);
-
+        setAspect(defaultCrop?.aspect || null);
+    }, [defaultCrop?.aspect]);
 
     const [disableButton, setDisableButton] = useState(true);
 
     const [upImg, setUpImg] = useState(null);
     const imgRef = useRef();
     const previewCanvasRef = ref;
-    const [crop, setCrop] = useState(cropSettingsArray);
+    const [crop, setCrop] = useState(defaultCrop);
     const [scale, setScale] = useState(1);
     const [rotate, setRotate] = useState(0);
+
+    useEffect(() => {
+        setCrop((prev) => (areCropsEqual(prev, defaultCrop) ? prev : defaultCrop));
+    }, [defaultCrop]);
 
     useDebounceEffect(
         completedCrop,
