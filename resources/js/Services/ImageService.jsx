@@ -1,7 +1,12 @@
 import {toLower} from 'lodash';
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {centerCrop, makeAspectCrop} from 'react-image-crop';
 import Resizer from 'react-image-file-resizer';
+
+const DEFAULT_PREVIEW_MAX_DIMENSION = 1920;
+const DEFAULT_UPLOAD_MAX_DIMENSION = 1920;
+const DEFAULT_UPLOAD_QUALITY = 0.82;
+const DEFAULT_UPLOAD_TYPES = ['image/webp', 'image/jpeg', 'image/png'];
 
 const socialArray = [
     "facebook",
@@ -95,21 +100,20 @@ export const createImage = (
 };
 
 export const resizeFile = (file) => new Promise(resolve => {
+    const format = file?.type === 'image/png' ? 'PNG' : 'WEBP';
     Resizer.imageFileResizer(
         file,
-        2500,
-        2000,
-        "PNG",
-        100,
+        DEFAULT_PREVIEW_MAX_DIMENSION,
+        DEFAULT_PREVIEW_MAX_DIMENSION,
+        format,
+        90,
         0,
         (uri) => {
             resolve(uri);
         },
-        "blob",
-        1800,
-        1500
-    )
-})
+        'blob',
+    );
+});
 
 export const getIconPaths = (iconPaths) => {
 
@@ -235,22 +239,81 @@ export function onImageLoad(e, aspect, setCrop) {
     }
 }
 
-export const getFileToUpload = async (ref) => {
+export const getFileToUpload = async (ref, options = {}) => {
+    if (!ref) {
+        throw new Error('Canvas reference missing when attempting to export image');
+    }
 
-   return await new Promise(function(resolve, reject) {
-       ref.toBlob(
-           (blob) => {
-               const reader = new FileReader();
-               reader.readAsDataURL(blob);
-               reader.onloadend = () => {
-                   resolve(dataURLtoFile(reader.result, "cropped.jpg"));
-               };
-           },
-           "image/png",
-           1,
-       )
-   });
+    const {
+        maxDimension = DEFAULT_UPLOAD_MAX_DIMENSION,
+        quality = DEFAULT_UPLOAD_QUALITY,
+        outputTypes = DEFAULT_UPLOAD_TYPES,
+    } = options;
+
+    const scaledCanvas = scaleCanvas(ref, maxDimension);
+    const { blob, type } = await toBlobWithFallback(scaledCanvas, outputTypes, quality);
+
+    const extension = type?.split('/')?.[1] || 'webp';
+    return new File([blob], `cropped.${extension}`, { type });
 }
+
+const scaleCanvas = (canvas, maxDimension) => {
+    if (!maxDimension || typeof document === 'undefined') {
+        return canvas;
+    }
+
+    const { width, height } = canvas;
+    const largestSide = Math.max(width, height);
+
+    if (!largestSide || largestSide <= maxDimension) {
+        return canvas;
+    }
+
+    const ratio = maxDimension / largestSide;
+    const offscreen = document.createElement('canvas');
+    offscreen.width = Math.round(width * ratio);
+    offscreen.height = Math.round(height * ratio);
+
+    const context = offscreen.getContext('2d');
+
+    if (!context) {
+        return canvas;
+    }
+
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = 'high';
+    context.drawImage(canvas, 0, 0, offscreen.width, offscreen.height);
+
+    return offscreen;
+};
+
+const toBlobWithFallback = (canvas, outputTypes, quality) => {
+    const tryCreateBlob = (types) => new Promise((resolve, reject) => {
+        if (!types.length) {
+            canvas.toBlob((fallbackBlob) => {
+                if (fallbackBlob) {
+                    resolve({ blob: fallbackBlob, type: fallbackBlob.type || 'image/png' });
+                } else {
+                    reject(new Error('Unable to export image from canvas'));
+                }
+            });
+            return;
+        }
+
+        const [currentType, ...rest] = types;
+        canvas.toBlob((blob) => {
+            if (blob) {
+                resolve({ blob, type: blob.type || currentType });
+                return;
+            }
+
+            tryCreateBlob(rest).then(resolve).catch(reject);
+        }, currentType, quality);
+    });
+
+    return tryCreateBlob(Array.isArray(outputTypes) ? outputTypes : DEFAULT_UPLOAD_TYPES);
+};
+
 
 export const handleScaleChange = (
     e,
@@ -290,19 +353,6 @@ export const handleRotateChange = (
 
     setRotate(result)
 }
-
-const dataURLtoFile = (dataurl, fileName) => {
-    let arr = dataurl.split(","),
-        mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]),
-        n = bstr.length,
-        u8arr = new Uint8Array(n);
-
-    while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], fileName, { type: mime });
-};
 
 function move(arr, old_index, new_index) {
     while (old_index < 0) {
