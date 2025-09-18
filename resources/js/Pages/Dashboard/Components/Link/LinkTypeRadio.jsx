@@ -5,6 +5,9 @@ import {addLink, updateLinkStatus} from '@/Services/LinksRequest.jsx';
 import {
     FolderLinksContext,
 } from '../../Dashboard.jsx';
+import { SiInternetcomputer } from "react-icons/si";
+import { FaMoneyBillWave,FaMailchimp } from "react-icons/fa";
+
 const LinkTypeRadio = ({
                            editLink,
                            setEditLink,
@@ -114,52 +117,98 @@ const LinkTypeRadio = ({
     }
 
     return (
-        <div id="scrollTo" className="my_row radios_wrap my-2 px-10">
-            <div className="radio_wrap">
-                <label htmlFor="link_type">
-                    <input type="radio"
-                           name="link_type"
-                           id="personal_button"
-                           value="url"
-                           onChange={(e) => handleOnChange("url")}
-                    />
-                    Personal Button
-                </label>
-            </div>
-            <div className="radio_wrap">
-                <label htmlFor="link_type">
-                    <input type="radio"
-                           name="link_type"
-                           id="offer_button"
-                           value="offer"
-                           onChange={(e) => handleOnChange(e.target.value)}
-                    />
-                    Creator Offer
-                </label>
-            </div>
-            { (!userLinks.some(obj => obj.type === "mailchimp") && !editLink.folder_id) &&
-                <div className="radio_wrap">
-                    <label htmlFor="link_type">
-                        <input type="radio"
-                               name="link_type"
-                               id="mailchimp_button"
-                               value="mailchimp"
-                               onChange={(e) => handleOnChange(e.target.value)}
-                        />
-                        MailChimp
-                    </label>
+        <div id="scrollTo" className="my_row px-6 sm:px-10 mt-4">
+            {/* Title + helper */}
+            <div className="mb-4 flex items-baseline justify-between pt-4 border-t border-gray-200 pb-4">
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Choose a link type</h3>
+                    <p className="text-sm text-gray-500">
+                        Pick what you want to add to this page.
+                    </p>
                 </div>
-            }
-            <a className="ml-auto text-red-600 flex justify-end text-md"
-               href="#"
-               onClick={(e) => {
-                   e.preventDefault();
-                   setShowLinkTypeRadio(false);
-               }}
-            >
-                CANCEL
-            </a>
+
+                {/* Cancel */}
+                <button
+                    type="button"
+                    onClick={() => setShowLinkTypeRadio(false)}
+                    className="text-red-600 shadow-none p-0 w-auto text-sm font-medium hover:underline"
+                >
+                    Cancel
+                </button>
+            </div>
+
+            {/* Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                {/* URL */}
+                <button
+                    type="button"
+                    onClick={(e) => { e.preventDefault(); handleOnChange("url"); }}
+                    className="transform-none flex items-start w-full group rounded-xl border border-gray-200 bg-white p-4 text-left shadow-md
+                 transition-all hover:-translate-y-0.5 hover:shadow-lg focus:outline-none
+                 focus-visible:ring-2 focus-visible:ring-[#424fcf]/30"
+                >
+                    <div className="flex-col items-start gap-3">
+                        <div className="text-base font-semibold flex items-center gap-2 text-gray-900">
+                            <div className="h-9 w-9 rounded-lg bg-[#424fcf]/10 grid place-items-center">
+                                {/* link icon */}
+                                <SiInternetcomputer className="h-5 w-5 text-[#424fcf]" aria-hidden="true" />
+                            </div>
+                            <h3 className="uppercase">URL</h3>
+                        </div>
+                        <p className="mt-1 text-sm text-gray-600">
+                            Open a webpage, launch an email draft, or start a phone call.
+                        </p>
+                    </div>
+                </button>
+
+                {/* Offer */}
+                <button
+                    type="button"
+                    onClick={(e) => { e.preventDefault(); handleOnChange("offer"); }}
+                    className="transform-none flex items-start w-full group rounded-xl border border-gray-200 bg-white p-4 text-left shadow-md
+                 transition-all hover:-translate-y-0.5 hover:shadow-lg focus:outline-none
+                 focus-visible:ring-2 focus-visible:ring-[#424fcf]/30"
+                >
+                    <div className="flex-col items-start gap-3">
+                        <div className="text-base font-semibold flex items-center gap-2 text-gray-900">
+                            <div className="h-9 w-9 rounded-lg bg-[#424fcf]/10 grid place-items-center">
+                                {/* ticket/offer icon */}
+                                <FaMoneyBillWave className="h-5 w-5 text-[#424fcf]" aria-hidden="true" />
+                            </div>
+                            <h3 className="uppercase">Offer</h3>
+                        </div>
+                        <p className="mt-1 text-sm text-gray-600">
+                            Promote a creator’s lesson. Earn a commission when visitors buy from your link.
+                        </p>
+                    </div>
+                </button>
+
+                {/* Mailchimp (conditionally render) */}
+                {(!userLinks.some(obj => obj.type === "mailchimp") && !editLink.folder_id) && (
+                    <button
+                        type="button"
+                        onClick={(e) => { e.preventDefault(); handleOnChange("mailchimp"); }}
+                        className="transform-none flex items-start w-full group rounded-xl border border-gray-200 bg-white p-4 text-left shadow-md
+                   transition-all hover:-translate-y-0.5 hover:shadow-lg focus:outline-none
+                   focus-visible:ring-2 focus-visible:ring-[#424fcf]/30"
+                    >
+                        <div className="flex-col items-start gap-3">
+                            <div className="flex items-center gap-2 text-base font-semibold text-gray-900">
+                                <div className="h-9 w-9 rounded-lg bg-[#424fcf]/10 grid place-items-center">
+                                    {/* inbox icon */}
+                                    <FaMailchimp className="h-5 w-5 text-[#424fcf]" aria-hidden="true" />
+                                </div>
+                                <h3 className="uppercase">Mailchimp</h3>
+                            </div>
+                            <p className="mt-1 text-sm text-gray-600">
+                                Add a signup form to grow your newsletter—new subscribers go straight to your list.
+                            </p>
+                        </div>
+                    </button>
+                )}
+            </div>
         </div>
+
     );
 };
 

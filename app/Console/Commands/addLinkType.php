@@ -52,9 +52,9 @@ class addLinkType extends Command
                 $link->update( [ "type" => "email" ] );
             } else if ($link->phone) {
                     $link->update(["type" => "phone"]);
-            } else if ($link->description) {
+            } /*else if ($link->description) {
                 $link->update(["type" => "advanced"]);
-            } else {
+            } */else {
                 $link->update(["type" => "url"]);
             }
         }

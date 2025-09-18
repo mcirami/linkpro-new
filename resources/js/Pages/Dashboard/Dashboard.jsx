@@ -505,13 +505,15 @@ function Dashboard({
                                                         <div className={`add_content_links ${pageSettings.page_layout ===
                                                         "layout_two" &&
                                                         "!border-0"} `}>
-                                                            <div className="add_more_link">
-                                                                <AddLink
-                                                                    setShowLinkTypeRadio={setShowLinkTypeRadio}
-                                                                    subStatus={subStatus}
-                                                                    setShowUpgradePopup={setShowUpgradePopup}
-                                                                />
-                                                            </div>
+                                                            {!showLinkTypeRadio &&
+                                                                <div className="add_more_link">
+                                                                    <AddLink
+                                                                        setShowLinkTypeRadio={setShowLinkTypeRadio}
+                                                                        subStatus={subStatus}
+                                                                        setShowUpgradePopup={setShowUpgradePopup}
+                                                                    />
+                                                                </div>
+                                                            }
                                                             {(pageSettings.page_layout ===
                                                                     "layout_one" &&
                                                                     !editLink.folder_id) &&

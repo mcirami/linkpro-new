@@ -199,7 +199,7 @@ const ImageUploader = ({
 
                                 {/* Single icon that moves from right → above text in the expanded area */}
                                 <span
-                                    className="pointer-events-none absolute transition-all duration-1000 ease-out text-gray-400"
+                                    className="pointer-events-none absolute transition-all duration-1000 ease-in-out text-gray-400"
                                     style={
                                         open
                                             ? { left: '50%', top: 'calc(56px + 1rem)', transform: 'translateX(-50%)' } // above helper copy

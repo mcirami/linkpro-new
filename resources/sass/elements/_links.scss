@@ -881,7 +881,8 @@
     }
 }
 
-.radios_wrap {
+.radios_wrap,
+.button_select_wrap {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -909,6 +910,13 @@
         p {
             @include ossemibold;
             margin-left: 5px !important;
+        }
+    }
+
+    button:hover {
+        transition: .5s all linear;
+        &:not(.active):hover {
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
         }
     }
 }

@@ -408,7 +408,7 @@ const StandardForm = ({
                                         </div>
                                     </div>
                                     <div className="w-full">
-                                        <p className="label w-full text-center mb-2">Current</p>
+                                        <p className="label !text-gray-500 w-full text-center mb-2">Current</p>
                                         <div className="image_wrap">
                                             <img src={editLink.bg_image} alt=""/>
                                         </div>
