@@ -487,6 +487,8 @@ const IconList = ({
             )
     }
 
+    console.log("icon", editLink.icon);
+
     return (
 
         <>
@@ -531,6 +533,7 @@ const IconList = ({
                                 aspect={1}
                                 setShowLoader={setShowLoader}
                                 onImageSelect={setImageSelected}
+                                startCollapsed={editLink.icon}
                                 onUpload={(response) => {
                                     const packets = {
                                         icon: response.key,

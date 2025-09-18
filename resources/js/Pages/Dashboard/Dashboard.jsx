@@ -366,6 +366,11 @@ function Dashboard({
                                                                     setCompletedCrop={setCompletedCrop}
                                                                     setShowLoader={setShowLoader}
                                                                     imageType={imageType}
+                                                                    startCollapsed={imageType ===
+                                                                        "header" ?
+                                                                            !editLink.header_img :
+                                                                            !editLink.page_img
+                                                                    }
                                                                     elementName={imageType ===
                                                                     "header" ?
                                                                         "header_img" :
@@ -411,6 +416,7 @@ function Dashboard({
                                                                     setShowLoader={setShowLoader}
                                                                     elementName="profile_img"
                                                                     label="Profile Image"
+                                                                    startCollapsed={!editLink.profile_img}
                                                                     cropSettings={{
                                                                         unit: '%',
                                                                         aspect: 1,

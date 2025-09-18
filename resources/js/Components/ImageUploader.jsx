@@ -24,6 +24,7 @@ const ImageUploader = ({
                            completedCrop = null,
                            setCompletedCrop = null,
                            onImageSelect = null,
+                           startCollapsed = false,
                        }) => {
     const [upImg, setUpImg] = useState(null);
     const imgRef = useRef(null);
@@ -37,6 +38,9 @@ const ImageUploader = ({
     const [disableButton, setDisableButton] = useState(true);
     const [internalCompletedCrop, setInternalCompletedCrop] = useState(null);
 
+    // Controls the dotted box expansion state
+    const [open, setOpen] = useState(!startCollapsed);
+
     useEffect(() => {
         setCrop(cropSettings);
     }, [cropSettings]);
@@ -46,6 +50,11 @@ const ImageUploader = ({
             setCrop((prev) => ({ ...prev, aspect: aspect }));
         }
     }, [aspect]);
+
+    // Force open when an image is selected (enter crop mode)
+    useEffect(() => {
+        if (upImg) setOpen(true);
+    }, [upImg]);
 
     if (setCompletedCrop) {
         useDebounceEffect(
@@ -72,9 +81,7 @@ const ImageUploader = ({
     const onSelectFile = async (e) => {
         e.preventDefault();
         let files = e.target.files || e.dataTransfer.files;
-        if (!files.length) {
-            return;
-        }
+        if (!files || !files.length) return;
         onImageSelect?.(true);
         await resizeFile(files[0]).then((image) => {
             new Compressor(image, {
@@ -165,29 +172,79 @@ const ImageUploader = ({
                             }}
                             onDragLeave={() => setDragActive(false)}
                             onDrop={onSelectFile}
-                            className={`rounded-xl border-2 border-dashed p-12 text-center transition ${
-                                dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-white'
-                            }`}
+                            // Animated dotted box (grid trick)
+                            className={[
+                                // container: NO padding in collapsed state
+                                'group relative grid rounded-xl border-2 border-dashed text-center p-0',
+                                'transition-[grid-template-rows] duration-1000 ease-out',
+                                open ? 'grid-rows-[125px_1fr] pb-8' : 'grid-rows-[56px_0fr]',
+                                dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-white',
+                            ].join(' ')}
                         >
-                            <FiUploadCloud size={48} className="mx-auto text-gray-400 mb-3" />
-                            <p className="text-sm font-medium text-gray-600">
-                                Drop your <span className="font-bold">{label}</span> here, or{' '}
-                                <label htmlFor={`file-upload-${elementName}`} className="text-blue-600 underline cursor-pointer">
-                                    browse
-                                </label>
-                            </p>
-                            <div className="my_row info_text file_types w-full text-center">
-                                <p className="m-0 char_count  ">
-                                    Allowed File Types: <span>png, jpg, jpeg, gif</span>
-                                </p>
+                            {/* Row 1 — collapsed header / Change Image bar */}
+                            <button
+                                type="button"
+                                className="shadow-none relative flex h-14 w-full items-center justify-between px-4"
+                                onClick={() => setOpen(true)}
+                                aria-expanded={open}
+                            >
+                                {/* CHANGE IMAGE text fades out when open */}
+                                <span
+                                    className={`text-sm font-semibold tracking-wide text-gray-500 transition-opacity duration-300 ${
+                                        open ? 'opacity-0' : 'opacity-100'
+                                    }`}
+                                >
+                                {startCollapsed ? 'CHANGE IMAGE' : 'Add an Image'}
+                              </span>
+
+                                {/* Single icon that moves from right → above text in the expanded area */}
+                                <span
+                                    className="pointer-events-none absolute transition-all duration-1000 ease-out text-gray-400"
+                                    style={
+                                        open
+                                            ? { left: '50%', top: 'calc(56px + 1rem)', transform: 'translateX(-50%)' } // above helper copy
+                                            : { right: '1rem', top: '50%', transform: 'translateY(-50%)' } // right side of header
+                                    }
+                                >
+                                <FiUploadCloud className="h-8 w-8" />
+                              </span>
+                            </button>
+
+                            {/* Row 2 — expanding content */}
+                            <div
+                                className={[
+                                    'overflow-hidden',
+                                    // Add padding ONLY when open; none when collapsed (so dashed box is p-0)
+                                    'transition-[padding,opacity] duration-1000 ease-out',
+                                    open ? 'px-6 pb-6 opacity-100' : 'p-0 opacity-0',
+                                    'min-h-[var(--open-h)]',
+                                ].join(' ')}
+                            >
+                                <div className="mx-auto flex h-full w-full max-w-3xl flex-col items-center justify-center">
+                                    {/* no duplicate icon here—header icon slides into position */}
+                                    <p className="text-sm font-medium text-gray-600">
+                                        Drop your <span className="font-bold">{label}</span> here, or{' '}
+                                        <label
+                                            htmlFor={`file-upload-${elementName}`}
+                                            className="text-blue-600 underline cursor-pointer"
+                                        >
+                                            browse
+                                        </label>
+                                    </p>
+                                    <div className="my_row info_text file_types w-full text-center">
+                                        <p className="m-0 char_count text-xs text-gray-400">
+                                            Allowed File Types: <span>png, jpg, jpeg, gif</span>
+                                        </p>
+                                    </div>
+                                    <input
+                                        id={`file-upload-${elementName}`}
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={onSelectFile}
+                                        className="hidden"
+                                    />
+                                </div>
                             </div>
-                            <input
-                                id={`file-upload-${elementName}`}
-                                type="file"
-                                accept="image/*"
-                                onChange={onSelectFile}
-                                className="hidden"
-                            />
                         </div>
                     )}
                     {upImg && (
@@ -236,8 +293,8 @@ const ImageUploader = ({
                                 </>
                             )}
                             <div className="bottom_row w-full flex justify-between items-center flex-wrap">
-                                <button type="submit" className="button green" disabled={disableButton}>
-                                    Save
+                                <button type="submit" className="button blue" disabled={disableButton}>
+                                    Upload
                                 </button>
                                 <a
                                     className="button transparent gray"

@@ -408,7 +408,7 @@ const StandardForm = ({
                                         </div>
                                     </div>
                                     <div className="w-full">
-                                        <p className="label">Current:</p>
+                                        <p className="label w-full text-center mb-2">Current</p>
                                         <div className="image_wrap">
                                             <img src={editLink.bg_image} alt=""/>
                                         </div>
@@ -425,6 +425,7 @@ const StandardForm = ({
                                     aspect={16 / 5}
                                     setShowLoader={setShowLoader}
                                     onImageSelect={setImageSelected}
+                                    startCollapsed={editLink.bg_image}
                                     onUpload={(response) => {
                                         const packets = {
                                             bg_image: response.key,
