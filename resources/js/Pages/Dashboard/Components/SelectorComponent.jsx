@@ -6,7 +6,7 @@ export default function SelectorComponent({
                                               commit,
                                               options,
                                               size = null,
-                                              color = "#424fcf",
+                                              color = "border-indigo-600 bg-indigo-50",
 }) {
     const idx = useMemo(
         () => Math.max(0, options.findIndex(o => o.value === value)),
@@ -29,17 +29,17 @@ export default function SelectorComponent({
         <div
             role="tablist"
             aria-label="Segmented control"
-            className={`animated_tabs relative inline-flex w-full ${size} rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden`}
+            className={`animated_tabs relative inline-flex w-full ${size} rounded-lg bg-white shadow-md overflow-hidden`}
             onKeyDown={onKeyDown}
         >
             {/* Sliding pill */}
             <span
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 left-0 rounded-lg shadow transition-transform duration-300 ease-out"
+                className={` ${color} pointer-events-none absolute inset-y-0 left-0 rounded-lg shadow transition-transform duration-300 ease-out`}
                 style={{
                     width: colW,
                     transform: `translateX(${idx * 100}%)`,
-                    backgroundColor: color,
+                    /*backgroundColor: color,*/
                 }}
             />
 
@@ -55,7 +55,7 @@ export default function SelectorComponent({
                         className={[
                             "relative z-10 flex-1 px-4 py-2 text-sm font-semibold text-center",
                             "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#424fcf]/30 focus-visible:ring-offset-white",
-                            selected ? "text-white" : "text-gray-800"
+                            "text-gray-800"
                         ].join(" ")}
                         onClick={(e) => commit(e, opt.value)}
                     >

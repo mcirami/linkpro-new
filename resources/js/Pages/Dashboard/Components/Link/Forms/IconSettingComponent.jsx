@@ -170,7 +170,7 @@ const IconSettingComponent = ({
                     <div
                         /*aria-hidden={isActive}*/
                         className={[
-                            `${pageSettings.page_layout === 'layout_two' && 'absolute'} inset-0 flex items-center gap-2`,
+                            `${pageSettings.page_layout === 'layout_two' && 'absolute'} ${elementName} inset-0 flex items-center gap-2`,
                             'transition-all duration-200 ease-out',
                             isActive ?
                                 'opacity-0 scale-95 pointer-events-none' :

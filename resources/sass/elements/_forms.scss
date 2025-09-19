@@ -1542,13 +1542,5 @@ form .bottom_row a {
         border-radius: 10px;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
-
-        &.text-gray-800 {
-
-            &:hover {
-                color: $blue;
-                border-bottom: 3px solid $blue;
-            }
-        }
     }
 }

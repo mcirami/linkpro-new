@@ -45,25 +45,20 @@ function PageLayout({pageLayoutRef}) {
                                     <svg viewBox="0 0 58 58" className="h-8 w-8 md:h-9 md:w-9">
                                         {/* 4x4 grid glyph */}
                                         <g fill="currentColor">
-                                            <rect x="13" y="12" width="6" height="6" rx="1"/>
-                                            <rect x="21" y="12" width="6" height="6" rx="1"/>
-                                            <rect x="29" y="12" width="6" height="6" rx="1"/>
-                                            <rect x="37" y="12" width="6" height="6" rx="1"/>
+                                            <rect x="13" y="16" width="6" height="6" rx="1"/>
+                                            <rect x="21" y="16" width="6" height="6" rx="1"/>
+                                            <rect x="29" y="16" width="6" height="6" rx="1"/>
+                                            <rect x="37" y="16" width="6" height="6" rx="1"/>
 
-                                            <rect x="13" y="20" width="6" height="6" rx="1"/>
-                                            <rect x="21" y="20" width="6" height="6" rx="1"/>
-                                            <rect x="29" y="20" width="6" height="6" rx="1"/>
-                                            <rect x="37" y="20" width="6" height="6" rx="1"/>
+                                            <rect x="13" y="25" width="6" height="6" rx="1"/>
+                                            <rect x="21" y="25" width="6" height="6" rx="1"/>
+                                            <rect x="29" y="25" width="6" height="6" rx="1"/>
+                                            <rect x="37" y="25" width="6" height="6" rx="1"/>
 
-                                            <rect x="13" y="28" width="6" height="6" rx="1"/>
-                                            <rect x="21" y="28" width="6" height="6" rx="1"/>
-                                            <rect x="29" y="28" width="6" height="6" rx="1"/>
-                                            <rect x="37" y="28" width="6" height="6" rx="1"/>
-
-                                            <rect x="13" y="36" width="6" height="6" rx="1"/>
-                                            <rect x="21" y="36" width="6" height="6" rx="1"/>
-                                            <rect x="29" y="36" width="6" height="6" rx="1"/>
-                                            <rect x="37" y="36" width="6" height="6" rx="1"/>
+                                            <rect x="13" y="34" width="6" height="6" rx="1"/>
+                                            <rect x="21" y="34" width="6" height="6" rx="1"/>
+                                            <rect x="29" y="34" width="6" height="6" rx="1"/>
+                                            <rect x="37" y="34" width="6" height="6" rx="1"/>
                                         </g>
                                     </svg>
                                 </div>
@@ -88,10 +83,9 @@ function PageLayout({pageLayoutRef}) {
                                     <svg viewBox="0 0 48 48" className="h-7 w-7 md:h-8 md:w-8">
                                         {/* two filled “button” pills */}
                                         <g fill="currentColor">
-                                            <rect x="10" y="10" width="30" height="5" rx="3"/>
-                                            <rect x="10" y="18" width="30" height="5" rx="3"/>
-                                            <rect x="10" y="26" width="30" height="5" rx="3"/>
-                                            <rect x="10" y="34" width="30" height="5" rx="3"/>
+                                            <rect x="10" y="12" width="30" height="5" rx="3"/>
+                                            <rect x="10" y="21" width="30" height="5" rx="3"/>
+                                            <rect x="10" y="30" width="30" height="5" rx="3"/>
                                         </g>
                                     </svg>
                                 </div>
