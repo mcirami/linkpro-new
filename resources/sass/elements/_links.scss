@@ -120,12 +120,6 @@
                     -ms-flex-wrap: wrap;
                 }
 
-                button {
-                    transition: .5s all linear;
-                    &:not(.active):hover {
-                        box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-                    }
-                }
             }
         }
     }
@@ -485,7 +479,7 @@
             --n:5;
             grid-template-columns: repeat(auto-fill, minmax(max(50px,100%/var(--n)), 1fr));
             grid-gap: 20px;
-            padding: 40px 5% 0;
+            padding: 10px 5% 0;
             transition: 800ms all ease-in-out;
             -webkit-transition: 800ms all ease-in-out;
             -moz-transition: 800ms all ease-in-out;
@@ -910,13 +904,6 @@
         p {
             @include ossemibold;
             margin-left: 5px !important;
-        }
-    }
-
-    button:hover {
-        transition: .5s all linear;
-        &:not(.active):hover {
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
         }
     }
 }

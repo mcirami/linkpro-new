@@ -119,7 +119,7 @@ const LinkTypeRadio = ({
     return (
         <div id="scrollTo" className="my_row px-6 sm:px-10 mt-4">
             {/* Title + helper */}
-            <div className="mb-4 flex items-baseline justify-between pt-4 border-t border-gray-200 pb-4">
+            <div className="mb-4 flex items-baseline justify-between pt-4 pb-4">
                 <div>
                     <h3 className="text-lg font-semibold text-gray-900">Choose a link type</h3>
                     <p className="text-sm text-gray-500">

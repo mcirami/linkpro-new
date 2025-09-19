@@ -501,32 +501,31 @@ function Dashboard({
                                                         ""
                                                     }
 
-                                                    <div className="my_row link_row">
-                                                        <div className={`add_content_links ${pageSettings.page_layout ===
-                                                        "layout_two" &&
-                                                        "!border-0"} `}>
-                                                            {!showLinkTypeRadio &&
-                                                                <div className="add_more_link">
-                                                                    <AddLink
-                                                                        setShowLinkTypeRadio={setShowLinkTypeRadio}
-                                                                        subStatus={subStatus}
-                                                                        setShowUpgradePopup={setShowUpgradePopup}
-                                                                    />
-                                                                </div>
-                                                            }
-                                                            {(pageSettings.page_layout ===
-                                                                    "layout_one" &&
-                                                                    !editLink.folder_id) &&
-                                                                <div className="add_more_link">
-                                                                    <AddFolder
-                                                                        subStatus={subStatus}
-                                                                        setShowUpgradePopup={setShowUpgradePopup}
-                                                                        setEditLink={setEditLink}
-                                                                    />
-                                                                </div>
-                                                            }
+                                                    {!showLinkTypeRadio &&
+                                                        <div className="my_row link_row">
+                                                            <div className={`add_content_links !pl-0 !pr-0 !border-0`}>
+
+                                                                    <div className="add_more_link">
+                                                                        <AddLink
+                                                                            setShowLinkTypeRadio={setShowLinkTypeRadio}
+                                                                            subStatus={subStatus}
+                                                                            setShowUpgradePopup={setShowUpgradePopup}
+                                                                        />
+                                                                    </div>
+                                                                {(pageSettings.page_layout ===
+                                                                        "layout_one" &&
+                                                                        !editLink.folder_id) &&
+                                                                    <div className="add_more_link">
+                                                                        <AddFolder
+                                                                            subStatus={subStatus}
+                                                                            setShowUpgradePopup={setShowUpgradePopup}
+                                                                            setEditLink={setEditLink}
+                                                                        />
+                                                                    </div>
+                                                                }
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    }
 
                                                     {showLinkTypeRadio &&
                                                         <LinkTypeRadio
