@@ -35,7 +35,7 @@ export default function Login({ status, canResetPassword, course = null }) {
 
             <div className="container">
                 <div className="my_row form_page">
-                    <div className="card bg-white guest login_form">
+                    <div className="card bg-white guest login_form shadow-md">
                         <div className={`${course ? "mb-0" : "mb-4"}`}>
                             <h3>Log in to LinkPro</h3>
                         </div>

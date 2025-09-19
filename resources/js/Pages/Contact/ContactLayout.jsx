@@ -17,7 +17,7 @@ const ContactLayout = ({honeypot, spamDetected}) => {
 
             <div className="container" id="contact_page">
                 <div className="my_row form_page">
-                    <div className="card guest relative">
+                    <div className="card guest relative shadow-md">
                         {showLoader.show &&
                             <Loader showLoader={showLoader} />}
                         <h2 className="page_title text-center !mb-2">Contact Us</h2>

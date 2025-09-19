@@ -17,7 +17,7 @@ export default function Guest({ children = null, ...props }) {
         if(window.innerWidth < 550) {
             setLinkClasses("");
         } else {
-            setLinkClasses("button transparent");
+            setLinkClasses("button blue");
         }
 
     },[])
@@ -29,7 +29,7 @@ export default function Guest({ children = null, ...props }) {
             if(window.innerWidth < 550) {
                 setLinkClasses("");
             } else {
-                setLinkClasses("button transparent");
+                setLinkClasses("button blue");
             }
         }
 

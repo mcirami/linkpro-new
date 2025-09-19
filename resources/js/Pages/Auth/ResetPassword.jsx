@@ -35,7 +35,7 @@ export default function ResetPassword({ token, email }) {
 
             <div className="container">
                 <div className="my_row form_page">
-                    <div className="mb-4 card guest login_form">
+                    <div className="mb-4 card guest login_form shadow-md">
                         <div className="mb-4">
                             <h3>Reset Password</h3>
                         </div>

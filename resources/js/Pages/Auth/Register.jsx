@@ -59,7 +59,7 @@ export default function Register({honeypot, spamDetected = false}) {
             <Head title="Register" />
             <div className="container">
                 <div className="my_row form_page">
-                    <div className="card guest relative">
+                    <div className="card guest relative shadow-md">
                         {showLoader.show &&
                             <Loader showLoader={showLoader} />}
                         {spamDetected ?
