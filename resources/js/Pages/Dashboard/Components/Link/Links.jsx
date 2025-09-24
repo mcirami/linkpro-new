@@ -40,7 +40,6 @@ const Links = ({
                    pageLayoutRef,
                    setShowConfirmPopup,
                    setShowLoader,
-                   affStatus,
                    connectionError,
                    formRow,
                    setFormRow
@@ -217,7 +216,6 @@ const Links = ({
                                     formRow={formRow}
                                     setFormRow={setFormRow}
                                     setShowUpgradePopup={setShowUpgradePopup}
-                                    affStatus={affStatus}
                                     connectionError={connectionError}
                                 />
                             )

@@ -58,7 +58,7 @@ const FormTabs = ({
         }
 
         setOptions(optionsArray);
-    },[])
+    },[editLink])
 
     const handleOnClick = (e, type) => {
         e.preventDefault();

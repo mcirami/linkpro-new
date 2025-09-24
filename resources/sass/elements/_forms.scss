@@ -846,7 +846,7 @@ form .bottom_row a {
                 flex-wrap: nowrap;
                 width: 100%;
                 background: #fff;
-                padding: 20px 20px 0 20px;
+                padding: 20px 20px 5px 20px;
 
                 .max-w-xs {
                     max-width: 50% !important;
@@ -1538,9 +1538,11 @@ form .bottom_row a {
 
 .animated_tabs {
     a {
+        @include osbold;
         border-bottom: 3px solid transparent;
         border-radius: 10px;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
+        text-transform: uppercase;
     }
 }

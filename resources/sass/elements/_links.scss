@@ -63,7 +63,7 @@
         float: left;
         position: -webkit-sticky;
         position: sticky;
-        top: -7%;
+        top: 0;
 
         @media screen and (max-width: 992px) {
             position: fixed;
@@ -334,6 +334,7 @@
                 border-radius: 20px;
                 -webkit-border-radius: 20px;
                 -moz-border-radius: 20px;
+                border: 1px solid rgba(0,0,255,.06);
 
                 .form_nav {
                     border-radius: 20px;
@@ -341,20 +342,47 @@
                     -moz-border-radius: 20px;
                 }
             }
+            $tri-size: 12px;                 // inner (white) triangle size
+            $tri-border: 2px;                // border thickness
+            $tri-fill: #fff;
+            $tri-border-color: rgba(0,0,255,.06);
             .column_content {
                 z-index: 1;
                 &.open {
-                    &:after {
+                    /*&:after {
                         content: '';
                         position: absolute;
-                        bottom: -28px;
-                        left: -5px;
-                        border-left: 79px solid transparent;
-                        border-right: 79px solid transparent;
-                        border-top: 40px solid #fff;
-                        border-radius: 50px;
-                        -webkit-border-radius: 50px;
-                        -moz-border-radius: 50px;
+                        bottom: -50px;
+                        left: 50%;
+                        border-left: 50px solid transparent;
+                        border-right:59px solid transparent;
+                        border-bottom: 40px solid #fff;
+                        transform: translateX(-3rem);
+                    }*/
+                    &::before,
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        bottom: -2.6rem;       // sits just above the top edge of the element
+                        width: 0;
+                        height: 0;
+                        pointer-events: none;
+                    }
+
+                    &::before {
+                        border-left:  ($tri-size + $tri-border) solid transparent;
+                        border-right: ($tri-size + $tri-border) solid transparent;
+                        border-bottom: ($tri-size + $tri-border) solid $tri-border-color; // ▲ (up)
+                    }
+
+                    // white fill
+                    &::after {
+                        bottom: -2.6rem;   // overlap to reveal border
+                        border-left: $tri-size solid transparent;
+                        border-right: $tri-size solid transparent;
+                        border-bottom: $tri-size solid $tri-fill;
                     }
                 }
             }

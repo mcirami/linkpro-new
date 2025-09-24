@@ -546,7 +546,6 @@ function Dashboard({
                                                                 subStatus={subStatus}
                                                                 editLink={editLink}
                                                                 setEditLink={setEditLink}
-                                                                setValue={setValue}
                                                                 formRow={formRow}
                                                                 setFormRow={setFormRow}
                                                                 affStatus={affStatus}

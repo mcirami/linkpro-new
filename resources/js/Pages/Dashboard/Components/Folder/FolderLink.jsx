@@ -14,10 +14,8 @@ const FolderLink = ({
                         handleOnClick,
                         handleChange,
                         subStatus,
-                        setValue,
                         formRow,
                         setFormRow,
-                        affStatus,
                         editLink,
                         setEditLink,
                         setShowLoader
@@ -31,7 +29,6 @@ const FolderLink = ({
         displayIcon = checkIcon(link.icon, "edit", subStatus);
     }
 
-    const [affiliateStatus, setAffiliateStatus] = useState(affStatus);
 
     const {
         attributes,
@@ -92,8 +89,6 @@ const FolderLink = ({
                     setEditLink={setEditLink}
                     setShowLoader={setShowLoader}
                     setFormRow={setFormRow}
-                    affiliateStatus={affiliateStatus}
-                    setAffiliateStatus={setAffiliateStatus}
                     index={index}
                 />
             </div>

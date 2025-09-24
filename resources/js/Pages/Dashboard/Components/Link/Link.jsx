@@ -22,13 +22,11 @@ const Link = ({
                   formRow,
                   setFormRow,
                   setShowUpgradePopup,
-                  affStatus,
                   connectionError
 }) => {
 
     const {type, id, icon, links} = link;
     const {pageSettings} = usePageContext();
-    const [affiliateStatus, setAffiliateStatus] = useState(affStatus);
 
     let hasLinks = false;
     let displayIcon;
@@ -110,8 +108,6 @@ const Link = ({
                                 setEditLink={setEditLink}
                                 setShowLoader={setShowLoader}
                                 setFormRow={setFormRow}
-                                affiliateStatus={affiliateStatus}
-                                setAffiliateStatus={setAffiliateStatus}
                                 connectionError={connectionError}
                                 index={index}
                             />
@@ -130,8 +126,6 @@ const Link = ({
                     setEditLink={setEditLink}
                     setShowLoader={setShowLoader}
                     setFormRow={setFormRow}
-                    affiliateStatus={affiliateStatus}
-                    setAffiliateStatus={setAffiliateStatus}
                     connectionError={connectionError}
                     index={index}
                 />

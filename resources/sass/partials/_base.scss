@@ -271,7 +271,7 @@ button {
     -moz-border-radius: 6px;
     border: none;
     text-transform: uppercase;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .70);
+    //box-shadow: 0 0 5px 0 rgba(0, 0, 0, .70);
 
     &:hover {
         cursor: pointer;
@@ -335,7 +335,6 @@ button {
     }
 
     &.green {
-        box-shadow: 0 0 2px 0 rgba(0, 0, 0, 30%);
         background: $limeGreen;
 
         &:hover {

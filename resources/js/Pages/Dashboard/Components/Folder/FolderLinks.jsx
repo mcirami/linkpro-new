@@ -36,10 +36,9 @@ const FolderLinks = ({
                          subStatus,
                          editLink,
                          setEditLink,
-                         setValue,
+
                          formRow,
                          setFormRow,
-                         affStatus,
                          setShowLoader
                }) => {
 
@@ -181,10 +180,8 @@ const FolderLinks = ({
                                         subStatus={subStatus}
                                         handleChange={handleChange}
                                         handleOnClick={handleOnClick}
-                                        setValue={setValue}
                                         formRow={formRow}
                                         setFormRow={setFormRow}
-                                        affStatus={affStatus}
                                         editLink={editLink}
                                         setEditLink={setEditLink}
                                         setShowLoader={setShowLoader}

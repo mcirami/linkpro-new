@@ -293,7 +293,7 @@ const ImageUploader = ({
                                 </>
                             )}
                             <div className="bottom_row w-full flex justify-between items-center flex-wrap">
-                                <button type="submit" className="button blue" disabled={disableButton}>
+                                <button type="submit" className="button blue shadow-md" disabled={disableButton}>
                                     Upload
                                 </button>
                                 <a

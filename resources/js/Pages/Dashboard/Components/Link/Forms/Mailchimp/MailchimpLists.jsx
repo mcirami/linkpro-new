@@ -71,7 +71,7 @@ const MailchimpLists = ({
 
     return (
         <div className="my_row relative form_nav_content p-5">
-            <p className="label">Mailchimp List</p>
+            <p className="label !text-gray-500 w-full text-center mb-2">Mailchimp List</p>
             <select
                 name={"mailchimp_list_id"}
                 onChange={(e) => handleChange(e)}

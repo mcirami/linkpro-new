@@ -6,7 +6,7 @@ const LivePageButton = ({pageName}) => {
     const host = window.location.origin;
 
     return (
-        <a className="button green !w-60 !flex justify-center items-center gap-4" target="_blank" href={host + '/' + pageName}>
+        <a className="button green !w-60 !flex justify-center items-center gap-4 shadow-md" target="_blank" href={host + '/' + pageName}>
             <p>Open Live Page</p>
             <IoOpenOutline />
         </a>

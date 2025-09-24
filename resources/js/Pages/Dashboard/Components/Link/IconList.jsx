@@ -487,8 +487,6 @@ const IconList = ({
             )
     }
 
-    console.log("icon", editLink.icon);
-
     return (
 
         <>
@@ -510,7 +508,7 @@ const IconList = ({
                 }
                 { (showIconList.type === "standard") &&
 
-                    <div className="relative mb-3 my_row">
+                    <div className="relative mb-6 my_row">
                         <input
                             className="animate w-full"
                             name="search"
