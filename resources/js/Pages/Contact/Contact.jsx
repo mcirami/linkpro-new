@@ -2,12 +2,11 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ContactLayout from '@/Pages/Contact/ContactLayout.jsx';
 import {Head} from '@inertiajs/react';
-import {isEmpty} from 'lodash';
 function Contact({auth, honeypot = null, spamDetected = false}) {
 
     return (
         <>
-            { isEmpty(auth.user.userInfo) ?
+            { auth.user.userInfo.length < 1 ?
 
                 <GuestLayout>
                     <Head title="Contact Us" />

@@ -7,7 +7,6 @@ import SetFlash from '@/Utils/SetFlash.jsx';
 import ChoosePlanContent from '@/Pages/User/Components/ChoosePlanContent.jsx';
 import PlanComponent from '@/Pages/User/Components/PlanComponent.jsx';
 import BreadCrumbs from '@/Pages/User/Components/BreadCrumbs.jsx';
-import {isEmpty} from 'lodash';
 import {Loader} from '@/Utils/Loader.jsx';
 import {
     SubscriptionPaymentButtons
@@ -86,7 +85,7 @@ const User = ({
                             />
                         }
 
-                        {!isEmpty(showSection) &&
+                        {showSection.length > 0 &&
                             <BreadCrumbs
                                 showSection={showSection}
                                 setShowSection={setShowSection}

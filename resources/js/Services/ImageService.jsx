@@ -1,4 +1,3 @@
-import {toLower} from 'lodash';
 import {useEffect} from 'react';
 import {centerCrop, makeAspectCrop} from 'react-image-crop';
 import Resizer from 'react-image-file-resizer';
@@ -140,7 +139,7 @@ export const getIconPaths = (iconPaths) => {
     let count = 0;
     socialArray.map((name, index) => {
         const iconIndex = iconArray.findIndex(object => {
-            return toLower(object.name) === name
+            return object.name.toLowerCase() === name
         })
 
         move(iconArray, iconIndex, count);

@@ -1,7 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {useForm} from '@inertiajs/react';
-import {isEmpty} from 'lodash';
-import {updateUserInfo} from '@/Services/UserService.jsx';
 import EventBus from '@/Utils/Bus.jsx';
 
 const UserForm = ({
@@ -61,7 +59,7 @@ const UserForm = ({
 
     return (
         <>
-            {!isEmpty(errors) && console.log(errors)}
+            {errors.length > 0 && console.log(errors)}
             <h2 className="text-uppercase">Account Info</h2>
             <form method="POST" onSubmit={handleSubmit} action={`/update-account/${userInfo.id}`}>
                 <div className="form_inputs">

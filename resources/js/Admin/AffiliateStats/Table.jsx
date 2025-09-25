@@ -6,7 +6,6 @@ import {
     flexRender,
 } from '@tanstack/react-table';
 import {FaSort, FaSortDown, FaSortUp} from 'react-icons/fa';
-import {isEmpty} from 'lodash';
 
 export const Table = ({
                    isLoading,
@@ -61,7 +60,7 @@ export const Table = ({
             ))}
             </thead>
             <tbody>
-            {isEmpty(data) ?
+            {data.length < 1 ?
                 <tr>
                     <td className={ isLoading ? "hidden no_stats" : "no_stats"} colSpan="5"><h3>No Stats Available</h3></td>
                 </tr>

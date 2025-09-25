@@ -1,5 +1,4 @@
 import {Head} from '@inertiajs/react';
-import {isEmpty} from 'lodash';
 import GuestLayout from '@/Layouts/GuestLayout.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import PageLayout from '@/Pages/HowItWorks/PageLayout.jsx';
@@ -8,7 +7,7 @@ function Contact({auth}) {
     return (
         <>
             <Head title="Contact Us" />
-            { isEmpty(auth.user.userInfo) ?
+            { auth.user.userInfo.length < 1 ?
 
                 <GuestLayout>
                     <PageLayout />

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import EventBus from '../Utils/Bus';
-import {isEmpty} from 'lodash';
 
 export const checkSubStatus = (userSub) => {
 
@@ -114,7 +113,7 @@ export const getAllProducts = (storeId) => {
 
             return {
                 success : true,
-                products : !isEmpty(products) ? products : null,
+                products : products.length > 0 ? products : null,
             }
         },
 
@@ -144,7 +143,7 @@ export const getStores = () => {
 
             return {
                 success : true,
-                stores : !isEmpty(stores) ? stores : null,
+                stores : stores.length > 0 ? stores : null,
             }
         },
 

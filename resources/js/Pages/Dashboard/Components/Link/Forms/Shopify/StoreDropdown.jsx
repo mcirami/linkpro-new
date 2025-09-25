@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import {isEmpty} from 'lodash';
 import {ImPlus} from 'react-icons/im';
 import {
     HandleBlur,
@@ -50,7 +49,7 @@ const StoreDropdown = ({
                 value={currentLink.shopify_id || storeID || 0}
             >
                 <option value={0}>Select Your Store</option>
-                {!isEmpty(shopifyStores) && shopifyStores?.map((store) => {
+                {shopifyStores.length > 0 && shopifyStores?.map((store) => {
                     return (
                         <option
                             key={store.id}

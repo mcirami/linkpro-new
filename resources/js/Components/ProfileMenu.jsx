@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {Link, usePage} from '@inertiajs/react';
-import {isEmpty} from 'lodash';
 import {
     GetCurrentTime,
     GetHumanReadableTime,
@@ -30,7 +29,7 @@ const ProfileMenu = () => {
         <div className="nav_links_wrap">
             {/*Right Side Of Navbar*/}
             <ul className="ml-auto">
-                {!isEmpty(userRoles) ?
+                {userRoles.length > 0 ?
                      ( (userRoles.includes('admin') || userRoles.includes('lp.user')) && !auth.user.subscription ) ||
                     (auth.user.subscription && auth.user.subscription.name !== "premier" && !auth.user.subscription.ends_at) ||
                     (auth.user.subscription && auth.user.subscription.ends_at && subEnd < currentDateTime)  ?
@@ -43,7 +42,7 @@ const ProfileMenu = () => {
                     ""
                 }
                 <li className="nav-item">
-                    {!isEmpty(userRoles) ?
+                    {userRoles.length > 0 ?
                         <Link className="nav-link" href={ route('user.edit') } role="button">
                             <img id="user_image" src={
                                 auth.user.userInfo?.avatar.includes('default') ?

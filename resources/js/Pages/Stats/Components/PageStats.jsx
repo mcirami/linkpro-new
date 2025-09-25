@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {getPageStats} from '@/Services/StatsRequests.jsx';
 import Filters from './Filters';
-import {isEmpty} from 'lodash';
 import Table from './Table';
 
 const PageStats = ({
@@ -20,7 +19,7 @@ const PageStats = ({
 
     useEffect(() => {
 
-        if (isEmpty(pageStats)) {
+        if (pageStats.length > 0) {
             setIsLoading(true);
             const packets = {
                 currentDay: true

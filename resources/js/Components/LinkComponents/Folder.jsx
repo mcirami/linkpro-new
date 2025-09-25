@@ -1,7 +1,6 @@
 import FolderLinks from './FolderLinks.jsx';
 import React from 'react';
 import {TrackFolderClick} from '@/Services/TrackClicks.jsx';
-import {toInteger} from 'lodash';
 
 const Folder = ({
                     id,
@@ -32,7 +31,7 @@ const Folder = ({
                 url: null
             });
         } else {
-            setRow(toInteger(clickedDiv.firstChild.dataset.row));
+            setRow(parseInt(clickedDiv.firstChild.dataset.row));
             setValue((prev) => ({
                 ...prev,
                 index: index

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import ReactPaginate from 'react-paginate';
-import {isEmpty} from 'lodash';
 import SingleProduct from './SingleProduct';
 import {MdKeyboardArrowLeft, MdKeyboardArrowRight} from 'react-icons/md';
 
@@ -47,7 +46,7 @@ const AllProducts = ({
             <h3>Select Products to Add to Icon</h3>
             <small>(max 6 products per icon)</small>
             <div className="products_grid">
-                {!isEmpty(currentItems) && currentItems?.map((product, index) => {
+                {currentItems.length > 0 && currentItems?.map((product, index) => {
                     return (
                         <SingleProduct
                             key={index}

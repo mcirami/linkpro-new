@@ -1,10 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {TrackIconClick} from '@/Services/TrackClicks.jsx';
-import {toInteger} from 'lodash';
-import isJSON from 'validator/es/lib/isJSON.js';
-import {convertText} from '@/Services/CreatorServices.jsx';
-import draftToHtml from 'draftjs-to-html';
-import DOMPurify from 'dompurify';
 
 const AdvancedIcon = ({
                           id,
@@ -39,7 +34,7 @@ const AdvancedIcon = ({
                 url: null
             });
         } else {
-            setRow(toInteger(clickedDiv.dataset.row));
+            setRow(parseInt(clickedDiv.dataset.row));
             setValue({
                 index: index,
                 url: url

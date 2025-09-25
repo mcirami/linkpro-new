@@ -3,7 +3,6 @@ import {usePageContext} from '@/Context/PageContext.jsx';
 import {FiThumbsDown, FiThumbsUp} from 'react-icons/fi';
 import {submitPageSetting} from '@/Services/PageRequests.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
-import {capitalize} from 'lodash';
 
 const PageSettingComponent = ({
                        element,

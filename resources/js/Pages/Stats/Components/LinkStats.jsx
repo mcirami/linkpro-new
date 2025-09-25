@@ -5,7 +5,6 @@ import {
 
 import "react-datepicker/dist/react-datepicker.css";
 import Filters from './Filters';
-import {isEmpty} from 'lodash';
 import Table from './Table';
 
 const LinkStats = ({
@@ -25,7 +24,7 @@ const LinkStats = ({
     const [animate, setAnimate] = useState(true);
 
     useEffect(() => {
-        if (isEmpty(linkStats)) {
+        if (linkStats.length < 1) {
             setIsLoading(true);
             const packets = {
                 currentDay: true

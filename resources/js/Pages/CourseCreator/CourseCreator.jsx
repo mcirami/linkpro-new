@@ -14,7 +14,6 @@ import {
 } from '@/Components/Reducers/CreatorReducers.jsx';
 import Preview from './Components/Preview/Preview';
 import EventBus from '@/Utils/Bus';
-import {isEmpty} from 'lodash';
 import SwitchOptions from './Components/SwitchOptions';
 import PublishButton from './Components/PublishButton';
 import Section from './Components/Section';
@@ -404,7 +403,7 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                 </div>
                                             </section>
 
-                                            {!isEmpty(sections) &&
+                                            {sections.length > 0 &&
 
                                                 <DndContext
                                                     sensors={sensors}

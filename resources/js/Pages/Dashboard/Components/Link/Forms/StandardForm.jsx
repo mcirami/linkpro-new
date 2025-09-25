@@ -22,7 +22,6 @@ import ImageUploader from '@/Components/ImageUploader.jsx';
 import FormTabs from '@/Pages/Dashboard/Components/Link/Forms/FormTabs.jsx';
 import IconSettingComponent
     from '@/Pages/Dashboard/Components/Link/Forms/IconSettingComponent.jsx';
-import {capitalize} from 'lodash';
 import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import {getIcons} from '@/Services/IconRequests.jsx';
 import {getIconPaths} from '@/Services/ImageService.jsx';
@@ -254,7 +253,7 @@ const StandardForm = ({
                                 elementName={editLink.type}
                                 currentValue={editLink.url}
                                 placeholder="Enter URL"
-                                label={capitalize(editLink.type)}
+                                label={editLink.type}
                             />
                         }
                     </div>

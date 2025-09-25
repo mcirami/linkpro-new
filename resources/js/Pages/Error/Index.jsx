@@ -1,7 +1,5 @@
 import GuestLayout from '@/Layouts/GuestLayout';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head} from '@inertiajs/react';
-import {isEmpty} from 'lodash';
 
 export default function ErrorPage({ status }) {
     const title = {

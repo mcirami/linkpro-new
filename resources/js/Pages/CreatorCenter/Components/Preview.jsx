@@ -1,5 +1,4 @@
 import React from 'react';
-import {isEmpty} from 'lodash';
 import PreviewSection from './PreviewSection';
 import {UseLoadPreviewHeight, UseResizePreviewHeight} from '@/Services/PreviewHooks.jsx';
 
@@ -34,7 +33,7 @@ const Preview = ({landingPage}) => {
                             </div>
                         }
                     </section>
-                    {!isEmpty(sections) &&
+                    {sections.length > 0 &&
                         <div className="sections">
                             {sections.map((section, index) => {
 

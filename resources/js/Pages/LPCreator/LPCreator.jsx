@@ -11,7 +11,6 @@ import {
 } from '@/Components/Reducers/CreatorReducers.jsx';
 import Preview from './Components/Preview/Preview';
 import EventBus from '@/Utils/Bus';
-import {isEmpty} from 'lodash';
 import PreviewButton from '@/Components/PreviewButton.jsx';
 import {previewButtonRequest} from '@/Services/PageRequests';
 import PublishButton from './Components/PublishButton';
@@ -259,7 +258,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                             </div>
                                         </section>
 
-                                        {!isEmpty(sections) &&
+                                        {sections.length > 0 &&
 
                                             <DndContext
                                                 sensors={sensors}

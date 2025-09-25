@@ -5,7 +5,6 @@ import {
 
 import "react-datepicker/dist/react-datepicker.css";
 import Filters from './Filters';
-import {isEmpty} from 'lodash';
 import Table from './Table';
 
 const FolderStats = ({
@@ -23,7 +22,7 @@ const FolderStats = ({
     const [animate, setAnimate] = useState(true);
 
     useEffect(() => {
-        if (isEmpty(folderStats)) {
+        if (folderStats.length < 1) {
             setIsLoading(true);
             const packets = {
                 currentDay: true

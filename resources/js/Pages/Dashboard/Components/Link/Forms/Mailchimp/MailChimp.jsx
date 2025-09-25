@@ -4,7 +4,6 @@ import MailchimpIntegration
 import MailchimpLists
     from '@/Pages/Dashboard/Components/Link/Forms/Mailchimp/MailchimpLists.jsx';
 import {usePageContext} from '@/Context/PageContext.jsx';
-import {isEmpty} from 'lodash';
 import {getMailchimpLists} from '@/Services/UserService.jsx';
 
 const MailChimp = ({
@@ -28,7 +27,7 @@ const MailChimp = ({
         getMailchimpLists().then(
             (data) => {
                 if (data.success) {
-                    !isEmpty(data.lists) && setLists(data.lists);
+                    data.lists.length > 0 && setLists(data.lists);
                     //setShowLoader({show: false, icon: "", position: ""});
                 }
             }
@@ -36,7 +35,7 @@ const MailChimp = ({
     }
     return (
 
-       isEmpty(lists) ?
+       lists.length < 0 ?
 
         <MailchimpIntegration
             connectionError={connectionError}

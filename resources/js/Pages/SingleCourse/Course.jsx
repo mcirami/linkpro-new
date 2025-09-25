@@ -8,7 +8,6 @@ import CourseLayout from '@/Layouts/CourseLayout.jsx';
 import Menu from '@/Menu/Menu.jsx';
 import EventBus from '@/Utils/Bus.jsx';
 import SetFlash from '@/Utils/SetFlash.jsx';
-import {isEmpty} from 'lodash';
 import PurchasePaymentButtons
     from '@/Components/Payments/PurchasePaymentButtons.jsx';
 import {convertText} from '@/Services/CreatorServices.jsx';
@@ -31,7 +30,7 @@ function Course({
 
     const [introText, setIntroText] = useState(intro_text);
 
-    const userAuth = !isEmpty(auth.user.userInfo);
+    const userAuth = auth.user.userInfo.length > 0;
 
     let additionalVars = "";
     if (affRef && clickId) {
@@ -132,7 +131,7 @@ function Course({
     return (
 
         <CourseLayout course={course} auth={auth}>
-            {!isEmpty(auth.user.userInfo) &&
+            {auth.user.userInfo.length > 0 &&
                 <Menu />
             }
             <Head title={title} />

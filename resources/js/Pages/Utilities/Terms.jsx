@@ -1,6 +1,5 @@
 import React from 'react';
 import {Head} from '@inertiajs/react';
-import {isEmpty} from 'lodash';
 import GuestLayout from '@/Layouts/GuestLayout.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import PageContent from '@/Pages/Utilities/Components/PageContent.jsx';
@@ -11,7 +10,7 @@ const Terms = ({auth}) => {
 
         <>
             <Head title="Terms and Conditions" />
-            { isEmpty(auth.user.userInfo) ?
+            { auth.user.userInfo.length < 1 ?
                 <GuestLayout>
                     <PageContent pageName="terms" />
                 </GuestLayout>

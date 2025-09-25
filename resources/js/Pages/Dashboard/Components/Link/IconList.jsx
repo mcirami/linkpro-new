@@ -3,7 +3,6 @@ import {icons} from '@/Services/IconObjects.jsx';
 import {getCourseCategories} from '@/Services/CourseRequests.jsx';
 import DropdownComponent from './Forms/DropdownComponent';
 import {HandleFocus, HandleBlur} from '@/Utils/InputAnimations.jsx';
-import str, {isEmpty} from 'lodash';
 import {usePage} from '@inertiajs/react';
 import {addLink, updateLink} from '@/Services/LinksRequest.jsx';
 import {FOLDER_LINKS_ACTIONS, LINKS_ACTIONS} from '@/Services/Reducer.jsx';
@@ -383,7 +382,7 @@ const IconList = ({
 
                         <div className="icons_wrap inner">
                             {
-                                !isEmpty(filteredIcons) ?
+                                filteredIcons.length > 0 ?
                                     filteredIcons.map((icon, index) => {
 
                                         return (
@@ -441,7 +440,7 @@ const IconList = ({
 
                                     })
                                     :
-                                    !isEmpty(mapArray) ?
+                                    mapArray.length > 0 ?
                                         mapArray?.map((icon, index) => {
 
                                             return (

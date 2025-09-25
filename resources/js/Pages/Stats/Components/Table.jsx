@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {isEmpty} from 'lodash';
 import {HiMinusSm, HiOutlinePlusSm} from 'react-icons/hi';
 import {FaSort, FaSortDown, FaSortUp} from 'react-icons/fa';
 import {
@@ -75,7 +74,7 @@ const Table = ({
             </thead>
             <tbody>
 
-            {isEmpty(data) ?
+            {data.length < 1 ?
                 <tr>
                     <td className={ isLoading ? "hidden no_stats" : "no_stats"} colSpan="5"><h3>No Stats Available</h3></td>
                 </tr>

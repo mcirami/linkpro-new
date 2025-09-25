@@ -3,7 +3,6 @@ import {
     getMailchimpLists,
     removeMailchimpConnection,
 } from '@/Services/UserService.jsx';
-import {isEmpty, toInteger} from 'lodash';
 import {updateLink} from '@/Services/LinksRequest.jsx';
 import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
 import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
@@ -79,7 +78,7 @@ const MailchimpLists = ({
                 value={currentLink.mailchimp_list_id || undefined}
             >
                 <option>Select Your List</option>
-                {!isEmpty(lists) && lists?.map((list) => {
+                {lists.length > 0 && lists?.map((list) => {
                     return (
                         <option
                             key={list.list_id}
@@ -89,7 +88,7 @@ const MailchimpLists = ({
                     )
                 })}
             </select>
-            {!isEmpty(lists) &&
+            {lists.length > 0 &&
                 <div className="my_row remove_link">
                     <a className="text-red-500 flex justify-end text-sm mt-2" href="#" onClick={(e) => handleClick(e)}>
                         Remove Connection

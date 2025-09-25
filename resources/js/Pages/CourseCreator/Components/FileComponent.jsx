@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {MdEdit} from 'react-icons/md';
 import {getFileParts, uploadSectionFile} from '@/Services/FileService.jsx';
-import {toLower} from 'lodash';
 import EventBus from '@/Utils/Bus.jsx';
 
 const FileComponent = ({
@@ -114,7 +113,7 @@ const FileComponent = ({
                             className="custom"
                         >
                             {
-                                fileName ? toLower(fileName) : "Upload File"
+                                fileName ? fileName.toLowerCase() : "Upload File"
                             }
                             <span className="edit_icon">
                                 <MdEdit/>

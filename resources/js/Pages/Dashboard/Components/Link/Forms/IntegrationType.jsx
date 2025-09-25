@@ -3,11 +3,6 @@ import {
     getMailchimpLists,
     getStores,
 } from '@/Services/UserService.jsx';
-import {isEmpty} from 'lodash';
-import {
-    HandleFocus,
-    HandleBlur,
-} from '@/Utils/InputAnimations.jsx';
 
 const IntegrationType = ({
                              integrationType,
@@ -66,7 +61,7 @@ const IntegrationType = ({
         getMailchimpLists().then(
             (data) => {
                 if (data.success) {
-                    !isEmpty(data.lists) && setLists(data.lists);
+                    data.lists.length > 0 && setLists(data.lists);
                     setShowLoader({show: false, icon: "", position: ""});
                 }
             }
@@ -80,7 +75,7 @@ const IntegrationType = ({
         getStores().then(
             (data) => {
                 if (data.success) {
-                    !isEmpty(data.stores) && setShopifyStores(data.stores)
+                    data.stores.length > 0 && setShopifyStores(data.stores)
                     setShowLoader({show: false, icon: "", position: ""});
                 }
             }
@@ -90,25 +85,6 @@ const IntegrationType = ({
     return (
         <div className="integration_dropdown_wrap">
             <h3>MailChimp</h3>
-            {/*<select
-                className={integrationType !== "" ? "active" : ""}
-                name="integration_type"
-                onChange={(e) => handleChange(e)}
-                onFocus={(e) => HandleFocus(e.target)}
-                onBlur={(e) => HandleBlur(e.target)}
-                value={integrationType || undefined}
-            >
-                <option value=""></option>
-                <option
-                    value="mailchimp">
-                    MailChimp
-                </option>
-                <option
-                    value="shopify">
-                    Shopify
-                </option>
-            </select>
-            <label htmlFor="mailchimp_list_id">Select Integration Type</label>*/}
         </div>
     );
 };

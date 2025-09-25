@@ -1,7 +1,6 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import {Head, Link} from '@inertiajs/react';
-import {isEmpty} from 'lodash';
 import ColumnComponent from '@/Pages/AllCourses/ColumnComponent.jsx';
 
 const Courses = ({purchasedCourses, unPurchasedCourses}) => {
@@ -13,7 +12,7 @@ const Courses = ({purchasedCourses, unPurchasedCourses}) => {
                 <div id="links_page" className="live_page course">
                     <div className="my_row courses_grid all_courses">
                         <div className="container">
-                            {!isEmpty(purchasedCourses) &&
+                            {purchasedCourses.length > 0 &&
                                 <section className="section_wrap my_row">
                                     <h2 className="page_title">Your Courses</h2>
                                     <div className="sections">

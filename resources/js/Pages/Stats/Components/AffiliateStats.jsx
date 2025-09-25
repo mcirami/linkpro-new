@@ -2,14 +2,12 @@ import React, {
     useState,
     useEffect,
     useCallback,
-    Fragment,
     useMemo,
 } from 'react';
 import {
     getAffiliateStats,
 } from '@/Services/StatsRequests.jsx';
 import Filters from './Filters';
-import {isEmpty} from 'lodash';
 import Table from './Table';
 
 const AffiliateStats = ({
@@ -32,7 +30,7 @@ const AffiliateStats = ({
 
     useEffect(() => {
 
-        if (isEmpty(affiliateStats)) {
+        if (affiliateStats.length < 1) {
             setIsLoading(true);
             const packets = {
                 currentDay: true

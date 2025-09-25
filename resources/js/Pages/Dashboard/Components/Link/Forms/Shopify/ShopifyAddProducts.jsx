@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ImPlus} from 'react-icons/im';
 import {getAllProducts} from '@/Services/UserService.jsx';
-import {isEmpty} from 'lodash';
 import {FaExclamationTriangle} from 'react-icons/fa';
 
 const ShopifyAddProducts = ({
@@ -37,8 +36,7 @@ const ShopifyAddProducts = ({
             getAllProducts(currentLink.shopify_id).then(
                 (data) => {
                     if (data.success) {
-                        !isEmpty(data.products) &&
-                        setAllProducts(data.products);
+                        data.products.length > 0 && setAllProducts(data.products);
                         setDisplayAllProducts(true)
                         setShowLoader({show: false, icon: "", position: ""});
                     }

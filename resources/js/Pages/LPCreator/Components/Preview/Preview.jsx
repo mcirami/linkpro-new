@@ -6,7 +6,6 @@ import {
     UseLoadPreviewHeight,
     UseResizePreviewHeight
 } from '@/Services/PreviewHooks.jsx';
-import {isEmpty} from 'lodash';
 import {IoIosCloseCircleOutline} from 'react-icons/io';
 
 const Preview = ({
@@ -68,7 +67,7 @@ const Preview = ({
 
                         </section>
                         <div className="sections">
-                            {!isEmpty(sections) && sections.map((section, index) => {
+                            {sections.length > 0 && sections.map((section, index) => {
 
                                 return (
                                     <PreviewSection
