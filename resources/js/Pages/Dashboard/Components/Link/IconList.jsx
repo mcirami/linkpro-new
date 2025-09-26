@@ -559,7 +559,7 @@ const IconList = ({
         }
             {!imageSelected &&
                 <>
-                    <div className={`icons_wrap icon_select my_row outer ${showFormTab === "offers" ? "offer_list" : ""}`}>
+                    <div className={`icons_wrap icon_select shadow-md my_row outer ${showFormTab === "offers" ? "offer_list" : ""}`}>
                         {isLoading &&
                             <div id="loading_spinner" className="active">
                                 <img src={Vapor.asset('images/spinner.svg')} alt="" />

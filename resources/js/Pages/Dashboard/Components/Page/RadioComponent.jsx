@@ -42,7 +42,7 @@ const RadioComponent = ({
     };
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 gap-4 mb-4">
             <button className={`
                 transform-none flex items-center w-full group rounded-xl p-4 text-left shadow-md
                  transition-all focus:outline-none
@@ -60,7 +60,7 @@ const RadioComponent = ({
                                 <rect x="12" y="7" width="24" height="8" rx="3" fill="currentColor"/>
                             </svg>
                         </div>
-                        <h3 className="uppercase leading-none">Header Only</h3>
+                        <h3 className="uppercase leading-5">Header<br />Only</h3>
                     </div>
                 </div>
             </button>
@@ -82,7 +82,7 @@ const RadioComponent = ({
                                 <rect x="15" y="30" width="19" height="3" rx="3" fill="rgb(216,218,242)"/>
                             </svg>
                         </div>
-                        <h3 className="uppercase leading-none">Full Page</h3>
+                        <h3 className="uppercase leading-5">Full<br />Page</h3>
                     </div>
                 </div>
             </button>

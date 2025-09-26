@@ -543,7 +543,6 @@ form .bottom_row a {
             }
 
             .icons_wrap {
-                border: 1px solid $borderGray;
                 border-radius: 10px;
                 -webkit-border-radius: 10px;
                 -moz-border-radius: 10px;
@@ -594,7 +593,6 @@ form .bottom_row a {
                             --n: 6;
                             overflow-y: scroll;
                             height: 190px;
-                            border-left: 1px solid $borderGray;
                             justify-content: flex-start;
                             -webkit-justify-content: flex-start;
                             align-items: flex-start;

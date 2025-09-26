@@ -62,6 +62,8 @@ function Dashboard({
 
     const {links, page, userPages, allPageNames, userSub, affStatus} = userData;
 
+    const [affStatusState, setAffStatusState] = useState(affStatus);
+
     const [userLinks, dispatch] = useReducer(reducer, links);
 
     const [folderLinks, dispatchFolderLinks] = useReducer(folderLinksReducer, []);
@@ -533,6 +535,8 @@ function Dashboard({
                                                             setEditLink={setEditLink}
                                                             setShowLinkTypeRadio={setShowLinkTypeRadio}
                                                             pageId={pageSettings.id}
+                                                            affStatusState={affStatusState}
+                                                            setAffStatusState={setAffStatusState}
                                                         />
                                                     }
 
@@ -548,7 +552,6 @@ function Dashboard({
                                                                 setEditLink={setEditLink}
                                                                 formRow={formRow}
                                                                 setFormRow={setFormRow}
-                                                                affStatus={affStatus}
                                                                 setShowLoader={setShowLoader}
                                                             />
                                                         </ErrorBoundary>
@@ -568,7 +571,6 @@ function Dashboard({
                                                                 pageLayoutRef={pageLayoutRef}
                                                                 setShowConfirmPopup={setShowConfirmPopup}
                                                                 setShowLoader={setShowLoader}
-                                                                affStatus={affStatus}
                                                                 connectionError={connectionError}
                                                                 formRow={formRow}
                                                                 setFormRow={setFormRow}

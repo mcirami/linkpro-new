@@ -36,7 +36,6 @@ const FolderLinks = ({
                          subStatus,
                          editLink,
                          setEditLink,
-
                          formRow,
                          setFormRow,
                          setShowLoader

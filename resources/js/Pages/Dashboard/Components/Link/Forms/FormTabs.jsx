@@ -84,7 +84,7 @@ const FormTabs = ({
                 onChange={setShowFormTab}
                 commit={handleOnClick}
                 options={options}
-                size={options.length > 2 ? "max-w-xl" : "max-w-sm"}
+                size={options.length > 2 ? "" : ""}
             />
         </div>
     );
