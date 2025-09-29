@@ -71,9 +71,19 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
+            gap: 15px;
             float: none;
             overflow-y: scroll;
+            flex-wrap: wrap;
+        }
+
+        .view_live_link {
+            display: none;
+
+            @media screen and (max-width: 992px) {
+                display: flex;
+            }
         }
     }
 
@@ -1545,5 +1555,12 @@ form.icon {
 
     .css-1yjjitx-MuiSwitch-track {
         border-radius: 50px;
+    }
+}
+
+.view_live_link.header {
+    display: flex;
+    @media screen and (max-width: 992px) {
+        display: none;
     }
 }

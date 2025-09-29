@@ -257,14 +257,15 @@ function Dashboard({
         <AuthenticatedLayout>
             <Head title="Dashboard" />
             <div className="container">
-                <div className="px-6 pt-6">
+                <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
                     <PageHeader
                         heading="Pages"
                         description="Manage your public page title, images, layout and links."
                         pageName={pageSettings.name}
                     />
-
-                    <div className="mt-3 border-b border-gray-100"></div>
+                    <div className="view_live_link header mt-auto">
+                        <LivePageButton />
+                    </div>
                 </div>
                 <section className="card edit_page">
                     <div id="links_page">
