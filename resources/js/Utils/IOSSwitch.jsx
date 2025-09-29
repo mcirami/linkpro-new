@@ -5,12 +5,12 @@ import Switch from '@mui/material/Switch';
 const IOSSwitch = styled((props) => (
     <Switch {...props} />
 ))(({ theme }) => ({
-    width: 45,
-    height: 22,
+    width: 42,
+    height: 18,
     padding: 0,
     '& .MuiSwitch-switchBase': {
         padding: 0,
-        margin: 2,
+        margin: 1.5,
         transitionDuration: '800ms',
         '&.Mui-checked': {
             transform: 'translateX(23px)',
@@ -38,8 +38,8 @@ const IOSSwitch = styled((props) => (
     '& .MuiSwitch-thumb': {
         color: '#ffffff',
         boxSizing: 'border-box',
-        width: 18,
-        height: 18,
+        width: 15,
+        height: 15,
     },
     '& .MuiSwitch-track': {
         borderRadius: 26 / 2,

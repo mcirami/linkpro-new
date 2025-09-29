@@ -170,7 +170,7 @@
             -moz-transition: .5s all linear;
             -webkit-transition: .5s all linear;
             -o-transition: .5s all linear;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+            //box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
 
             &:hover {
                 box-shadow: 0 0px 30px rgba(0, 0, 0, 0.1);
@@ -595,7 +595,7 @@
                         flex-direction: row;
                         -ms-flex-wrap: nowrap;
                         flex-wrap: nowrap;
-                        padding: 10px 20px;
+                        padding: 20px;
 
                         .icon_wrap {
                             padding: 0;
@@ -710,6 +710,12 @@
                                 p, h3 {
                                     font-size: .9rem;
                                     word-break: break-word;
+                                }
+
+                                .switch_wrap {
+                                    p{
+                                        font-size: .8rem;
+                                    }
                                 }
 
                                 .name {

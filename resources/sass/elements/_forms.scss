@@ -113,8 +113,10 @@ select {
     input[type="url"],
     input[type="email"], {
         height: 35px;
-        padding: 5px 10px;
         max-width: 75%;
+        padding: 8px 8px 5px 0;
+        border-bottom: 1px solid $borderGray;
+        border-radius: 0;
 
         ~ label {
             font-size: .7rem;
@@ -123,17 +125,20 @@ select {
         }
 
         &.active {
+            box-shadow: none;
+
             ~ label {
-                line-height: 1;
+                display: none;
+                /*line-height: 1;
                 color: rgba(66, 79, 207, 0.5);
                 top: -4px;
                 left: 10px;
-                z-index: 3;
+                z-index: 3;*/
             }
         }
 
         &:focus {
-            box-shadow: 0 1px 6px -1px rgba(0, 0, 0, 0.1), 0 0 10px -2px rgba(0, 0, 0, 0.1);
+            box-shadow: none;
         }
     }
 }

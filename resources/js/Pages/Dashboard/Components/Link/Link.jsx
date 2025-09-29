@@ -60,7 +60,7 @@ const Link = ({
              ref={setNodeRef}
              style={style}
         >
-            <div className="icon_col">
+            <div className="icon_col shadow-md">
                 <span className="drag_handle relative"
                       {...attributes}
                       {...listeners}

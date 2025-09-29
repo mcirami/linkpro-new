@@ -9,6 +9,7 @@ import {
 } from '@/Services/LinksRequest.jsx';
 
 import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
+import { IoMdSettings } from "react-icons/io";
 
 const LayoutTwo = ({
                        handleOnClick,
@@ -34,7 +35,16 @@ const LayoutTwo = ({
     return (
         <div className="link_content">
             <div className="left_col">
-
+                <div className="switch_wrap w-auto inline-block">
+                    <span className="text-[#88c3d7] hover:text-indigo-600 hover:cursor-pointer" onClick={(e) => {
+                        handleOnClick(e, id, index + 1)
+                    }}>
+                        <IoMdSettings className="w-5 h-5"/>
+                        <div className="hover_text edit_image text-sm">
+                            <p>Button Settings</p>
+                        </div>
+                    </span>
+                </div>
                {/* {isEditing.active && isEditing.section === "name" ?*/}
                     <IconSettingComponent
                         inputType="text"
@@ -66,18 +76,11 @@ const LayoutTwo = ({
                         currentValue={type === "url" ? url : type === "email" ? email : type === "phone" ? phone : ""}
                     />
                 }
+
             </div>
 
             <div className={`right_col`}>
-                <div className={`edit_wrap flex items-center gap-2`}>
-                    <span className="edit_icon" onClick={(e) => {
-                        handleOnClick(e, id, index + 1)
-                    }}>
-                        <RiEdit2Fill />
-                        <div className="hover_text edit_image">
-                            <p>Edit Button</p>
-                        </div>
-                    </span>
+                <div className={`edit_wrap flex items-center switch_wrap`}>
                     <div className="switch_wrap">
                         <IOSSwitch
                             onChange={() => handleSwitchChange(link, setEditLink, dispatch, "active_status")}

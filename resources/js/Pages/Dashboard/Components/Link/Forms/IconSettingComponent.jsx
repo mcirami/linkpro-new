@@ -181,7 +181,7 @@ const IconSettingComponent = ({
             <div className="relative">
                 {/* Reserve height to prevent layout jump */}
                 {pageSettings.page_layout === 'layout_two' &&
-                    <div className="min-h-[2.50rem]"/>
+                    <div className="min-h-[2.25rem]"/>
                 }
                 {/* READ LAYER */}
                 <div
@@ -200,6 +200,7 @@ const IconSettingComponent = ({
                               className={[
                                   'block min-w-0 truncate',
                                   currentValue ? 'text-gray-900' : 'text-gray-400',
+                                  elementName === 'name' ? 'font-bold' : '',
                               ].join(' ')}
                               title={isOverflow ? (currentValue || placeholder) : undefined}
                             >
@@ -233,29 +234,6 @@ const IconSettingComponent = ({
                             )}
                         </div>
                     }
-                    {/*{setIsEditing && (
-                        <a
-                            href="#"
-                            className="edit_icon text-gray-500 hover:text-indigo-600 transition flex-none"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setIsEditing({
-                                    active: true,
-                                    section: elementName,
-                                    value: currentValue,
-                                    id: editLink?.id ?? id,
-                                    type: editLink?.type ? editLink?.type :
-                                        inputType === "text" ? "url" :
-                                            inputType === "tel" ?
-                                                "phone" :
-                                                "url",
-                                })
-                            }}
-                            aria-label={`Edit ${label || elementName}`}
-                        >
-                            <RiEdit2Fill/>
-                        </a>
-                    )}*/}
                 </div>
 
                 {/* EDIT LAYER */}
