@@ -20,8 +20,10 @@ const InfoText = ({divRef}) => {
 
         setTimeout(() => {
             const {center, top} = infoLocation;
-            const vert = windowWidth < 850 ? (top - infoBox.offsetHeight) - 10 : (top - infoBox.offsetHeight / 2);
-            let horz = windowWidth < 850 ? (center - infoBox.offsetWidth) + 15 : (center + infoBox.offsetWidth / 15 );
+            const vert = (top - infoBox.offsetHeight) - 10; //windowWidth < 850 ? (top - infoBox.offsetHeight) - 10 : (top - infoBox.offsetHeight / 2);
+
+            const divideBy = infoText?.section.includes('creator') ? 2 : 15;
+            let horz = windowWidth < 850 ? (center - infoBox.offsetWidth) + 15 : center - infoBox.offsetWidth / divideBy;
 
             if (horz < 80 && windowWidth > 768) {
                 horz = 80;
@@ -53,7 +55,6 @@ const InfoText = ({divRef}) => {
             const infoBox = infoDiv.current;
             const {center, top} = infoLocation;
             const windowWidth = window.innerWidth
-            setTriangleType();
             let wrapWidth;
             if (infoText.section.includes('creator')) {
                 if (windowWidth < 600) {
@@ -67,7 +68,7 @@ const InfoText = ({divRef}) => {
 
             //const wrapWidth = divRef.current.offsetWidth * .92;
 
-            const vert =  windowWidth < 850 ? (top - infoDiv.current.offsetHeight) - 10 : (top - infoDiv.current.offsetHeight  / 2 );
+            const vert =  (top - infoDiv.current.offsetHeight) - 10; //windowWidth < 850 ? (top - infoDiv.current.offsetHeight) - 10 : (top - infoDiv.current.offsetHeight  / 2 );
             let horz = windowWidth < 850 ? (center - infoDiv.current.offsetWidth) + 15 : (center - infoDiv.current.offsetWidth / 15);
 
             if (horz < 80 && windowWidth > 768) {
@@ -90,19 +91,6 @@ const InfoText = ({divRef}) => {
         }
 
     },[])
-
-    const setTriangleType = () => {
-        if(window.innerWidth < 850) {
-            return (
-                <VscTriangleDown />
-            )
-        } else {
-            return (
-                <VscTriangleLeft />
-            )
-        }
-
-    }
 
     return (
 
@@ -128,7 +116,7 @@ const InfoText = ({divRef}) => {
                 })}
 
             <div ref={newRef => setTriangleRef(newRef)} className="info_text_triangle">
-                {setTriangleType()}
+                <VscTriangleDown />
             </div>
         </div>
 

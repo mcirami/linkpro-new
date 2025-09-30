@@ -281,8 +281,12 @@
         .inner_content {
             position: relative;
             min-height: 355px;
-            max-width: 184px;
-            padding: 7px 14px !important;
+            max-width: 175px;
+            padding: 7px 10px !important;
+            border-radius: 40px;
+            -webkit-border-radius: 40px;
+            -moz-border-radius: 40px;
+            box-shadow: 7px 5px 15px -4px rgba(0, 0, 0, 0.5);
 
             .header {
                 position: relative;

@@ -21,13 +21,21 @@ const TableComponent = ({offers}) => {
                         <th scope="col">
                             <h5>
                                 <span>Active</span>
-                                <ToolTipIcon section="creator_active" />
+                                <ToolTipIcon
+                                    section="creator_active"
+                                    circleSize="w-4 h-4"
+                                    iconSize="text-xs"
+                                />
                             </h5>
                         </th>
                         <th scope="col">
                             <h5>
                                 <span>Public</span>
-                                <ToolTipIcon section="creator_public" />
+                                <ToolTipIcon
+                                    section="creator_public"
+                                    circleSize="w-4 h-4"
+                                    iconSize="text-xs"
+                                />
                             </h5>
 
                         </th>
@@ -39,14 +47,22 @@ const TableComponent = ({offers}) => {
                         <th scope="col">
                             <h5>
                                 <span>PRP</span>
-                                <ToolTipIcon section="creator_prp" />
+                                <ToolTipIcon
+                                    section="creator_prp"
+                                    circleSize="w-4 h-4"
+                                    iconSize="text-xs"
+                                />
                             </h5>
 
                         </th>
                         <th scope="col">
                             <h5>
                                 <span>ARP</span>
-                                <ToolTipIcon section="creator_arp" />
+                                <ToolTipIcon
+                                    section="creator_arp"
+                                    circleSize="w-4 h-4"
+                                    iconSize="text-xs"
+                                />
                             </h5>
 
                         </th>

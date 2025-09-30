@@ -1,9 +1,12 @@
 import React, {useContext, useEffect} from 'react';
-import {BiHelpCircle} from 'react-icons/bi';
 import ToolTipContext from './ToolTipContext'
 import data from './data';
 
-const ToolTipIcon = ({section}) => {
+const ToolTipIcon = ({
+                         section,
+                         circleSize = null,
+                         iconSize= null,
+}) => {
 
     const {
         setInfoText,
@@ -53,11 +56,11 @@ const ToolTipIcon = ({section}) => {
         const windowWidth = window.innerWidth;
         const rect = e.target.getBoundingClientRect();
         const center = (rect.left + rect.right) / 2;
-        const top = windowWidth < 850 ? rect.top - 2 : rect.top + 10;
+        const top = rect.top - 2; //windowWidth < 850 ? rect.top - 2 : rect.top + 10;
         setInfoLocation({center, top});
 
-        const triangleTop = windowWidth < 850 ? rect.top - 25 : rect.top;
-        const triangleLeft = windowWidth < 850 ? rect.left - 5 : rect.left + 38;
+        const triangleTop = rect.top - 25; //windowWidth < 850 ? rect.top - 25 : rect.top;
+        const triangleLeft = rect.left - 5; //windowWidth < 850 ? rect.left - 5 : rect.left + 38;
         triangleRef.style.top = `${triangleTop}px`;
         triangleRef.style.bottom = `${rect.bottom}px`;
         triangleRef.style.left = `${triangleLeft}px`;
@@ -82,7 +85,7 @@ const ToolTipIcon = ({section}) => {
         const windowWidth = window.innerWidth;
         const rect = e.target.getBoundingClientRect();
         const center = (rect.left + rect.right) / 2;
-        const top = windowWidth < 850 ? rect.top - 2 : rect.top;
+        const top =  rect.top - 2 ; //windowWidth < 850 ? rect.top - 2 : rect.top;
         setInfoLocation({center, top});
 
         if (infoClicked === false) {
@@ -106,14 +109,14 @@ const ToolTipIcon = ({section}) => {
                  }}
                  onClick={(e) => {
                      handleClick(e)
-                     }}
+                 }}
                  onMouseOver={(e) => handleMouseOver(e)}
                  data-section={section}
             >
                 <span
-                    className="h-6 w-6 grid place-items-center rounded-full border border-gray-300 text-gray-500
+                    className={` ${circleSize || 'h-5 w-5'} ${iconSize || 'text-sm'} flex justify-center items-center rounded-full border border-gray-300 text-gray-500
                    hover:text-indigo-600 hover:border-indigo-300 focus:outline-none focus:ring-2
-                   focus:ring-indigo-200 transition"
+                   focus:ring-indigo-200 transition`}
                 >
                     ?
                 </span>
