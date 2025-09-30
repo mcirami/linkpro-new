@@ -16,73 +16,65 @@ const InfoText = ({divRef}) => {
     useEffect(() => {
 
         const infoBox = infoDiv.current;
-        const windowWidth = window.innerWidth
 
-        setTimeout(() => {
-            const {center, top} = infoLocation;
-            const vert = (top - infoBox.offsetHeight) - 10; //windowWidth < 850 ? (top - infoBox.offsetHeight) - 10 : (top - infoBox.offsetHeight / 2);
+        if(!infoBox || !infoLocation || typeof infoLocation.center !== 'number') {
+            return;
+        }
+        const handleResize = () => {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const margin = 16;
+            const pointerOffset = 12;
 
-            const divideBy = infoText?.section.includes('creator') ? 2 : 15;
-            let horz = windowWidth < 850 ? (center - infoBox.offsetWidth) + 15 : center - infoBox.offsetWidth / divideBy;
-
-            if (horz < 80 && windowWidth > 768) {
-                horz = 80;
-            }
-
-            if (horz < 0 && windowWidth < 769) {
-                horz = 20;
-            }
-
-            infoBox.style.left = ` ${horz}px`;
-            infoBox.style.top = `${vert}px`;
-        })
-
-        if (infoText?.section.includes('creator') || infoText?.section.includes('course')) {
-            if (windowWidth < 600) {
+            if (divRef?.current) {
+                if (infoText?.section?.includes('creator') || infoText?.section?.includes('course')) {
+                    if (windowWidth < 600) {
+                        infoBox.style.maxWidth = '80%';
+                    } else {
+                        infoBox.style.maxWidth = `${divRef.current.offsetWidth * .62}px`;
+                    }
+                } else {
+                    infoBox.style.maxWidth = `${divRef.current.offsetWidth * .82}px`;
+                }
+            } else if (windowWidth < 600) {
                 infoBox.style.maxWidth = '80%';
             } else {
-                infoBox.style.maxWidth = `${divRef.current.offsetWidth * .62}px`
+                infoBox.style.maxWidth = '600px';
             }
 
-        } else {
-            infoBox.style.maxWidth = `${divRef.current.offsetWidth * .82}px`
-        }
-    }, [infoLocation, infoText])
-
-    useEffect(() => {
-
-        function handleResize() {
-            const infoBox = infoDiv.current;
+            const boxWidth = infoBox.offsetWidth;
+            const boxHeight = infoBox.offsetHeight;
             const {center, top} = infoLocation;
-            const windowWidth = window.innerWidth
-            let wrapWidth;
-            if (infoText.section.includes('creator')) {
-                if (windowWidth < 600) {
-                    infoBox.style.maxWidth = '80%';
-                } else {
-                    wrapWidth = divRef.current.offsetWidth * .62;
-                }
+
+            let leftPosition = center - boxWidth / 2;
+            const availableWidth = windowWidth - margin * 2;
+            const maxLeft = windowWidth - margin - boxWidth;
+
+
+            if (availableWidth <= 0) {
+                leftPosition = margin;
+            } else if (boxWidth > availableWidth) {
+                leftPosition = margin;
             } else {
-                wrapWidth = divRef.current.offsetWidth * .82;
+                leftPosition = Math.min(Math.max(leftPosition, margin), maxLeft);
+
+                if (center < leftPosition + pointerOffset) {
+                    leftPosition = Math.max(margin, center - pointerOffset);
+                } else if (center > leftPosition + boxWidth - pointerOffset) {
+                    leftPosition = Math.min(center + pointerOffset - boxWidth, maxLeft);
+                }
+                leftPosition = Math.min(Math.max(leftPosition, margin), maxLeft);
             }
 
-            //const wrapWidth = divRef.current.offsetWidth * .92;
+            let topPosition = top - boxHeight - 10;
+            const maxTop = windowHeight - margin - boxHeight;
+            topPosition = Math.min(Math.max(topPosition, margin), maxTop);
 
-            const vert =  (top - infoDiv.current.offsetHeight) - 10; //windowWidth < 850 ? (top - infoDiv.current.offsetHeight) - 10 : (top - infoDiv.current.offsetHeight  / 2 );
-            let horz = windowWidth < 850 ? (center - infoDiv.current.offsetWidth) + 15 : (center - infoDiv.current.offsetWidth / 15);
+            infoBox.style.left = `${leftPosition}px`;
+            infoBox.style.top = `${topPosition}px`;
+        };
 
-            if (horz < 80 && windowWidth > 768) {
-                horz = 80;
-            }
-
-            if (horz < 0 && windowWidth < 769) {
-                horz = 20;
-            }
-
-            infoBox.style.left = `${horz}px`;
-            infoBox.style.top = `${vert}px`;
-            infoBox.style.maxWidth = `${wrapWidth}px`;
-        }
+        handleResize();
 
         window.addEventListener('resize', handleResize);
 
@@ -90,7 +82,7 @@ const InfoText = ({divRef}) => {
             window.removeEventListener('resize', handleResize);
         }
 
-    },[])
+    },[divRef, infoLocation, infoText])
 
     return (
 

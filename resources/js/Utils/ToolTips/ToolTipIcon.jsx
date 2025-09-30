@@ -11,7 +11,6 @@ const ToolTipIcon = ({
     const {
         setInfoText,
         setInfoTextOpen,
-        infoLocation,
         setInfoLocation,
         infoClicked,
         setInfoClicked,
@@ -46,48 +45,71 @@ const ToolTipIcon = ({
         }
     })
 
-    const handleMouseOver = (e) => {
+    //const handleMouseOver = (e) => {
 
-        const name = e.target.dataset.section;
+    const updateInfoLocation = (target) => {
+        if (!target) {
+            return;
+        }
+
+        const rect = target.getBoundingClientRect();
+        const center = (rect.left + rect.right) / 2;
+        const top = rect.top - 2;
+
+        setInfoLocation({
+            center,
+            top,
+            left: rect.left,
+            right: rect.right,
+            bottom: rect.bottom,
+            width: rect.width,
+            height: rect.height,
+        });
+
+        if (triangleRef) {
+            const triangleHeight = triangleRef.offsetHeight || 25;
+            const triangleWidth = triangleRef.offsetWidth || 25;
+            const triangleTop = rect.top - triangleHeight;
+            const triangleLeft = center - triangleWidth / 2;
+            triangleRef.style.top = `${triangleTop}px`;
+            triangleRef.style.left = `${triangleLeft}px`;
+        }
+    };
+
+    const openToolTip = (target) => {
+        if (!target) {
+            return;
+        }
+
+        const name = target.dataset.section;
+
+        if (!name) {
+            return;
+        }
+
         const dataText = data.find((text) => text.section === name);
         setInfoText(dataText);
         setInfoTextOpen(true);
+        updateInfoLocation(target);
+    };
 
-        const windowWidth = window.innerWidth;
-        const rect = e.target.getBoundingClientRect();
-        const center = (rect.left + rect.right) / 2;
-        const top = rect.top - 2; //windowWidth < 850 ? rect.top - 2 : rect.top + 10;
-        setInfoLocation({center, top});
-
-        const triangleTop = rect.top - 25; //windowWidth < 850 ? rect.top - 25 : rect.top;
-        const triangleLeft = rect.left - 5; //windowWidth < 850 ? rect.left - 5 : rect.left + 38;
-        triangleRef.style.top = `${triangleTop}px`;
-        triangleRef.style.bottom = `${rect.bottom}px`;
-        triangleRef.style.left = `${triangleLeft}px`;
-        //triangleRef.style.right = `${rect.right}px`;
+    const handleMouseOver = (e) => {
+        openToolTip(e.currentTarget);
     }
 
     const handleClick = (e) => {
 
+        const target = e.currentTarget;
+
         if (!infoClicked) {
-            setInfoClicked(e.target);
+            setInfoClicked(target);
         } else {
             setInfoClicked(null)
             setInfoTextOpen(false);
             return;
         }
 
-        const name = e.target.dataset.section;
-        const dataText = data.find((text) => text.section === name);
-        setInfoText(dataText);
-        setInfoTextOpen(true);
-
-        const windowWidth = window.innerWidth;
-        const rect = e.target.getBoundingClientRect();
-        const center = (rect.left + rect.right) / 2;
-        const top =  rect.top - 2 ; //windowWidth < 850 ? rect.top - 2 : rect.top;
-        setInfoLocation({center, top});
-
+        openToolTip(target);
         if (infoClicked === false) {
             setInfoClicked(null)
         }
