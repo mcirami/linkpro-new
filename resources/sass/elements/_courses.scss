@@ -18,7 +18,14 @@
             padding: 0;
 
             .column {
-                @include boxShadow;
+                transition: .5s all linear;
+                -moz-transition: .5s all linear;
+                -webkit-transition: .5s all linear;
+                -o-transition: .5s all linear;
+
+                &:hover {
+                    @include boxShadowHoverBox;
+                }
 
                 .icon_box {
                     opacity: 0;

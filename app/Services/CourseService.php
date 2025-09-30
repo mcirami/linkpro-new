@@ -221,21 +221,27 @@ class CourseService {
     /**
      * @param $authUserID
      *
-     * @return mixed
+     * @return array
      */
-    public function getUnpurchasedCourses($authUserID): mixed {
-        $courses = Course::whereDoesntHave('purchases',
-            function (Builder $query)  use($authUserID) {
-            $query->where('user_id', '=', $authUserID);
-        })->whereHas('offer', function($query) {
-            $query->where('active', true)->where('public', true)->where('published', true);
-        })->leftJoin('users', 'users.id', '=', 'courses.user_id')
-          ->leftJoin('course_sections', function($query) {
-              $query->on('course_sections.course_id', '=', 'courses.id')
-                    ->whereNotNull('course_sections.video_link');
-          })
-            ->select('courses.*', 'users.username', 'course_sections.video_link', 'course_sections.position')
-            ->get();
+    public function getUnpurchasedCourses($authUserID): array {
+        $courses = Course::with(['categories' => function ($query) {
+            $query->select('categories.id', 'categories.name');
+        }])
+         ->whereDoesntHave('purchases', function (Builder $query) use ($authUserID) {
+             $query->where('user_id', '=', $authUserID);
+         })
+         ->whereHas('offer', function ($query) {
+             $query->where('active', true)
+                   ->where('public', true)
+                   ->where('published', true);
+         })
+         ->leftJoin('users', 'users.id', '=', 'courses.user_id')
+         ->leftJoin('course_sections', function ($query) {
+             $query->on('course_sections.course_id', '=', 'courses.id')
+                   ->whereNotNull('course_sections.video_link');
+         })
+         ->select('courses.*', 'users.username', 'course_sections.video_link', 'course_sections.position')
+         ->get();
 
         $unique = $courses->sortBy('position')->unique('id');
         return $unique->values()->all();
@@ -244,9 +250,9 @@ class CourseService {
     /**
      * @param $userID
      *
-     * @return mixed
+     * @return array
      */
-    public function getUserPurchasedCourses($userID): mixed {
+    public function getUserPurchasedCourses($userID): array {
         $courses = Course::whereHas('purchases', function (Builder $query) use($userID) {
             $query->where('user_id', 'like', $userID);
         })->leftJoin('users', 'users.id', '=', 'courses.user_id')

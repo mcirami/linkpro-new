@@ -21,7 +21,7 @@ const ColumnComponent = ({course, type}) => {
 
     return (
         <div ref={columnRef}
-             className={`column ${hovered === columnRef && "active"}`}
+             className={`column shadow-md hover:shadow-lg ${hovered === columnRef ? "active" : ''}`}
              onMouseOver={() =>  setHovered(columnRef)}
              onMouseLeave={() => setHovered(null)}
         >
