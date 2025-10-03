@@ -139,7 +139,7 @@ const EditorComponent = ({
     },[])
 
     return (
-        <div className="page_settings border_wrap wysiwyg">
+        <div className="page_settings border_wrap wysiwyg w-full">
 
             {showTiny &&
 

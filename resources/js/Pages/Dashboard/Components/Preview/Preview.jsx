@@ -19,7 +19,7 @@ import AdvancedIcon from '@/Components/LinkComponents/AdvancedIcon.jsx';
 import { IoOpenOutline } from "react-icons/io5";
 import PageBackground
     from '@/Pages/Dashboard/Components/Page/PageBackground.jsx';
-import LivePageButton from "@/Pages/Dashboard/Components/LivePageButton.jsx";
+import LivePageButton from "@/Components/LivePageButton.jsx";
 const Preview = ({
                      nodesRef,
                      completedCrop,
@@ -90,7 +90,9 @@ const Preview = ({
                 <IoIosCloseCircleOutline/>
             </div>
             <div className="view_live_link w-full mt-auto justify-center">
-                <LivePageButton />
+                <LivePageButton
+                    pageName={pageSettings.name}
+                />
             </div>
             <div className="links_wrap preview">
                 <div className="inner_content" id="preview_wrap">

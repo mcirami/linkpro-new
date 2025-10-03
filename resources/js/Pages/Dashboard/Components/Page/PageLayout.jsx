@@ -22,7 +22,7 @@ function PageLayout({pageLayoutRef}) {
     }
 
     return (
-        <div className="layouts_wrap border-b border-gray-200 mb-5">
+        <div className="layouts_wrap">
             <div className="edit_form">
                 <div className="section_title w-full flex justify-start gap-2">
                     <h4 className="capitalize">Page Layout</h4>

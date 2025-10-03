@@ -77,6 +77,7 @@ const ContentSelect = ({
 
     return (
         <select
+            className="shadow-md"
             name="add_section"
             id="add_section"
             onChange={(e) => onSelectChange(e)}

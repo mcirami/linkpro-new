@@ -22,8 +22,8 @@ import FolderLinks from './Components/Folder/FolderLinks';
 import {ErrorBoundary} from 'react-error-boundary';
 import {updateLinksPositions, getAllLinks} from '@/Services/LinksRequest.jsx';
 import {
-    previewButtonRequest,
-} from '@/Services/PageRequests.jsx';
+    previewButtonRequest, submitPageImage
+} from "@/Services/PageRequests.jsx";
 import {checkSubStatus} from '@/Services/UserService.jsx';
 import DowngradeAlert from '@/Utils/Popups/DowngradeAlert';
 import {
@@ -52,7 +52,7 @@ import SwitchComponent
     from '@/Pages/Dashboard/Components/Page/SwitchComponent.jsx';
 import LinkTypeRadio from '@/Pages/Dashboard/Components/Link/LinkTypeRadio.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
-import LivePageButton from '@/Pages/Dashboard/Components/LivePageButton.jsx';
+import LivePageButton from '@/Components/LivePageButton.jsx';
 import PageHeader from '@/Components/PageHeader.jsx';
 
 function Dashboard({
@@ -261,10 +261,11 @@ function Dashboard({
                     <PageHeader
                         heading="Pages"
                         description="Manage your public page title, images, layout and links."
-                        pageName={pageSettings.name}
                     />
                     <div className="view_live_link header mt-auto">
-                        <LivePageButton />
+                        <LivePageButton
+                            pageName={pageSettings.name}
+                        />
                     </div>
                 </div>
                 <section className="card edit_page">
@@ -338,7 +339,7 @@ function Dashboard({
                                                     pageNames={allPageNames}
                                                 />
 
-                                                <div ref={leftColWrap} className="content_wrap my_row" id="left_col_wrap">
+                                                <div ref={leftColWrap} className="content_wrap my_row mb-10">
                                                     <div className="top_section">
                                                         <PageName
                                                             pageNames={allPageNames}
@@ -389,6 +390,31 @@ function Dashboard({
                                                                             8,
                                                                         width: 30
                                                                     }}
+                                                                    onUpload={(response) => {
+                                                                        const element = imageType ===
+                                                                        "header" ?
+                                                                            "header_img" :
+                                                                            "page_img";
+                                                                        const packets = {
+                                                                            [`${element}`]: response.key,
+                                                                            ext: response.extension,
+                                                                            element: element,
+                                                                            type: imageType,
+                                                                        };
+
+                                                                        submitPageImage(packets, pageSettings["id"])
+                                                                        .then((data) => {
+                                                                            if (data.success) {
+                                                                                setCompletedCrop({});
+                                                                                const newArray = {...pageSettings};
+                                                                                newArray[element] = data.imgPath;
+                                                                                if (imageType) newArray["main_img_type"] = imageType;
+                                                                                setPageSettings(newArray);
+                                                                                document.querySelector(`form.${element} .bottom_section`).classList.add("hidden");
+                                                                            }
+
+                                                                        });
+                                                                    }}
                                                                 />
                                                             </div>
 
@@ -425,6 +451,26 @@ function Dashboard({
                                                                         aspect: 1,
                                                                         width: 30
                                                                     }}
+                                                                    onUpload={(response) => {
+                                                                        const element = "profile_img";
+                                                                        const packets = {
+                                                                            [`${element}`]: response.key,
+                                                                            ext: response.extension,
+                                                                            element: element,
+                                                                        };
+
+                                                                        submitPageImage(packets, pageSettings["id"])
+                                                                        .then((data) => {
+                                                                            if (data.success) {
+                                                                                setCompletedCrop({});
+                                                                                const newArray = {...pageSettings};
+                                                                                newArray[element] = data.imgPath;
+                                                                                setPageSettings(newArray);
+                                                                                document.querySelector(`form.${element} .bottom_section`).classList.add("hidden");
+                                                                            }
+
+                                                                        });
+                                                                    }}
                                                                 />
                                                             </div>
                                                         </div>
@@ -455,7 +501,13 @@ function Dashboard({
                                                             <DowngradeAlert/>
                                                         }
                                                     </div>
-
+                                                </div>
+                                                <div className="page_menu_row w-full">
+                                                    <div className="current_page">
+                                                        <p className="uppercase">LINKS</p>
+                                                    </div>
+                                                </div>
+                                                <div className="content_wrap !pt-5 my_row">
                                                     {editLink.id ||
                                                     editLink.folder_id ?
                                                         <div className="my_row icon_links" id="scrollTo">

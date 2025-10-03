@@ -17,6 +17,7 @@ import {
 import { updateOfferData } from "@/Services/OfferRequests.jsx";
 import EditorComponent from "@/Components/CreatorComponents/EditorComponent.jsx";
 import { HandleFocus } from "@/Utils/InputAnimations.jsx";
+import ToolTipIcon from "@/Utils/ToolTips/ToolTipIcon.jsx";
 
 const InputComponent = ({
     placeholder,
@@ -262,7 +263,6 @@ const InputComponent = ({
                             onFocus={(e) => HandleFocus(e.target)}
                             onPaste={(e) => handleChange(e)}
                         />
-                        <label htmlFor={elementName}>{placeholder}</label>
                     </>
                 );
             case "textarea":
@@ -283,24 +283,25 @@ const InputComponent = ({
                             onFocus={(e) => HandleFocus(e.target)}
                             onPaste={(e) => handleChange(e)}
                         ></textarea>
-                        <label htmlFor={elementName}>{placeholder}</label>
                     </>
                 );
             case "wysiwyg":
                 return (
-                    <EditorComponent
-                        dispatch={dispatch}
-                        sections={sections}
-                        setSections={setSections}
-                        currentSection={currentSection}
-                        elementName={elementName}
-                        data={data}
-                        isValid={isValid}
-                        setIsValid={setIsValid}
-                        showTiny={showTiny}
-                        setShowTiny={setShowTiny}
-                        saveTo={saveTo}
-                    />
+                    <>
+                        <EditorComponent
+                            dispatch={dispatch}
+                            sections={sections}
+                            setSections={setSections}
+                            currentSection={currentSection}
+                            elementName={elementName}
+                            data={data}
+                            isValid={isValid}
+                            setIsValid={setIsValid}
+                            showTiny={showTiny}
+                            setShowTiny={setShowTiny}
+                            saveTo={saveTo}
+                        />
+                    </>
                 );
             case "currency":
                 return (
@@ -340,7 +341,6 @@ const InputComponent = ({
                             onBlur={(e) => handleSubmit(e)}
                             onFocus={(e) => HandleFocus(e.target)}
                         />
-                        <label htmlFor={elementName}>{placeholder}</label>
                     </>
                 );
         }
@@ -348,6 +348,19 @@ const InputComponent = ({
 
     return (
         <div className="edit_form">
+            <div className="section_title w-full items-baseline flex justify-between gap-2">
+                <h4 className="flex items-center justify-start gap-2">{placeholder}</h4>
+                {maxChar != null &&
+                    <div className="info_text flex justify-end mb-2">
+                        <p className="char_count">
+                                <span className="count">
+                                    {charactersLeft < 0 ? 0 : charactersLeft}
+                                </span>
+                            / {maxChar}
+                        </p>
+                    </div>
+                }
+            </div>
             <form>
                 {switchStatement()}
                 {isValid ? (
@@ -376,7 +389,14 @@ const InputComponent = ({
                         <FiThumbsDown />
                     </span>
                 )}
-                {maxChar && (
+                { (maxChar && charactersLeft < 0) && (
+                    <div className="my_row info_text title min-h-[1.5rem] text-right">
+                        <p className="char_count">
+                            <span className="over">Only {maxChar} Characters Will Be Shown</span>
+                        </p>
+                    </div>
+                )}
+                {/*{maxChar && (
                     <div className="my_row info_text title">
                         <p className="char_max">Max {maxChar} Characters</p>
                         <p className="char_count">
@@ -395,7 +415,7 @@ const InputComponent = ({
                             )}
                         </p>
                     </div>
-                )}
+                )}*/}
             </form>
             {/*<ToolTipIcon section="title" />*/}
         </div>

@@ -125,7 +125,7 @@ const Section = ({
 
     return (
         <div ref={setNodeRef}
-             className={`section_row ${id}`}
+             className={`section_row shadow-md ${id}`}
              id={`section_${index + 1}`}
              style={style}
              onMouseEnter={(e) => handleMouseEnter(e)}

@@ -1,5 +1,5 @@
 import React from 'react';
-import LivePageButton from '@/Pages/Dashboard/Components/LivePageButton.jsx';
+import LivePageButton from '@/Components/LivePageButton.jsx';
 
 const PageHeader = ({
     heading,

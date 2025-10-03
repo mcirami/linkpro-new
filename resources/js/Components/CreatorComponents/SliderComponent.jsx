@@ -11,7 +11,6 @@ import {
 } from '@/Services/LandingPageRequests.jsx';
 
 const SliderComponent = ({
-                             label,
                              id,
                              dispatch = null,
                              value,
@@ -69,25 +68,23 @@ const SliderComponent = ({
     }
 
     return (
-        <div className="my_row page_settings border_wrap">
-            <label>{label}</label>
-            <div className="slider_wrap">
-                <Slider
-                    value={value}
-                    aria-label="Default"
-                    valueLabelDisplay="auto"
-                    valueLabelFormat={sliderValue}
-                    color="primary"
-                    step={sliderValues["step"]}
-                    min={sliderValues["min"]}
-                    max={sliderValues["max"]}
-                    sx={{
-                        color: '#424fcf',
-                    }}
-                    onChange={(e) => handleChange(e)}
-                    onChangeCommitted={handleSubmit}
-                />
-            </div>
+
+        <div className="slider_wrap">
+            <Slider
+                value={value}
+                aria-label="Default"
+                valueLabelDisplay="auto"
+                valueLabelFormat={sliderValue}
+                color="primary"
+                step={sliderValues["step"]}
+                min={sliderValues["min"]}
+                max={sliderValues["max"]}
+                sx={{
+                    color: '#424fcf',
+                }}
+                onChange={(e) => handleChange(e)}
+                onChangeCommitted={handleSubmit}
+            />
         </div>
     );
 };

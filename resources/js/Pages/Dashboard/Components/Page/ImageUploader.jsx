@@ -5,10 +5,8 @@ import React, {
     useEffect,
     useMemo
 } from 'react';
-import {usePageContext} from '@/Context/PageContext.jsx';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/src/ReactCrop.scss';
-import {submitPageImage} from '@/Services/PageRequests.jsx';
 import {
     useDebounceEffect,
     onImageLoad,
@@ -42,7 +40,8 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
         imageType = null,
         cropSettings,
         label,
-        startCollapsed
+        startCollapsed,
+        onUpload
     } = props;
 
     const defaultCrop = useMemo(() => cropSettings ?? {}, [
@@ -54,7 +53,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
         cropSettings?.y,
         cropSettings?.aspect,
     ]);
-    const {pageSettings, setPageSettings} = usePageContext();
+
     const [aspect, setAspect] = useState(defaultCrop?.aspect ?? null)
     const [dragActive, setDragActive] = useState(false);
 
@@ -143,27 +142,11 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
             }
         )
         .then((response) => {
-            const packets = {
-                [`${elementName}`]: response.key,
-                ext: response.extension,
-                element: elementName,
-                type: imageType,
-            };
-
-            submitPageImage(packets, pageSettings["id"])
-            .then((data) => {
-                setShowLoader({show: false, icon: null, position: ""})
-                if (data.success) {
-                    setUpImg(null);
-                    setCompletedCrop({});
-                    const newArray = {...pageSettings};
-                    newArray[elementName] = data.imgPath;
-                    if (imageType) newArray["main_img_type"] = imageType;
-                    setPageSettings(newArray);
-                    document.querySelector(`form.${elementName} .bottom_section`).classList.add("hidden");
-                }
-
+            const maybePromise = onUpload ? onUpload(response) : Promise.resolve();
+            return Promise.resolve(maybePromise).then(() => {
+                cleanup();
             });
+
         })
         .catch((error) => {
             console.error(error);
@@ -171,6 +154,17 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
             setDisableButton(false);
             setShowLoader({show: false, icon: null, position: "", progress: null})
         });
+    };
+
+    const cleanup = () => {
+        setShowLoader?.({ show: false, icon: null, position: '', progress: null });
+        setUpImg(null);
+        /*if (setCompletedCrop) {
+            setCompletedCrop((prev) => ({ ...prev, [elementName]: {} }));
+        }*/
+        delete completedCrop[elementName];
+        setCompletedCrop(completedCrop);
+        setOpen(false);
     };
 
     const handleCancel = () => {
