@@ -42,6 +42,7 @@ import PageHeader from "@/Components/PageHeader.jsx";
 import LivePageButton from "@/Components/LivePageButton.jsx";
 import ImageUploader from '@/Pages/Dashboard/Components/Page/ImageUploader.jsx';
 import ClickToCopyUrl from "@/Components/CreatorComponents/ClickToCopyUrl.jsx";
+import PageTabs from "@/Components/PageTabs.jsx";
 
 function LPCreator({landingPageArray, courses, username}) {
 
@@ -60,6 +61,8 @@ function LPCreator({landingPageArray, courses, username}) {
     const nodesRef = useRef({});
 
     const [imageSelected, setImageSelected] = useState(false);
+
+    const [pageTab, setPageTab] = useState("header");
 
     const [showLoader, setShowLoader] = useState({
         show: false,
@@ -170,202 +173,206 @@ function LPCreator({landingPageArray, courses, username}) {
                                 }
 
                                 <div className="left_column">
-                                    <div className="page_menu_row">
-                                        <div className="current_page">
-                                            <p className="uppercase">Header</p>
+                                    <div className="page_menu_row flex justify-between w-full">
+                                        <div className="page_tabs w-1/2">
+                                            <PageTabs
+                                                tabs={[
+                                                    { value: "header", label: "Header"},
+                                                    { value: "sections", label: "Sections"}
+                                                ]}
+                                                pageTab={pageTab}
+                                                setPageTab={setPageTab}
+                                            />
                                         </div>
                                     </div>
-                                    <div className="content_wrap my_row creator mb-10">
-                                        <section id="header_section"
-                                                 className="my_row section section_row"
-                                                 onMouseEnter={(e) =>
-                                                     handleMouseEnter(e)
-                                                 }>
-                                            <div className="section_content my_row">
-                                                <InputComponent
-                                                    placeholder="Page Title"
-                                                    type="text"
-                                                    maxChar={60}
-                                                    hoverText="Submit Page Title"
-                                                    elementName="title"
-                                                    data={pageData}
-                                                    dispatch={dispatchPageData}
-                                                    value={pageData['title']}
-                                                    saveTo="landingPage"
-                                                />
-                                            </div>
-                                            <div className="section_content my_row">
-                                                <div className="section_title w-full flex justify-start gap-2">
-                                                    <h4>Logo</h4>
-                                                </div>
-                                                <div className="w-full mb-5 flex">
-                                                    <ImageUploader
-                                                        elementName="logo"
-                                                        label="Logo"
-                                                        cropSettings={{
-                                                            unit: '%',
-                                                            width: 60,
-                                                            height: 30,
-                                                            x: 25,
-                                                            y: 25,
-                                                        }}
-                                                        ref={nodesRef}
-                                                        setShowLoader={setShowLoader}
-                                                        completedCrop={completedCrop}
-                                                        setCompletedCrop={setCompletedCrop}
-                                                        startCollapsed={pageData['logo']}
-                                                        onImageSelect={setImageSelected}
-                                                        onUpload={(response) => {
-                                                            const packets = {
-                                                                'logo': response.key,
-                                                                ext: response.extension,
-                                                            };
-                                                            updateImage(packets, pageData['id'])
-                                                            .then((response) => {
-                                                                if (response.success) {
-                                                                    dispatchPageData({
-                                                                        type: LP_ACTIONS.UPDATE_PAGE_DATA,
-                                                                        payload: {
-                                                                            value: response.imagePath,
-                                                                            name: "logo",
-                                                                        },
-                                                                    });
-                                                                    const activeSection = "form.logo";
-                                                                    document.querySelector(activeSection + " .bottom_section")
-                                                                    .classList.add("hidden");
-                                                                    setTimeout(function () {
-                                                                        document.querySelector(activeSection).scrollIntoView({
-                                                                            behavior: "smooth",
-                                                                            block: "center",
-                                                                            inline: "nearest",
-                                                                        });
-                                                                    }, 800);
-                                                                }
-                                                            });
-                                                        }}
-
-                                                    />
-                                                </div>
-
-                                                <InputComponent
-                                                    placeholder="Slogan (optional)"
-                                                    type="text"
-                                                    maxChar={30}
-                                                    hoverText="Submit Slogan Text"
-                                                    elementName="slogan"
-                                                    data={pageData}
-                                                    dispatch={dispatchPageData}
-                                                    value={pageData['slogan']}
-                                                    saveTo="landingPage"
-                                                />
-
-                                                <div className="section_title w-full flex justify-start gap-2">
-                                                    <h4>Header Image</h4>
-                                                </div>
-                                                <div className="w-full mb-5 flex">
-                                                    <ImageUploader
-                                                        elementName="hero"
-                                                        label="Header Image"
-                                                        cropSettings={{
-                                                            unit: '%',
-                                                            width: 30,
-                                                            x: 25,
-                                                            y: 25,
-                                                            aspect: 16 / 8,
-                                                        }}
-                                                        ref={nodesRef}
-                                                        setShowLoader={setShowLoader}
-                                                        completedCrop={completedCrop}
-                                                        setCompletedCrop={setCompletedCrop}
-                                                        startCollapsed={pageData['hero']}
-                                                        onImageSelect={setImageSelected}
-                                                        onUpload={(response) => {
-                                                            const packets = {
-                                                                'hero': response.key,
-                                                                ext: response.extension,
-                                                            };
-                                                            updateImage(packets, pageData['id'])
-                                                            .then((response) => {
-                                                                if (response.success) {
-                                                                    dispatchPageData({
-                                                                        type: LP_ACTIONS.UPDATE_PAGE_DATA,
-                                                                        payload: {
-                                                                            value: response.imagePath,
-                                                                            name: "hero",
-                                                                        },
-                                                                    });
-                                                                    const activeSection = "form.hero";
-                                                                    document.querySelector(activeSection + " .bottom_section")
-                                                                    .classList.add("hidden");
-                                                                    setTimeout(function () {
-                                                                        document.querySelector(activeSection).scrollIntoView({
-                                                                            behavior: "smooth",
-                                                                            block: "center",
-                                                                            inline: "nearest",
-                                                                        });
-                                                                    }, 800);
-                                                                }
-                                                            });
-                                                        }}
-
-                                                    />
-                                                </div>
-                                                <div className="mb-5 w-full">
-                                                   <div className="section_title w-full flex justify-start gap-2">
-                                                       <h4>Colors</h4>
-                                                   </div>
-                                                   <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2 mb-4">
-                                                       <ColorPicker
-                                                           label="Text"
-                                                           data={pageData}
-                                                           dispatch={dispatchPageData}
-                                                           elementName="header_text_color"
-                                                       />
-                                                       <ColorPicker
-                                                           label="Background"
-                                                           data={pageData}
-                                                           dispatch={dispatchPageData}
-                                                           elementName="header_color"
-                                                       />
-                                                   </div>
-                                                </div>
-                                                <div className="mb-7 w-full">
-                                                    <div className="section_title w-full">
-                                                        <h4>Font Size</h4>
-                                                    </div>
-                                                    <SliderComponent
-                                                        id={pageData["id"]}
+                                    {pageTab === "header" ?
+                                        <div className="content_wrap my_row creator mb-10">
+                                            <section id="header_section"
+                                                     className="my_row section"
+                                                     onMouseEnter={(e) =>
+                                                         handleMouseEnter(e)
+                                                     }>
+                                                <div className="section_content my_row">
+                                                    <InputComponent
+                                                        placeholder="Page Title"
+                                                        type="text"
+                                                        maxChar={60}
+                                                        hoverText="Submit Page Title"
+                                                        elementName="title"
+                                                        data={pageData}
                                                         dispatch={dispatchPageData}
-                                                        value={pageData["header_font_size"]}
-                                                        elementName="header_font_size"
-                                                        sliderValues={{
-                                                            step: .1,
-                                                            min: .1,
-                                                            max: 5,
-                                                            unit: "rem",
-                                                        }}
+                                                        value={pageData['title']}
                                                         saveTo="landingPage"
                                                     />
                                                 </div>
-
-                                                <div className="w-full">
-                                                    <div className="section_title w-full">
-                                                        <h4>Landing Page URL</h4>
+                                                <div className="section_content my_row">
+                                                    <div className="section_title w-full flex justify-start gap-2">
+                                                        <h4>Logo</h4>
                                                     </div>
-                                                    {pageData['slug'] &&
-                                                        <ClickToCopyUrl
-                                                            url={livePage}
+                                                    <div className="w-full mb-5 flex">
+                                                        <ImageUploader
+                                                            elementName="logo"
+                                                            label="Logo"
+                                                            cropSettings={{
+                                                                unit: '%',
+                                                                width: 60,
+                                                                height: 30,
+                                                                x: 25,
+                                                                y: 25,
+                                                            }}
+                                                            ref={nodesRef}
+                                                            setShowLoader={setShowLoader}
+                                                            completedCrop={completedCrop}
+                                                            setCompletedCrop={setCompletedCrop}
+                                                            startCollapsed={pageData['logo']}
+                                                            onImageSelect={setImageSelected}
+                                                            onUpload={(response) => {
+                                                                const packets = {
+                                                                    'logo': response.key,
+                                                                    ext: response.extension,
+                                                                };
+                                                                updateImage(packets, pageData['id'])
+                                                                .then((response) => {
+                                                                    if (response.success) {
+                                                                        dispatchPageData({
+                                                                            type: LP_ACTIONS.UPDATE_PAGE_DATA,
+                                                                            payload: {
+                                                                                value: response.imagePath,
+                                                                                name: "logo",
+                                                                            },
+                                                                        });
+                                                                        const activeSection = "form.logo";
+                                                                        document.querySelector(activeSection + " .bottom_section")
+                                                                        .classList.add("hidden");
+                                                                        setTimeout(function () {
+                                                                            document.querySelector(activeSection).scrollIntoView({
+                                                                                behavior: "smooth",
+                                                                                block: "center",
+                                                                                inline: "nearest",
+                                                                            });
+                                                                        }, 800);
+                                                                    }
+                                                                });
+                                                            }}
+
                                                         />
-                                                    }
+                                                    </div>
+
+                                                    <InputComponent
+                                                        placeholder="Slogan (optional)"
+                                                        type="text"
+                                                        maxChar={30}
+                                                        hoverText="Submit Slogan Text"
+                                                        elementName="slogan"
+                                                        data={pageData}
+                                                        dispatch={dispatchPageData}
+                                                        value={pageData['slogan']}
+                                                        saveTo="landingPage"
+                                                    />
+
+                                                    <div className="section_title w-full flex justify-start gap-2">
+                                                        <h4>Header Image</h4>
+                                                    </div>
+                                                    <div className="w-full mb-5 flex">
+                                                        <ImageUploader
+                                                            elementName="hero"
+                                                            label="Header Image"
+                                                            cropSettings={{
+                                                                unit: '%',
+                                                                width: 30,
+                                                                x: 25,
+                                                                y: 25,
+                                                                aspect: 16 / 8,
+                                                            }}
+                                                            ref={nodesRef}
+                                                            setShowLoader={setShowLoader}
+                                                            completedCrop={completedCrop}
+                                                            setCompletedCrop={setCompletedCrop}
+                                                            startCollapsed={pageData['hero']}
+                                                            onImageSelect={setImageSelected}
+                                                            onUpload={(response) => {
+                                                                const packets = {
+                                                                    'hero': response.key,
+                                                                    ext: response.extension,
+                                                                };
+                                                                updateImage(packets, pageData['id'])
+                                                                .then((response) => {
+                                                                    if (response.success) {
+                                                                        dispatchPageData({
+                                                                            type: LP_ACTIONS.UPDATE_PAGE_DATA,
+                                                                            payload: {
+                                                                                value: response.imagePath,
+                                                                                name: "hero",
+                                                                            },
+                                                                        });
+                                                                        const activeSection = "form.hero";
+                                                                        document.querySelector(activeSection + " .bottom_section")
+                                                                        .classList.add("hidden");
+                                                                        setTimeout(function () {
+                                                                            document.querySelector(activeSection).scrollIntoView({
+                                                                                behavior: "smooth",
+                                                                                block: "center",
+                                                                                inline: "nearest",
+                                                                            });
+                                                                        }, 800);
+                                                                    }
+                                                                });
+                                                            }}
+
+                                                        />
+                                                    </div>
+                                                    <div className="mb-5 w-full">
+                                                       <div className="section_title w-full flex justify-start gap-2">
+                                                           <h4>Colors</h4>
+                                                       </div>
+                                                       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2 mb-4">
+                                                           <ColorPicker
+                                                               label="Text"
+                                                               data={pageData}
+                                                               dispatch={dispatchPageData}
+                                                               elementName="header_text_color"
+                                                           />
+                                                           <ColorPicker
+                                                               label="Background"
+                                                               data={pageData}
+                                                               dispatch={dispatchPageData}
+                                                               elementName="header_color"
+                                                           />
+                                                       </div>
+                                                    </div>
+                                                    <div className="mb-7 w-full">
+                                                        <div className="section_title w-full">
+                                                            <h4>Font Size</h4>
+                                                        </div>
+                                                        <SliderComponent
+                                                            id={pageData["id"]}
+                                                            dispatch={dispatchPageData}
+                                                            value={pageData["header_font_size"]}
+                                                            elementName="header_font_size"
+                                                            sliderValues={{
+                                                                step: .1,
+                                                                min: .1,
+                                                                max: 5,
+                                                                unit: "rem",
+                                                            }}
+                                                            saveTo="landingPage"
+                                                        />
+                                                    </div>
+
+                                                    <div className="w-full">
+                                                        <div className="section_title w-full">
+                                                            <h4>Landing Page URL</h4>
+                                                        </div>
+                                                        {pageData['slug'] &&
+                                                            <ClickToCopyUrl
+                                                                url={livePage}
+                                                            />
+                                                        }
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </section>
-                                    </div>
-                                    <div className="page_menu_row w-full">
-                                        <div className="current_page">
-                                            <p className="uppercase">Sections</p>
+                                            </section>
                                         </div>
-                                    </div>
+                                    :
                                     <div className="content_wrap my_row creator">
                                         <section className="my_row">
                                             {sections.length > 0 &&
@@ -458,6 +465,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                             />
                                         }
                                     </div>
+                                    }
                                 </div>
 
                                 <div className={`right_column links_col preview${showPreview ?

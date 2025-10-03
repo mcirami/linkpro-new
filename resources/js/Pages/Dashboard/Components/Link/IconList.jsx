@@ -10,7 +10,7 @@ import {FolderLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
 import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import ImageUploader from '@/Components/ImageUploader.jsx';
 import SelectorComponent
-    from '@/Pages/Dashboard/Components/SelectorComponent.jsx';
+    from '@/Components/SelectorComponent.jsx';
 
 const IconList = ({
                       setCharactersLeft,

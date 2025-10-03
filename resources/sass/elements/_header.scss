@@ -179,22 +179,12 @@
 
 
 .page_menu_row {
-    list-style: none;
-    padding-left: 0;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    -webkit-justify-content: flex-start;
-    align-items: center;
-    -webkit-align-items: center;
-    margin-bottom: 0;
+
+    .animated_tabs {
+        border-bottom-right-radius: 0 !important;
+        -webkit-border-bottom-right-radius: 0 !important;
+        -moz-border-radius-bottomright: 0 !important;
+    }
 
     .current_page {
         box-shadow: rgba(0, 0, 0, .1) 5px -3px 13px -5px;
@@ -222,7 +212,7 @@
 
     .menu_wrap {
         position: relative;
-        padding: 10px 40px 15px 20px;
+        padding: 0 20px;
         width: 100%;
 
         .menu_content {
@@ -240,12 +230,28 @@
             @include boxShadow;
             background: $white;
             list-style: none;
-            z-index: 1;
+            z-index: 5;
+            width: 175px;
             padding: 0;
             border-radius: 8px;
             -webkit-border-radius: 8px;
             -moz-border-radius: 8px;
             margin-top: 38px;
+            position: relative;
+
+            /*&:before {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 0;
+                border-left: 14px solid transparent;
+                border-right: 14px solid transparent;
+                border-bottom: 14px solid;
+                border-bottom-color: $white;
+                top: -8px;
+                left: 11px;
+                z-index: -1;
+            }*/
 
             li {
                 border-radius: 6px;
@@ -260,19 +266,6 @@
 
                 &:first-child {
                     border-bottom: 1px solid $borderGray;
-
-                    &:before {
-                        content: '';
-                        position: absolute;
-                        width: 0;
-                        height: 0;
-                        border-left: 14px solid transparent;
-                        border-right: 14px solid transparent;
-                        border-bottom: 14px solid;
-                        border-bottom-color: $white;
-                        top: 25px;
-                        left: 11px;
-                    }
                 }
 
                 &:hover {

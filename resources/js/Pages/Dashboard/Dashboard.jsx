@@ -54,6 +54,7 @@ import LinkTypeRadio from '@/Pages/Dashboard/Components/Link/LinkTypeRadio.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import LivePageButton from '@/Components/LivePageButton.jsx';
 import PageHeader from '@/Components/PageHeader.jsx';
+import PageTabs from "@/Components/PageTabs.jsx";
 
 function Dashboard({
                        message = null,
@@ -135,6 +136,8 @@ function Dashboard({
     const [showPreview, setShowPreview] = useState(false);
 
     const [connectionError, setConnectionError] = useState(false);
+
+    const [pageTab, setPageTab] = useState("settings");
 
     useEffect(() => {
 
@@ -330,15 +333,30 @@ function Dashboard({
                                         }}>
 
                                             <div className="left_column">
-                                                <PageNav
-                                                    allUserPages={allUserPages}
-                                                    setAllUserPages={setAllUserPages}
-                                                    userSub={userSub}
-                                                    subStatus={subStatus}
-                                                    setShowUpgradePopup={setShowUpgradePopup}
-                                                    pageNames={allPageNames}
-                                                />
+                                                <div className="page_menu_row flex justify-between w-full">
+                                                    <div className="page_tabs w-1/2">
+                                                        <PageTabs
+                                                            tabs={[
+                                                                { value: "settings", label: "Page Settings"},
+                                                                { value: "links", label: "Links"}
+                                                            ]}
+                                                            pageTab={pageTab}
+                                                            setPageTab={setPageTab}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <PageNav
+                                                            allUserPages={allUserPages}
+                                                            setAllUserPages={setAllUserPages}
+                                                            userSub={userSub}
+                                                            subStatus={subStatus}
+                                                            setShowUpgradePopup={setShowUpgradePopup}
+                                                            pageNames={allPageNames}
+                                                        />
+                                                    </div>
+                                                </div>
 
+                                                {pageTab === "settings" ?
                                                 <div ref={leftColWrap} className="content_wrap my_row mb-10">
                                                     <div className="top_section">
                                                         <PageName
@@ -502,11 +520,7 @@ function Dashboard({
                                                         }
                                                     </div>
                                                 </div>
-                                                <div className="page_menu_row w-full">
-                                                    <div className="current_page">
-                                                        <p className="uppercase">LINKS</p>
-                                                    </div>
-                                                </div>
+                                                    :
                                                 <div className="content_wrap !pt-5 my_row">
                                                     {editLink.id ||
                                                     editLink.folder_id ?
@@ -632,6 +646,7 @@ function Dashboard({
                                                     }
 
                                                 </div>
+                                                }
                                             </div>
                                             <Preview
                                                 nodesRef={nodesRef}

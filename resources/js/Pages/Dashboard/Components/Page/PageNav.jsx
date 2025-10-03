@@ -58,41 +58,35 @@ const PageNav = ({
     }
 
     return (
-        <div className="page_menu_row">
-            <div className="current_page" id={pageSettings["id"]} key={pageSettings["id"]}>
-                <p>{pageSettings["name"]}</p>
-            </div>
-            <div className="menu_wrap">
+        <div className="menu_wrap">
 
-                <div className={allUserPages?.length > 1 ? "menu_icon add_border" : "menu_icon"}>
-                    {allUserPages?.length > 1 ?
-                        <FiChevronDown/>
-                        :
-                        <MdAddCircleOutline/>
-                    }
+            <div className={allUserPages?.length > 1 ? "menu_icon add_border" : "menu_icon"}>
+                {allUserPages?.length > 1 ?
+                    <FiChevronDown/>
+                    :
+                    <MdAddCircleOutline/>
+                }
 
-                    <div className="menu_content">
-                        <ul className="page_menu">
-                            <li>
-                                <a onClick={(e) => { handleClick(e) }} href="#">Add New Link</a>
-                            </li>
-                            { pageList.map((page) => {
+                <div className="menu_content">
+                    <ul className="page_menu">
+                        <li>
+                            <a onClick={(e) => { handleClick(e) }} href="#">Add New Page</a>
+                        </li>
+                        { pageList.map((page) => {
 
-                                return (
-                                    page["disabled"] || !userSub || userSub.name !== "premier" ?
-                                        <li key={page["id"]} className="disabled_link" data-type="disabled" onClick={(e) => { handleClick(e) }} >
-                                            {page["name"]}
-                                        </li>
-                                        :
-                                        <li id={page["id"]} key={page["id"]}>
-                                            <Link href={"/dashboard/pages/" + page["id"]}>{page["name"]}</Link>
-                                        </li>
-                                )
-                            })}
-                        </ul>
-                    </div>
+                            return (
+                                page["disabled"] || !userSub || userSub.name !== "premier" ?
+                                    <li key={page["id"]} className="disabled_link" data-type="disabled" onClick={(e) => { handleClick(e) }} >
+                                        {page["name"]}
+                                    </li>
+                                    :
+                                    <li id={page["id"]} key={page["id"]}>
+                                        <Link href={"/dashboard/pages/" + page["id"]}>{page["name"]}</Link>
+                                    </li>
+                            )
+                        })}
+                    </ul>
                 </div>
-
             </div>
 
             {isEditing ?

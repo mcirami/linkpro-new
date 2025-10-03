@@ -40,7 +40,7 @@ const ClickToCopyUrl = ({url}) => {
         }
     };
     return (
-        <div className="url_wrap w-full border border-gray-100 p-4 rounded-md flex justify-between items-center">
+        <div className="url_wrap w-full border border-gray-100 p-4 rounded-lg flex justify-between items-center">
             <a target="_blank" href={url}>{url}</a>
             <button onClick={handleCopy} className="text-blue-700 w-auto p-0">
                 <IoCopy />

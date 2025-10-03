@@ -1,7 +1,7 @@
 import React, {useEffect, useCallback, useState} from 'react';
 import {submitPageSetting} from '@/Services/PageRequests.jsx';
 import SelectorComponent
-    from "@/Pages/Dashboard/Components/SelectorComponent.jsx";
+    from "@/Components/SelectorComponent.jsx";
 import { SiInternetcomputer } from "react-icons/si";
 
 const RadioComponent = ({

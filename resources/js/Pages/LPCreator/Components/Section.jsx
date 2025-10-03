@@ -10,6 +10,7 @@ import {CSS} from '@dnd-kit/utilities';
 import DOMPurify from 'dompurify';
 import {convertText} from '@/Services/CreatorServices.jsx';
 import isJSON from 'validator/es/lib/isJSON.js';
+import SelectorComponent from "@/Components/SelectorComponent.jsx";
 
 const Section = ({
                      section,
@@ -51,6 +52,8 @@ const Section = ({
     };
 
     const [sectionTitle, setSectionTitle] = useState("");
+
+    const [pageTab, setPageTab] = useState("content");
 
     const handleSectionOpen = (rowIndex) => {
 
@@ -123,9 +126,14 @@ const Section = ({
         }
     }
 
+    const handleOnClick = (e,value) => {
+        e.preventDefault();
+        setPageTab(value);
+    }
+
     return (
         <div ref={setNodeRef}
-             className={`section_row shadow-md ${id}`}
+             className={`section_row shadow-md ${id} ${type}`}
              id={`section_${index + 1}`}
              style={style}
              onMouseEnter={(e) => handleMouseEnter(e)}
@@ -152,67 +160,95 @@ const Section = ({
                     <MdKeyboardArrowDown />
                 </div>
             </div>
+
             <div className={`section_content my_row ${openIndex.includes(index) ? "open" : ""}`}>
-                {type === "text" &&
-                    <>
-                        <InputComponent
-                            placeholder="Add Text"
-                            type="wysiwyg"
-                            hoverText={`Add Text to Section ${index + 1}`}
-                            elementName={`text`}
-                            value={text}
-                            currentSection={section}
-                            sections={sections}
-                            setSections={setSections}
-                            showTiny={showTiny}
-                            setShowTiny={setShowTiny}
-                            saveTo="landingPage"
-                            index={index}
-                        />
-                        <ColorPicker
-                            label="Background Color"
-                            currentSection={section}
-                            sections={sections}
-                            setSections={setSections}
-                            elementName={`bg_color`}
-                            saveTo="landingPage"
-                        />
-                    </>
-                }
-                {type === "image" &&
-                    <ImageComponent
-                        ref={nodesRef}
-                        completedCrop={completedCrop}
-                        setCompletedCrop={setCompletedCrop}
-                        setShowLoader={setShowLoader}
-                        currentSection={section}
-                        sections={sections}
-                        setSections={setSections}
-                        previewType="external"
-                        elementName={`section_${index + 1}_image`}
-                        saveTo="landingPage"
-                        cropArray={{
-                            unit: "%",
-                            width: 30,
-                            x: 25,
-                            y: 25,
-                            aspect: 16 / 8
-                        }}
-                    />
-                }
-                <div className="my_row">
-                    <SectionButtonOptions
-                        sectionPosition={index + 1}
-                        sections={sections}
-                        setSections={setSections}
-                        currentSection={section}
-                        buttonCourseId={button_course_id}
-                        courses={courses}
-                        id={id}
-                        buttonType="purchase"
-                        saveTo="landingPage"
+                <div className="w-full mb-5">
+                    <SelectorComponent
+                        value={pageTab}
+                        onChange={setPageTab}
+                        commit={handleOnClick}
+                        options={[
+                            {
+                            value: "content",
+                            label: "Content",
+                            },
+                            {
+                                value: "button",
+                                label: "Button",
+                            }
+                    ]}
                     />
                 </div>
+                {pageTab === "content" && type === "text" ? (
+                        <>
+                            <div className="section_title w-full">
+                                <h4>Color</h4>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2 mb-4">
+                                <ColorPicker
+                                    label="Background"
+                                    currentSection={section}
+                                    sections={sections}
+                                    setSections={setSections}
+                                    elementName={`bg_color`}
+                                    saveTo="landingPage"
+                                />
+                            </div>
+                            <div className="section_title w-full !mb-5">
+                                <h4>Text</h4>
+                            </div>
+                            <InputComponent
+                                placeholder=""
+                                type="wysiwyg"
+                                hoverText={`Add Text to Section ${index + 1}`}
+                                elementName={`text`}
+                                value={text}
+                                currentSection={section}
+                                sections={sections}
+                                setSections={setSections}
+                                showTiny={showTiny}
+                                setShowTiny={setShowTiny}
+                                saveTo="landingPage"
+                                index={index}
+                            />
+                        </>
+
+                ) : pageTab === "content" && type === "image" ? (
+                        <ImageComponent
+                            ref={nodesRef}
+                            completedCrop={completedCrop}
+                            setCompletedCrop={setCompletedCrop}
+                            setShowLoader={setShowLoader}
+                            currentSection={section}
+                            sections={sections}
+                            setSections={setSections}
+                            previewType="external"
+                            elementName={`section_${index + 1}_image`}
+                            saveTo="landingPage"
+                            cropArray={{
+                                unit: "%",
+                                width: 30,
+                                x: 25,
+                                y: 25,
+                                aspect: 16 / 8
+                            }}
+                        />
+                ) : null}
+                {(pageTab !== "content" || type === "button") && (
+                    <div className="my_row">
+                        <SectionButtonOptions
+                            sectionPosition={index + 1}
+                            sections={sections}
+                            setSections={setSections}
+                            currentSection={section}
+                            buttonCourseId={button_course_id}
+                            courses={courses}
+                            id={id}
+                            buttonType="purchase"
+                            saveTo="landingPage"
+                        />
+                    </div>
+                )}
                 <DeleteSection
                     id={id}
                     sections={sections}

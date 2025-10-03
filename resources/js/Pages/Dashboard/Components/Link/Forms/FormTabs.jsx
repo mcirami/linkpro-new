@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import EventBus from '@/Utils/Bus.jsx';
 import SelectorComponent
-    from "@/Pages/Dashboard/Components/SelectorComponent.jsx";
+    from "@/Components/SelectorComponent.jsx";
 
 const FormTabs = ({
                       showFormTab,

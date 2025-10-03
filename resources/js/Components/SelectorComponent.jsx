@@ -7,6 +7,7 @@ export default function SelectorComponent({
                                               options,
                                               size = null,
                                               color = "border-indigo-600 bg-indigo-50",
+                                              shadow = null
 }) {
     const idx = useMemo(
         () => Math.max(0, options.findIndex(o => o.value === value)),
@@ -29,7 +30,7 @@ export default function SelectorComponent({
         <div
             role="tablist"
             aria-label="Segmented control"
-            className={`animated_tabs relative inline-flex w-full ${size} rounded-lg bg-white shadow-md overflow-hidden`}
+            className={`animated_tabs relative inline-flex w-full ${size} rounded-lg bg-white ${shadow || 'shadow-md'} overflow-hidden`}
             onKeyDown={onKeyDown}
         >
             {/* Sliding pill */}
@@ -55,7 +56,7 @@ export default function SelectorComponent({
                         className={[
                             "relative z-10 flex-1 px-4 py-2 text-sm font-semibold text-center",
                             "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#424fcf]/30 focus-visible:ring-offset-white",
-                            "text-gray-800"
+                            "text-gray-800",
                         ].join(" ")}
                         onClick={(e) => commit(e, opt.value)}
                     >

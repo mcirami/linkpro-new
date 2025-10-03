@@ -97,8 +97,10 @@ const SectionButtonOptions = ({
     return (
         <>
             {buttonType === "purchase" ?
-                <div className={`switch_wrap page_settings border_wrap ${!button ? "mb-4" : "" }`}>
-                    <label>Include Button</label>
+                <div className={`switch_wrap flex justify-between items-center ${!button ? "mb-4" : "" }`}>
+                    <div className="section_title w-full">
+                        <h4>Include Button</h4>
+                    </div>
                     <IOSSwitch
                         onChange={handleSwitchChange}
                         checked={Boolean(includeButtonValue)}
@@ -107,7 +109,7 @@ const SectionButtonOptions = ({
                 :
                 ""
             }
-            <div className={`button_options ${ (includeButtonValue || buttonType === "download") ? "open" : ""} ${buttonType === "download" ? "!border-0" : ""}`}>
+            <div className={`button_options open ${buttonType === "download" ? "!border-0" : ""}`}>
                 {buttonType === "purchase" ?
                     <article className="page_settings border_wrap">
                         <div className="radios_wrap">
