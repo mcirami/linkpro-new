@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
-import Slider from '@mui/material/Slider';
 import ColorPicker from '@/Components/CreatorComponents/ColorPicker.jsx';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
 import SliderComponent from '@/Components/CreatorComponents/SliderComponent.jsx';
@@ -13,6 +11,7 @@ import {updateSectionData as updateLPSectionData} from '@/Services/LandingPageRe
 import DropdownComponent
     from '@/Pages/LPCreator/Components/DropdownComponent.jsx';
 import IOSSwitch from '@/Utils/IOSSwitch.jsx';
+import RadioGroup from '@/Components/RadioGroup.jsx';
 
 const SectionButtonOptions = ({
                                   sectionPosition,
@@ -69,7 +68,8 @@ const SectionButtonOptions = ({
         });
     }
 
-    const handleRadioChange = (value) => {
+    const handleRadioChange = (e, value) => {
+        e.preventDefault();
         setButtonPositionValue(value);
 
         const packets = {
@@ -99,7 +99,7 @@ const SectionButtonOptions = ({
             {buttonType === "purchase" ?
                 <div className={`switch_wrap flex justify-between items-center ${!button ? "mb-4" : "" }`}>
                     <div className="section_title w-full">
-                        <h4>Include Button</h4>
+                        <h4>Show</h4>
                     </div>
                     <IOSSwitch
                         onChange={handleSwitchChange}
@@ -110,81 +110,72 @@ const SectionButtonOptions = ({
                 ""
             }
             <div className={`button_options open ${buttonType === "download" ? "!border-0" : ""}`}>
-                {buttonType === "purchase" ?
-                    <article className="page_settings border_wrap">
-                        <div className="radios_wrap">
-                            <FormControl>
-                                <FormLabel
-                                    id={`section_${sectionPosition}_above`}
-                                    sx={{
-                                        color: '#000'
-                                    }}
-                                >
-                                    <label>Button Location</label>
-                                </FormLabel>
-                                <RadioGroup
-                                    row
-                                    aria-labelledby={`section_${sectionPosition}_above`}
-                                    name={`section_${sectionPosition}_above`}
-                                    onChange={(e) => {handleRadioChange(e.target.value)}}
-                                >
-                                    <FormControlLabel
-                                        value="above"
-                                        control={
-                                            <Radio
-                                                checked={ (buttonPositionValue === "above" || !buttonPositionValue) && true}
-                                            />}
-                                        label="Above"
+                <div className="mb-5 flex justify-between items-center">
+                    {buttonType === "purchase" ?
+                        <article className="w-1/2 pr-5 border-r border-gray-200">
+                            <div className="radios_wrap">
+                                <FormControl>
+                                    <div className="section_title w-full !mb-5" id={`section_${sectionPosition}_above`}>
+                                        <h4>Location</h4>
+                                    </div>
+                                    <RadioGroup
+                                        value={buttonPositionValue || "above"}
+                                        options={["above", "below"]}
+                                        onChange={handleRadioChange}
                                     />
-                                    <FormControlLabel
-                                        value="below"
-                                        control={
-                                            <Radio
-                                                checked={buttonPositionValue === "below" && true}
-                                            />}
-                                        label="Below"
-                                    />
-                                </RadioGroup>
-                            </FormControl>
-                        </div>
+                                </FormControl>
+                            </div>
 
-                    </article>
-                    :
-                    ""
-                }
-                <SliderComponent
-                    label="Button Size"
-                    id={id}
-                    value={button_size}
-                    elementName="button_size"
-                    sliderValues={{
-                        step: 1,
-                        min: 25,
-                        max: 100,
-                        unit: "%",
-                    }}
-                    saveTo={saveTo}
-                    sections={sections}
-                    setSections={setSections}
-                />
-                <ColorPicker
-                    label="Button Text Color"
-                    sections={sections}
-                    setSections={setSections}
-                    currentSection={currentSection}
-                    elementName={`button_text_color`}
-                    saveTo={saveTo}
-                />
-                <ColorPicker
-                    label="Button Color"
-                    sections={sections}
-                    setSections={setSections}
-                    currentSection={currentSection}
-                    elementName={`button_color`}
-                    saveTo={saveTo}
-                />
+                        </article>
+                        :
+                        ""
+                    }
+                    <div className="w-1/2 pl-5">
+                        <div className="section_title w-full !mb-5">
+                            <h4>Size</h4>
+                        </div>
+                        <SliderComponent
+                            label="Button Size"
+                            id={id}
+                            value={button_size}
+                            elementName="button_size"
+                            sliderValues={{
+                                step: 1,
+                                min: 25,
+                                max: 100,
+                                unit: "%",
+                            }}
+                            saveTo={saveTo}
+                            sections={sections}
+                            setSections={setSections}
+                        />
+                    </div>
+                </div>
+                <div className="mb-5">
+                    <div className="section_title w-full !mb-5">
+                        <h4>Colors</h4>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-4">
+                        <ColorPicker
+                            label="Text"
+                            sections={sections}
+                            setSections={setSections}
+                            currentSection={currentSection}
+                            elementName={`button_text_color`}
+                            saveTo={saveTo}
+                        />
+                        <ColorPicker
+                            label="Background"
+                            sections={sections}
+                            setSections={setSections}
+                            currentSection={currentSection}
+                            elementName={`button_color`}
+                            saveTo={saveTo}
+                        />
+                    </div>
+                </div>
                 <InputComponent
-                    placeholder="Update Button Text"
+                    placeholder="Text"
                     type="text"
                     maxChar={20}
                     hoverText="Submit Button Text"
@@ -196,13 +187,18 @@ const SectionButtonOptions = ({
                     saveTo={saveTo}
                 />
                 {courses &&
-                    <DropdownComponent
-                        courses={courses}
-                        buttonCourseId={buttonCourseId}
-                        sections={sections}
-                        setSections={setSections}
-                        id={id}
-                    />
+                    <>
+                        <div className="section_title w-full !mb-5">
+                            <h4>Link</h4>
+                        </div>
+                        <DropdownComponent
+                            courses={courses}
+                            buttonCourseId={buttonCourseId}
+                            sections={sections}
+                            setSections={setSections}
+                            id={id}
+                        />
+                    </>
                 }
             </div>
         </>

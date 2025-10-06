@@ -349,7 +349,7 @@ const InputComponent = ({
     return (
         <div className="edit_form">
             <div className="section_title w-full items-baseline flex justify-between gap-2">
-                <h4 className="flex items-center justify-start gap-2">{placeholder}</h4>
+                <h4 className="flex items-center justify-start gap-2 mb-5">{placeholder}</h4>
                 {maxChar != null &&
                     <div className="info_text flex justify-end mb-2">
                         <p className="char_count">

@@ -210,7 +210,7 @@ const IconSettingComponent = ({
                             {setIsEditing && (
                                 <button
                                     type="button"
-                                    className="shrink-0 ml-1 text-[#88c3d7] hover:text-indigo-600 transition"
+                                    className="w-auto shrink-0 ml-1 text-[#88c3d7] hover:text-indigo-600 transition"
                                     onClick={(e) => {
                                         e.preventDefault();
                                         setIsEditing({

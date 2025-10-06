@@ -8,7 +8,7 @@ const SectionImage = ({
 
 }) => {
 
-    const [sectionImageStyle, setSectionImageStyle] = useState(null);
+    const [sectionImageStyle, setSectionImageStyle] = useState({});
 
     useEffect(() => {
 

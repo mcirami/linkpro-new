@@ -5,7 +5,7 @@ import React, {
     useRef,
 } from 'react';
 import IconList from '../IconList';
-import InputTypeRadio from './InputTypeRadio';
+import RadioGroup from '@/Components/RadioGroup.jsx';
 import {
     handleSwitchChange,
     updateLink
@@ -293,9 +293,26 @@ const StandardForm = ({
                                         <h4>Link Type</h4>
                                         <ToolTipIcon section="link_type" />
                                     </div>
-                                    <InputTypeRadio
-                                        editLink={editLink}
-                                        setEditLink={setEditLink}
+                                    <RadioGroup
+                                        value={editLink.type}
+                                        options={["url", "email", "phone"]}
+                                        onChange={(e, option) => {
+                                            e.preventDefault();
+                                            setEditLink(prev => ({
+                                                ...prev,
+                                                type: option
+                                            }));
+
+                                            dispatch({
+                                                type: LINKS_ACTIONS.UPDATE_LINK,
+                                                payload: {
+                                                    id: editLink.id,
+                                                    editLink: editLink,
+                                                    type: option,
+                                                    [`${option}`] : editLink[`${option}`]
+                                                }
+                                            })
+                                        }}
                                     />
                                 </div>
                             </div>

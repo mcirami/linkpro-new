@@ -50,12 +50,11 @@ const DropdownComponent = ({
                     value={buttonCourseId || ""}
                     onFocus={(e) => HandleFocus(e.target)}
             >
-                <option></option>
+                <option>Select Course</option>
                 {courses?.map((course, index) => {
                     return <option key={index} value={course.id} data-slug={course.slug}>{course.title}</option>
                 })}
             </select>
-            <label>Select Course</label>
         </div>
     );
 };

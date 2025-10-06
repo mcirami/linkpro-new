@@ -11,6 +11,8 @@ import DOMPurify from 'dompurify';
 import {convertText} from '@/Services/CreatorServices.jsx';
 import isJSON from 'validator/es/lib/isJSON.js';
 import SelectorComponent from "@/Components/SelectorComponent.jsx";
+import ImageUploader from "@/Pages/Dashboard/Components/Page/ImageUploader.jsx";
+import { updateSectionImage } from "@/Services/LandingPageRequests.jsx";
 
 const Section = ({
                      section,
@@ -181,7 +183,7 @@ const Section = ({
                 </div>
                 {pageTab === "content" && type === "text" ? (
                         <>
-                            <div className="section_title w-full">
+                            <div className="section_title w-full !mb-5">
                                 <h4>Color</h4>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2 mb-4">
@@ -214,7 +216,64 @@ const Section = ({
                         </>
 
                 ) : pageTab === "content" && type === "image" ? (
-                        <ImageComponent
+                    <div className="w-full flex flex-col mb-5">
+                        <div className="section_title w-full !mb-5">
+                            <h4>Background Image</h4>
+                        </div>
+                        <ImageUploader
+                            ref={nodesRef}
+                            completedCrop={completedCrop}
+                            setCompletedCrop={setCompletedCrop}
+                            setShowLoader={setShowLoader}
+                            elementName={`section_${index + 1}_image`}
+                            cropSettings={{
+                                unit: "%",
+                                width: 30,
+                                x: 25,
+                                y: 25,
+                                aspect: 16 / 8
+                            }}
+                            label="Background"
+                            startCollapsed={section.image}
+                            onUpload={(response) => {
+                                const packets = {
+                                    [`section_${index + 1}_image`]: response.key,
+                                    ext: response.extension,
+                                };
+
+                                updateSectionImage(packets, section.id)
+                                .then((response) => {
+                                    if (response.success) {
+                                        console.log("response: ", response);
+                                        setSections(
+                                            sections.map((sectionMap) => {
+                                                if (sectionMap.id === section.id) {
+                                                    return {
+                                                        ...sectionMap,
+                                                        image: response.imagePath,
+                                                    };
+                                                }
+                                                return sectionMap;
+                                            }),
+                                        );
+
+                                        const activeSection = `form.section_${index + 1}_image`;
+                                        document
+                                        .querySelector(activeSection + " .bottom_section")
+                                        .classList.add("hidden");
+                                        setTimeout(function () {
+                                            document.querySelector(activeSection).scrollIntoView({
+                                                behavior: "smooth",
+                                                block: "center",
+                                                inline: "nearest",
+                                            });
+                                        }, 800);
+                                    }
+                                })
+                            }}
+                        />
+                    </div>
+                        /*<ImageComponent
                             ref={nodesRef}
                             completedCrop={completedCrop}
                             setCompletedCrop={setCompletedCrop}
@@ -232,7 +291,7 @@ const Section = ({
                                 y: 25,
                                 aspect: 16 / 8
                             }}
-                        />
+                        />*/
                 ) : null}
                 {(pageTab !== "content" || type === "button") && (
                     <div className="my_row">

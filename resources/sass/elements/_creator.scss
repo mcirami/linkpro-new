@@ -114,12 +114,22 @@
                 position: relative;
                 justify-self: flex-end;
                 margin-left: auto;
+                border-radius: 50px;
+                -webkit-border-radius: 50px;
+                -moz-border-radius: 50px;
 
                 svg {
-                    width: 20px;
-                    height: 20px;
+                    width: 25px;
+                    height: 25px;
                     color: $blue;
-                    margin-left: 5px;
+                }
+
+                &.open {
+                    background: $blue;
+
+                    svg {
+                        color: $white;
+                    }
                 }
 
                 > a {
@@ -161,13 +171,9 @@
 
                 .icon_wrap {
                     background: $white;
+                    border: 2px solid $blue;
                     margin-left: 0;
                     z-index: 1;
-
-                    svg {
-                        width: 40px;
-                        height: 40px;
-                    }
                 }
 
                 .input_image {
@@ -317,16 +323,16 @@
                     max-width: 140px;
                 }
 
-                .css-r64h58-MuiSlider-rail {
+                .MuiSlider-rail {
                     height: 12px;
                     background-color: rgba(0,0,155,.2);
                 }
 
-                .css-xvk2i-MuiSlider-track {
+                .MuiSlider-track {
                     height: 12px;
                 }
 
-                .css-1xcmt9q-MuiSlider-thumb {
+                .MuiSlider-thumb {
                     background-color: $white;
                     border: 2px solid $blue;
                 }
@@ -448,13 +454,26 @@
                             -moz-transition: all linear .5s;
                         }
 
-                        .icon_wrap.open {
-                            svg {
-                                transform: rotateZ(-180deg);
-                                -ms-transform: rotateZ(-180deg);
+                        .icon_wrap {
+
+                            &.open {
+                                background: $blue;
+
+                                svg {
+                                    transform: rotateZ(-180deg);
+                                    -ms-transform: rotateZ(-180deg);
+                                    color: $white;
+                                }
+                            }
+
+                            &:hover {
+                                background: $blue;
+
+                                svg {
+                                    color: $white;
+                                }
                             }
                         }
-
                     }
 
                     &:has(.section_content.open) {

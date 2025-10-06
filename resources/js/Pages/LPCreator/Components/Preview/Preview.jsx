@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from "react";
 import TopBar from './TopBar';
 import PreviewSection from './PreviewSection';
 import Hero from './Hero';
@@ -20,6 +20,12 @@ const Preview = ({
 
     const loadPreviewHeight = UseLoadPreviewHeight();
     const resizePreviewHeight = UseResizePreviewHeight();
+
+    const [currentSections, setCurrentSections] = useState(sections);
+
+    useEffect(() => {
+        setCurrentSections(sections);
+    }, [sections]);
 
     useEffect(() => {
 
@@ -67,7 +73,7 @@ const Preview = ({
 
                         </section>
                         <div className="sections">
-                            {sections.length > 0 && sections.map((section, index) => {
+                            {currentSections.length > 0 && currentSections.map((section, index) => {
 
                                 return (
                                     <PreviewSection

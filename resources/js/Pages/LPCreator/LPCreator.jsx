@@ -132,6 +132,8 @@ function LPCreator({landingPageArray, courses, username}) {
     let textCount = 0;
     let imageCount = 0;
 
+    console.log("pageData: ", pageData);
+
     return (
         <AuthenticatedLayout>
             <Head title="Landing Page Creator"/>
@@ -325,7 +327,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                        <div className="section_title w-full flex justify-start gap-2">
                                                            <h4>Colors</h4>
                                                        </div>
-                                                       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2 mb-4">
+                                                       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-4">
                                                            <ColorPicker
                                                                label="Text"
                                                                data={pageData}
