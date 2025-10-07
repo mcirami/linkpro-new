@@ -396,26 +396,6 @@ const InputComponent = ({
                         </p>
                     </div>
                 )}
-                {/*{maxChar && (
-                    <div className="my_row info_text title">
-                        <p className="char_max">Max {maxChar} Characters</p>
-                        <p className="char_count">
-                            {charactersLeft < 0 ? (
-                                <span className="over">
-                                    Over Character Limit
-                                </span>
-                            ) : (
-                                <>
-                                    Characters Left:{" "}
-                                    <span className="count">
-                                        {" "}
-                                        {charactersLeft}{" "}
-                                    </span>
-                                </>
-                            )}
-                        </p>
-                    </div>
-                )}*/}
             </form>
             {/*<ToolTipIcon section="title" />*/}
         </div>
