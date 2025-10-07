@@ -132,8 +132,6 @@ function LPCreator({landingPageArray, courses, username}) {
     let textCount = 0;
     let imageCount = 0;
 
-    console.log("pageData: ", pageData);
-
     return (
         <AuthenticatedLayout>
             <Head title="Landing Page Creator"/>

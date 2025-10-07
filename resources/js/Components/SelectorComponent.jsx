@@ -30,7 +30,7 @@ export default function SelectorComponent({
         <div
             role="tablist"
             aria-label="Segmented control"
-            className={`animated_tabs relative inline-flex w-full ${size} rounded-lg bg-white ${shadow || 'shadow-md'} overflow-hidden`}
+            className={`animated_tabs relative inline-flex w-full ${size || ""} rounded-lg bg-white ${shadow || 'shadow-md'} overflow-hidden`}
             onKeyDown={onKeyDown}
         >
             {/* Sliding pill */}
@@ -57,6 +57,7 @@ export default function SelectorComponent({
                             "relative z-10 flex-1 px-4 py-2 text-sm font-semibold text-center",
                             "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#424fcf]/30 focus-visible:ring-offset-white",
                             "text-gray-800",
+                            opt.value === value ? i < options.length - 1 ? "shadow-[4px_1px_9px_-5px_rgba(0,0,0,.4)]" : "shadow-[-4px_1px_9px_-5px_rgba(0,0,0,.4)]": "",
                         ].join(" ")}
                         onClick={(e) => commit(e, opt.value)}
                     >

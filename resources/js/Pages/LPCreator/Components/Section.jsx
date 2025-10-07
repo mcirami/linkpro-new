@@ -244,9 +244,8 @@ const Section = ({
                                 updateSectionImage(packets, section.id)
                                 .then((response) => {
                                     if (response.success) {
-                                        console.log("response: ", response);
-                                        setSections(
-                                            sections.map((sectionMap) => {
+                                        setSections((prevSections) => (
+                                            prevSections.map((sectionMap) => {
                                                 if (sectionMap.id === section.id) {
                                                     return {
                                                         ...sectionMap,
@@ -254,8 +253,8 @@ const Section = ({
                                                     };
                                                 }
                                                 return sectionMap;
-                                            }),
-                                        );
+                                            })
+                                        ));
 
                                         const activeSection = `form.section_${index + 1}_image`;
                                         document

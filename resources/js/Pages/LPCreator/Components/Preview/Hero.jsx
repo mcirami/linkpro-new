@@ -11,7 +11,7 @@ const Hero = ({
 
     useEffect(() => {
 
-        const background = pageData["hero"] ? "url(" + pageData["hero"] + ") center 25% no-repeat" : "url(" + Vapor.asset("images/image-placeholder.jpg") + ") center no-repeat #f4f4f4";
+        const background = pageData["hero"] ? "url(" + pageData["hero"] + ") center 25% /cover no-repeat" : "url(" + Vapor.asset("images/image-placeholder.jpg") + ") center no-repeat #f4f4f4";
 
         setHeaderImageStyle (
             completedCrop[elementName]?.isCompleted ?
@@ -29,7 +29,7 @@ const Hero = ({
                     minHeight: "162px"
                 }
         )
-    },[completedCrop[elementName]])
+    },[completedCrop[elementName], pageData["hero"]])
 
     return (
         <div className="header_image my_row"

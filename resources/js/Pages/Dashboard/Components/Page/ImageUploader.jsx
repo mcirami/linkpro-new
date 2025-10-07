@@ -159,11 +159,15 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
     const cleanup = () => {
         setShowLoader?.({ show: false, icon: null, position: '', progress: null });
         setUpImg(null);
-        /*if (setCompletedCrop) {
-            setCompletedCrop((prev) => ({ ...prev, [elementName]: {} }));
-        }*/
-        delete completedCrop[elementName];
-        setCompletedCrop(completedCrop);
+
+        /*delete completedCrop[elementName];
+        setCompletedCrop(completedCrop);*/
+        setCompletedCrop((prevCompletedCrop) => {
+            const updatedCompletedCrop = {...prevCompletedCrop};
+            delete updatedCompletedCrop[elementName];
+
+            return updatedCompletedCrop;
+        });
         setOpen(false);
     };
 
