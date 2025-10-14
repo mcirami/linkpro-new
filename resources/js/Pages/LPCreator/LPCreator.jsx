@@ -51,8 +51,13 @@ function LPCreator({landingPageArray, courses, username}) {
     const [hoverSection, setHoverSection] = useState(null);
 
 
-    const [pageData, dispatchPageData] = useReducer(pageDataReducer, landingPageArray);
-    const [sections, setSections] = useState(pageData["sections"]);
+    const [pageData, dispatchPageData] = useReducer(pageDataReducer, landingPageArray ?? {});
+    const [sections, setSections] = useState(() =>
+        Array.isArray(landingPageArray?.sections) ? landingPageArray.sections : []
+    );
+
+    console.log("landingPageArray", landingPageArray.sections);
+    console.log("pageData", pageData["sections"]);
 
     const [showPreviewButton, setShowPreviewButton] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
@@ -127,10 +132,15 @@ function LPCreator({landingPageArray, courses, username}) {
         setHoverSection(e.target.id)
     }
 
+    useEffect(() => {
+        setSections(Array.isArray(pageData?.sections) ? pageData.sections : []);
+    }, [pageData?.sections]);
+
     const url = window.location.protocol + "//" + window.location.host + "/" + username;
-    const livePage = url + "/" + pageData["slug"];
+    const livePage = url + "/" + (pageData?.slug ?? "");
     let textCount = 0;
     let imageCount = 0;
+
 
     return (
         <AuthenticatedLayout>

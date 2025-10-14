@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import TopBar from './TopBar';
 import PreviewSection from './PreviewSection';
 import Hero from './Hero';
@@ -20,13 +20,11 @@ const Preview = ({
 
     const loadPreviewHeight = UseLoadPreviewHeight();
     const resizePreviewHeight = UseResizePreviewHeight();
-
-    const [currentSections, setCurrentSections] = useState(sections);
+    const [currentSections, setCurrentSections] = useState(() => sections ?? []);
 
     useEffect(() => {
-        setCurrentSections(sections);
+        setCurrentSections(() => sections ?? []);
     }, [sections]);
-
     useEffect(() => {
 
         if (hoverSection) {

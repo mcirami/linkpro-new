@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import MenuBar from '@/Components/CreatorComponents/MenuBar.jsx';
 import {EditorContent, useEditor} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -42,6 +42,13 @@ const TipTap = ({editorState, handleEditorChange, handleSubmit}) => {
         }
 
     },[]);
+
+    useEffect(() => {
+        if (editor && typeof editorState === 'string' && editorState !== editor.getHTML()) {
+            editor.commands.setContent(editorState, false);
+        }
+    }, [editor, editorState]);
+
 
     return (
         <div className="tiptap w-full">

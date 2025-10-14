@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FiThumbsDown, FiThumbsUp } from "react-icons/fi";
 import CurrencyInput from "react-currency-input-field";
 import validator from "validator/es";
@@ -35,40 +35,88 @@ const InputComponent = ({
     setShowTiny = null,
     saveTo,
 }) => {
+
+    const resolvedValue = useMemo(() => {
+        if (value !== undefined && value !== null) {
+            return value;
+        }
+
+        if (currentSection) {
+            const sectionValue = elementName && currentSection[elementName];
+
+            if (sectionValue !== undefined && sectionValue !== null) {
+                return sectionValue;
+            }
+
+            if (currentSection.text) {
+                return currentSection.text;
+            }
+        }
+
+        if (data && elementName && data[elementName] !== undefined) {
+            return data[elementName];
+        }
+
+        if (data && data.intro_text) {
+            return data.intro_text;
+        }
+
+        return "";
+    }, [currentSection, data, elementName, value]);
+
     const [charactersLeft, setCharactersLeft] = useState(maxChar);
     const [isValid, setIsValid] = useState(false);
-    const [textInputValue, setTextInputValue] = useState(value);
+    const [textInputValue, setTextInputValue] = useState(
+        typeof resolvedValue === "string" ? resolvedValue : ""
+    );
     const limit = 1000;
     const prefix = "$";
 
     useEffect(() => {
-        if (maxChar) {
-            if (textInputValue) {
-                setCharactersLeft(maxChar - textInputValue.length);
-                if (maxChar - textInputValue.length >= 0) {
-                    setIsValid(true);
-                }
-            } else {
-                setCharactersLeft(maxChar);
-            }
+        if (!maxChar) {
+            return;
         }
-    }, []);
+
+        if (typeof textInputValue === "string" && textInputValue.length > 0) {
+            setCharactersLeft(maxChar - textInputValue.length);
+
+            if (maxChar - textInputValue.length >= 0) {
+                setIsValid(true);
+            }
+                return;
+        }
+        setCharactersLeft(maxChar);
+    }, [maxChar, textInputValue]);
+
+    useEffect(() => {
+        if (type !== "wysiwyg") {
+            setTextInputValue(typeof resolvedValue === "string" ? resolvedValue : "");
+        }
+    }, [resolvedValue, type]);
 
     useEffect(() => {
         if (
-            ((type === "url" && checkValidity(value, "url")) ||
+            ((
+                    type === "url" &&
+                    typeof resolvedValue === "string" &&
+                    checkValidity(resolvedValue, "url")
+                ) ||
                 type === "textarea") &&
-            value
+            resolvedValue
         ) {
             setIsValid(true);
         }
-    }, []);
+    }, [resolvedValue, type]);
 
     useEffect(() => {
-        if (type === "currency" && value) {
+        if (
+            type === "currency" &&
+            (typeof resolvedValue === "number" ||
+                (typeof resolvedValue === "string" && resolvedValue !== ""))
+        ) {
             setIsValid(true);
         }
-    }, []);
+    }, [resolvedValue, type]);
 
     const handleCurrencyChange = (value, _) => {
         if (Number.isNaN(Number(value)) || Number(value) > limit) {
@@ -90,10 +138,10 @@ const InputComponent = ({
 
     const handleChange = (e) => {
         let value = e.target.value;
-        setTextInputValue(value);
+
         let check;
 
-        if (maxChar) {
+        if (maxChar && typeof value === "string") {
             check = checkValidity(value, "maxChar");
             setCharactersLeft(maxChar - value.length);
         }
@@ -105,6 +153,8 @@ const InputComponent = ({
                 e.target.value = value;
             }
         }
+
+        setTextInputValue(value);
 
         if (check || type === "textarea" || type === "text" || !maxChar) {
             if (elementName === "title" && value === "") {
@@ -155,13 +205,6 @@ const InputComponent = ({
 
         if (isValid) {
             if (sections) {
-                //remove section_number from element name to save in section data
-                /*  let element = elementName.split(/(\d+)/);
-                if (elementName.includes("video")) {
-                    element = element[0] + element[2].replace('_', '');
-                } else {
-                    element = element[2].replace('_', '');
-                }*/
 
                 const packets = {
                     [`${elementName}`]: e.target.value,
@@ -202,6 +245,12 @@ const InputComponent = ({
     };
 
     const checkValidity = (value, checkType) => {
+
+        if (typeof value !== "string") {
+            setIsValid(false);
+            return false;
+        }
+
         if (checkType === "url") {
             if (validator.isURL(value)) {
                 setIsValid(true);
@@ -227,8 +276,8 @@ const InputComponent = ({
             return link;
         } else if (link.includes("youtube") && link.includes("v=")) {
             let split = link.split("v=")[1];
-            if (str.includes("&")) {
-                str = str.split("&")[0];
+            if (split.includes("&")) {
+                split = split.split("&")[0];
             }
             return "https://www.youtube.com/embed/" + split;
         } else if (link.includes("youtu.be")) {
@@ -248,11 +297,11 @@ const InputComponent = ({
                 return (
                     <>
                         <input
-                            className={`animate ${value && "active"} `}
+                            className={`animate ${textInputValue && "active"} `}
                             maxLength={maxChar}
                             name={elementName}
                             type={type}
-                            defaultValue={value || ""}
+                            value={textInputValue || ""}
                             onChange={(e) => handleChange(e)}
                             onKeyDown={(event) => {
                                 if (event.key === "Enter") {
@@ -271,7 +320,7 @@ const InputComponent = ({
                         <textarea
                             className={"animate"}
                             name={elementName}
-                            defaultValue={value || ""}
+                            value={textInputValue || ""}
                             rows={5}
                             onChange={(e) => handleChange(e)}
                             onKeyDown={(event) => {
@@ -300,6 +349,7 @@ const InputComponent = ({
                             showTiny={showTiny}
                             setShowTiny={setShowTiny}
                             saveTo={saveTo}
+                            initialValue={typeof resolvedValue === "string" ? resolvedValue : ""}
                         />
                     </>
                 );
@@ -309,7 +359,7 @@ const InputComponent = ({
                         <CurrencyInput
                             className={`animate`}
                             decimalsLimit={2}
-                            defaultValue={data[elementName] || ""}
+                            defaultValue={resolvedValue || ""}
                             onValueChange={handleCurrencyChange}
                             onKeyDown={(event) => {
                                 if (event.key === "Enter") {
@@ -331,7 +381,7 @@ const InputComponent = ({
                             maxLength={maxChar}
                             name={elementName}
                             type={type}
-                            defaultValue={value || ""}
+                            value={textInputValue || ""}
                             onChange={(e) => handleChange(e)}
                             onKeyDown={(event) => {
                                 if (event.key === "Enter") {

@@ -9,6 +9,8 @@ export function pageDataReducer(data, action) {
                 ...data,
                 [`${action.payload.name}`]: action.payload.value
             }
+        default:
+            return data;
     }
 }
 

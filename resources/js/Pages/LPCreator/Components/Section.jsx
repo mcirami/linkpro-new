@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import DeleteSection from '@/Components/CreatorComponents/DeleteSection.jsx';
 import {MdDragHandle, MdKeyboardArrowDown} from 'react-icons/md';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
@@ -53,21 +53,23 @@ const Section = ({
         transition,
     };
 
-    const [sectionTitle, setSectionTitle] = useState("");
+    //const [sectionTitle, setSectionTitle] = useState("");
 
     const [pageTab, setPageTab] = useState("content");
 
+
     const handleSectionOpen = (rowIndex) => {
 
-        if(openIndex) {
-            if (openIndex.includes(rowIndex)) {
-                const newArrayIndex = openIndex.filter(
-                    element => element !== rowIndex)
-                setOpenIndex(newArrayIndex)
-            } else {
-                const newArrayIndex = openIndex.concat(rowIndex);
-                setOpenIndex(newArrayIndex);
-            }
+        if (openIndex) {
+            setOpenIndex((previousIndex) => {
+                if (!previousIndex) {
+                    return [];
+                }
+
+                return previousIndex.includes(rowIndex)
+                    ? previousIndex.filter((element) => element !== rowIndex)
+                    : previousIndex.concat(rowIndex);
+            });
         }
     }
 
@@ -75,52 +77,43 @@ const Section = ({
         setOpenIndex([])
     }
 
-    useEffect(() => {
+    const sectionTitle = useMemo(() => {
+        if (type === 'text') {
+            const regex = /(<([^>]+)>)/gi;
 
-        switch(type) {
+            if (section.text && isJSON(section.text)) {
+                const convertedText = convertText(section.text);
+                if (convertedText.type === 'blocks') {
+                    const blocks = convertedText.text.blocks || [];
+                    const previewText = blocks[0]?.text ?? '';
+                    const sanitizedPreview = previewText.replace(regex, '');
 
-            case 'text':
-                const regex = /(<([^>]+)>)/gi;
-                let parsedText = "";
-                if (section.text && isJSON(section.text)) {
-                    const convertedText = convertText(section.text);
-
-                    if (convertedText.type === "blocks") {
-                        parsedText = convertedText.text.blocks[0]['text'].length > 20 ?
-                            convertedText.text.blocks[0]['text'].slice(0, 20) + '...' :
-                            convertedText.text.blocks[0]['text'];
-                    } else {
-                        parsedText = convertedText.text;
-                    }
-                    const result = parsedText.replace(regex, "");
-
-                    parsedText = result.length > 20 ?
-                        result.slice(0, 20) + '...' :
-                        result;
-
-                } else if (section.text) {
-                    const result = section.text.replace(regex, "");
-
-                    parsedText = result.length > 20 ?
-                        result.slice(0,20) + "..." :
-                        result;
-
-                } else {
-                    parsedText = type + ' ' + textCount;
+                    return sanitizedPreview.length > 20
+                        ? `${sanitizedPreview.slice(0, 20)}...`
+                        : sanitizedPreview;
                 }
 
-                return setSectionTitle(parsedText);
+                const sanitizedText = convertedText.text.replace(regex, '');
 
-            case 'image' :
-                const content = section.image ?
-                    <img className="input_image" src={section.image} alt=""/>
-                    :
-                    type  + " " + imageCount
+                return sanitizedText.length > 20
+                    ? `${sanitizedText.slice(0, 20)}...`
+                    : sanitizedText;
+            }
+            if (section.text) {
+                const result = section.text.replace(regex, '');
 
-                return setSectionTitle(content)
-
+                return result.length > 20 ? `${result.slice(0, 20)}...` : result;
+            }
+            return `${type} ${textCount}`;
         }
-    }, [sections]);
+
+        if (type === 'image') {
+            return section.image
+                ? <img className="input_image" src={section.image} alt=""/>
+                : `${type} ${imageCount}`;
+        }
+        return '';
+    }, [imageCount, section.image, section.text, textCount, type]);
 
     const createMarkup = (convertText) => {
         return {
@@ -244,8 +237,8 @@ const Section = ({
                                 updateSectionImage(packets, section.id)
                                 .then((response) => {
                                     if (response.success) {
-                                        setSections((prevSections) => (
-                                            prevSections.map((sectionMap) => {
+                                        setSections(
+                                            sections.map((sectionMap) => {
                                                 if (sectionMap.id === section.id) {
                                                     return {
                                                         ...sectionMap,
@@ -254,7 +247,7 @@ const Section = ({
                                                 }
                                                 return sectionMap;
                                             })
-                                        ));
+                                        );
 
                                         const activeSection = `form.section_${index + 1}_image`;
                                         document

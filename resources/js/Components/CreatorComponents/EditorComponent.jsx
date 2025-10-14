@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useMemo} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {LP_ACTIONS} from '@/Components/Reducers/CreatorReducers.jsx';
 import draftToHtml from 'draftjs-to-html';
 
@@ -24,37 +24,72 @@ const EditorComponent = ({
                              setIsValid,
                              showTiny = null,
                              setShowTiny = null,
-                             saveTo
+                             saveTo,
+                             initialValue
                          }) => {
 
     const [editorState, setEditorState] = useState("");
 
-    useEffect(() => {
-
-        const textToConvert = data && data.hasOwnProperty('intro_text') ?
-            data["intro_text"] :
-            currentSection["text"];
-        const convertedText = convertText(textToConvert);
-
-        if (convertedText.type === "blocks") {
-            setEditorState(draftToHtml(convertedText.text))
-        } else {
-            setEditorState(convertedText.text)
+    const resolveContent = useCallback(() => {
+        if (initialValue !== undefined && initialValue !== null) {
+            return initialValue;
         }
-
-    },[sections])
-
-    useEffect(() => {
         if (currentSection) {
-            if (currentSection["text"]) {
-                setIsValid(true)
-            }
-        } else {
-            if (data["intro_text"] && isJSON(data["intro_text"])) {
-                setIsValid(true)
+            const sectionValue = elementName && currentSection[elementName] !== undefined
+                ? currentSection[elementName]
+                : currentSection["text"];
+
+            if (sectionValue !== undefined && sectionValue !== null) {
+                return sectionValue;
             }
         }
-    },[])
+
+        if (data) {
+            if (elementName && data[elementName] !== undefined && data[elementName] !== null) {
+                return data[elementName];
+            }
+            if (data.hasOwnProperty('intro_text')) {
+                return data["intro_text"];
+            }
+        }
+
+        return "";
+    }, [currentSection, data, elementName, initialValue]);
+
+    useEffect(() => {
+        const content = resolveContent();
+
+        if (!content) {
+            setEditorState("");
+            return;
+        }
+
+        if (typeof content !== 'string') {
+            setEditorState("");
+            return;
+        }
+
+        if (typeof content === 'string' && isJSON(content)) {
+            const convertedText = convertText(content);
+
+            if (convertedText.type === "blocks") {
+                setEditorState(draftToHtml(convertedText.text));
+            } else {
+                setEditorState(convertedText.text);
+            }
+
+            return;
+        }
+        setEditorState(content);
+    }, [resolveContent]);
+
+    useEffect(() => {
+        const content = resolveContent();
+
+        if (content && content !== "") {
+            setIsValid && setIsValid(true);
+        }
+    }, [resolveContent, setIsValid]);
 
     const handleEditorChange = (value) => {
 
@@ -86,7 +121,7 @@ const EditorComponent = ({
                 })
             }
         } else {
-            setIsValid(false);
+            setIsValid && setIsValid(false);;
         }
     }
 
