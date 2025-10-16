@@ -37,15 +37,15 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
         setCompletedCrop,
         setShowLoader,
         elementName,
-        imageType = null,
         cropSettings,
         label,
         startCollapsed,
         onUpload
     } = props;
 
+
+
     const defaultCrop = useMemo(() => cropSettings ?? {}, [
-        imageType,
         cropSettings?.unit,
         cropSettings?.width,
         cropSettings?.height,
@@ -169,6 +169,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
             return updatedCompletedCrop;
         });
         setOpen(false);
+        document.querySelector(`form.${elementName} .bottom_section`).classList.add("hidden");
     };
 
     const handleCancel = () => {
@@ -184,7 +185,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
     return (
         <div className="my_row ">
             <div className="column_wrap">
-                <form onSubmit={handleSubmit} className={elementName}>
+                <form onSubmit={handleSubmit} className={` ${elementName}`}>
                     {!upImg && (
                         <>
                             <div
@@ -292,41 +293,27 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                     alt="Crop Me" />
                             </ReactCrop>
                         </div>
-                        <div className="button_row w-full flex justify-between items-center flex-wrap gap-1">
+                        <div className="button_row w-full flex justify-between items-center flex-wrap gap-2">
 
-                            <a className="!uppercase button blue" href="#" onClick={handleSubmit}>
+                            <a className="!uppercase button blue !w-[48%]" href="#" onClick={handleSubmit}>
                                 Upload
                             </a>
-                            {/*<button
-                                type="submit"
-                                className="button green"
-                                disabled={disableButton}
-                            >
-                                Save
-                            </button>*/}
-                            <a className="!uppercase button transparent gray" href="#"
+                            <a className="!uppercase button transparent gray !w-[48%]" href="#"
                                onClick={(e) => {
                                    e.preventDefault();
                                    handleCancel();
                             }}>
                                 Cancel
                             </a>
-                           {/* <a
-                                className="button transparent gray"
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    handleCancel();
-                                }}
-                            >
-                                Cancel
-                            </a>*/}
-                            <a
-                                className="help_link w-full flex justify-end mt-3"
-                                href="mailto:help@link.pro"
-                            >
-                                Need Help?
-                            </a>
+                            <div className="w-full flex justify-end mt-3 border-b border-gray-300 pb-5">
+                                <a
+                                    className="help_link"
+                                    href="mailto:help@link.pro"
+                                >
+                                    Need Help?
+                                </a>
+                            </div>
+
                         </div>
                     </div>
                 </form>

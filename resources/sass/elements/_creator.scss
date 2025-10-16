@@ -22,7 +22,7 @@
 
             &.creator {
                 border: none;
-                padding: 20px 40px 20px 0;
+                padding: 40px 40px 40px 0;
 
                 @include query(tablet) {
                     padding: 0;
@@ -167,7 +167,7 @@
                 -webkit-justify-content: space-between;
                 align-items: center;
                 -webkit-align-items: center;
-                margin-bottom: 20px;
+                margin-bottom: 10px;
 
                 .icon_wrap {
                     background: $white;

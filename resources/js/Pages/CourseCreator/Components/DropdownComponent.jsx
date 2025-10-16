@@ -37,7 +37,6 @@ const DropdownComponent = ({
     return (
         <div className="edit_form">
             <select
-                className={selectedCategory !== "" ? "active" : ""}
                 id="category_select"
                 defaultValue={selectedCategory}
                 onChange={(e) => handleChange(e)}
@@ -67,7 +66,7 @@ const DropdownComponent = ({
                     )
                 })}
             </select>
-            <label id="category_select_label">Select Category</label>
+            {/*<label id="category_select_label">Select Category</label>*/}
 
         </div>
     );

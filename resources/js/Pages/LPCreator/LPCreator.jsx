@@ -65,8 +65,6 @@ function LPCreator({landingPageArray, courses, username}) {
     const [completedCrop, setCompletedCrop] = useState({})
     const nodesRef = useRef({});
 
-    const [imageSelected, setImageSelected] = useState(false);
-
     const [pageTab, setPageTab] = useState("header");
 
     const [showLoader, setShowLoader] = useState({
@@ -235,7 +233,6 @@ function LPCreator({landingPageArray, courses, username}) {
                                                             completedCrop={completedCrop}
                                                             setCompletedCrop={setCompletedCrop}
                                                             startCollapsed={pageData['logo']}
-                                                            onImageSelect={setImageSelected}
                                                             onUpload={(response) => {
                                                                 const packets = {
                                                                     'logo': response.key,
@@ -299,7 +296,6 @@ function LPCreator({landingPageArray, courses, username}) {
                                                             completedCrop={completedCrop}
                                                             setCompletedCrop={setCompletedCrop}
                                                             startCollapsed={pageData['hero']}
-                                                            onImageSelect={setImageSelected}
                                                             onUpload={(response) => {
                                                                 const packets = {
                                                                     'hero': response.key,

@@ -55,6 +55,7 @@ import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import LivePageButton from '@/Components/LivePageButton.jsx';
 import PageHeader from '@/Components/PageHeader.jsx';
 import PageTabs from "@/Components/PageTabs.jsx";
+import AddPageForm from "@/Pages/Dashboard/Components/Page/AddPageForm.jsx";
 
 function Dashboard({
                        message = null,
@@ -138,6 +139,8 @@ function Dashboard({
     const [connectionError, setConnectionError] = useState(false);
 
     const [pageTab, setPageTab] = useState("settings");
+
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
 
@@ -346,13 +349,71 @@ function Dashboard({
                                                     </div>
                                                     <div>
                                                         <PageNav
-                                                            allUserPages={allUserPages}
-                                                            setAllUserPages={setAllUserPages}
+                                                            allUserPages={allUserPages.filter(element => element.id !== pageSettings["id"])}
                                                             userSub={userSub}
-                                                            subStatus={subStatus}
-                                                            setShowUpgradePopup={setShowUpgradePopup}
-                                                            pageNames={allPageNames}
+                                                            settings={{
+                                                                type : "page",
+                                                                addNewLabel : "Add New Page",
+                                                                linkLabel : "name",
+                                                                urlPrefix : "/dashboard/pages/"
+                                                            }}
+                                                            handleClick={(response) => {
+                                                                response.preventDefault();
+
+                                                                const type = response.target.dataset.type
+
+                                                                if (type !== undefined && type === 'disabled') {
+
+                                                                    setShowUpgradePopup({
+                                                                        show: true,
+                                                                        text: "access this link",
+                                                                    });
+
+                                                                } else if (userSub) {
+
+                                                                    const {name} = {...userSub};
+
+                                                                    if ( subStatus && name === "premier") {
+
+                                                                        if (allUserPages?.length === 5) {
+                                                                            setShowUpgradePopup({
+                                                                                show: true,
+                                                                                text: "a custom plan to add more links",
+                                                                            });
+                                                                        } else {
+                                                                            setIsEditing(true);
+                                                                        }
+
+                                                                    } else {
+                                                                        setShowUpgradePopup({
+                                                                            show: true,
+                                                                            text: "add more links",
+                                                                        });
+                                                                    }
+
+                                                                } else {
+                                                                    setShowUpgradePopup({
+                                                                        show: true,
+                                                                        text: "add more links",
+                                                                    });
+                                                                }
+                                                            }}
                                                         />
+                                                        {isEditing ?
+                                                            <div className="edit_form popup new_page_form">
+                                                                <div className="form_wrap">
+                                                                    <AddPageForm
+                                                                        setIsEditing={setIsEditing}
+                                                                        setAllUserPages={setAllUserPages}
+                                                                        allUserPages={allUserPages}
+                                                                        pageNames={allPageNames}
+                                                                    />
+                                                                </div>
+
+                                                            </div>
+                                                            :
+                                                            ""
+                                                        }
                                                     </div>
                                                 </div>
 

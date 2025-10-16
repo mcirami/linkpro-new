@@ -161,7 +161,7 @@ const Section = ({
         <div ref={setNodeRef}
              id={`section_${index + 1}`}
              style={style}
-             className="section_row"
+             className="section_row shadow-md"
              onMouseEnter={(e) =>
                  setHoverSection(e.target.id)
         }>

@@ -1,61 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {MdAddCircleOutline} from 'react-icons/md';
 import {FiChevronDown} from 'react-icons/fi';
 import {usePageContext} from '@/Context/PageContext.jsx';
-import AddPageForm from './AddPageForm';
+
 import {Link} from '@inertiajs/react';
 
 const PageNav = ({
                      allUserPages,
-                     setAllUserPages,
-                     userSub,
-                     subStatus,
-                     setShowUpgradePopup,
-                     pageNames
+                     userSub = null,
+                     settings,
+                     handleClick
 }) => {
-
-    const [isEditing, setIsEditing] = useState(false);
-    const { pageSettings } = usePageContext();
-
-    const pageList = allUserPages.filter(element => element.id !== pageSettings["id"]);
-
-    const handleClick = (e) => {
-        e.preventDefault();
-
-        const type = e.target.dataset.type
-
-        if (type !== undefined && type === 'disabled') {
-
-            enablePopup("access this link");
-
-        } else if (userSub) {
-
-            const {name} = {...userSub};
-
-            if ( subStatus && name === "premier") {
-
-                if (allUserPages?.length === 5) {
-                    enablePopup("a custom plan to add more links");
-                } else {
-                    setIsEditing(true);
-                }
-
-            } else {
-                enablePopup("add more links");
-            }
-
-        } else {
-            enablePopup("add more links");
-        }
-    }
-
-    const enablePopup = (text) => {
-
-        setShowUpgradePopup({
-            show: true,
-            text: text,
-        });
-    }
 
     return (
         <div className="menu_wrap">
@@ -70,18 +25,18 @@ const PageNav = ({
                 <div className="menu_content">
                     <ul className="page_menu">
                         <li>
-                            <a onClick={(e) => { handleClick(e) }} href="#">Add New Page</a>
+                            <a onClick={(e) => { handleClick(e) }} href="#">{settings.addNewLabel}</a>
                         </li>
-                        { pageList.map((page) => {
+                        { allUserPages.map((page) => {
 
                             return (
-                                page["disabled"] || !userSub || userSub.name !== "premier" ?
+                                (page["disabled"] || !userSub || userSub.name !== "premier") && settings.type === "page" ?
                                     <li key={page["id"]} className="disabled_link" data-type="disabled" onClick={(e) => { handleClick(e) }} >
                                         {page["name"]}
                                     </li>
                                     :
                                     <li id={page["id"]} key={page["id"]}>
-                                        <Link href={"/dashboard/pages/" + page["id"]}>{page["name"]}</Link>
+                                        <Link href={settings.urlPrefix + page["id"]}>{page[settings.linkLabel]}</Link>
                                     </li>
                             )
                         })}
@@ -89,21 +44,6 @@ const PageNav = ({
                 </div>
             </div>
 
-            {isEditing ?
-                <div className="edit_form popup new_page_form">
-                    <div className="form_wrap">
-                        <AddPageForm
-                            setIsEditing={setIsEditing}
-                            setAllUserPages={setAllUserPages}
-                            allUserPages={allUserPages}
-                            pageNames={pageNames}
-                        />
-                    </div>
-
-                </div>
-                :
-                ""
-            }
         </div>
     );
 }

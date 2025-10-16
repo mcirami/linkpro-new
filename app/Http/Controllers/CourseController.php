@@ -127,12 +127,14 @@ class CourseController extends Controller
 
         $courseData = $courseService->getCourseData($course);
         $offerData = $courseService->getCourseOfferData($course);
+        $userCourses = $courseService->getCourses($user);
         $categories = Category::with('children')->whereNull('parent_id')->get();
 
         return Inertia::render('CourseCreator/CourseCreator')->with([
             'courseArray'    => $courseData,
             'offerArray'     => $offerData,
-            'categories'    => $categories
+            'categories'    => $categories,
+            'userCourses'   => $userCourses,
         ]);
 
     }

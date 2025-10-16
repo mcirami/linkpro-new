@@ -9,9 +9,10 @@ import ColorPicker from '@/Components/CreatorComponents/ColorPicker.jsx';
 import PreviewButton from '@/Components/PreviewButton.jsx';
 import ImageComponent from '@/Components/CreatorComponents/ImageComponent.jsx';
 import {
+    LP_ACTIONS,
     offerDataReducer,
-    pageDataReducer,
-} from '@/Components/Reducers/CreatorReducers.jsx';
+    pageDataReducer
+} from "@/Components/Reducers/CreatorReducers.jsx";
 import Preview from './Components/Preview/Preview';
 import EventBus from '@/Utils/Bus';
 import SwitchOptions from './Components/SwitchOptions';
@@ -43,8 +44,19 @@ import {
 import {Head, usePage} from '@inertiajs/react';
 import SliderComponent from '@/Components/CreatorComponents/SliderComponent.jsx';
 import {MessageAlertPopup} from '@/Utils/Popups/MessageAlertPopup.jsx';
+import PageHeader from "@/Components/PageHeader.jsx";
+import LivePageButton from "@/Components/LivePageButton.jsx";
+import PageTabs from "@/Components/PageTabs.jsx";
+import PageNav from "@/Pages/Dashboard/Components/Page/PageNav.jsx";
+import { updateImage as updateCourseImage } from "@/Services/CourseRequests.jsx";
+import ImageUploader from "@/Pages/Dashboard/Components/Page/ImageUploader.jsx";
 
-function CourseCreator({courseArray, offerArray, categories}) {
+function CourseCreator({
+                           courseArray,
+                           offerArray,
+                           categories,
+                           userCourses
+}) {
 
     const { auth } = usePage().props;
     const username = auth.user.userInfo.username;
@@ -59,6 +71,8 @@ function CourseCreator({courseArray, offerArray, categories}) {
     const [showPreviewButton, setShowPreviewButton] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
 
+    const [pageTab, setPageTab] = useState("header");
+
     const [infoText, setInfoText] = useState({section:'', text:[]});
     const [infoTextOpen, setInfoTextOpen] = useState(false)
     const [infoLocation, setInfoLocation] = useState({})
@@ -67,7 +81,6 @@ function CourseCreator({courseArray, offerArray, categories}) {
 
     const [completedCrop, setCompletedCrop] = useState({})
     const nodesRef = useRef({});
-    const initialRender = useRef(true);
     const divRef = useRef(null);
     const columnRef = useRef(null);
 
@@ -156,42 +169,6 @@ function CourseCreator({courseArray, offerArray, categories}) {
 
     }, []);
 
-    useEffect(() => {
-
-        const firstRender = initialRender.current;
-
-        if (!firstRender) {
-
-            document.querySelector('.menu_wrap').style.background = courseData["header_color"];
-
-        } else {
-            initialRender.current = false;
-        }
-
-
-    }, [courseData["header_color"]]);
-
-    useEffect(() => {
-
-        const firstRender = initialRender.current;
-
-        if (!firstRender) {
-
-            document.querySelectorAll('.menu_wrap a .menu_icon').forEach((div) => {
-                div.style.color = courseData["header_text_color"];
-            })
-            document.querySelector('.menu_top').style.borderColor = courseData["header_text_color"];
-            document.querySelectorAll('.menu_top a span').forEach((div) => {
-                div.style.background = courseData["header_text_color"];
-            })
-
-        } else {
-            initialRender.current = false;
-        }
-
-
-    }, [courseData["header_text_color"]]);
-
     const handleMouseHover = (e) => {
         setHoverSection(e.target.id)
     }
@@ -206,6 +183,19 @@ function CourseCreator({courseArray, offerArray, categories}) {
     return (
         <AuthenticatedLayout>
             <Head title="Course Creator"/>
+            <div className="container">
+                <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
+                    <PageHeader
+                        heading="Course Creator"
+                        description="Create your own course adding text, images, videos and files. Share your course with the world!"
+                    />
+                    <div className="view_live_link header mt-auto">
+                        <LivePageButton
+                            url={liveUrl}
+                        />
+                    </div>
+                </div>
+            </div>
             <ToolTipContextProvider value={{
                 infoText,
                 setInfoText,
@@ -225,7 +215,6 @@ function CourseCreator({courseArray, offerArray, categories}) {
                     />
                 }
                 <div className="container">
-                    <h2 className="page_title">Course Creator</h2>
                     <section className="card edit_page creator course_creator">
                         <div id="links_page">
                             <div id="edit_course" className="my_row creator_wrap">
@@ -250,80 +239,314 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                     }
 
                                     <div className="left_column" ref={columnRef}>
-                                        <h3 className="mb-4 card_title">Create Your Course</h3>
+                                        <div className="page_menu_row flex justify-between w-full">
+                                            <div className="page_tabs w-1/2">
+                                                <PageTabs
+                                                    tabs={[
+                                                        { value: "header", label: "Header"},
+                                                        { value: "intro", label: "Intro"},
+                                                        { value: "sections", label: "Sections"},
+                                                        { value: "settings", label: "Settings"}
+                                                    ]}
+                                                    pageTab={pageTab}
+                                                    setPageTab={setPageTab}
+                                                />
+                                            </div>
+                                            <div>
+                                                <PageNav
+                                                    allUserPages={userCourses}
+                                                    settings={{
+                                                        type : "course",
+                                                        addNewLabel : "Add New Course",
+                                                        linkLabel : "title",
+                                                        urlPrefix: '/creator-center/course/'
+                                                    }}
+                                                    handleClick={() => {
+                                                        window.location.href = '/creator-center/add-course/';
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
                                         <div className="content_wrap my_row creator" id="left_col_wrap">
-                                            <section id="header_section"
-                                                     className="my_row section_row"
-                                                     onMouseEnter={(e) =>
-                                                         handleMouseHover(e)
+                                            {pageTab === "header" &&
+                                                <>
+                                                <section id="header_section"
+                                                         className="my_row section_row"
+                                                         onMouseEnter={(e) =>
+                                                             handleMouseHover(e)
+                                                        }>
+                                                    <div className="section_content my_row" ref={divRef}>
+                                                        <InputComponent
+                                                            placeholder="Course Title"
+                                                            type="text"
+                                                            maxChar={60}
+                                                            hoverText="Submit Course Title"
+                                                            elementName="title"
+                                                            data={courseData}
+                                                            dispatch={dispatchCourseData}
+                                                            value={courseData['title']}
+                                                            saveTo="course"
+                                                        />
+                                                        <div className="section_title w-full flex justify-start gap-2 !mb-5">
+                                                            <h4>Logo</h4>
+                                                        </div>
+                                                        <div className="flex flex-col !mb-5">
+                                                            <ImageUploader
+                                                                elementName="logo"
+                                                                label="Logo"
+                                                                cropSettings={{
+                                                                    unit: '%',
+                                                                    x: 25,
+                                                                    y: 25,
+                                                                    width: 50,
+                                                                    height: 50,
+                                                                }}
+                                                                ref={nodesRef}
+                                                                setShowLoader={setShowLoader}
+                                                                completedCrop={completedCrop}
+                                                                setCompletedCrop={setCompletedCrop}
+                                                                startCollapsed={courseData['logo']}
+                                                                onUpload={(response) => {
+                                                                    const packets = {
+                                                                        'logo': response.key,
+                                                                        ext: response.extension,
+                                                                    };
+                                                                    updateCourseImage(packets, courseData['id'])
+                                                                    .then((response) => {
+                                                                        if (response.success) {
+                                                                            dispatchCourseData({
+                                                                                type: LP_ACTIONS.UPDATE_PAGE_DATA,
+                                                                                payload: {
+                                                                                    value: response.imagePath,
+                                                                                    name: "logo",
+                                                                                },
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }}
+
+                                                            />
+                                                        </div>
+                                                        <div className="section_title w-full flex justify-start gap-2 !mb-5">
+                                                            <h4>Font Size</h4>
+                                                        </div>
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 !mb-8">
+                                                            <SliderComponent
+                                                                label="Title Font Size"
+                                                                id={courseData['id']}
+                                                                dispatch={dispatchCourseData}
+                                                                value={courseData['header_font_size']}
+                                                                elementName="header_font_size"
+                                                                sliderValues={{
+                                                                    step: .1,
+                                                                    min: .1,
+                                                                    max: 5,
+                                                                    unit: 'rem',
+                                                                }}
+                                                                saveTo="course"
+                                                            />
+                                                        </div>
+                                                        <div className="section_title w-full flex justify-start gap-2">
+                                                            <h4>Colors</h4>
+                                                        </div>
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-4">
+                                                            <ColorPicker
+                                                                label="Title"
+                                                                data={courseData}
+                                                                dispatch={dispatchCourseData}
+                                                                elementName="header_text_color"
+                                                                saveTo="course"
+                                                            />
+                                                           {/* <ToolTipIcon section="course_header_text_color"/>*/}
+                                                            <ColorPicker
+                                                                label="Background"
+                                                                data={courseData}
+                                                                dispatch={dispatchCourseData}
+                                                                elementName="header_color"
+                                                                saveTo="course"
+                                                            />
+                                                           {/* <ToolTipIcon section="course_header_color"/>*/}
+                                                        </div>
+
+
+                                                        {/*{courseData['slug'] &&
+                                                        offerData['published'] ?
+                                                            <>
+                                                                <div className="url_wrap mb-4">
+                                                                    <p>Landing Page:</p>
+                                                                    <a target="_blank" href={landerUrl}>View Course Landing Page</a>
+                                                                </div>
+                                                                <div className="url_wrap">
+                                                                    <p>Live Page:</p>
+                                                                    <a target="_blank" href={liveUrl}>View Live Course Page</a>
+                                                                </div>
+                                                            </>
+                                                            :
+                                                            ''
+                                                        }*/}
+                                                    </div>
+                                                </section>
+                                                    </>
+                                                }
+                                                {pageTab === "intro" &&
+                                                    <>
+                                                    <section id="intro_video_section"
+                                                             className="my_row section_row"
+                                                             onMouseEnter={(e) =>
+                                                                 setHoverSection(
+                                                                     e.target.id)
+                                                             }>
+                                                        <div className="section_title">
+                                                            <h4>Intro Video</h4>
+                                                        </div>
+                                                        <div className="section_content my_row">
+                                                            <InputComponent
+                                                                placeholder="YouTube or Vimeo Link"
+                                                                type="url"
+                                                                hoverText="Add Embed Link"
+                                                                elementName="intro_video"
+                                                                value={courseData['intro_video'] ||
+                                                                    ''}
+                                                                data={courseData}
+                                                                dispatch={dispatchCourseData}
+                                                                saveTo="course"
+                                                            />
+                                                        </div>
+                                                    </section>
+                                                    <section id="intro_text_section"
+                                                             className="my_row section_row"
+                                                             onMouseEnter={(e) =>
+                                                                 setHoverSection(e.target.id)
+                                                             }>
+                                                        <div className="section_title">
+                                                            <h4>Intro Text</h4>
+                                                        </div>
+                                                        <div className="section_content my_row">
+                                                            <InputComponent
+                                                                placeholder="Intro Text"
+                                                                type="wysiwyg"
+                                                                hoverText="Submit Intro Text"
+                                                                elementName="intro_text"
+                                                                data={courseData}
+                                                                dispatch={dispatchCourseData}
+                                                                value={courseData["intro_text"]}
+                                                                showTiny={showTiny}
+                                                                setShowTiny={setShowTiny}
+                                                                saveTo="course"
+                                                            />
+                                                            <ColorPicker
+                                                                label="Background Color"
+                                                                data={courseData}
+                                                                dispatch={dispatchCourseData}
+                                                                elementName="intro_background_color"
+                                                                saveTo="course"
+                                                            />
+                                                        </div>
+                                                    </section>
+                                                </>
+                                            }
+
+                                            {pageTab === "sections" &&
+                                                sections.length > 0 &&
+
+                                                <>
+
+                                                    <DndContext
+                                                        sensors={sensors}
+                                                        collisionDetection={closestCenter}
+                                                        onDragEnd={event =>
+                                                            handleDragEndAction(
+                                                                event,
+                                                                setSections,
+                                                                updateSectionsPositions,
+                                                                setShowTiny)
                                                     }>
-                                                <div className="section_title">
-                                                    <h4>Header</h4>
-                                                </div>
-                                                <div className="section_content my_row" ref={divRef}>
-                                                    <InputComponent
-                                                        placeholder="Course Title"
-                                                        type="text"
-                                                        maxChar={60}
-                                                        hoverText="Submit Course Title"
-                                                        elementName="title"
-                                                        data={courseData}
-                                                        dispatch={dispatchCourseData}
-                                                        value={courseData['title']}
-                                                        saveTo="course"
-                                                    />
-                                                    <div className="picker_wrap">
-                                                        <ColorPicker
-                                                            label="Title Color"
-                                                            data={courseData}
-                                                            dispatch={dispatchCourseData}
-                                                            elementName="header_text_color"
+                                                        <section className="sections_wrap my_row mb-4">
+
+                                                            <SortableContext
+                                                                items={sections}
+                                                                strategy={verticalListSortingStrategy} d
+                                                            >
+                                                                {sections.map((section, index) => {
+
+                                                                    {section.type === "video" ?
+                                                                        ++videoCount :
+                                                                        section.type === "image" ?
+                                                                            ++imageCount :
+                                                                            section.type === "file" ?
+                                                                                ++fileCount :
+                                                                                ++textCount
+                                                                    }
+
+                                                                    return (
+
+                                                                        <Section
+                                                                            key={section.id}
+                                                                            section={section}
+                                                                            index={index}
+                                                                            sections={sections}
+                                                                            setSections={setSections}
+                                                                            openIndex={openIndex}
+                                                                            setOpenIndex={setOpenIndex}
+                                                                            videoCount={videoCount}
+                                                                            textCount={textCount}
+                                                                            imageCount={imageCount}
+                                                                            fileCount={fileCount}
+                                                                            setHoverSection={setHoverSection}
+                                                                            showTiny={showTiny}
+                                                                            setShowTiny={setShowTiny}
+                                                                            completedCrop={completedCrop}
+                                                                            setCompletedCrop={setCompletedCrop}
+                                                                            nodesRef={nodesRef}
+                                                                            setShowLoader={setShowLoader}
+                                                                        />
+
+                                                                    )
+                                                                })}
+                                                            </SortableContext>
+
+                                                        </section>
+                                                    </DndContext>
+
+                                                    <section className="my_row section_row">
+                                                        <div className="section_title">
+                                                            <h4>Add Content</h4>
+                                                        </div>
+                                                        <ContentSelect
+                                                            sections={sections}
+                                                            setSections={setSections}
+                                                            dataId={courseData['id']}
+                                                            setOpenIndex={setOpenIndex}
                                                             saveTo="course"
+                                                            options={[
+                                                                {
+                                                                    id: 1,
+                                                                    type: "text",
+                                                                    label: "Text Section"
+                                                                },
+                                                                {
+                                                                    id: 2,
+                                                                    type: "image",
+                                                                    label: "Image Section"
+                                                                },
+                                                                {
+                                                                    id: 3,
+                                                                    type: "video",
+                                                                    label: "Video Section"
+                                                                },
+                                                                {
+                                                                    id: 4,
+                                                                    type: "file",
+                                                                    label: "File Section"
+                                                                }
+                                                            ]}
                                                         />
-                                                        <ToolTipIcon section="course_header_text_color"/>
-                                                    </div>
-                                                    <SliderComponent
-                                                        label="Title Font Size"
-                                                        id={courseData['id']}
-                                                        dispatch={dispatchCourseData}
-                                                        value={courseData['header_font_size']}
-                                                        elementName="header_font_size"
-                                                        sliderValues={{
-                                                            step: .1,
-                                                            min: .1,
-                                                            max: 5,
-                                                            unit: 'rem',
-                                                        }}
-                                                        saveTo="course"
-                                                    />
-                                                    <ImageComponent
-                                                        ref={nodesRef}
-                                                        completedCrop={completedCrop}
-                                                        setCompletedCrop={setCompletedCrop}
-                                                        setShowLoader={setShowLoader}
-                                                        data={courseData}
-                                                        dispatch={dispatchCourseData}
-                                                        elementName="logo"
-                                                        previewType="external"
-                                                        saveTo="course"
-                                                        cropArray={{
-                                                            unit: '%',
-                                                            x: 25,
-                                                            y: 25,
-                                                            width: 50,
-                                                            height: 50,
-                                                        }}
-                                                    />
-                                                    <div className="picker_wrap">
-                                                        <ColorPicker
-                                                            label="Header Background Color"
-                                                            data={courseData}
-                                                            dispatch={dispatchCourseData}
-                                                            elementName="header_color"
-                                                            saveTo="course"
-                                                        />
-                                                        <ToolTipIcon section="course_header_color"/>
-                                                    </div>
+                                                    </section>
+                                                    </>
+                                            }
+                                            {pageTab === "settings" &&
+                                                <>
+                                                <section className="my_row section_row">
 
                                                     <DropdownComponent
                                                         id={courseData['id']}
@@ -332,219 +555,52 @@ function CourseCreator({courseArray, offerArray, categories}) {
                                                             ''}
                                                         categories={categories}
                                                     />
-                                                    {courseData['slug'] &&
-                                                    offerData['published'] ?
-                                                        <>
-                                                            <div className="url_wrap mb-4">
-                                                                <p>Landing Page:</p>
-                                                                <a target="_blank" href={landerUrl}>View Course Landing Page</a>
-                                                            </div>
-                                                            <div className="url_wrap">
-                                                                <p>Live Page:</p>
-                                                                <a target="_blank" href={liveUrl}>View Live Course Page</a>
-                                                            </div>
-                                                        </>
-                                                        :
-                                                        ''
-                                                    }
-                                                </div>
-                                            </section>
-                                            <section id="intro_video_section"
-                                                     className="my_row section_row"
-                                                     onMouseEnter={(e) =>
-                                                         setHoverSection(
-                                                             e.target.id)
-                                                     }>
-                                                <div className="section_title">
-                                                    <h4>Intro Video</h4>
-                                                </div>
-                                                <div className="section_content my_row">
-                                                    <InputComponent
-                                                        placeholder="YouTube or Vimeo Link"
-                                                        type="url"
-                                                        hoverText="Add Embed Link"
-                                                        elementName="intro_video"
-                                                        value={courseData['intro_video'] ||
-                                                            ''}
-                                                        data={courseData}
-                                                        dispatch={dispatchCourseData}
-                                                        saveTo="course"
+                                                    <div className="section_content my_row">
+                                                        <ImageComponent
+                                                            ref={nodesRef}
+                                                            completedCrop={completedCrop}
+                                                            setCompletedCrop={setCompletedCrop}
+                                                            setShowLoader={setShowLoader}
+                                                            elementName={`icon`}
+                                                            dispatch={dispatchOfferData}
+                                                            data={offerData}
+                                                            previewType="inline"
+                                                            saveTo="offer"
+                                                            cropArray={{
+                                                                unit: '%',
+                                                                width: 30,
+                                                                aspect: 1
+                                                            }}
+                                                        />
+                                                        <InputComponent
+                                                            placeholder="$ Course price in USD"
+                                                            type="currency"
+                                                            hoverText="Submit Course Price"
+                                                            elementName="price"
+                                                            data={offerData}
+                                                            dispatch={dispatchOfferData}
+                                                            value={offerData["price"]}
+                                                            saveTo="offer"
+                                                        />
+                                                        <SwitchOptions
+                                                            dispatch={dispatchOfferData}
+                                                            data={offerData}
+                                                        />
+                                                    </div>
+                                                </section>
+
+                                                {!offerData["published"] &&
+
+                                                    <PublishButton
+                                                        data={offerData}
+                                                        dispatch={dispatchOfferData}
+                                                        courseTitle={courseData["title"]}
                                                     />
-                                                </div>
-                                            </section>
-                                            <section id="intro_text_section"
-                                                     className="my_row section_row"
-                                                     onMouseEnter={(e) =>
-                                                         setHoverSection(e.target.id)
-                                                     }>
-                                                <div className="section_title">
-                                                    <h4>Intro Text</h4>
-                                                </div>
-                                                <div className="section_content my_row">
-                                                    <InputComponent
-                                                        placeholder="Intro Text"
-                                                        type="wysiwyg"
-                                                        hoverText="Submit Intro Text"
-                                                        elementName="intro_text"
-                                                        data={courseData}
-                                                        dispatch={dispatchCourseData}
-                                                        value={courseData["intro_text"]}
-                                                        showTiny={showTiny}
-                                                        setShowTiny={setShowTiny}
-                                                        saveTo="course"
-                                                    />
-                                                    <ColorPicker
-                                                        label="Background Color"
-                                                        data={courseData}
-                                                        dispatch={dispatchCourseData}
-                                                        elementName="intro_background_color"
-                                                        saveTo="course"
-                                                    />
-                                                </div>
-                                            </section>
+                                                }
 
-                                            {sections.length > 0 &&
-
-                                                <DndContext
-                                                    sensors={sensors}
-                                                    collisionDetection={closestCenter}
-                                                    onDragEnd={event =>
-                                                        handleDragEndAction(
-                                                            event,
-                                                            setSections,
-                                                            updateSectionsPositions,
-                                                            setShowTiny)
-                                                }>
-                                                    <section className="sections_wrap my_row mb-4">
-
-                                                        <SortableContext
-                                                            items={sections}
-                                                            strategy={verticalListSortingStrategy} d
-                                                        >
-                                                            {sections.map((section, index) => {
-
-                                                                {section.type === "video" ?
-                                                                    ++videoCount :
-                                                                    section.type === "image" ?
-                                                                        ++imageCount :
-                                                                        section.type === "file" ?
-                                                                            ++fileCount :
-                                                                            ++textCount
-                                                                }
-
-                                                                return (
-
-                                                                    <Section
-                                                                        key={section.id}
-                                                                        section={section}
-                                                                        index={index}
-                                                                        sections={sections}
-                                                                        setSections={setSections}
-                                                                        openIndex={openIndex}
-                                                                        setOpenIndex={setOpenIndex}
-                                                                        videoCount={videoCount}
-                                                                        textCount={textCount}
-                                                                        imageCount={imageCount}
-                                                                        fileCount={fileCount}
-                                                                        setHoverSection={setHoverSection}
-                                                                        showTiny={showTiny}
-                                                                        setShowTiny={setShowTiny}
-                                                                        completedCrop={completedCrop}
-                                                                        setCompletedCrop={setCompletedCrop}
-                                                                        nodesRef={nodesRef}
-                                                                        setShowLoader={setShowLoader}
-                                                                    />
-
-                                                                )
-                                                            })}
-                                                        </SortableContext>
-
-                                                    </section>
-                                                </DndContext>
-
+                                                </>
                                             }
 
-                                            <section className="my_row section_row">
-                                                <div className="section_title">
-                                                    <h4>Add Content</h4>
-                                                </div>
-                                                <ContentSelect
-                                                    sections={sections}
-                                                    setSections={setSections}
-                                                    dataId={courseData['id']}
-                                                    setOpenIndex={setOpenIndex}
-                                                    saveTo="course"
-                                                    options={[
-                                                        {
-                                                            id: 1,
-                                                            type: "text",
-                                                            label: "Text Section"
-                                                        },
-                                                        {
-                                                            id: 2,
-                                                            type: "image",
-                                                            label: "Image Section"
-                                                        },
-                                                        {
-                                                            id: 3,
-                                                            type: "video",
-                                                            label: "Video Section"
-                                                        },
-                                                        {
-                                                            id: 4,
-                                                            type: "file",
-                                                            label: "File Section"
-                                                        }
-                                                    ]}
-                                                />
-                                            </section>
-
-                                            <section className="my_row section_row">
-                                                <div className="section_title">
-                                                    <h4>Nitty Gritty</h4>
-                                                </div>
-                                                <div className="section_content my_row">
-                                                    <ImageComponent
-                                                        ref={nodesRef}
-                                                        completedCrop={completedCrop}
-                                                        setCompletedCrop={setCompletedCrop}
-                                                        setShowLoader={setShowLoader}
-                                                        elementName={`icon`}
-                                                        dispatch={dispatchOfferData}
-                                                        data={offerData}
-                                                        previewType="inline"
-                                                        saveTo="offer"
-                                                        cropArray={{
-                                                            unit: '%',
-                                                            width: 30,
-                                                            aspect: 1
-                                                        }}
-                                                    />
-                                                    <InputComponent
-                                                        placeholder="$ Course price in USD"
-                                                        type="currency"
-                                                        hoverText="Submit Course Price"
-                                                        elementName="price"
-                                                        data={offerData}
-                                                        dispatch={dispatchOfferData}
-                                                        value={offerData["price"]}
-                                                        saveTo="offer"
-                                                    />
-                                                    <SwitchOptions
-                                                        dispatch={dispatchOfferData}
-                                                        data={offerData}
-                                                    />
-                                                </div>
-                                            </section>
-
-                                            {!offerData["published"] &&
-
-                                                <PublishButton
-                                                    data={offerData}
-                                                    dispatch={dispatchOfferData}
-                                                    courseTitle={courseData["title"]}
-                                                />
-                                            }
                                         </div>
                                         <InfoText
                                             divRef={columnRef}

@@ -9,7 +9,7 @@ function Menu() {
 
     const { auth } = usePage().props;
 
-    const creator = auth.user.userInfo?.username;
+    //const creator = auth.user.userInfo?.username;
     const courseData = auth.user.courseData;
     const userPermissions = auth.user.permissions;
     const defaultPage = auth.user.defaultPage;
@@ -66,27 +66,17 @@ function Menu() {
 
     return (
         <div id="off_canvas_menu">
-            <div className="menu_wrap" style={ courseData && { background: courseData["header_color"] }}>
-                <div className="menu_top" style={ courseData && { borderColor: courseData["header_text_color"]  }}>
+            <div className="menu_wrap">
+                <div className="menu_top">
                     <div className="logo">
-                        {courseData ?
-                            <img src={courseData["logo"] || Vapor.asset('images/logo.png')} alt=""/>
-                            :
-                            <img src={Vapor.asset('images/logo-white.png')} alt=""/>
-                        }
+                        <img src={Vapor.asset('images/logo-white.png')} alt=""/>
                     </div>
                     <a className="icon_wrap mobile_menu_icon"
                        href="#"
                        onClick={(e) => handleOnClick(e)}>
-                        <span
-                            style={ courseData && { background: courseData["header_text_color"] }}
-                        ></span>
-                        <span
-                            style={ courseData && { background: courseData["header_text_color"] }}
-                        ></span>
-                        <span
-                            style={ courseData && { background: courseData["header_text_color"] }}
-                        ></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </a>
                 </div>
                 <div className="menu">
@@ -103,20 +93,19 @@ function Menu() {
                                     isOpen={isOpen}
                                     handleMouseOver={handleMouseOver}
                                     handleMouseOut={handleMouseOut}
-                                    courseData={courseData}
                                     defaultPage={defaultPage}
                                 />
                             )
                         })}
 
                         <li>
-                            <a style={{ color: courseData && courseData["header_text_color"] }}
+                            <a
                                id="logout"
                                href="#"
                                onClick={(e) => logout(e)}
                                onMouseOver={() => handleMouseOver("logout")}
                                onMouseOut={handleMouseOut}>
-                                <span className="menu_icon" style={ courseData && { color: courseData["header_text_color"]}}>
+                                <span className="menu_icon">
                                     <RiLogoutBoxRLine />
                                 </span>
                                 <span className="text">LOGOUT</span>
@@ -132,14 +121,13 @@ function Menu() {
                 <div className="menu_bottom">
                     <div className="menu">
                         <ul>
-                            {auth.user.courseData ?
+                            {/*{auth.user.courseData ?
                                 <li>
                                     <a href={`${window.location.origin}/${creator}`}
-                                       style={ courseData && {color: courseData["header_text_color"] }}
                                        target="_blank"
                                        onMouseOver={() => handleMouseOver("contact " + creator)}
                                        onMouseOut={handleMouseOut}>
-                                        <span className="menu_icon" style={ courseData && {color: courseData["header_text_color"] }}>
+                                        <span className="menu_icon">
                                             <svg viewBox="0 0 15.82 15.82" xmlns="http://www.w3.org/2000/svg" >
                                                 <g fill="currentColor" transform="translate(-.1 -.12)">
                                                     <path d="m8 15.94a7.91 7.91 0 1 1 7.92-7.94 7.92 7.92 0 0 1 -7.92 7.94zm0-14.11a6.2 6.2 0 1 0 6.21 6.17 6.21 6.21 0 0 0 -6.21-6.17z"/>
@@ -156,14 +144,14 @@ function Menu() {
                                         ""
                                     }
                                 </li>
-                                :
+                                :*/}
                                 <li>
                                     <a href="https://www.instagram.com/link.pro.official/"
                                        target="_blank"
                                        onMouseOver={() => handleMouseOver(
                                            "follow us")}
                                        onMouseOut={handleMouseOut}>
-                                        <span className="menu_icon" style={ courseData && {color: courseData["header_text_color"] }}>
+                                        <span className="menu_icon">
                                             <RiInstagramLine/>
                                         </span>
                                         <span className="text">FOLLOW US</span>
@@ -175,7 +163,7 @@ function Menu() {
                                         ""
                                     }
                                 </li>
-                            }
+                           {/* }*/}
                         </ul>
                     </div>
                 </div>
