@@ -22,10 +22,10 @@ function PageLayout({pageLayoutRef}) {
     }
 
     return (
-        <div className="layouts_wrap">
+        <div className="layouts_wrap border-b border-gray-100 !pb-3 w-full">
             <div className="edit_form">
                 <div className="section_title w-full flex justify-start gap-2">
-                    <h4 className="capitalize">Page Layout</h4>
+                    <h4 className="capitalize">Layout</h4>
                     <ToolTipIcon section="layout" />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">

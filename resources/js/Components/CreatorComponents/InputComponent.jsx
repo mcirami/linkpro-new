@@ -21,6 +21,7 @@ import ToolTipIcon from "@/Utils/ToolTips/ToolTipIcon.jsx";
 
 const InputComponent = ({
     placeholder,
+    label,
     type,
     maxChar = null,
     hoverText,
@@ -311,6 +312,7 @@ const InputComponent = ({
                             onBlur={(e) => handleSubmit(e)}
                             onFocus={(e) => HandleFocus(e.target)}
                             onPaste={(e) => handleChange(e)}
+                            placeholder={placeholder}
                         />
                     </>
                 );
@@ -369,8 +371,9 @@ const InputComponent = ({
                             onBlur={(e) => handleSubmit(e)}
                             prefix={prefix}
                             step={0.1}
+                            placeholder={placeholder}
                         />
-                        <label>{placeholder}</label>
+                        {/*<label>{placeholder}</label>*/}
                     </>
                 );
             default:
@@ -390,6 +393,7 @@ const InputComponent = ({
                             }}
                             onBlur={(e) => handleSubmit(e)}
                             onFocus={(e) => HandleFocus(e.target)}
+                            placeholder={placeholder}
                         />
                     </>
                 );
@@ -398,8 +402,8 @@ const InputComponent = ({
 
     return (
         <div className="edit_form">
-            <div className="section_title w-full items-baseline flex justify-between gap-2">
-                <h4 className="flex items-center justify-start gap-2 mb-5">{placeholder}</h4>
+            <div className="section_title w-full items-baseline flex justify-between gap-2 !mb-5">
+                <h4>{label}</h4>
                 {maxChar != null &&
                     <div className="info_text flex justify-end mb-2">
                         <p className="char_count">

@@ -231,11 +231,34 @@ export function centerAspectCrop(
     )
 }
 
-export function onImageLoad(e, aspect, setCrop) {
+export function onImageLoad(e, aspect, setCrop, initialCrop = null) {
+    const { width, height } = e.currentTarget;
+
     if (aspect) {
-        const {width, height } = e.currentTarget;
         setCrop(centerAspectCrop(width, height, aspect))
+        return;
     }
+
+    const hasInitialRect = ['width', 'height', 'x', 'y'].every(
+        (key) => initialCrop?.[key] !== undefined && initialCrop?.[key] !== null
+    );
+
+    if (initialCrop && hasInitialRect) {
+        setCrop(initialCrop);
+        return;
+    }
+
+    const unit = initialCrop?.unit ?? '%';
+    const coverWidth = unit === 'px' ? width : 100;
+    const coverHeight = unit === 'px' ? height : 100;
+
+    setCrop({
+        unit,
+        width: coverWidth,
+        height: coverHeight,
+        x: 0,
+        y: 0,
+    });
 }
 
 export const getFileToUpload = async (ref, options = {}) => {

@@ -416,12 +416,19 @@ function Dashboard({
                                                         }
                                                     </div>
                                                 </div>
-
-                                                {pageTab === "settings" ?
                                                 <div ref={leftColWrap} className="content_wrap my_row mb-10">
+                                                {pageTab === "settings" ?
                                                     <div className="top_section">
                                                         <PageName
                                                             pageNames={allPageNames}
+                                                        />
+                                                        <PageSettingComponent
+                                                            element="title"
+                                                            maxChar="30"
+                                                        />
+                                                        <PageSettingComponent
+                                                            element="bio"
+                                                            maxChar="65"
                                                         />
                                                         <div className="flex w-full mb-10">
                                                             <div className="w-full">
@@ -458,7 +465,6 @@ function Dashboard({
                                                                     "header" ?
                                                                         "header_img" :
                                                                         "page_img"}
-                                                                    label="Main Image"
                                                                     cropSettings={{
                                                                         unit: '%',
                                                                         aspect: imageType ===
@@ -523,7 +529,6 @@ function Dashboard({
                                                                     setCompletedCrop={setCompletedCrop}
                                                                     setShowLoader={setShowLoader}
                                                                     elementName="profile_img"
-                                                                    label="Profile Image"
                                                                     startCollapsed={!editLink.profile_img}
                                                                     cropSettings={{
                                                                         unit: '%',
@@ -554,22 +559,9 @@ function Dashboard({
                                                             </div>
                                                         </div>
 
-                                                        <PageSettingComponent
-                                                            element="title"
-                                                            maxChar="30"
-                                                        />
-                                                        <PageSettingComponent
-                                                            element="bio"
-                                                            maxChar="65"
-                                                        />
-
-                                                        <PageLayout
-                                                            pageLayoutRef={pageLayoutRef}
-                                                        />
-
-                                                        <InfoText
+                                                        {/*<InfoText
                                                             divRef={leftColWrap}
-                                                        />
+                                                        />*/}
 
                                                         {showPreviewButton &&
                                                             <PreviewButton setShowPreview={setShowPreview}/>
@@ -580,7 +572,7 @@ function Dashboard({
                                                             <DowngradeAlert/>
                                                         }
                                                     </div>
-                                                </div>
+
                                                     :
                                                 <div className="content_wrap !pt-5 my_row">
                                                     {editLink.id ||
@@ -632,29 +624,36 @@ function Dashboard({
                                                     }
 
                                                     {!showLinkTypeRadio &&
-                                                        <div className="my_row link_row">
-                                                            <div className={`add_content_links !pl-0 !pr-0 !border-0`}>
-
-                                                                    <div className="add_more_link">
-                                                                        <AddLink
-                                                                            setShowLinkTypeRadio={setShowLinkTypeRadio}
-                                                                            subStatus={subStatus}
-                                                                            setShowUpgradePopup={setShowUpgradePopup}
-                                                                        />
-                                                                    </div>
-                                                                {(pageSettings.page_layout ===
-                                                                        "layout_one" &&
-                                                                        !editLink.folder_id) &&
-                                                                    <div className="add_more_link">
-                                                                        <AddFolder
-                                                                            subStatus={subStatus}
-                                                                            setShowUpgradePopup={setShowUpgradePopup}
-                                                                            setEditLink={setEditLink}
-                                                                        />
-                                                                    </div>
-                                                                }
+                                                        <>
+                                                            <div className="link_row flex flex-col mb-3">
+                                                                <PageLayout
+                                                                    pageLayoutRef={pageLayoutRef}
+                                                                />
                                                             </div>
-                                                        </div>
+                                                            <div className="my_row link_row">
+                                                                <div className={`add_content_links !pl-0 !pr-0 !border-0`}>
+
+                                                                        <div className="add_more_link">
+                                                                            <AddLink
+                                                                                setShowLinkTypeRadio={setShowLinkTypeRadio}
+                                                                                subStatus={subStatus}
+                                                                                setShowUpgradePopup={setShowUpgradePopup}
+                                                                            />
+                                                                        </div>
+                                                                    {(pageSettings.page_layout ===
+                                                                            "layout_one" &&
+                                                                            !editLink.folder_id) &&
+                                                                        <div className="add_more_link">
+                                                                            <AddFolder
+                                                                                subStatus={subStatus}
+                                                                                setShowUpgradePopup={setShowUpgradePopup}
+                                                                                setEditLink={setEditLink}
+                                                                            />
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </>
                                                     }
 
                                                     {showLinkTypeRadio &&
@@ -708,6 +707,10 @@ function Dashboard({
 
                                                 </div>
                                                 }
+                                                </div>
+                                                <InfoText
+                                                    divRef={leftColWrap}
+                                                />
                                             </div>
                                             <Preview
                                                 nodesRef={nodesRef}

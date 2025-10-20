@@ -97,7 +97,7 @@ const SectionButtonOptions = ({
     return (
         <>
             {buttonType === "purchase" ?
-                <div className={`switch_wrap flex justify-between items-center ${!button ? "mb-4" : "" }`}>
+                <div className={`switch_wrap flex border-b border-gray-100 pb-5 justify-between items-center mb-5`}>
                     <div className="section_title w-full">
                         <h4>Show</h4>
                     </div>
@@ -110,9 +110,38 @@ const SectionButtonOptions = ({
                 ""
             }
             <div className={`button_options open ${buttonType === "download" ? "!border-0" : ""}`}>
-                <div className="mb-5 flex justify-between items-center">
+                <div className="mb-6">
+                    <InputComponent
+                        placeholder="Text"
+                        label={"Text"}
+                        type="text"
+                        maxChar={20}
+                        hoverText="Submit Button Text"
+                        elementName={`button_text`}
+                        sections={sections}
+                        setSections={setSections}
+                        currentSection={currentSection}
+                        value={button_text || (buttonType === "purchase" ? "Get Course" : "Download File") }
+                        saveTo={saveTo}
+                    />
+                </div>
+                {courses &&
+                    <div className="mb-5">
+                        <div className="section_title w-full !mb-5">
+                            <h4>Link</h4>
+                        </div>
+                        <DropdownComponent
+                            courses={courses}
+                            buttonCourseId={buttonCourseId}
+                            sections={sections}
+                            setSections={setSections}
+                            id={id}
+                        />
+                    </div>
+                }
+                <div className="mb-5 flex justify-between items-center border-b border-gray-100 pb-5">
                     {buttonType === "purchase" ?
-                        <article className="w-1/2 pr-5 border-r border-gray-200">
+                        <article className="w-1/2 pr-5 border-r border-gray-100">
                             <div className="radios_wrap">
                                 <FormControl>
                                     <div className="section_title w-full !mb-5" id={`section_${sectionPosition}_above`}>
@@ -130,7 +159,7 @@ const SectionButtonOptions = ({
                         :
                         ""
                     }
-                    <div className="w-1/2 pl-5">
+                    <div className={`${buttonType === 'purchase' ? 'p-5 w-1/2' : "w-1/3"} `}>
                         <div className="section_title w-full !mb-5">
                             <h4>Size</h4>
                         </div>
@@ -151,11 +180,11 @@ const SectionButtonOptions = ({
                         />
                     </div>
                 </div>
-                <div className="mb-5">
+                <div className="">
                     <div className="section_title w-full !mb-5">
                         <h4>Colors</h4>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                         <ColorPicker
                             label="Text"
                             sections={sections}
@@ -174,32 +203,7 @@ const SectionButtonOptions = ({
                         />
                     </div>
                 </div>
-                <InputComponent
-                    placeholder="Text"
-                    type="text"
-                    maxChar={20}
-                    hoverText="Submit Button Text"
-                    elementName={`button_text`}
-                    sections={sections}
-                    setSections={setSections}
-                    currentSection={currentSection}
-                    value={button_text || (buttonType === "purchase" ? "Get Course" : "Download File") }
-                    saveTo={saveTo}
-                />
-                {courses &&
-                    <>
-                        <div className="section_title w-full !mb-5">
-                            <h4>Link</h4>
-                        </div>
-                        <DropdownComponent
-                            courses={courses}
-                            buttonCourseId={buttonCourseId}
-                            sections={sections}
-                            setSections={setSections}
-                            id={id}
-                        />
-                    </>
-                }
+
             </div>
         </>
     );

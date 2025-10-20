@@ -18,7 +18,6 @@ const ToolTipIcon = ({
     } = useContext(ToolTipContext);
 
     useEffect(() => {
-
         function handleScroll() {
             setInfoTextOpen(false);
             setInfoClicked(null)
@@ -125,7 +124,7 @@ const ToolTipIcon = ({
         <div
             className="tooltip_icon"
         >
-            <div className="icon_wrap relative"
+            <div className="icon_wrap info_icon relative"
                  onMouseLeave={() => {
                      handleMouseLeave()
                  }}

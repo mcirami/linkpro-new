@@ -264,7 +264,7 @@ const StandardForm = ({
                 { (showFormTab === "icon") ?
                     <div className="link_form form_nav_content">
                         {(pageSettings.page_layout === "layout_two" && !imageSelected) &&
-                            <div className={`setting_row w-full flex justify-between ${editLink.type === "mailchimp" ? "mb-5" : ""} `}>
+                            <div className={`setting_row w-full border-b !border-gray-100 flex justify-between ${editLink.type === "mailchimp" ? "mb-5" : ""} `}>
                                 <div className="section_title w-full flex justify-start gap-2 !mb-0">
                                     <h4>Icon</h4>
                                     <ToolTipIcon section="icon_status" />
@@ -287,7 +287,7 @@ const StandardForm = ({
                             showFormTab === "icon" &&
                             !imageSelected
                         ) ?
-                            <div className="my_row form_nav_content input_types pt-5 pb-5">
+                            <div className="my_row form_nav_content input_types pt-5 pb-3 border-b border-gray-100 mb-8">
                                 <div className="setting_wrap w-full !mb-4">
                                     <div className="section_title w-full flex justify-start gap-2 !mb-4">
                                         <h4>Link Type</h4>

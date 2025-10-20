@@ -38,7 +38,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
         setShowLoader,
         elementName,
         cropSettings,
-        label,
+        label = null,
         startCollapsed,
         onUpload
     } = props;
@@ -185,6 +185,11 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
     return (
         <div className="my_row ">
             <div className="column_wrap">
+                {label &&
+                    <div className="section_title w-full flex justify-start gap-2 !mb-5">
+                        <h4>{label}</h4>
+                    </div>
+                }
                 <form onSubmit={handleSubmit} className={` ${elementName}`}>
                     {!upImg && (
                         <>
@@ -286,7 +291,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                 })}
                             >
                                 <img
-                                    onLoad={(e) => onImageLoad(e, aspect, setCrop)}
+                                    onLoad={(e) => onImageLoad(e, aspect, setCrop, defaultCrop)}
                                     src={upImg}
                                     ref={imgRef}
                                     style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}

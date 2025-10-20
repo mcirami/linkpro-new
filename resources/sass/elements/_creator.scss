@@ -169,7 +169,7 @@
                 -webkit-align-items: center;
                 margin-bottom: 10px;
 
-                .icon_wrap {
+                .icon_wrap:not(.info_icon) {
                     background: $white;
                     border: 2px solid $blue;
                     margin-left: 0;
@@ -177,14 +177,13 @@
                 }
 
                 .input_image {
-                    width: 40px;
-                    height: 40px;
+                    width: 100%;
+                    height: 30px;
                     max-width: unset;
-                    position: absolute;
-                    top: 15px;
-                    border-radius: 50px;
-                    -webkit-border-radius: 50px;
-                    -moz-border-radius: 50spx;
+                    object-fit: cover;
+                    border-radius: 6px;
+                    -webkit-border-radius:6px;
+                    -moz-border-radius: 6spx;
                 }
             }
 
@@ -273,8 +272,6 @@
             }
 
             .button_options {
-                border-top: 1px ridge;
-                border-color: rgba(155, 155, 155, .2);
                 max-height: 0;
                 opacity: 0;
                 margin-top: 0;
@@ -290,8 +287,6 @@
                     max-height: 1000px;
                     opacity: 1;
                     overflow: unset;
-                    margin-top: 20px;
-                    padding-top: 20px;
                     margin-bottom: 20px;
                 }
             }
@@ -432,9 +427,16 @@
                             column-gap: 10px;
                             -webkit-column-gap: 10px;
                             -moz-column-gap: 10px;
+                            justify-self: flex-start;
+                            margin-right: auto;
+                            margin-left: 10px;
 
                             h4 {
                                 min-width: 70px;
+                                font-size: 1rem;
+                                color: $blue;
+                                font-weight: bold;
+                                overflow: hidden;
                             }
 
                             a.delete {
@@ -454,7 +456,7 @@
                             -moz-transition: all linear .5s;
                         }
 
-                        .icon_wrap {
+                        .icon_wrap:not(.info_icon) {
 
                             &.open {
                                 background: $blue;

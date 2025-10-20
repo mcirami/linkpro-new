@@ -13,7 +13,7 @@ import {
 import CropTools from '@/Utils/CropTools.jsx';
 import EventBus from '@/Utils/Bus.jsx';
 
-const ImageUploader = ({
+export const ImageUploader = ({
                            elementName,
                            label,
                            cropSettings = { unit: '%', width: 30 },

@@ -3,7 +3,6 @@ import DeleteSection from '@/Components/CreatorComponents/DeleteSection.jsx';
 import {MdDragHandle, MdKeyboardArrowDown} from 'react-icons/md';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
 import ColorPicker from '@/Components/CreatorComponents/ColorPicker';
-import ImageComponent from '@/Components/CreatorComponents/ImageComponent.jsx';
 import SectionButtonOptions from '@/Components/CreatorComponents/SectionButtonOptions';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
@@ -176,6 +175,21 @@ const Section = ({
                 </div>
                 {pageTab === "content" && type === "text" ? (
                         <>
+                            <InputComponent
+                                placeholder=""
+                                label="Text"
+                                type="wysiwyg"
+                                hoverText={`Add Text to Section ${index + 1}`}
+                                elementName={`text`}
+                                value={text}
+                                currentSection={section}
+                                sections={sections}
+                                setSections={setSections}
+                                showTiny={showTiny}
+                                setShowTiny={setShowTiny}
+                                saveTo="landingPage"
+                                index={index}
+                            />
                             <div className="section_title w-full !mb-5">
                                 <h4>Color</h4>
                             </div>
@@ -189,30 +203,10 @@ const Section = ({
                                     saveTo="landingPage"
                                 />
                             </div>
-                            <div className="section_title w-full !mb-5">
-                                <h4>Text</h4>
-                            </div>
-                            <InputComponent
-                                placeholder=""
-                                type="wysiwyg"
-                                hoverText={`Add Text to Section ${index + 1}`}
-                                elementName={`text`}
-                                value={text}
-                                currentSection={section}
-                                sections={sections}
-                                setSections={setSections}
-                                showTiny={showTiny}
-                                setShowTiny={setShowTiny}
-                                saveTo="landingPage"
-                                index={index}
-                            />
                         </>
 
                 ) : pageTab === "content" && type === "image" ? (
                     <div className="w-full flex flex-col mb-5">
-                        <div className="section_title w-full !mb-5">
-                            <h4>Background Image</h4>
-                        </div>
                         <ImageUploader
                             ref={nodesRef}
                             completedCrop={completedCrop}
@@ -265,25 +259,6 @@ const Section = ({
                             }}
                         />
                     </div>
-                        /*<ImageComponent
-                            ref={nodesRef}
-                            completedCrop={completedCrop}
-                            setCompletedCrop={setCompletedCrop}
-                            setShowLoader={setShowLoader}
-                            currentSection={section}
-                            sections={sections}
-                            setSections={setSections}
-                            previewType="external"
-                            elementName={`section_${index + 1}_image`}
-                            saveTo="landingPage"
-                            cropArray={{
-                                unit: "%",
-                                width: 30,
-                                x: 25,
-                                y: 25,
-                                aspect: 16 / 8
-                            }}
-                        />*/
                 ) : null}
                 {(pageTab !== "content" || type === "button") && (
                     <div className="my_row">
@@ -300,13 +275,15 @@ const Section = ({
                         />
                     </div>
                 )}
-                <DeleteSection
-                    id={id}
-                    sections={sections}
-                    setSections={setSections}
-                    setOpenIndex={setOpenIndex}
-                    url={'/creator-center/landing-page/delete-section/' + id}
-                />
+                <div className="border-t border-gray-100 w-full my_row pt-5 mt-5">
+                    <DeleteSection
+                        id={id}
+                        sections={sections}
+                        setSections={setSections}
+                        setOpenIndex={setOpenIndex}
+                        url={'/creator-center/landing-page/delete-section/' + id}
+                    />
+                </div>
             </div>
         </div>
     );

@@ -203,6 +203,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                 <div className="section_content my_row">
                                                     <InputComponent
                                                         placeholder="Page Title"
+                                                        label="Page Title"
                                                         type="text"
                                                         maxChar={60}
                                                         hoverText="Submit Page Title"
@@ -214,9 +215,6 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     />
                                                 </div>
                                                 <div className="section_content my_row">
-                                                    <div className="section_title w-full flex justify-start gap-2">
-                                                        <h4>Logo</h4>
-                                                    </div>
                                                     <div className="w-full mb-5 flex">
                                                         <ImageUploader
                                                             elementName="logo"
@@ -267,6 +265,7 @@ function LPCreator({landingPageArray, courses, username}) {
 
                                                     <InputComponent
                                                         placeholder="Slogan (optional)"
+                                                        label="Slogan"
                                                         type="text"
                                                         maxChar={30}
                                                         hoverText="Submit Slogan Text"
@@ -276,10 +275,6 @@ function LPCreator({landingPageArray, courses, username}) {
                                                         value={pageData['slogan']}
                                                         saveTo="landingPage"
                                                     />
-
-                                                    <div className="section_title w-full flex justify-start gap-2">
-                                                        <h4>Header Image</h4>
-                                                    </div>
                                                     <div className="w-full mb-5 flex">
                                                         <ImageUploader
                                                             elementName="hero"
@@ -327,7 +322,7 @@ function LPCreator({landingPageArray, courses, username}) {
 
                                                         />
                                                     </div>
-                                                    <div className="mb-5 w-full">
+                                                    <div className="mb-5 w-full border-b border-gray-100 pb-3">
                                                        <div className="section_title w-full flex justify-start gap-2">
                                                            <h4>Colors</h4>
                                                        </div>
@@ -346,23 +341,25 @@ function LPCreator({landingPageArray, courses, username}) {
                                                            />
                                                        </div>
                                                     </div>
-                                                    <div className="mb-7 w-full">
-                                                        <div className="section_title w-full">
+                                                    <div className="mb-7 w-full border-b border-gray-100 pb-8">
+                                                        <div className="section_title w-full !mb-5">
                                                             <h4>Font Size</h4>
                                                         </div>
-                                                        <SliderComponent
-                                                            id={pageData["id"]}
-                                                            dispatch={dispatchPageData}
-                                                            value={pageData["header_font_size"]}
-                                                            elementName="header_font_size"
-                                                            sliderValues={{
-                                                                step: .1,
-                                                                min: .1,
-                                                                max: 5,
-                                                                unit: "rem",
-                                                            }}
-                                                            saveTo="landingPage"
-                                                        />
+                                                        <div className="w-1/3">
+                                                            <SliderComponent
+                                                                id={pageData["id"]}
+                                                                dispatch={dispatchPageData}
+                                                                value={pageData["header_font_size"]}
+                                                                elementName="header_font_size"
+                                                                sliderValues={{
+                                                                    step: .1,
+                                                                    min: .1,
+                                                                    max: 5,
+                                                                    unit: "rem",
+                                                                }}
+                                                                saveTo="landingPage"
+                                                            />
+                                                        </div>
                                                     </div>
 
                                                     <div className="w-full">

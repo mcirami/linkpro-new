@@ -47,7 +47,7 @@ const PageSettingComponent = ({
         <div className="edit_form !mb-10">
             <div className="section_title w-full flex justify-between items-baseline gap-2">
                 <div  className="flex items-center justify-start gap-2">
-                    <h4 className="capitalize">Page {element}</h4>
+                    <h4 className="capitalize">{element}</h4>
                     <ToolTipIcon section={element} />
                 </div>
                 <div className="info_text">

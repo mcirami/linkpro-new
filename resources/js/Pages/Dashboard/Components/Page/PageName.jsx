@@ -77,7 +77,7 @@ const PageName = ({pageNames}) => {
     return (
         <div className="page_name mb-8">
             <div className="section_title w-full flex justify-start gap-2">
-                <h4>Page Name</h4>
+                <h4>Name</h4>
                 <span>
                     <ToolTipIcon section="name" />
                 </span>

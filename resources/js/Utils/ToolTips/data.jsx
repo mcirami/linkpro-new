@@ -190,6 +190,14 @@ const hoverText = [
             }
         ]
     },
+    {
+        section: 'offer_icon',
+        text: [
+            {
+                description: 'Choose an image to display as an icon for your Offer. Users will display your offer icon on their LinkPro page.'
+            }
+        ]
+    },
 ]
 
 export default hoverText;

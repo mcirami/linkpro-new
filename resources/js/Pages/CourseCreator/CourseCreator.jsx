@@ -7,9 +7,9 @@ import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
 import ContentSelect from '@/Components/CreatorComponents/ContentSelect.jsx';
 import ColorPicker from '@/Components/CreatorComponents/ColorPicker.jsx';
 import PreviewButton from '@/Components/PreviewButton.jsx';
-import ImageComponent from '@/Components/CreatorComponents/ImageComponent.jsx';
 import {
     LP_ACTIONS,
+    OFFER_ACTIONS,
     offerDataReducer,
     pageDataReducer
 } from "@/Components/Reducers/CreatorReducers.jsx";
@@ -24,7 +24,6 @@ import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext';
 import InfoText from '@/Utils/ToolTips/InfoText';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon';
 import {handleDragEndAction} from '@/Services/CreatorServices.jsx';
-
 import {
     DndContext,
     closestCenter,
@@ -50,6 +49,9 @@ import PageTabs from "@/Components/PageTabs.jsx";
 import PageNav from "@/Pages/Dashboard/Components/Page/PageNav.jsx";
 import { updateImage as updateCourseImage } from "@/Services/CourseRequests.jsx";
 import ImageUploader from "@/Pages/Dashboard/Components/Page/ImageUploader.jsx";
+import { ImageUploader as InlineImageUploader } from '@/Components/ImageUploader.jsx';
+import { updateIcon, updateOfferData } from "@/Services/OfferRequests.jsx";
+import IOSSwitch from "@/Utils/IOSSwitch.jsx";
 
 function CourseCreator({
                            courseArray,
@@ -240,7 +242,7 @@ function CourseCreator({
 
                                     <div className="left_column" ref={columnRef}>
                                         <div className="page_menu_row flex justify-between w-full">
-                                            <div className="page_tabs w-1/2">
+                                            <div className="page_tabs w-2/3">
                                                 <PageTabs
                                                     tabs={[
                                                         { value: "header", label: "Header"},
@@ -278,6 +280,7 @@ function CourseCreator({
                                                     <div className="section_content my_row" ref={divRef}>
                                                         <InputComponent
                                                             placeholder="Course Title"
+                                                            label="Title"
                                                             type="text"
                                                             maxChar={60}
                                                             hoverText="Submit Course Title"
@@ -287,9 +290,6 @@ function CourseCreator({
                                                             value={courseData['title']}
                                                             saveTo="course"
                                                         />
-                                                        <div className="section_title w-full flex justify-start gap-2 !mb-5">
-                                                            <h4>Logo</h4>
-                                                        </div>
                                                         <div className="flex flex-col !mb-5">
                                                             <ImageUploader
                                                                 elementName="logo"
@@ -298,8 +298,8 @@ function CourseCreator({
                                                                     unit: '%',
                                                                     x: 25,
                                                                     y: 25,
-                                                                    width: 50,
-                                                                    height: 50,
+                                                                    width: 75,
+                                                                    height: 20,
                                                                 }}
                                                                 ref={nodesRef}
                                                                 setShowLoader={setShowLoader}
@@ -330,21 +330,23 @@ function CourseCreator({
                                                         <div className="section_title w-full flex justify-start gap-2 !mb-5">
                                                             <h4>Font Size</h4>
                                                         </div>
-                                                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 !mb-8">
-                                                            <SliderComponent
-                                                                label="Title Font Size"
-                                                                id={courseData['id']}
-                                                                dispatch={dispatchCourseData}
-                                                                value={courseData['header_font_size']}
-                                                                elementName="header_font_size"
-                                                                sliderValues={{
-                                                                    step: .1,
-                                                                    min: .1,
-                                                                    max: 5,
-                                                                    unit: 'rem',
-                                                                }}
-                                                                saveTo="course"
-                                                            />
+                                                        <div className="mb-5 w-full border-b border-gray-100">
+                                                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 !mb-8">
+                                                                <SliderComponent
+                                                                    label="Title Font Size"
+                                                                    id={courseData['id']}
+                                                                    dispatch={dispatchCourseData}
+                                                                    value={courseData['header_font_size']}
+                                                                    elementName="header_font_size"
+                                                                    sliderValues={{
+                                                                        step: .1,
+                                                                        min: .1,
+                                                                        max: 5,
+                                                                        unit: 'rem',
+                                                                    }}
+                                                                    saveTo="course"
+                                                                />
+                                                            </div>
                                                         </div>
                                                         <div className="section_title w-full flex justify-start gap-2">
                                                             <h4>Colors</h4>
@@ -396,12 +398,10 @@ function CourseCreator({
                                                                  setHoverSection(
                                                                      e.target.id)
                                                              }>
-                                                        <div className="section_title">
-                                                            <h4>Intro Video</h4>
-                                                        </div>
                                                         <div className="section_content my_row">
                                                             <InputComponent
                                                                 placeholder="YouTube or Vimeo Link"
+                                                                label="YouTube or Vimeo URL"
                                                                 type="url"
                                                                 hoverText="Add Embed Link"
                                                                 elementName="intro_video"
@@ -418,12 +418,10 @@ function CourseCreator({
                                                              onMouseEnter={(e) =>
                                                                  setHoverSection(e.target.id)
                                                              }>
-                                                        <div className="section_title">
-                                                            <h4>Intro Text</h4>
-                                                        </div>
                                                         <div className="section_content my_row">
                                                             <InputComponent
                                                                 placeholder="Intro Text"
+                                                                label="Text"
                                                                 type="wysiwyg"
                                                                 hoverText="Submit Intro Text"
                                                                 elementName="intro_text"
@@ -434,13 +432,18 @@ function CourseCreator({
                                                                 setShowTiny={setShowTiny}
                                                                 saveTo="course"
                                                             />
-                                                            <ColorPicker
-                                                                label="Background Color"
-                                                                data={courseData}
-                                                                dispatch={dispatchCourseData}
-                                                                elementName="intro_background_color"
-                                                                saveTo="course"
-                                                            />
+                                                            <div className="section_title">
+                                                                <h4>Color</h4>
+                                                            </div>
+                                                            <div className="w-1/3">
+                                                                <ColorPicker
+                                                                    label="Background"
+                                                                    data={courseData}
+                                                                    dispatch={dispatchCourseData}
+                                                                    elementName="intro_background_color"
+                                                                    saveTo="course"
+                                                                />
+                                                            </div>
                                                         </div>
                                                     </section>
                                                 </>
@@ -547,7 +550,9 @@ function CourseCreator({
                                             {pageTab === "settings" &&
                                                 <>
                                                 <section className="my_row section_row">
-
+                                                    <div className="section_title !mb-5">
+                                                        <h4>Category</h4>
+                                                    </div>
                                                     <DropdownComponent
                                                         id={courseData['id']}
                                                         dispatch={dispatchCourseData}
@@ -555,37 +560,118 @@ function CourseCreator({
                                                             ''}
                                                         categories={categories}
                                                     />
-                                                    <div className="section_content my_row">
-                                                        <ImageComponent
-                                                            ref={nodesRef}
-                                                            completedCrop={completedCrop}
-                                                            setCompletedCrop={setCompletedCrop}
-                                                            setShowLoader={setShowLoader}
-                                                            elementName={`icon`}
-                                                            dispatch={dispatchOfferData}
-                                                            data={offerData}
-                                                            previewType="inline"
-                                                            saveTo="offer"
-                                                            cropArray={{
+                                                    <div className="section_content my_row mt-3">
+                                                        <div className="section_title !mb-5">
+                                                            <div className="flex justify-start gap-2">
+                                                                <h4>Icon</h4>
+                                                                <ToolTipIcon section="offer_icon"/>
+                                                            </div>
+                                                            {offerData['icon'] &&
+                                                                <img className='w-10 h-10 rounded-lg' src={offerData['icon']} alt="" />
+                                                            }
+                                                        </div>
+                                                        <InlineImageUploader
+                                                            elementName="icon"
+                                                            label="Icon"
+                                                            cropSettings={{
                                                                 unit: '%',
                                                                 width: 30,
-                                                                aspect: 1
+                                                            }}
+                                                            aspect={1}
+                                                            setShowLoader={setShowLoader}
+                                                            startCollapsed={offerData['icon']}
+                                                            onUpload={(response) => {
+                                                                const packets = {
+                                                                    'icon': response.key,
+                                                                    ext: response.extension,
+                                                                };
+                                                                updateIcon(packets, courseData['id'])
+                                                                .then((response) => {
+                                                                    if (response.success) {
+                                                                        dispatchOfferData({
+                                                                            type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
+                                                                            payload: {
+                                                                                value: response.imagePath,
+                                                                                name: "icon",
+                                                                            },
+                                                                        });
+                                                                    }
+                                                                });
                                                             }}
                                                         />
-                                                        <InputComponent
-                                                            placeholder="$ Course price in USD"
-                                                            type="currency"
-                                                            hoverText="Submit Course Price"
-                                                            elementName="price"
-                                                            data={offerData}
+                                                        <div className="mb-3 w-full flex flex-col">
+                                                            <InputComponent
+                                                                placeholder="$ Course price in USD"
+                                                                label="Price"
+                                                                type="currency"
+                                                                hoverText="Submit Course Price"
+                                                                elementName="price"
+                                                                data={offerData}
+                                                                dispatch={dispatchOfferData}
+                                                                value={offerData["price"]}
+                                                                saveTo="offer"
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-between w-full mb-5 pb-5 border-b border-gray-100">
+                                                            <div className="section_title w-1/2 flex !justify-start gap-2">
+                                                                <h4>Public</h4>
+                                                                <ToolTipIcon section="public_course" />
+                                                            </div>
+                                                            <div className={`switch_wrap w-1/2 flex justify-end items-center`}>
+                                                                <IOSSwitch
+                                                                    onChange={() => {
+                                                                        const packets = {
+                                                                            public: !offerData['public'],
+                                                                        };
+                                                                        updateOfferData(packets, offerData["id"]).then((response) => {
+                                                                            if(response.success) {
+                                                                                dispatchOfferData({
+                                                                                    type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
+                                                                                    payload: {
+                                                                                        value: !offerData['public'],
+                                                                                        name: "public"
+                                                                                    }
+                                                                                })
+                                                                            }
+                                                                        });
+                                                                    }}
+                                                                    checked={Boolean(offerData['public'])}
+                                                                    disabled={!Boolean(offerData["published"])}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex flex-between w-full">
+                                                            <div className="section_title w-1/2 flex !justify-start gap-2">
+                                                                <h4>Active</h4>
+                                                                <ToolTipIcon section="active_course" />
+                                                            </div>
+                                                            <div className={`switch_wrap w-1/2 flex justify-end items-center`}>
+                                                                <IOSSwitch
+                                                                    onChange={() => {
+                                                                        const packets = {
+                                                                            active: !offerData['active'],
+                                                                        };
+                                                                        updateOfferData(packets, offerData["id"]).then((response) => {
+                                                                            if(response.success) {
+                                                                                dispatchOfferData({
+                                                                                    type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
+                                                                                    payload: {
+                                                                                        value: !offerData['active'],
+                                                                                        name: "active"
+                                                                                    }
+                                                                                })
+                                                                            }
+                                                                        });
+                                                                    }}
+                                                                    checked={Boolean(offerData['active'])}
+                                                                    disabled={!Boolean(offerData["published"])}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                       {/* <SwitchOptions
                                                             dispatch={dispatchOfferData}
-                                                            value={offerData["price"]}
-                                                            saveTo="offer"
-                                                        />
-                                                        <SwitchOptions
-                                                            dispatch={dispatchOfferData}
                                                             data={offerData}
-                                                        />
+                                                        />*/}
                                                     </div>
                                                 </section>
 
