@@ -217,8 +217,8 @@
 
         .menu_content {
             position: absolute;
-            left: 6px;
-            top: 12px;
+            right: 0;
+            top: -2px;
             opacity: 0;
             display: none;
             transition: 100ms opacity linear;
@@ -253,6 +253,11 @@
                 z-index: -1;
             }*/
 
+            svg {
+                width: 30px;
+                height: 30px;
+            }
+
             li {
                 border-radius: 6px;
                 -webkit-border-radius: 6px;
@@ -260,12 +265,8 @@
 
                 a {
                     color: $blue;
-                    display: block;
                     padding: 15px 20px;
-                }
-
-                &:first-child {
-                    border-bottom: 1px solid $borderGray;
+                    font-size: .9rem;
                 }
 
                 &:hover {
@@ -275,8 +276,25 @@
                         border-bottom-color: $blue;
                     }
 
-                    a {
+                    a, svg {
                         color: $white;
+                    }
+                }
+
+                &.no_hover {
+                    &:hover {
+                        background: $white;
+                        color: $blue;
+
+                        svg {
+                            color: $blue;
+                        }
+                    }
+
+                    p {
+                        @include osbold;
+                        color: $blue;
+                        display: block;
                     }
                 }
 
@@ -320,15 +338,21 @@
                 width: 22px;
                 height: 22px;
 
-                svg {
+
+                > svg {
                     stroke-width: 2.8;
                 }
 
             }
 
             &:hover {
-                color: $white;
                 background: $blue;
+
+
+                > svg {
+                    color: $white;
+                }
+
 
                 .menu_content {
                     display: block;
@@ -336,11 +360,12 @@
                 }
             }
 
-            svg {
+            > svg {
                 width: 100%;
                 margin: auto;
                 height: auto;
             }
+
         }
 
     }

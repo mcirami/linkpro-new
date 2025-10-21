@@ -43,6 +43,7 @@ import LivePageButton from "@/Components/LivePageButton.jsx";
 import ImageUploader from '@/Pages/Dashboard/Components/Page/ImageUploader.jsx';
 import ClickToCopyUrl from "@/Components/CreatorComponents/ClickToCopyUrl.jsx";
 import PageTabs from "@/Components/PageTabs.jsx";
+import PageNav from "@/Pages/Dashboard/Components/Page/PageNav.jsx";
 
 function LPCreator({landingPageArray, courses, username}) {
 
@@ -56,8 +57,7 @@ function LPCreator({landingPageArray, courses, username}) {
         Array.isArray(landingPageArray?.sections) ? landingPageArray.sections : []
     );
 
-    console.log("landingPageArray", landingPageArray.sections);
-    console.log("pageData", pageData["sections"]);
+    console.log("courses", courses);
 
     const [showPreviewButton, setShowPreviewButton] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
@@ -192,6 +192,18 @@ function LPCreator({landingPageArray, courses, username}) {
                                                 setPageTab={setPageTab}
                                             />
                                         </div>
+                                        <div>
+                                            <PageNav
+                                                allUserPages={courses}
+                                                settings={{
+                                                    type : "course",
+                                                    addNewLabel : "Courses",
+                                                    linkLabel : "title",
+                                                    urlPrefix: '/creator-center/course/'
+                                                }}
+                                                handleClick={null}
+                                            />
+                                        </div>
                                     </div>
                                     {pageTab === "header" ?
                                         <div className="content_wrap my_row creator mb-10">
@@ -322,25 +334,6 @@ function LPCreator({landingPageArray, courses, username}) {
 
                                                         />
                                                     </div>
-                                                    <div className="mb-5 w-full border-b border-gray-100 pb-3">
-                                                       <div className="section_title w-full flex justify-start gap-2">
-                                                           <h4>Colors</h4>
-                                                       </div>
-                                                       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-4">
-                                                           <ColorPicker
-                                                               label="Text"
-                                                               data={pageData}
-                                                               dispatch={dispatchPageData}
-                                                               elementName="header_text_color"
-                                                           />
-                                                           <ColorPicker
-                                                               label="Background"
-                                                               data={pageData}
-                                                               dispatch={dispatchPageData}
-                                                               elementName="header_color"
-                                                           />
-                                                       </div>
-                                                    </div>
                                                     <div className="mb-7 w-full border-b border-gray-100 pb-8">
                                                         <div className="section_title w-full !mb-5">
                                                             <h4>Font Size</h4>
@@ -361,7 +354,25 @@ function LPCreator({landingPageArray, courses, username}) {
                                                             />
                                                         </div>
                                                     </div>
-
+                                                    <div className="mb-5 w-full border-b border-gray-100 pb-3">
+                                                       <div className="section_title w-full flex justify-start gap-2">
+                                                           <h4>Colors</h4>
+                                                       </div>
+                                                       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-4">
+                                                           <ColorPicker
+                                                               label="Text"
+                                                               data={pageData}
+                                                               dispatch={dispatchPageData}
+                                                               elementName="header_text_color"
+                                                           />
+                                                           <ColorPicker
+                                                               label="Background"
+                                                               data={pageData}
+                                                               dispatch={dispatchPageData}
+                                                               elementName="header_color"
+                                                           />
+                                                       </div>
+                                                    </div>
                                                     <div className="w-full">
                                                         <div className="section_title w-full">
                                                             <h4>Landing Page URL</h4>

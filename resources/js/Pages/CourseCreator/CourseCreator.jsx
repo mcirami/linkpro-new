@@ -259,7 +259,7 @@ function CourseCreator({
                                                     allUserPages={userCourses}
                                                     settings={{
                                                         type : "course",
-                                                        addNewLabel : "Add New Course",
+                                                        addNewLabel : "New Course",
                                                         linkLabel : "title",
                                                         urlPrefix: '/creator-center/course/'
                                                     }}

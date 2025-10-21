@@ -353,7 +353,7 @@ function Dashboard({
                                                             userSub={userSub}
                                                             settings={{
                                                                 type : "page",
-                                                                addNewLabel : "Add New Page",
+                                                                addNewLabel : "New Page",
                                                                 linkLabel : "name",
                                                                 urlPrefix : "/dashboard/pages/"
                                                             }}
@@ -574,7 +574,7 @@ function Dashboard({
                                                     </div>
 
                                                     :
-                                                <div className="content_wrap !pt-5 my_row">
+                                                <div className="my_row">
                                                     {editLink.id ||
                                                     editLink.folder_id ?
                                                         <div className="my_row icon_links" id="scrollTo">
