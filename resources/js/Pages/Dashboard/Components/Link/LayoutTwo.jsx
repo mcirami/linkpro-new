@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import { RiEdit2Fill } from "react-icons/ri";
 import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import DeleteIcon from '@/Pages/Dashboard/Components/Link/Forms/DeleteIcon.jsx';
 import IconSettingComponent

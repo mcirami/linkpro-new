@@ -612,62 +612,138 @@ function CourseCreator({
                                                                 saveTo="offer"
                                                             />
                                                         </div>
-                                                        <div className="flex flex-between w-full mb-5 pb-5 border-b border-gray-100">
-                                                            <div className="section_title w-1/2 flex !justify-start gap-2">
-                                                                <h4>Public</h4>
-                                                                <ToolTipIcon section="public_course" />
+                                                        <div className="mb-5 pb-5 border-b border-gray-100 flex">
+                                                            <div className="flex justify-start w-full gap-2 items-center">
+                                                                <div className={`switch_wrap flex justify-end items-center`}>
+                                                                    <IOSSwitch
+                                                                        onChange={() => {
+                                                                            const packets = {
+                                                                                public: !offerData['public'],
+                                                                            };
+                                                                            updateOfferData(packets, offerData["id"]).then((response) => {
+                                                                                if(response.success) {
+                                                                                    dispatchOfferData({
+                                                                                        type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
+                                                                                        payload: {
+                                                                                            value: !offerData['public'],
+                                                                                            name: "public"
+                                                                                        }
+                                                                                    })
+                                                                                }
+                                                                            });
+                                                                        }}
+                                                                        checked={Boolean(offerData['public'])}
+                                                                        disabled={!Boolean(offerData["published"])}
+                                                                    />
+                                                                </div>
+                                                                <div className="section_title !mb-0 flex !justify-start gap-2">
+                                                                    <h4>Public</h4>
+                                                                    <ToolTipIcon section="public_course" />
+                                                                </div>
                                                             </div>
-                                                            <div className={`switch_wrap w-1/2 flex justify-end items-center`}>
-                                                                <IOSSwitch
-                                                                    onChange={() => {
-                                                                        const packets = {
-                                                                            public: !offerData['public'],
-                                                                        };
-                                                                        updateOfferData(packets, offerData["id"]).then((response) => {
-                                                                            if(response.success) {
-                                                                                dispatchOfferData({
-                                                                                    type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
-                                                                                    payload: {
-                                                                                        value: !offerData['public'],
-                                                                                        name: "public"
-                                                                                    }
-                                                                                })
-                                                                            }
-                                                                        });
-                                                                    }}
-                                                                    checked={Boolean(offerData['public'])}
-                                                                    disabled={!Boolean(offerData["published"])}
-                                                                />
+                                                            <div className="flex justify-end w-full gap-2 items-center">
+                                                                <div className="section_title !mb-0 flex !justify-start gap-2">
+                                                                    <h4>Active</h4>
+                                                                    <ToolTipIcon section="active_course" />
+                                                                </div>
+                                                                <div className={`switch_wrap flex justify-end items-center`}>
+                                                                    <IOSSwitch
+                                                                        onChange={() => {
+                                                                            const packets = {
+                                                                                active: !offerData['active'],
+                                                                            };
+                                                                            updateOfferData(packets, offerData["id"]).then((response) => {
+                                                                                if(response.success) {
+                                                                                    dispatchOfferData({
+                                                                                        type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
+                                                                                        payload: {
+                                                                                            value: !offerData['active'],
+                                                                                            name: "active"
+                                                                                        }
+                                                                                    })
+                                                                                }
+                                                                            });
+                                                                        }}
+                                                                        checked={Boolean(offerData['active'])}
+                                                                        disabled={!Boolean(offerData["published"])}
+                                                                    />
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div className="flex flex-between w-full">
-                                                            <div className="section_title w-1/2 flex !justify-start gap-2">
-                                                                <h4>Active</h4>
-                                                                <ToolTipIcon section="active_course" />
-                                                            </div>
-                                                            <div className={`switch_wrap w-1/2 flex justify-end items-center`}>
-                                                                <IOSSwitch
-                                                                    onChange={() => {
-                                                                        const packets = {
-                                                                            active: !offerData['active'],
-                                                                        };
-                                                                        updateOfferData(packets, offerData["id"]).then((response) => {
-                                                                            if(response.success) {
-                                                                                dispatchOfferData({
-                                                                                    type: OFFER_ACTIONS.UPDATE_OFFER_DATA,
-                                                                                    payload: {
-                                                                                        value: !offerData['active'],
-                                                                                        name: "active"
-                                                                                    }
-                                                                                })
-                                                                            }
-                                                                        });
-                                                                    }}
-                                                                    checked={Boolean(offerData['active'])}
-                                                                    disabled={!Boolean(offerData["published"])}
-                                                                />
-                                                            </div>
-                                                        </div>
+                                                        {/* Legend */}
+                                                        <section className="mb-10 rounded-2xl bg-white/60 p-4 shadow-md">
+                                                            {/*<div className="mb-4 text-sm font-medium text-gray-700">Legend</div>*/}
+
+                                                            <dl className="grid gap-4 sm:grid-cols-2">
+                                                                {/* PRP */}
+                                                                <div className="flex items-start gap-3">
+                                                <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-indigo-50 px-2 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200">
+                                                    PRP
+                                                </span>
+                                                                    <div className="min-w-0">
+                                                                        <dt className="text-sm font-medium text-gray-900">Personal Referral Payout</dt>
+                                                                        <dd className="text-sm text-gray-600">
+                                                                            Your payout will be <span className="font-semibold">80%</span> of the price you set when you
+                                                                            personally refer someone to your course.
+                                                                        </dd>
+                                                                    </div>
+                                                                </div>
+
+                                                                {/* ARP */}
+                                                                <div className="flex items-start gap-3">
+      <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-indigo-50 px-2 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200">
+        ARP
+      </span>
+                                                                    <div className="min-w-0">
+                                                                        <dt className="text-sm font-medium text-gray-900">Affiliate Referral Payout</dt>
+                                                                        <dd className="text-sm text-gray-600">
+                                                                            Your payout will be <span className="font-semibold">40%</span> of the price you set when someone
+                                                                            adds your course to their LinkPro page.
+                                                                        </dd>
+                                                                    </div>
+                                                                </div>
+
+                                                                {/* PRP */}
+                                                                <div className="flex items-start gap-3">
+                                                                    <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-green-50 px-2 text-xs font-semibold text-green-700 ring-1 ring-green-200">
+                                                                        Payout
+                                                                    </span>
+                                                                    <div className="min-w-0">
+                                                                        <dt className="text-sm font-medium text-gray-900">PRP Calculations</dt>
+                                                                        <dd className="text-sm text-gray-600">
+                                                                            ${offerData['price']} * 80% = <span className="font-semibold">${ (Math.round( (offerData['price'] * .80) * 100) / 100).toFixed(2) }</span>
+                                                                        </dd>
+                                                                    </div>
+                                                                </div>
+                                                                {/* ARP */}
+                                                                <div className="flex items-start gap-3">
+                                                                    <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-green-50 px-2 text-xs font-semibold text-green-700 ring-1 ring-green-200">
+                                                                        Payout
+                                                                    </span>
+                                                                    <div className="min-w-0">
+                                                                        <dt className="text-sm font-medium text-gray-900">ARP Calculations</dt>
+                                                                        <dd className="text-sm text-gray-600">
+                                                                            ${offerData['price']} * 40% = <span className="font-semibold">${ (Math.round( (offerData['price']  * .40) * 100) / 100).toFixed(2) }</span>
+                                                                        </dd>
+                                                                    </div>
+                                                                </div>
+                                                                {/* Public */}
+                                                                {/*<div className="flex items-start gap-3">
+                                                                  <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-blue-50 px-2 text-xs font-semibold text-blue-700 ring-1 ring-blue-200">
+                                                                    Public
+                                                                  </span>
+                                                                    <div className="min-w-0">
+                                                                        <dt className="text-sm font-medium text-gray-900">Visibility</dt>
+                                                                        <dd className="text-sm text-gray-600">
+                                                                            Making a course public lets any LinkPro user add the course icon to their page and sell it as an affiliate.
+                                                                        </dd>
+                                                                        <dd className="text-sm text-gray-600">
+                                                                            <small>(Course must be Published before being made public.)</small>
+                                                                        </dd>
+                                                                    </div>
+                                                                </div>*/}
+                                                            </dl>
+                                                        </section>
                                                        {/* <SwitchOptions
                                                             dispatch={dispatchOfferData}
                                                             data={offerData}

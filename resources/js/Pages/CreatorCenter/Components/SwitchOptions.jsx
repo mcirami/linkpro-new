@@ -6,7 +6,7 @@ import {Link} from '@inertiajs/react';
 const SwitchOptions = ({offer}) => {
 
     const [currentOffer, setCurrentOffer] = useState(offer);
-    const {id, title, price, active, public_offer, published, slug, course_id} = currentOffer
+    const {id, active, public_offer, published} = currentOffer
 
     const handleChange = (type) => {
         const value = !currentOffer[type];
@@ -31,30 +31,26 @@ const SwitchOptions = ({offer}) => {
     }
 
     return (
-        <tr key={id}>
-            <td>
-                <Link className="blue" href={`/creator-center/course/${course_id}`}> Edit</Link>
-                <p>{title}</p>
-            </td>
-            <td>
+
+        <div className="flex justify-between items-center pt-2 ">
+            <div className="flex justify-between text-sm text-gray-600 gap-2">
                 <IOSSwitch
                     onChange={() => handleChange('active')}
                     checked={Boolean(active)}
                     disabled={!Boolean(published)}
                 />
-            </td>
-            <td>
+                <div>Active</div>
+            </div>
+            <div className="flex justify-between text-sm text-gray-600 gap-2">
+                <div>Public</div>
                 <IOSSwitch
                     onChange={() => handleChange('public_offer')}
                     checked={Boolean(public_offer)}
                     disabled={!Boolean(published)}
                 />
-            </td>
-            <td>${price || '0.00'}</td>
-            <td>${ (Math.round( (price * .80) * 100) / 100).toFixed(2) }</td>
-            <td>${ (Math.round( (price * .40) * 100) / 100).toFixed(2) }</td>
-        </tr>
-    );
+            </div>
+        </div>
+    )
 };
 
 export default SwitchOptions;

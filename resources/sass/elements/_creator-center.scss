@@ -1,8 +1,10 @@
 @use "../partials/variables" as *;
 @use "../partials/mixins" as *;
 
-#creator_center, #pre_register{
+#pre_register {
     max-width: 1200px;
+}
+#creator_center, #pre_register{
 
     &.card {
         @include query(desktop) {
@@ -25,10 +27,12 @@
 
     .grid_columns {
         display: grid;
-        grid-template-columns: 1fr 3fr;
+        grid-template-columns: clamp(280px, 22vw, 360px) minmax(0, 1fr);
+        gap: 24px;
 
         @media screen and (max-width: 992px) {
             grid-template-columns: 1fr;
+            gap: 0;
         }
 
         h3 {
@@ -38,7 +42,6 @@
 
         .column_title {
             padding: 0 20px 20px;
-            border-bottom: 1px solid $borderGray;
             margin-bottom: 20px;
 
             @include query(tablet) {
@@ -75,6 +78,20 @@
 
             &:first-child {
                 padding-right: 20px;
+                padding-top: 20px;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                -ms-flex-wrap: nowrap;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                -webkit-justify-content: flex-start;
+                align-items: flex-start;
+                -webkit-align-items: flex-start;
 
                 @include query(tablet) {
                     padding-bottom: 20px;
@@ -105,13 +122,6 @@
                         flex-wrap: nowrap;
                         justify-content: space-between;
                         -webkit-justify-content: space-between;
-                    }
-
-                    @include query(mobile) {
-                        border-top: 1px solid;
-                        border-bottom: 1px solid;
-                        border-color: rgba(155, 155, 155, 0.2);
-                        padding: 20px 0;
                     }
 
                     .button_wrap {
@@ -153,7 +163,6 @@
             }
 
             &:last-child {
-                border-left: 1px solid $borderGray;
                 padding-left: 20px;
 
                 @include query(tablet){

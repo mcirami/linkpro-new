@@ -22,7 +22,7 @@ const MenuItem = ({
             <li>
                 <Link id={id}
                    href={ (name === "pages" && defaultPage) ? pageUrl + defaultPage : pageUrl}
-                      className={url.includes(pageUrl) ? 'active' : ''}
+                      className={url.includes(pageUrl) && !url.includes('landing-page') && !url.includes('course/') ? 'active' : ''}
                    onMouseOver={() => handleMouseOver(name)}
                    onMouseOut={handleMouseOut}
                 >
