@@ -6,6 +6,9 @@ import FolderStats from './Components/FolderStats';
 import AffiliateStats from './Components/AffiliateStats';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import {Head} from '@inertiajs/react';
+import PageHeader from "@/Components/PageHeader.jsx";
+import LivePageButton from "@/Components/LivePageButton.jsx";
+import PageTabs from "@/Components/PageTabs.jsx";
 
 function Stats() {
 
@@ -75,7 +78,12 @@ function Stats() {
             <div className="container" id="stats_page">
 
                 <div className="my_row form_page stats">
-                    <h2 className="page_title text-center">Stats</h2>
+                    <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
+                        <PageHeader
+                            heading="Stats"
+                            description="View your page, icon, folder and affiliate clicks and sales."
+                        />
+                    </div>
                     <div className="card flex relative">
                         {isLoading &&
                             <div id="loading_spinner" className="active">
@@ -85,160 +93,82 @@ function Stats() {
                             </div>
                         }
                         <div id="stats" className="my_row">
-                            <div className="tabs_wrap">
-                                <div className="my_row tab_nav">
-                                    <div className={`tab ${tab === "page" ? "active" : "" }` }>
-                                        <a href="#" className="tab_link" data-tab="page" onClick={(e) => { handleClick(e) } }>
-                                            Page Stats
-                                        </a>
-                                        { windowWidth < 551 && tab === "page" ?
-                                            <PageStats
-                                                pageStats={pageStats}
-                                                setPageStats={setPageStats}
-                                                pageStatsDate={pageStatsDate}
-                                                setPageStatsDate={setPageStatsDate}
-                                                pageDropdownValue={pageDropdownValue}
-                                                setPageDropdownValue={setPageDropdownValue}
-                                                isLoading={isLoading}
-                                                setIsLoading={setIsLoading}
-                                                tab={tab}
-                                            />
-                                            :
-                                            ""
-                                        }
-                                    </div>
-                                    <div className={`tab ${tab === "icon" ? "active" : "" }` }>
-                                        <a href="#" className="tab_link" data-tab="icon" onClick={(e) => { handleClick(e) } }>
-                                            Icon Stats
-                                        </a>
-                                        {tab ==="icon" && windowWidth < 551 ?
-                                            <LinkStats
-                                                linkStats={linkStats}
-                                                setLinkStats={setLinkStats}
-                                                deletedStats={deletedStats}
-                                                setDeletedStats={setDeletedStats}
-                                                linkStatsDate={linkStatsDate}
-                                                setLinkStatsDate={setLinkStatsDate}
-                                                linkDropdownValue={linkDropdownValue}
-                                                setLinkDropdownValue={setLinkDropdownValue}
-                                                isLoading={isLoading}
-                                                setIsLoading={setIsLoading}
-                                                tab={tab}
-                                            />
-                                            :
-                                            ""
-                                        }
-                                    </div>
-                                    <div className={`tab ${tab === "folder" ? "active" : "" }` }>
-                                        <a href="#" className="tab_link" data-tab="folder" onClick={(e) => { handleClick(e) } }>
-                                            Folder Stats
-                                        </a>
-                                        {tab === "folder" && windowWidth < 551 ?
-                                            <FolderStats
-                                                folderStats={folderStats}
-                                                setFolderStats={setFolderStats}
-                                                folderStatsDate={folderStatsDate}
-                                                setFolderStatsDate={setFolderStatsDate}
-                                                folderDropdownValue={folderDropdownValue}
-                                                setFolderDropdownValue={setFolderDropdownValue}
-                                                isLoading={isLoading}
-                                                setIsLoading={setIsLoading}
-                                                tab={tab}
-                                            />
-                                            :
-                                            ""
-                                        }
-                                    </div>
-                                    <div className={`tab ${tab === "affiliate" ? "active" : "" }` } >
-                                        <a href="#" className="tab_link" data-tab="affiliate" onClick={(e) => { handleClick(e) } }>
-                                            Affiliate Stats
-                                        </a>
-                                        {tab === "affiliate" && windowWidth < 551 ?
-                                            <AffiliateStats
-                                                affiliateStats={affiliateStats}
-                                                setAffiliateStats={setAffiliateStats}
-                                                totals={affiliateTotals}
-                                                setTotals={setAffiliateTotals}
-                                                statsDate={affiliateStatsDate}
-                                                setStatsDate={setAffiliateStatsDate}
-                                                dropdownValue={affiliateDropdownValue}
-                                                setDropdownValue={setAffiliateDropdownValue}
-                                                filterByValue={filterByValue}
-                                                setFilterByValue={setFilterByValue}
-                                                isLoading={isLoading}
-                                                setIsLoading={setIsLoading}
-                                                tab={tab}
-                                            />
-                                            :
-                                            ""
-                                        }
-                                    </div>
+                            <div className="tabs_wrap shadow-md">
+                                <div className="page_tabs w-full">
+                                    <PageTabs
+                                        tabs={[
+                                            { value: "page", label: "Page Stats"},
+                                            { value: "icon", label: "Icon Stats"},
+                                            { value: "folder", label: "Folder Stats"},
+                                            { value: "affiliate", label: "Affiliate Stats"}
+                                        ]}
+                                        pageTab={tab}
+                                        setPageTab={setTab}
+                                    />
                                 </div>
+                                <>
+                                    {tab === "page" &&
+                                        <PageStats
+                                            pageStats={pageStats}
+                                            setPageStats={setPageStats}
+                                            pageStatsDate={pageStatsDate}
+                                            setPageStatsDate={setPageStatsDate}
+                                            pageDropdownValue={pageDropdownValue}
+                                            setPageDropdownValue={setPageDropdownValue}
+                                            isLoading={isLoading}
+                                            setIsLoading={setIsLoading}
+                                            tab={tab}
+                                        />
+                                    }
+                                    {tab ==="icon" &&
+                                        <LinkStats
+                                            linkStats={linkStats}
+                                            setLinkStats={setLinkStats}
+                                            deletedStats={deletedStats}
+                                            setDeletedStats={setDeletedStats}
+                                            linkStatsDate={linkStatsDate}
+                                            setLinkStatsDate={setLinkStatsDate}
+                                            linkDropdownValue={linkDropdownValue}
+                                            setLinkDropdownValue={setLinkDropdownValue}
+                                            isLoading={isLoading}
+                                            setIsLoading={setIsLoading}
+                                            tab={tab}
+                                        />
+                                    }
 
-                                { windowWidth > 550 &&
-                                    <>
-                                        {tab === "page" &&
-                                            <PageStats
-                                                pageStats={pageStats}
-                                                setPageStats={setPageStats}
-                                                pageStatsDate={pageStatsDate}
-                                                setPageStatsDate={setPageStatsDate}
-                                                pageDropdownValue={pageDropdownValue}
-                                                setPageDropdownValue={setPageDropdownValue}
-                                                isLoading={isLoading}
-                                                setIsLoading={setIsLoading}
-                                                tab={tab}
-                                            />
-                                        }
-                                        {tab ==="icon" &&
-                                            <LinkStats
-                                                linkStats={linkStats}
-                                                setLinkStats={setLinkStats}
-                                                deletedStats={deletedStats}
-                                                setDeletedStats={setDeletedStats}
-                                                linkStatsDate={linkStatsDate}
-                                                setLinkStatsDate={setLinkStatsDate}
-                                                linkDropdownValue={linkDropdownValue}
-                                                setLinkDropdownValue={setLinkDropdownValue}
-                                                isLoading={isLoading}
-                                                setIsLoading={setIsLoading}
-                                                tab={tab}
-                                            />
-                                        }
+                                    {tab === "folder" &&
+                                        <FolderStats
+                                            folderStats={folderStats}
+                                            setFolderStats={setFolderStats}
+                                            folderStatsDate={folderStatsDate}
+                                            setFolderStatsDate={setFolderStatsDate}
+                                            folderDropdownValue={folderDropdownValue}
+                                            setFolderDropdownValue={setFolderDropdownValue}
+                                            isLoading={isLoading}
+                                            setIsLoading={setIsLoading}
+                                            tab={tab}
+                                        />
+                                    }
 
-                                        {tab === "folder" &&
-                                            <FolderStats
-                                                folderStats={folderStats}
-                                                setFolderStats={setFolderStats}
-                                                folderStatsDate={folderStatsDate}
-                                                setFolderStatsDate={setFolderStatsDate}
-                                                folderDropdownValue={folderDropdownValue}
-                                                setFolderDropdownValue={setFolderDropdownValue}
-                                                isLoading={isLoading}
-                                                setIsLoading={setIsLoading}
-                                                tab={tab}
-                                            />
-                                        }
+                                    {tab === "affiliate" &&
+                                        <AffiliateStats
+                                            affiliateStats={affiliateStats}
+                                            setAffiliateStats={setAffiliateStats}
+                                            totals={affiliateTotals}
+                                            setTotals={setAffiliateTotals}
+                                            statsDate={affiliateStatsDate}
+                                            setStatsDate={setAffiliateStatsDate}
+                                            dropdownValue={affiliateDropdownValue}
+                                            setDropdownValue={setAffiliateDropdownValue}
+                                            filterByValue={filterByValue}
+                                            setFilterByValue={setFilterByValue}
+                                            isLoading={isLoading}
+                                            setIsLoading={setIsLoading}
+                                            tab={tab}
+                                        />
+                                    }
+                                </>
 
-                                        {tab === "affiliate" &&
-                                            <AffiliateStats
-                                                affiliateStats={affiliateStats}
-                                                setAffiliateStats={setAffiliateStats}
-                                                totals={affiliateTotals}
-                                                setTotals={setAffiliateTotals}
-                                                statsDate={affiliateStatsDate}
-                                                setStatsDate={setAffiliateStatsDate}
-                                                dropdownValue={affiliateDropdownValue}
-                                                setDropdownValue={setAffiliateDropdownValue}
-                                                filterByValue={filterByValue}
-                                                setFilterByValue={setFilterByValue}
-                                                isLoading={isLoading}
-                                                setIsLoading={setIsLoading}
-                                                tab={tab}
-                                            />
-                                        }
-                                    </>
-                                }
                             </div>
                         </div>
                     </div>

@@ -19,16 +19,16 @@ const PageStats = ({
 
     useEffect(() => {
 
-        if (pageStats.length > 0) {
+        /*if (pageStats.length > 0) {*/
             setIsLoading(true);
             const packets = {
                 currentDay: true
             }
             pageStatsCall(packets)
-        } else {
+        /*} else {
             setIsLoading(false);
             setAnimate(false);
-        }
+        }*/
 
     },[])
 
