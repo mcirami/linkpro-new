@@ -7,16 +7,18 @@ import AffiliateStats from './Components/AffiliateStats';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import {Head} from '@inertiajs/react';
 import PageHeader from "@/Components/PageHeader.jsx";
-import LivePageButton from "@/Components/LivePageButton.jsx";
 import PageTabs from "@/Components/PageTabs.jsx";
 
 function Stats() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [tab, setTab] = useState("page");
-    const [pageStats, setPageStats] = useState([])
-    const [linkStats, setLinkStats] = useState([])
+    const [pageStats, setPageStats] = useState([]);
+    const [pageTotals, setPageTotals] = useState(null);
+    const [linkStats, setLinkStats] = useState([]);
+    const [linkTotals, setLinkTotals] = useState(null);
     const [deletedStats, setDeletedStats] = useState([]);
+    const [deletedTotals, setDeletedTotals] = useState(null);
     const [folderStats, setFolderStats] = useState([])
     const [affiliateStats, setAffiliateStats] = useState([]);
     const [affiliateTotals, setAffiliateTotals] = useState([]);
@@ -45,11 +47,6 @@ function Stats() {
     const [filterByValue, setFilterByValue] = useState("offer");
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-    const handleClick = e => {
-        e.preventDefault();
-        setTab(e.target.dataset.tab);
-    }
 
     useEffect(() => {
         setWindowWidth(window.innerWidth);
@@ -85,15 +82,15 @@ function Stats() {
                         />
                     </div>
                     <div className="card flex relative">
-                        {isLoading &&
+                        {/*{isLoading &&
                             <div id="loading_spinner" className="active">
                                 <div >
                                     <img src={Vapor.asset('images/spinner.svg')} alt="" />
                                 </div>
                             </div>
-                        }
+                        }*/}
                         <div id="stats" className="my_row">
-                            <div className="tabs_wrap shadow-md">
+                            <div className="tabs_wrap shadow-md w-full">
                                 <div className="page_tabs w-full">
                                     <PageTabs
                                         tabs={[
@@ -106,69 +103,80 @@ function Stats() {
                                         setPageTab={setTab}
                                     />
                                 </div>
-                                <>
-                                    {tab === "page" &&
-                                        <PageStats
-                                            pageStats={pageStats}
-                                            setPageStats={setPageStats}
-                                            pageStatsDate={pageStatsDate}
-                                            setPageStatsDate={setPageStatsDate}
-                                            pageDropdownValue={pageDropdownValue}
-                                            setPageDropdownValue={setPageDropdownValue}
-                                            isLoading={isLoading}
-                                            setIsLoading={setIsLoading}
-                                            tab={tab}
-                                        />
-                                    }
-                                    {tab ==="icon" &&
-                                        <LinkStats
-                                            linkStats={linkStats}
-                                            setLinkStats={setLinkStats}
-                                            deletedStats={deletedStats}
-                                            setDeletedStats={setDeletedStats}
-                                            linkStatsDate={linkStatsDate}
-                                            setLinkStatsDate={setLinkStatsDate}
-                                            linkDropdownValue={linkDropdownValue}
-                                            setLinkDropdownValue={setLinkDropdownValue}
-                                            isLoading={isLoading}
-                                            setIsLoading={setIsLoading}
-                                            tab={tab}
-                                        />
+                                <div className="relative w-full flex flex-col">
+
+                                    {isLoading &&
+                                        <div id="loading_spinner" className="active">
+                                            <div >
+                                                <img src={Vapor.asset('images/spinner.svg')} alt="" />
+                                            </div>
+                                        </div>
                                     }
 
-                                    {tab === "folder" &&
-                                        <FolderStats
-                                            folderStats={folderStats}
-                                            setFolderStats={setFolderStats}
-                                            folderStatsDate={folderStatsDate}
-                                            setFolderStatsDate={setFolderStatsDate}
-                                            folderDropdownValue={folderDropdownValue}
-                                            setFolderDropdownValue={setFolderDropdownValue}
-                                            isLoading={isLoading}
-                                            setIsLoading={setIsLoading}
-                                            tab={tab}
-                                        />
-                                    }
+                                    <PageStats
+                                        isActive={tab === "page"}
+                                        pageStats={pageStats}
+                                        setPageStats={setPageStats}
+                                        totals={pageTotals}
+                                        setTotals={setPageTotals}
+                                        pageStatsDate={pageStatsDate}
+                                        setPageStatsDate={setPageStatsDate}
+                                        pageDropdownValue={pageDropdownValue}
+                                        setPageDropdownValue={setPageDropdownValue}
+                                        isLoading={isLoading}
+                                        setIsLoading={setIsLoading}
+                                        tab={tab}
+                                    />
 
-                                    {tab === "affiliate" &&
-                                        <AffiliateStats
-                                            affiliateStats={affiliateStats}
-                                            setAffiliateStats={setAffiliateStats}
-                                            totals={affiliateTotals}
-                                            setTotals={setAffiliateTotals}
-                                            statsDate={affiliateStatsDate}
-                                            setStatsDate={setAffiliateStatsDate}
-                                            dropdownValue={affiliateDropdownValue}
-                                            setDropdownValue={setAffiliateDropdownValue}
-                                            filterByValue={filterByValue}
-                                            setFilterByValue={setFilterByValue}
-                                            isLoading={isLoading}
-                                            setIsLoading={setIsLoading}
-                                            tab={tab}
-                                        />
-                                    }
-                                </>
+                                    <LinkStats
+                                        isActive={tab === "icon"}
+                                        linkStats={linkStats}
+                                        setLinkStats={setLinkStats}
+                                        linkTotals={linkTotals}
+                                        setLinkTotals={setLinkTotals}
+                                        deletedStats={deletedStats}
+                                        setDeletedStats={setDeletedStats}
+                                        deletedTotals={deletedTotals}
+                                        setDeletedTotals={setDeletedTotals}
+                                        linkStatsDate={linkStatsDate}
+                                        setLinkStatsDate={setLinkStatsDate}
+                                        linkDropdownValue={linkDropdownValue}
+                                        setLinkDropdownValue={setLinkDropdownValue}
+                                        isLoading={isLoading}
+                                        setIsLoading={setIsLoading}
+                                        tab={tab}
+                                    />
 
+                                    <FolderStats
+                                        isActive={tab === "folder"}
+                                        folderStats={folderStats}
+                                        setFolderStats={setFolderStats}
+                                        folderStatsDate={folderStatsDate}
+                                        setFolderStatsDate={setFolderStatsDate}
+                                        folderDropdownValue={folderDropdownValue}
+                                        setFolderDropdownValue={setFolderDropdownValue}
+                                        isLoading={isLoading}
+                                        setIsLoading={setIsLoading}
+                                        tab={tab}
+                                    />
+
+                                    <AffiliateStats
+                                        isActive={tab === "affiliate"}
+                                        affiliateStats={affiliateStats}
+                                        setAffiliateStats={setAffiliateStats}
+                                        totals={affiliateTotals}
+                                        setTotals={setAffiliateTotals}
+                                        statsDate={affiliateStatsDate}
+                                        setStatsDate={setAffiliateStatsDate}
+                                        dropdownValue={affiliateDropdownValue}
+                                        setDropdownValue={setAffiliateDropdownValue}
+                                        filterByValue={filterByValue}
+                                        setFilterByValue={setFilterByValue}
+                                        isLoading={isLoading}
+                                        setIsLoading={setIsLoading}
+                                        tab={tab}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -8,7 +8,8 @@ export const getPageStats = (packets) => {
             //EventBus.dispatch("success", { message: returnMessage });
             return {
                 success : true,
-                data: returnData["data"]
+                stats: returnData["data"]?.stats ?? [],
+                totals: returnData["data"]?.totals ?? null,
             }
         },
 
@@ -34,8 +35,10 @@ export const getLinkStats = (packets) => {
 
             return {
                 success : true,
-                linkStats: returnData["currentData"],
-                deletedStats: returnData["pastData"]
+                linkStats: returnData["currentData"] ?? [],
+                linkTotals: returnData["currentTotals"] ?? null,
+                deletedStats: returnData["pastData"] ?? [],
+                deletedTotals: returnData["pastTotals"] ?? null,
             }
         },
 
@@ -61,7 +64,7 @@ export const getFolderStats = (packets) => {
 
             return {
                 success : true,
-                currentData: returnData["currentData"],
+                currentData: returnData["currentData"] ?? [],
                 /*pastData: returnData["pastData"]*/
             }
         },

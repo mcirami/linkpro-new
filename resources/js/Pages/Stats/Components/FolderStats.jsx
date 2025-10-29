@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState, useMemo} from 'react';
+import React, {useCallback, useEffect, useState, useMemo, useRef} from 'react';
 import {
     getFolderStats,
 } from '@/Services/StatsRequests.jsx';
@@ -8,6 +8,7 @@ import Filters from './Filters';
 import Table from './Table';
 
 const FolderStats = ({
+                         isActive,
                          folderStats,
                          setFolderStats,
                          folderStatsDate,
@@ -20,37 +21,26 @@ const FolderStats = ({
 }) => {
 
     const [animate, setAnimate] = useState(true);
-
-    useEffect(() => {
-        if (folderStats.length < 1) {
-            setIsLoading(true);
-            const packets = {
-                currentDay: true
-            }
-            folderStatsCall(packets)
-        } else {
-            setIsLoading(false);
-            setAnimate(false);
-        }
-
-    },[])
+    const hasFetchedRef = useRef(false);
 
     const columns = useMemo(
         () => [
             {
                 id: 'current_icons',
-                Header: "Current Icons",
-                accessor: "icon",
+                header: "Current Icons",
+                accessorKey: "icon",
             },
             {
                 id: 'icon_name',
-                Header: "Icon Name",
-                accessor: "iconName",
+                header: "Icon Name",
+                accessorKey: "iconName",
+                meta: { totalKey: 'count', format: 'count', countLabel: 'Icons' },
             },
             {
                 id: 'icon_clicks',
-                Header: "Icon Clicks",
-                accessor: "visits",
+                header: "Icon Clicks",
+                accessorKey: "visits",
+                meta: { totalKey: 'visits' },
             },
         ],[]
     )
@@ -89,15 +79,24 @@ const FolderStats = ({
 
     const handleDropdownChange = (e) => {
 
+        const value = Number(e.target.value);
+        setFolderDropdownValue(value);
+
+        if (value === 0) {
+            setFolderStatsDate({
+                startDate: null,
+                endDate: null
+            });
+            return;
+        }
+
         setFolderStatsDate({
             startDate: null,
-            endData: null
+            endDate: null
         })
 
-        setFolderDropdownValue(e.target.value);
-
         const packets = {
-            dateValue: e.target.value
+            dateValue: value
         }
 
         folderStatsCall(packets);
@@ -106,21 +105,34 @@ const FolderStats = ({
     const folderStatsCall = useCallback((packets) => {
 
         setAnimate(true);
+        setIsLoading(true);
         getFolderStats(packets)
         .then((data) => {
             if (data["success"]) {
+                hasFetchedRef.current = true;
                 setTimeout(() => {
                     setFolderStats(data["currentData"]);
                 }, 500)
             }
-            setAnimate(false)
-            setIsLoading(false);
+        })
+        .finally(() => {
+            setTimeout(() => {
+                setAnimate(false)
+                setIsLoading(false);
+            }, 500)
         });
 
-    }, [folderStatsDate])
+    }, [setFolderStats, setIsLoading])
+
+    useEffect(() => {
+        if (isActive && !hasFetchedRef.current) {
+            folderStatsCall({ currentDay: true });
+        }
+
+    },[isActive, folderStatsCall])
 
     return (
-        <div className="stats_wrap my_row relative">
+        <div className={`stats_wrap my_row relative ${isActive ? '' : '!hidden'}`}>
             <Filters handleDateChange={handleDateChange}
                      startDate={folderStatsDate.startDate}
                      endDate={folderStatsDate.endDate}
@@ -142,7 +154,7 @@ const FolderStats = ({
                 :
                 folderStats.map((item) => {
 
-                    const {id, name, clickCount, links } = item;
+                    const {id, name, clickCount, links, linksTotals } = item;
 
                     return (
                         <div className="my_row" key={id}>
@@ -161,6 +173,7 @@ const FolderStats = ({
                                         <Table
                                             isLoading={isLoading}
                                             animate={animate}
+                                            totals={linksTotals}
                                             data={links}
                                             columns={columns}
                                         />

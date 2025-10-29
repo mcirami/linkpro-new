@@ -2,6 +2,7 @@ import React, {useMemo, useState} from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import {Head} from '@inertiajs/react';
 import ColumnComponent from '@/Pages/AllCourses/ColumnComponent.jsx';
+import PageHeader from "@/Components/PageHeader.jsx";
 
 const Courses = ({purchasedCourses, unPurchasedCourses}) => {
 
@@ -66,26 +67,43 @@ const Courses = ({purchasedCourses, unPurchasedCourses}) => {
                 <div id="links_page" className="live_page course">
                     <div className="my_row courses_grid all_courses">
                         <div className="container">
-                            {purchasedCourses.length > 0 &&
-                                <section className="section_wrap my_row">
-                                    <h2 className="page_title">Your Courses</h2>
-                                    <div className="sections">
-                                        {purchasedCourses.map((course) => {
-
-                                            return (
-
-                                               <ColumnComponent
-                                                   key={course.id}
-                                                   course={course}
-                                                   type="purchased"
-                                               />
-                                            )
-                                        })}
-                                    </div>
-                                </section>
-                            }
                             <section className="section_wrap my_row">
-                                <h2 className="page_title">Available Courses</h2>
+                                <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
+                                    <PageHeader
+                                        heading="Your Courses"
+                                        description="Courses that you have purchased are displayed below."
+                                    />
+                                </div>
+                                {purchasedCourses.length > 0 ?
+
+                                        <div className="sections">
+                                            {purchasedCourses.map((course) => {
+
+                                                return (
+
+                                                   <ColumnComponent
+                                                       key={course.id}
+                                                       course={course}
+                                                       type="purchased"
+                                                   />
+                                                )
+                                            })}
+                                        </div>
+                                    :
+                                    <div className="text-center min-h-[300px] flex flex-col justify-center items-center relative">
+                                        <img className="absolute top-4 w-[300px] h-[300px] opacity-[.05]" src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro"/>
+                                        <p className="text-[1.8rem] mb-4">You have not purchased any courses.</p>
+                                        <p className="text-lg">Check out our available courses for purchase below to get started.</p>
+                                    </div>
+                                }
+                            </section>
+                            <section className="section_wrap my_row">
+                                <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100 mb-10">
+                                    <PageHeader
+                                        heading="Available Courses"
+                                        description="Click on a course below to view details and purchase. Filter by creator or category or search to find what you're looking for."
+                                    />
+                                </div>
                                 <div className="filters" style={{display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem'}}>
                                     <div className="filter_control" style={{display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: '180px'}}>
                                         <label htmlFor="creator-filter">Creator</label>

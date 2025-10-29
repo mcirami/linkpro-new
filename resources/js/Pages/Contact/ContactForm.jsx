@@ -72,7 +72,6 @@ const ContactForm = ({honeypot, spamDetected, setShowLoader}) => {
                 :
 
                 <>
-                    <p className="form_text mb-5 px-5">Got questions? Need Support? Want to inquire about business opportunities? Send us a message and we'll respond as soon as possible</p>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group relative p-0 mb-5">
                             <TextInput
@@ -99,7 +98,7 @@ const ContactForm = ({honeypot, spamDetected, setShowLoader}) => {
                             <InputLabel htmlFor="email" value="E-mail Address"/>
                             <InputError message={errors.email} className="mt-2 text-left"/>
                         </div>
-                        <div className="form-group relative p-0 mb-5">
+                        <div className="form-group relative p-0 mb-5 mt-8">
                             <select
                                 className="active"
                                 name="reason"

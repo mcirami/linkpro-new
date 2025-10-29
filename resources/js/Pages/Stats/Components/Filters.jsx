@@ -17,14 +17,15 @@ export const Filters = ({
 
     const handleFilterByChange = (e) => {
 
+        const value = e.target.value;
         let url = "";
-        if (e.target.value === "offer") {
+        if (value === "offer") {
             url = '/stats/get/offer'
-        } else if (e.target.value === "publisher") {
+        } else if (value === "publisher") {
             url = '/stats/get/publisher'
         }
 
-        setFilterByValue(e.target.value);
+        setFilterByValue(value);
 
         let packets;
 
@@ -47,7 +48,7 @@ export const Filters = ({
             {tab === "affiliate" &&
                 <div className="my_row filter filter_by">
                     <div className="column">
-                        <select onChange={(e) => handleFilterByChange(e)} value={filterByValue}>
+                        <select onChange={(e) => handleFilterByChange(e)} value={filterByValue || ""}>
                             <option value="offer">Stats by Offer</option>
                             <option value="publisher">Stats by Publisher</option>
                         </select>

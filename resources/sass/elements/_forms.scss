@@ -1360,6 +1360,9 @@ form .bottom_row a {
     -webkit-align-items: center;
     background: rgba(0, 0, 0, 0.3);
     z-index: 998;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
 
     &.active {
         display: flex;

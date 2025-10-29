@@ -1,11 +1,14 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {getPageStats} from '@/Services/StatsRequests.jsx';
 import Filters from './Filters';
 import Table from './Table';
 
 const PageStats = ({
+                       isActive,
                        pageStats,
                        setPageStats,
+                       totals,
+                       setTotals,
                        pageStatsDate,
                        setPageStatsDate,
                        pageDropdownValue,
@@ -16,38 +19,27 @@ const PageStats = ({
 }) => {
 
     const [animate, setAnimate] = useState(true);
-
-    useEffect(() => {
-
-        /*if (pageStats.length > 0) {*/
-            setIsLoading(true);
-            const packets = {
-                currentDay: true
-            }
-            pageStatsCall(packets)
-        /*} else {
-            setIsLoading(false);
-            setAnimate(false);
-        }*/
-
-    },[])
+    const hasFetchedRef = useRef(false);
 
     const columns = useMemo(
         () => [
             {
                 id: "page_name",
-                Header: "Page Name",
-                accessor: "pageName",
+                header: "Page Name",
+                accessorKey: "pageName",
+                meta: { totalKey: "count", format: "count", countLabel: "Pages" },
             },
             {
                 id: "page_loads",
-                Header: "Page Loads",
-                accessor: "visits",
+                header: "Page Loads",
+                accessorKey: "visits",
+                meta: { totalKey: "visits" },
             },
             {
                 id: "icon_clicks",
-                Header: "Icon Clicks",
-                accessor: "linkVisits",
+                header: "Icon Clicks",
+                accessorKey: "linkVisits",
+                meta: { totalKey: "linkVisits" },
             },
         ],[]
     )
@@ -86,36 +78,60 @@ const PageStats = ({
 
     const handleDropdownChange = (e) => {
 
+        const value = Number(e.target.value);
+        setPageDropdownValue(value);
+
+        if (value === 0) {
+            setPageStatsDate({
+                startDate: null,
+                endDate: null
+            });
+            return;
+        }
+
         setPageStatsDate({
             startDate: null,
-            endData: null
-        })
-        setPageDropdownValue(e.target.value);
+            endDate: null
+        });
 
         const packets = {
-            dateValue: e.target.value
-        }
+            dateValue: value
+        };
 
         pageStatsCall(packets);
     }
 
     const pageStatsCall = useCallback((packets) => {
-        setAnimate(true)
+        setAnimate(true);
+        setIsLoading(true);
         getPageStats(packets)
         .then((data) => {
             if (data["success"]) {
+                hasFetchedRef.current = true;
                 setTimeout(() => {
-                    setPageStats(data["data"]);
-                }, 500)
+                    setPageStats(data["stats"] ?? []);
+                    setTotals(data["totals"] ?? null);
+                }, 500);
             }
-            setIsLoading(false);
-            setAnimate(false)
+        })
+        .finally(() => {
+            setTimeout(() => {
+                setIsLoading(false);
+                setAnimate(false);
+            }, 500);
         });
 
-    }, [pageStatsDate])
+    }, [setIsLoading, setPageStats, setTotals]);
+
+    useEffect(() => {
+
+        if (isActive && !hasFetchedRef.current) {
+            pageStatsCall({ currentDay: true });
+        }
+    }, [isActive, pageStatsCall]);
 
     return (
-        <div className="stats_wrap my_row">
+        <div className={`stats_wrap my_row ${isActive ? '' : '!hidden'}`}>
             <Filters
                 handleDateChange={handleDateChange}
                 startDate={pageStatsDate.startDate}
@@ -129,6 +145,7 @@ const PageStats = ({
                 <Table
                     isLoading={isLoading}
                     animate={animate}
+                    totals={totals}
                     data={pageStats}
                     columns={columns}
                 />

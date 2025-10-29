@@ -3,6 +3,7 @@ import React, {
     useEffect,
     useCallback,
     useMemo,
+    useRef
 } from 'react';
 import {
     getAffiliateStats,
@@ -11,6 +12,7 @@ import Filters from './Filters';
 import Table from './Table';
 
 const AffiliateStats = ({
+                            isActive,
                             affiliateStats,
                             setAffiliateStats,
                             totals,
@@ -27,49 +29,42 @@ const AffiliateStats = ({
 }) => {
 
     const [animate, setAnimate] = useState(true);
+    const hasFetchedRef = useRef(false);
 
-    useEffect(() => {
-
-        if (affiliateStats.length < 1) {
-            setIsLoading(true);
-            const packets = {
-                currentDay: true
-            }
-
-            getStatsCall(packets, '/stats/get/offer')
-        } else {
-            setIsLoading(false);
-            setAnimate(false);
-        }
-
-    },[]);
+    const statsUrl = useMemo(() => (
+        filterByValue === "offer" ? '/stats/get/offer' : '/stats/get/publisher'
+    ), [filterByValue]);
 
     const offerColumns = useMemo(
         () => [
             {
                 id: "offer",
-                Header: "Offer",
-                accessor: "icon",
+                header: "Offer",
+                accessorKey: "icon",
             },
             {
                 id: "offer_name",
-                Header: "Raw Clicks",
-                accessor: "rawCount",
+                header: "Raw Clicks",
+                accessorKey: "rawCount",
+                meta: { totalKey: "rawCount" },
             },
             {
                 id: "unique_clicks",
-                Header: "Unique Clicks",
-                accessor: "uniqueCount",
+                header: "Unique Clicks",
+                accessorKey: "uniqueCount",
+                meta: { totalKey: "uniqueCount" },
             },
             {
                 id: "conversions",
-                Header: "Conversions",
-                accessor: "conversionCount",
+                header: "Conversions",
+                accessorKey: "conversionCount",
+                meta: { totalKey: "conversionCount" },
             },
             {
                 id: "payout",
-                Header: "Payout",
-                accessor: "payout",
+                header: "Payout",
+                accessorKey: "payout",
+                meta: { totalKey: "payout", format: "currency" },
             },
         ],[]
     )
@@ -77,27 +72,44 @@ const AffiliateStats = ({
     const publisherColumns = useMemo(
         () => [
             {
-                Header: "Publisher",
-                accessor: "name",
+                header: "Publisher",
+                accessorKey: "name",
             },
             {
-                Header: "Raw Clicks",
-                accessor: "rawCount",
+                header: "Raw Clicks",
+                accessorKey: "rawCount",
+                meta: { totalKey: "rawCount" },
             },
             {
-                Header: "Unique Clicks",
-                accessor: "uniqueCount",
+                header: "Unique Clicks",
+                accessorKey: "uniqueCount",
+                meta: { totalKey: "uniqueCount" },
             },
             {
-                Header: "Conversions",
-                accessor: "conversionCount",
+                header: "Conversions",
+                accessorKey: "conversionCount",
+                meta: { totalKey: "conversionCount" },
             },
             {
-                Header: "Payout",
-                accessor: "payout",
+                header: "Payout",
+                accessorKey: "payout",
+                meta: { totalKey: "payout", format: "currency" },
             },
         ],[]
     )
+
+    const tableTotals = useMemo(() => {
+        if (!totals || !affiliateStats?.length) {
+            return null;
+        }
+
+        return {
+            rawCount: totals.totalRaw ?? 0,
+            uniqueCount: totals.totalUnique ?? 0,
+            conversionCount: totals.totalConversions ?? 0,
+            payout: totals.totalPayout ?? 0,
+        };
+    }, [totals, affiliateStats]);
 
     const handleDateChange = (date, type) => {
 
@@ -128,62 +140,70 @@ const AffiliateStats = ({
                 startDate: Math.round(new Date(currentStartDate) / 1000),
                 endDate: Math.round(new Date(currentEndDate) /1000),
             }
-            let url = "";
-            if (filterByValue === "offer") {
-                url = '/stats/get/offer'
-            } else if (filterByValue === "publisher") {
-                url = '/stats/get/publisher'
-            }
 
-            getStatsCall(packets, url)
+            getStatsCall(packets, statsUrl)
         }
     }
 
     const handleDropdownChange = (e) => {
-
-        if (e.target.value !== 0) {
-
+        const value = Number(e.target.value);
+        setDropdownValue(value);
+        if (value === 0) {
             setStatsDate({
                 startDate: null,
                 endDate: null
             })
-            setDropdownValue(e.target.value);
 
-            const packets = {
-                dateValue: e.target.value
-            }
-
-            let url = "";
-            if (filterByValue === "offer") {
-                url = '/stats/get/offer'
-            } else if (filterByValue === "publisher") {
-                url = '/stats/get/publisher'
-            }
-
-            getStatsCall(packets, url)
+            return;
         }
+
+        setStatsDate({
+            startDate: null,
+            endDate: null
+        })
+
+        const packets = {
+            dateValue: value
+        }
+
+        getStatsCall(packets, statsUrl);
     }
 
     const getStatsCall = useCallback((packets, url) => {
-        setAnimate(true)
+        setAnimate(true);
+        setIsLoading(true);
 
-        getAffiliateStats(url, packets).then((data) => {
+        const endpoint = url ?? statsUrl;
+
+        getAffiliateStats(endpoint, packets)
+        .then((data) => {
             if (data["success"]) {
+                hasFetchedRef.current = true;
                 setTimeout(() => {
                     setAffiliateStats(data["affiliateData"])
                     setTotals(data["totals"]);
                 }, 500)
             }
-
-            setAnimate(false)
-            setIsLoading(false);
+        }).finally(() => {
+            setTimeout(() => {
+                setAnimate(false)
+                setIsLoading(false);
+            }, 500)
         });
 
-    },[statsDate]);
+    },[setAffiliateStats, setTotals, setIsLoading, statsUrl]);
+
+    useEffect(() => {
+
+        if (isActive && !hasFetchedRef.current) {
+            getStatsCall({ currentDay: true }, statsUrl);
+        }
+
+    },[isActive, getStatsCall, statsUrl]);
 
     return (
 
-        <div className={`stats_wrap my_row ${tab}`}>
+        <div className={`stats_wrap my_row ${tab} ${isActive ? '' : '!hidden'}`}>
             <Filters
                 handleDateChange={handleDateChange}
                 startDate={statsDate.startDate}
@@ -201,7 +221,7 @@ const AffiliateStats = ({
                 <Table
                     isLoading={isLoading}
                     animate={animate}
-                    totals={totals}
+                    totals={tableTotals}
                     data={affiliateStats}
                     columns={filterByValue === "offer" ? offerColumns : publisherColumns}
                 />

@@ -47,8 +47,10 @@ class StatsServices {
         $pastData = $this->getDeletedLinksStats($dates["startDate"], $dates["endDate"]);
 
         return [
-            'currentData'=> $currentData,
-            'pastData' => $pastData
+            'currentData'=> $currentData['stats'],
+            'currentTotals' => $currentData['totals'],
+            'pastData' => $pastData['stats'],
+            'pastTotals' => $pastData['totals']
         ];
     }
 
@@ -292,6 +294,11 @@ class StatsServices {
 
         $pages = $user->pages()->get();
         $pageArray = array();
+        $totals = [
+            'count' => 0,
+            'visits' => 0,
+            'linkVisits' => 0,
+        ];
 
         foreach($pages as $page) {
 
@@ -301,18 +308,25 @@ class StatsServices {
             );
 
             if($visitCount > 0 || $linkVisitCount > 0) {
-                $object = [
+                $object      = [
                     "id"            => $page->id,
                     "pageName"      => $page->name,
                     "visits"        => $visitCount,
                     "linkVisits"    => $linkVisitCount
                 ];
-                array_push($pageArray, $object);
+                $pageArray[] = $object;
             }
+
+            $totals['count']++;
+            $totals['visits'] += $visitCount;
+            $totals['linkVisits'] += $linkVisitCount;
 
         }
 
-        return $pageArray;
+        return [
+            'stats' => $pageArray,
+            'totals' => $totals['count'] > 0 ? $totals : null,
+        ];
     }
 
     /**
@@ -327,6 +341,11 @@ class StatsServices {
         $links = $user->links()->where('folder_id', null)->get();
         $linksArray = array();
 
+        $totals = [
+            'count' => 0,
+            'visits' => 0,
+        ];
+
         foreach($links as $link) {
 
             if ($link->name && $link->icon) {
@@ -335,18 +354,23 @@ class StatsServices {
                 );
 
                 if ($visitCount > 0) {
-                    $object = [
+                    $object       = [
                         "id"       => $link->id,
                         "iconName" => $link->name,
                         "icon"     => $link->icon,
                         "visits"   => $visitCount
                     ];
-                    array_push( $linksArray, $object );
+                    $linksArray[] = $object;
+                    $totals['count']++;
+                    $totals['visits'] += $visitCount;
                 }
             };
         }
 
-        return $linksArray;
+        return [
+            'stats' => $linksArray,
+            'totals' => $totals['count'] > 0 ? $totals : null,
+        ];
     }
 
     /**
@@ -357,7 +381,10 @@ class StatsServices {
      */
     private function getDeletedLinksStats($startDate, $endDate): array {
         $deletedArray = array();
-
+        $totals = [
+            'count' => 0,
+            'visits' => 0,
+        ];
         $deletedLinks = DB::table('deleted_links')->where('user_id', '=', Auth::id())->get();
         foreach ($deletedLinks as $deletedLink) {
             $visitCount = count(
@@ -365,17 +392,22 @@ class StatsServices {
             );
 
             if ($visitCount > 0) {
-                $object = [
+                $object         = [
                     "id"       => $deletedLink->id,
                     "iconName" => $deletedLink->name,
                     "icon"     => $deletedLink->icon,
                     "visits"   => $visitCount
                 ];
-                array_push( $deletedArray, $object );
+                $deletedArray[] = $object;
+                $totals['count']++;
+                $totals['visits'] += $visitCount;
             }
         }
 
-        return $deletedArray;
+        return [
+            'stats' => $deletedArray,
+            'totals' => $totals['count'] > 0 ? $totals : null,
+        ];
     }
 
     /**
@@ -401,6 +433,11 @@ class StatsServices {
 
                 $linksArray = [];
 
+                $linksTotals = [
+                    'count' => 0,
+                    'visits' => 0,
+                ];
+
                 if ( $folderLinkIDs ) {
 
                     foreach ( $folderLinkIDs as $linkID ) {
@@ -418,7 +455,9 @@ class StatsServices {
                             "visits"   => $visitCount
                         ];
 
-                        array_push( $linksArray, $linkObject );
+                        $linksArray[] = $linkObject;
+                        $linksTotals['count']++;
+                        $linksTotals['visits'] += $visitCount;
                     }
                 }
 
@@ -426,10 +465,11 @@ class StatsServices {
                     "id"         => $folder->uuid,
                     "name"       => $folder->folder_name ?: "N/A",
                     "clickCount" => $folderClickCount,
-                    "links"      => $linksArray
+                    "links"      => $linksArray,
+                    "linksTotals" => $linksTotals['count'] > 0 ? $linksTotals : null
                 ];
 
-                array_push( $folderArray, $object );
+                $folderArray[] = $object;
             }
         }
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {HiMinusSm, HiOutlinePlusSm} from 'react-icons/hi';
 import {FaSort, FaSortDown, FaSortUp} from 'react-icons/fa';
 import {
@@ -19,16 +19,60 @@ const Table = ({
 
     const [openIndex, setOpenIndex] = useState([]);
 
+    const defaultColumn = useMemo(
+        () => ({
+            cell: info => info.getValue(),
+        }),
+        []
+    );
+
     const tableInstance = useReactTable({
-            data,
-            columns,
-            getCoreRowModel: getCoreRowModel(),
-            getPaginationRowModel: getPaginationRowModel(),
-            getSortedRowModel: getSortedRowModel(),
+        data,
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        defaultColumn,
     });
 
-    const { headerGroups, rows } = tableInstance.getHeaderGroups();
+    const headerGroups = tableInstance.getHeaderGroups();
+    const rows = tableInstance.getRowModel().rows;
+    const leafColumns = tableInstance.getVisibleLeafColumns();
 
+    const getTotalForColumn = (column, columnIndex) => {
+        if (columnIndex === 0) {
+            return column.columnDef.meta?.totalLabel ?? 'Totals';
+        }
+
+        const totalKey = column.columnDef.meta?.totalKey;
+
+        if (!totals || !totalKey) {
+            return null;
+        }
+
+        if (!Object.prototype.hasOwnProperty.call(totals, totalKey)) {
+            return null;
+        }
+
+        const format = column.columnDef.meta?.format;
+        let value = totals[totalKey];
+
+        if (value === null || value === undefined) {
+            return null;
+        }
+
+        if (format === 'currency') {
+            const normalizedValue = typeof value === 'number' ? value.toString() : String(value ?? '').trim();
+            value = normalizedValue.startsWith('$') ? normalizedValue : `$${normalizedValue}`;
+        }
+
+        if (format === 'count') {
+            const countLabel = column.columnDef.meta?.countLabel ?? '';
+            value = `${value}${countLabel ? ` ${countLabel}` : ''}`;
+        }
+
+        return value;
+    };
     const handleRowClick = (rowIndex) => {
 
         if(openIndex.includes(rowIndex)) {
@@ -44,7 +88,7 @@ const Table = ({
         <table className="w-full table rounded-t-sm table-borderless">
             <thead>
             {headerGroups?.map(headerGroup => (
-                <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
+                <tr key={headerGroup.id}>
                     {headerGroup.headers.map(header => (
                         <th key={header.id}>
                             <h5>
@@ -56,7 +100,7 @@ const Table = ({
                                 </span>
                                 {header.column.getCanSort() && (
                                     <span
-                                        {...header.column.getSortByToggleProps()}
+                                        onClick={header.column.getToggleSortingHandler()}
                                         className="sorting-icon"
                                     >
                                       {header.column.getIsSorted()
@@ -74,20 +118,16 @@ const Table = ({
             </thead>
             <tbody>
 
-            {data.length < 1 ?
+            {data?.length < 1 ?
                 <tr>
                     <td className={ isLoading ? "hidden no_stats" : "no_stats"} colSpan="5"><h3>No Stats Available</h3></td>
                 </tr>
                 :
                 <>
                     {rows?.map((row, index) => {
-                        //prepareRow(row);
-                        console.log("row", row);
-                        //const {icon, rawClicks, uniqueClicks, conversions, payout, userStats} = row;
-                        /**/
                         return (
-                            <React.Fragment key={index}>
-                                <tr {...row.getRowProps()} className={row.original.userStats?.length > 0 ? 'no_border' : ''}>
+                            <React.Fragment key={row.id}>
+                                <tr className={row.original?.length > 0 ? 'no_border' : ''}>
                                     {row.getVisibleCells().map((cell) => (
                                         <td key={cell.id}>
                                             {['Offer', 'Current Icons', 'Past Icons'].includes(cell.column.columnDef.header) ? (
@@ -105,7 +145,7 @@ const Table = ({
                                         </td>
                                     ))}
                                 </tr>
-                                {row.original.userStats?.length > 0 && (
+                                {row.original?.length > 0 && (
                                     <tr>
                                         <td colSpan="5">
                                             <table className="table table-borderless user_stats w-full">
@@ -123,7 +163,7 @@ const Table = ({
                                                 </tr>
                                                 </thead>
                                                 <tbody className={openIndex.includes(index) ? 'open' : ''}>
-                                                {row.original.userStats.map((user, userIndex) => {
+                                                {row.original.map((user, userIndex) => {
                                                     const {
                                                         name,
                                                         rawCount,
@@ -133,7 +173,7 @@ const Table = ({
                                                     } = user;
 
                                                     return (
-                                                        <tr key={userIndex}>
+                                                        <tr key={`${row.id}-${userIndex}`}>
                                                             <td>
                                                                 <p
                                                                     className={`
@@ -191,31 +231,25 @@ const Table = ({
                         )
                     })}
 
-                    {totals && (
+                    {totals && leafColumns.length > 0 && (
                         <tr className="totals">
-                            <td>
-                                <h3>Totals</h3>
-                            </td>
-                            <td>
-                                <h3 className={`${animate ? 'animate hide' : 'animate'}`}>
-                                    {totals['totalRaw']}
-                                </h3>
-                            </td>
-                            <td>
-                                <h3 className={`${animate ? 'animate hide' : 'animate'}`}>
-                                    {totals['totalUnique']}
-                                </h3>
-                            </td>
-                            <td>
-                                <h3 className={`${animate ? 'animate hide' : 'animate'}`}>
-                                    {totals['totalConversions']}
-                                </h3>
-                            </td>
-                            <td>
-                                <h3 className={`${animate ? 'animate hide' : 'animate'}`}>
-                                    ${totals['totalPayout']}
-                                </h3>
-                            </td>
+                            {leafColumns.map((column, columnIndex) => {
+                                const totalValue = getTotalForColumn(column, columnIndex);
+
+                                return (
+                                    <td key={`total-${columnIndex}`}>
+                                        {totalValue !== null && totalValue !== undefined && totalValue !== '' ? (
+                                            <h3 className={`${animate ? 'animate hide' : 'animate'}`}>
+                                                {totalValue}
+                                            </h3>
+                                        ) : columnIndex === 0 ? (
+                                            <h3 className={`${animate ? 'animate hide' : 'animate'}`}>
+                                                {getTotalForColumn(column, columnIndex)}
+                                            </h3>
+                                        ) : null}
+                                    </td>
+                                );
+                            })}
                         </tr>
                     )}
                 </>

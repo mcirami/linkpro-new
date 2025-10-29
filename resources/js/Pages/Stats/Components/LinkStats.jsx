@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback, useMemo} from 'react';
+import React, {useEffect, useState, useCallback, useMemo, useRef} from 'react';
 import {
     getLinkStats
 } from '@/Services/StatsRequests.jsx';
@@ -8,10 +8,15 @@ import Filters from './Filters';
 import Table from './Table';
 
 const LinkStats = ({
+                       isActive,
                        linkStats,
                        setLinkStats,
+                       linkTotals,
+                       setLinkTotals,
                        deletedStats,
                        setDeletedStats,
+                       deletedTotals,
+                       setDeletedTotals,
                        linkStatsDate,
                        setLinkStatsDate,
                        linkDropdownValue,
@@ -22,37 +27,26 @@ const LinkStats = ({
 }) => {
 
     const [animate, setAnimate] = useState(true);
-
-    useEffect(() => {
-        if (linkStats.length < 1) {
-            setIsLoading(true);
-            const packets = {
-                currentDay: true
-            }
-            linkStatsCall(packets)
-        } else {
-            setIsLoading(false);
-            setAnimate(false);
-        }
-
-    },[])
+    const hasFetchedRef = useRef(false);
 
     const columns = useMemo(
         () => [
             {
                 id: 'current_icons',
-                Header: "Current Icons",
-                accessor: "icon",
+                header: "Current Icons",
+                accessorKey: "icon",
             },
             {
                 id: 'icon_name',
-                Header: "Icon Name",
-                accessor: "iconName",
+                header: "Icon Name",
+                accessorKey: "iconName",
+                meta: { totalKey: 'count', format: 'count', countLabel: 'Icons' },
             },
             {
                 id: 'icon_clicks',
-                Header: "Icon Clicks",
-                accessor: "visits",
+                header: "Icon Clicks",
+                accessorKey: "visits",
+                meta: { totalKey: 'visits' },
             },
         ],[]
     )
@@ -61,18 +55,20 @@ const LinkStats = ({
         () => [
             {
                 id: 'past_icons',
-                Header: "Past Icons",
-                accessor: "icon",
+                header: "Past Icons",
+                accessorKey: "icon",
             },
             {
                 id: 'icon_name',
-                Header: "Icon Name",
-                accessor: "iconName",
+                header: "Icon Name",
+                accessorKey: "iconName",
+                meta: { totalKey: 'count', format: 'count', countLabel: 'Icons' },
             },
             {
                 id: 'icon_clicks',
-                Header: "Icon Clicks",
-                accessor: "visits",
+                header: "Icon Clicks",
+                accessorKey: "visits",
+                meta: { totalKey: 'visits' },
             },
         ],[]
     )
@@ -112,44 +108,65 @@ const LinkStats = ({
 
     const handleDropdownChange = (e) => {
 
-        if (e.target.value !== 0) {
+        const value = Number(e.target.value);
+        setLinkDropdownValue(value);
 
+        if (value === 0) {
             setLinkStatsDate({
                 startDate: null,
-                endData: null
+                endDate: null
             });
-            setLinkDropdownValue(e.target.value);
-
-            const packets = {
-                dateValue: e.target.value
-            }
-
-            linkStatsCall(packets)
+            setLinkDropdownValue(value);
+            return;
         }
+
+        setLinkStatsDate({
+            startDate: null,
+            endDate: null
+        })
+
+        const packets = {
+            dateValue: value
+        }
+        linkStatsCall(packets);
     }
 
     const linkStatsCall = useCallback((packets) => {
 
-        setAnimate(true)
+        setAnimate(true);
+        setIsLoading(true);
+
         getLinkStats(packets)
         .then((data) => {
             if (data["success"]) {
+                hasFetchedRef.current = true;
                 setTimeout(() => {
                     setLinkStats(data["linkStats"])
                     setDeletedStats(data["deletedStats"]);
-
-
+                    setLinkStats(data["linkStats"] ?? [])
+                    setLinkTotals(data["linkTotals"] ?? null);
+                    setDeletedStats(data["deletedStats"] ?? []);
+                    setDeletedTotals(data["deletedTotals"] ?? null);
                 }, 500)
             }
 
-            setAnimate(false)
-            setIsLoading(false);
+        }).finally(() => {
+            setTimeout(() => {
+                setAnimate(false)
+                setIsLoading(false);
+            }, 500)
         });
+    }, [setDeletedStats, setDeletedTotals, setIsLoading, setLinkStats, setLinkTotals])
 
-    }, [linkStatsDate])
+    useEffect(() => {
+        if (isActive && !hasFetchedRef.current) {
+            linkStatsCall({ currentDay: true });
+        }
+
+    },[isActive, linkStatsCall])
 
     return (
-        <div className="stats_wrap my_row">
+        <div className={`stats_wrap my_row ${isActive ? '' : '!hidden'}`}>
             <Filters
                 handleDateChange={handleDateChange}
                 startDate={linkStatsDate.startDate}
@@ -163,6 +180,7 @@ const LinkStats = ({
                 <Table
                     isLoading={isLoading}
                     animate={animate}
+                    totals={linkTotals}
                     data={linkStats}
                     columns={columns}
                 />
@@ -171,6 +189,7 @@ const LinkStats = ({
                 <Table
                     isLoading={isLoading}
                     animate={animate}
+                    totals={deletedTotals}
                     data={deletedStats}
                     columns={deletedColumns}
                 />
