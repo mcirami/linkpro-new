@@ -24,10 +24,6 @@
                 border: none;
                 padding: 40px 40px 40px 0;
 
-                @include query(tablet) {
-                    padding: 0;
-                }
-
                 .link_row {
                     margin-bottom: 2rem;
                 }
@@ -690,4 +686,12 @@
         font-size: 1em;
     }
 
+}
+
+#edit_course .page_tabs {
+    a {
+        @include query(smallMobile) {
+            font-size: .8rem;
+        }
+    }
 }

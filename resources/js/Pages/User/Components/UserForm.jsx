@@ -1,6 +1,7 @@
 import React, {useRef} from 'react';
 import {useForm} from '@inertiajs/react';
 import EventBus from '@/Utils/Bus.jsx';
+import { CardHeader } from "@mui/material";
 
 const UserForm = ({
                       userInfo,
@@ -58,9 +59,9 @@ const UserForm = ({
     }
 
     return (
-        <>
+        <div className="rounded-2xl bg-white shadow-md p-5">
             {errors.length > 0 && console.log(errors)}
-            <h2 className="text-uppercase">Account Info</h2>
+            <CardHeader className="text-left" title="Account Info" />
             <form method="POST" onSubmit={handleSubmit} action={`/update-account/${userInfo.id}`}>
                 <div className="form_inputs">
                     <div className="user_account mb-5 my_row">
@@ -80,8 +81,8 @@ const UserForm = ({
                             <small className="text-red-600 mb-3 block">{errors.email }</small>
                         }
                     </div>
-                    <div className="user_account">
-                        <h5 className="my_row my_row mb-4 text-left">Change Password</h5>
+                    <div className="user_account w-full flex flex-col mb-5 gap-5">
+                        <h5 className="my_row my_row text-left">Change Password</h5>
                         <div className="input_wrap my_row relative mb-2">
                             <input ref={passwordInput}
                                    id="password"
@@ -95,31 +96,32 @@ const UserForm = ({
                             />
                             <label className="z-2" htmlFor="password">New Password</label>
                         </div>
-                    </div>
-                    <div className="input_wrap my_row relative mb-3">
-                        <input ref={confirmPasswordInput}
-                               id="password_confirmation"
-                               type="password"
-                               className={`w-full animate bg-white ${data.password && "active"} ${errors.password_confirmation && "border-danger"} `}
-                               name="password_confirmation"
-                               autoComplete="new-password"
-                               defaultValue={ data.password_confirmation }
-                               onChange={(e) => setData('password_confirmation', e.target.value)}
-                               onFocus={handleFocus}
-                        />
-                        <label className="z-2" htmlFor="password_confirmation">Confirm New Password</label>
+
+                        <div className="input_wrap my_row relative">
+                            <input ref={confirmPasswordInput}
+                                   id="password_confirmation"
+                                   type="password"
+                                   className={`w-full animate bg-white ${data.password && "active"} ${errors.password_confirmation && "border-danger"} `}
+                                   name="password_confirmation"
+                                   autoComplete="new-password"
+                                   defaultValue={ data.password_confirmation }
+                                   onChange={(e) => setData('password_confirmation', e.target.value)}
+                                   onFocus={handleFocus}
+                            />
+                            <label className="z-2" htmlFor="password_confirmation">Confirm New Password</label>
+                        </div>
                     </div>
                     {errors.password &&
                         <small className="text-red-600 mb-3 block">{errors.password}</small>
                     }
                 </div>
-                <div className="form_buttons">
+                <div className="form_buttons !mb-0">
                     <button disabled={processing} type="submit" className="button blue text-uppercase">
                         Update My Info
                     </button>
                 </div>
             </form>
-        </>
+        </div>
     );
 };
 

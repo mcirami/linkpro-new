@@ -5,6 +5,7 @@ import {
     GetCurrentTime,
     GetHumanReadableTime,
 } from '@/Services/TimeRequests.jsx';
+import { CardHeader } from "@mui/material";
 
 const PlanComponent = ({
                            subscription,
@@ -75,71 +76,75 @@ const PlanComponent = ({
     }
 
     return (
-        <>
-            <h2 className="text-uppercase">Plan Type</h2>
-            <h4>Your Current Plan is</h4>
-            { (subscription && subscription.status === "active") ?
+        <div  className="flex flex-col items-center justify-start h-full">
+            <CardHeader title="Plan Type" />
+            <div className="text-center p-5 -full">
+                <p className="text-sm text-gray-600 mb-5">Your Current Plan is</p>
+                <div className="mx-auto inline-flex h-[5.5rem] w-[5.5rem] items-center justify-center rounded-full bg-indigo-50 text-indigo-700 font-semibold shadow-inner">
+                    {subscription.name ?? '—'}
+                    {/*<img src={ Vapor.asset('images/plan-type-bg.png')} alt="" />*/}
+                </div>
 
-                <>
-                    <div className="plan_name">
-                        <p className="text-capitalize">{subscription.name}</p>
-                        <img src={ Vapor.asset('images/plan-type-bg.png')} alt="" />
+                { (subscription && subscription.status !== "active" && (subEnd > currentDateTime) ) ?
+                    <div className="canceled_text">
+                        <p>Your subscription has been cancelled. It will end on:<br />
+                            <span>
+                                {new Date(subscription.ends_at).toLocaleDateString()}
+                            </span>
+                        </p>
                     </div>
-                    {userInfo.sub_id !== "bypass" &&
-                        <a href="#"
-                           className="cancel_link"
-                           data-plan={subscription.sub_id}
-                           onClick={(e) => setShowSection(["cancel"])}
-                        >Cancel Subscription</a>
-                    }
-                </>
-                :
-                subscription && (subEnd > currentDateTime) ?
-                    <>
-                        <div className="plan_name">
-                            <p className="text-capitalize">{subscription.name}</p>
-                            <img src={ Vapor.asset('images/plan-type-bg.png') } alt="" />
-                        </div>
-                        <div className="canceled_text">
-                            <p>Your subscription has been cancelled. It will end on:<br />
-                                <span>
-                                    {new Date(subscription.ends_at).toLocaleDateString()}
-                                </span>
-                            </p>
-                        </div>
-                    </>
                     :
-                    <div className="plan_name">
-                        <p>Free</p>
-                        <img src={ Vapor.asset('images/plan-type-bg.png') } alt="" />
+                    !subscription &&
+                    <div className="mx-auto inline-flex h-28 w-28 items-center justify-center rounded-full bg-indigo-50 text-indigo-700 font-semibold shadow-inner">
+                        Free
                     </div>
-            }
-            { (subscription && subscription.status === "active") ?
-                <a href="#" className='button blue' onClick={(e) => {
-                    e.preventDefault();
-                    setShowSection((prev) => [
-                        ...prev,
-                        "plans"
-                    ])
-                }}>
-                    Change My Plan
-                </a>
-                :
-                subscription && subEnd > currentDateTime ?
-                    <form action="" method="">
-                        <a href="#"
-                           className='button blue'
-                           onClick={(e) => handleResumeClick(e)}
+                }
+            </div>
+            <div className="buttons_wrap w-full mt-auto">
+                { (subscription && subscription.status === "active") &&
+
+                    userInfo.sub_id !== "bypass" &&
+                    <div className="space-y-2">
+                        <button
+                            className="btn-link w-full text-red-600"
+                            data-plan={subscription.sub_id}
+                            onClick={(e) => setShowSection(["cancel"])}
                         >
-                            Resume
-                        </a>
-                    </form>
+                            Cancel Subscription
+                        </button>
+                    </div>
+                }
+                { (subscription && subscription.status === "active") ?
+                    <div className="space-y-2">
+                        <button className="button blue w-full"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setShowSection((prev) => [
+                                        ...prev,
+                                        "plans"])
+                                }}
+                        >
+                            Change My Plan
+                        </button>
+                    </div>
                     :
-                    <Link className='button blue' href={ route('plans.get') }>
-                        Change My Plan
-                    </Link>
-            }
-        </>
+                    subscription && subEnd > currentDateTime ?
+                        <div className="space-y-2">
+                            <button className="button blue w-full"
+                                    onClick={(e) => handleResumeClick(e)}
+                            >
+                                Resume
+                            </button>
+                        </div>
+                        :
+                        <div className="space-y-2">
+                            <Link className='button blue' href={ route('plans.get') }>
+                                Change My Plan
+                            </Link>
+                        </div>
+                }
+            </div>
+        </div>
     );
 };
 

@@ -148,7 +148,7 @@ const ContactForm = ({honeypot, spamDetected, setShowLoader}) => {
                             <InputError message={errors.message} className="mt-2 text-left"/>
                         </div>
 
-                        <div className="form-group row">
+                        <div className="form-group row !mb-0">
                             <div className="col-sm-10 mx-auto">
                                 <button className="button blue" type="submit" disabled={processing}>
                                     Submit

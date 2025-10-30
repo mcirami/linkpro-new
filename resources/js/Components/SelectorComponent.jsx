@@ -54,7 +54,7 @@ export default function SelectorComponent({
                         aria-selected={selected}
                         tabIndex={selected ? 0 : -1}
                         className={[
-                            "relative z-10 flex-1 px-4 py-2 text-sm font-semibold text-center",
+                            "line-clamp-1 leading-none md:leading-normal relative z-10 flex-1 px-2 md:px-4 py-2 text-sm font-semibold text-center",
                             "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#424fcf]/30 focus-visible:ring-offset-white",
                             "text-gray-800",
                             opt.value === value ? i < options.length - 1 ? "shadow-[4px_1px_9px_-5px_rgba(0,0,0,.4)]" : "shadow-[-4px_1px_9px_-5px_rgba(0,0,0,.4)]": "",

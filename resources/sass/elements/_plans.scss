@@ -40,26 +40,6 @@
             text-align: center;
         }
 
-        .card {
-            max-width: 1200px;
-
-            &:has(.two_columns) {
-                max-width: 975px;
-            }
-
-            @media all and (max-width: 1199px) {
-                max-width: 1000px;
-            }
-
-            @media all and (max-width: 992px) {
-                max-width: 70%;
-            }
-
-            @media all and (max-width: 550px) {
-                max-width: 90%;
-            }
-        }
-
         .sub_title {
             @include ossemibold;
             color: $blue;

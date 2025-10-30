@@ -105,6 +105,17 @@
             }
         }
 
+        form {
+            button, .button {
+                max-width: 300px;
+                margin-left: auto;
+
+                @include query(tablet) {
+                    max-width: unset;
+                }
+            }
+        }
+
         input {
             border-radius: 6px;
             -webkit-border-radius: 6px;

@@ -340,7 +340,7 @@ function Dashboard({
                                                     <div className="page_tabs w-1/2">
                                                         <PageTabs
                                                             tabs={[
-                                                                { value: "settings", label: "Page Settings"},
+                                                                { value: "settings", label: "Settings"},
                                                                 { value: "links", label: "Links"}
                                                             ]}
                                                             pageTab={pageTab}

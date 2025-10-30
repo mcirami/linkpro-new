@@ -242,7 +242,7 @@ function CourseCreator({
 
                                     <div className="left_column" ref={columnRef}>
                                         <div className="page_menu_row flex justify-between w-full">
-                                            <div className="page_tabs w-2/3">
+                                            <div className="page_tabs w-full">
                                                 <PageTabs
                                                     tabs={[
                                                         { value: "header", label: "Header"},
