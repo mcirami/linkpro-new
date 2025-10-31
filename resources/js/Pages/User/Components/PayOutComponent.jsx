@@ -28,7 +28,8 @@ const PayOutComponent = ({setShowLoader, total, setShowMessageAlertPopup}) => {
         } else {
             setShowMessageAlertPopup({
                 show: true,
-                text: "You must earn at least $100 before setting up your payment information."
+                text: "You must earn at least $100 before setting up your payment information.",
+                buttonText: "OK",
             })
         }
     }

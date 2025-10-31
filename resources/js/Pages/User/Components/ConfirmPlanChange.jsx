@@ -115,57 +115,94 @@ const ConfirmPlanChange = ({
                     defaultPage={defaultPage}
                 />
             :
-                <div id="confirm_change_plan_details" className={`change_plan_message`}>
-                    <div className="form_icon_wrap svg check">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                        </svg>
+                <div id="confirm_change_plan_details" className={`rounded-2xl bg-white shadow-md pt-10`}>
+                    <div className="flex items-center gap-3 border-b border-gray-100 px-6 py-5">
+                        <div className="grid h-10 w-10 place-items-center rounded-xl bg-green-50 text-green-700 ring-1 ring-green-200">
+                            {/* success/check icon */}
+                            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
+                                <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 className="!text-left !text-2xl font-semibold text-gray-900">Confirm Downgrade</h2>
+                            <p className="!text-lg text-gray-500">
+                                Review what changes when moving to the
+                                {showSection.includes("changePlan") ?
+                                    <span className="font-medium"> Pro </span>
+                                    :
+                                    <span className="font-medium"> Free </span>
+                                }
+                                 plan.
+                            </p>
+                        </div>
                     </div>
-                    <h2>Confirm</h2>
-                    <form action="" method="">
 
-                        {showSection.includes("changePlan") ?
+                    <div className="px-6 py-6">
+                        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-900 mb-5">
+                            <p className="text-sm leading-7">
+                                By downgrading your plan to
+                                {showSection.includes("changePlan") ?
 
-                            <h3>By downgrading your account to Pro you will be limited to 1 unique link.</h3>
+                                    <span>Pro you will be limited to <span className="font-semibold">1 unique link.</span></span>
+                                    :
+                                    subscription.name === "pro" ?
+                                        <span>Free your subscription will be cancelled, your icons will be limited to <span className="font-semibold">8</span> and you will no longer be able to use <span className="font-semibold">custom icons.</span></span>
+                                        :
+                                        <span>Free your subscription will be cancelled. You will be limited to <span className="font-semibold">1 unique link</span>, your icons will be limited to <span className="font-semibold">8</span>, and you will no longer be able to use <span className="font-semibold">custom icons.</span></span>
 
-                            :
-                            subscription.name === "pro" ?
-                                <h3>By downgrading your account to Free your subscription will be cancelled, your icons will be limited to 8 and you will no longer be able to use custom icons.</h3>
-                                :
-                                <h3>By downgrading your plan to Free your subscription will be cancelled. You will be limited to 1 unique link, your icons will be limited to 8, and you will no longer be able to use custom icons.</h3>
-
-                        }
+                                }
+                            </p>
+                        </div>
                         {pages.length > 1 && subscription.name === "premier" &&
                             <>
-                                <p>You currently have {pages.length} links.</p>
-                                <label htmlFor="defaultPage">Select which link you would like to stay active:</label>
-                                <select name="defaultPage" onChange={(e) => setDefaultPage(e.target.value)} value={defaultPage}>
-                                    {pages.map((page, index) => {
-                                        return (
-                                            <option key={index} value={page.id}>{page.name}</option>
-                                        )
-                                    })}
-                                </select>
+                                <p className="text-center text-sm text-gray-700">You currently have <span className="font-semibold"> {pages.length}</span> links.</p>
+                                <div className="mx-auto mt-4 max-w-md">
+                                    <label htmlFor="defaultPage" className="mb-1 block text-sm font-medium text-gray-700">
+                                        Select which link you would like to stay active:
+                                    </label>
+                                    <div className="relative">
+                                        <select name="defaultPage" onChange={(e) => setDefaultPage(e.target.value)} value={defaultPage}>
+                                            {pages.map((page, index) => {
+                                                return (
+                                                    <option key={index} value={page.id}>{page.name}</option>
+                                                )
+                                            })}
+                                        </select>
+                                        <svg
+                                            className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500"
+                                            viewBox="0 0 20 20" fill="currentColor"
+                                        >
+                                            <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"/>
+                                        </svg>
+                                    </div>
+                                </div>
                             </>
                         }
-                        <p className="confirm_text">Do you want to continue?</p>
-                        <div className="button_row">
-                            <a href="#"
-                               className='button green'
-                                onClick={(e) => handleClick()}
+                        <p className="mt-6 text-center text-base text-gray-800">
+                            Do you want to continue?
+                        </p>
+                        <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                            <button
+                               className='!w-40 button green'
+                                onClick={() => handleClick()}
                             >
-                                Yes
-                            </a>
-                            <a className="close_details button transparent gray"
+                                Yes,<br/>downgrade
+                            </button>
+                            <a className="!w-40 close_details button transparent gray"
                                href="#"
                                onClick={(e) => {
                                    setShowSection(showSection.filter((section) => {
                                        return section !== "changePlan" && section !== "cancel" && section !== "changePayPalPlan"
                                    }))
                                }}
-                            >No</a>
+                            >No,<br/>keep my plan</a>
                         </div>
-                    </form>
+                        <div className="mt-6 text-center">
+                            <p className="text-xs text-gray-500">
+                                You can upgrade again at any time. Your content remains safe.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             }
         </>

@@ -72,7 +72,7 @@ const User = ({
                         setShowMessageAlertPopup={setShowMessageAlertPopup}
                     />
                 }
-                <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
+                <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline my-3 border-b border-gray-100">
                     <PageHeader
                         heading="Account Settings"
                         description="Update your account settings, manage your subscription, payment methods, and more."

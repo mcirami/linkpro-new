@@ -61,11 +61,11 @@ const UserForm = ({
     return (
         <div className="rounded-2xl bg-white shadow-md p-5">
             {errors.length > 0 && console.log(errors)}
-            <CardHeader className="text-left" title="Account Info" />
+            <CardHeader className="text-left !pl-0 mb-5" title="Account Info" />
             <form method="POST" onSubmit={handleSubmit} action={`/update-account/${userInfo.id}`}>
                 <div className="form_inputs">
                     <div className="user_account mb-5 my_row">
-                        <h5 className="my_row mb-4 text-left">Update Email</h5>
+                        <h5 className="my_row mb-5 text-left">Update Email</h5>
                         <div className="input_wrap my_row relative">
                             <input id="email"
                                    type="email"

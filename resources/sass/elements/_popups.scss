@@ -1,7 +1,7 @@
 @use "../partials/variables" as *;
 @use "../partials/mixins" as *;
 
-#upgrade_popup, #confirm_popup_link, #confirm_cancel_popup, #confirm_folder_popup_link {
+#confirm_popup_link, #confirm_cancel_popup, #confirm_folder_popup_link {
     display: none;
     opacity: 0;
     position: fixed;
@@ -36,7 +36,7 @@
     }
 }
 
-#popup_choose_level, #popup_payment_method, #confirm_popup, #upgrade_popup, #confirm_popup_link, #confirm_folder_popup_link, #confirm_cancel_popup, #confirm_change_plan_details, #confirm_cancel_details {
+#popup_payment_method, #confirm_popup, #confirm_popup_link, #confirm_folder_popup_link, #confirm_cancel_popup, #confirm_cancel_details {
 
     h2 {
         @include osbold;
@@ -181,31 +181,6 @@
             &:last-child {
                 margin-right: 0;
             }
-        }
-    }
-}
-
-#upgrade_popup {
-
-    .close_popup {
-        position: absolute;
-        right: 3%;
-        top: 4%;
-        width: 40px;
-        height: 40px;
-        color: $white;
-        z-index: 9999;
-
-        @media all and (max-width: 550px) {
-            right: 25px;
-            width: 30px;
-            height: 30px;
-            color: $black;
-        }
-
-        svg {
-            width: 100%;
-            height: 100%;
         }
     }
 }
@@ -418,7 +393,7 @@
     }
 }
 
-#upgrade_popup, #confirm_popup_link, #confirm_cancel_popup, #confirm_folder_popup_link {
+#confirm_popup_link, #confirm_cancel_popup, #confirm_folder_popup_link {
 
     .close_popup {
         @media all and (max-width: 550px) {
@@ -488,12 +463,16 @@
     }
 }
 
-.plans .card, .course_creator .card {
+.course_creator .card {
     transition: 1000ms max-width ease-in-out;
 
     &.active {
         max-width: 600px;
     }
+}
+
+.plans .card {
+    transition: 1000ms max-width ease-in-out;
 }
 
 .form_icon_wrap {
