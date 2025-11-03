@@ -6,18 +6,7 @@ function Contact({auth, honeypot = null, spamDetected = false}) {
 
     return (
         <>
-            { auth.user.userInfo.length < 1 ?
-
-                <GuestLayout>
-                    <Head title="Contact Us" />
-                    <ContactLayout
-                        honeypot={honeypot}
-                        spamDetected={spamDetected}
-                    />
-                </GuestLayout>
-
-                :
-
+            { auth?.user.userInfo ?
                 <AuthenticatedLayout>
                     <Head title="Contact Us" />
                     <ContactLayout
@@ -25,6 +14,14 @@ function Contact({auth, honeypot = null, spamDetected = false}) {
                         spamDetected={spamDetected}
                     />
                 </AuthenticatedLayout>
+                :
+                <GuestLayout>
+                    <Head title="Contact Us" />
+                    <ContactLayout
+                        honeypot={honeypot}
+                        spamDetected={spamDetected}
+                    />
+                </GuestLayout>
 
             }
         </>

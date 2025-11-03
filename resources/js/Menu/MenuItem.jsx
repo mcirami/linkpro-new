@@ -18,7 +18,7 @@ const MenuItem = ({
     return (
         ( (userPermissions?.includes(permission) || permission === "all") && id !== "pre_register") ||
         (id === "pre_register" && !userPermissions?.includes("view dashboard") ) ||
-        (id === "settings" && userPermissions.length > 0) ?
+        (id === "settings" && userPermissions?.length > 0) ?
             <li>
                 <Link id={id}
                    href={ (name === "pages" && defaultPage) ? pageUrl + defaultPage : pageUrl}

@@ -9,6 +9,7 @@ import Checkbox from '@/Components/Checkbox.jsx';
 import {useGoogleRecaptchaV3, checkRecaptcha} from '@/Utils/useGoogleRecaptchaV3.jsx';
 import {Loader} from '@/Utils/Loader.jsx';
 import {IoWarningOutline} from 'react-icons/io5';
+import PageHeader from "@/Components/PageHeader.jsx";
 
 export default function Register({honeypot, spamDetected = false}) {
 
@@ -58,7 +59,13 @@ export default function Register({honeypot, spamDetected = false}) {
         <GuestLayout>
             <Head title="Register" />
             <div className="container">
-                <div className="my_row form_page">
+                <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
+                    <PageHeader
+                        heading="Register"
+                        description="Create your free account below to get access to the most exciting social sharing features on the internet!"
+                    />
+                </div>
+                <div className="my_row form_page mt-10">
                     <div className="card guest relative shadow-md">
                         {showLoader.show &&
                             <Loader showLoader={showLoader} />}
@@ -74,7 +81,6 @@ export default function Register({honeypot, spamDetected = false}) {
                             <>
                             <div className="mb-4">
                                 <h3>Take control of your social sharing!</h3>
-                                <h4 className="text-center">Create your free account below to get started.</h4>
                             </div>
                             <div className="card-body">
                                 <form onSubmit={submit}>
@@ -154,7 +160,7 @@ export default function Register({honeypot, spamDetected = false}) {
                                     </div>
                                     <div className="form-group form-check mt-2 flex align-center">
                                         <Checkbox
-                                            className="form-check-input"
+                                            className="form-check-input mr-2"
                                             name="terms"
                                             checked={data.remember}
                                             onChange={(e) => setData('terms',
@@ -163,7 +169,7 @@ export default function Register({honeypot, spamDetected = false}) {
                                         />
                                         {/*<input className="form-check-input" type="checkbox" name="remember" id="remember" required />
     */}
-                                        <label className="form-check-label" htmlFor="terms">
+                                        <label className="form-check-label flex gap-2" htmlFor="terms">
                                             Check here to agree to LinkPro's
                                             <Link target="_blank" href={route(
                                                 'terms')}>Terms and Conditions</Link> and
@@ -171,7 +177,7 @@ export default function Register({honeypot, spamDetected = false}) {
                                                 'privacy')}> Privacy Policy</Link>
                                         </label>
                                     </div>
-                                    <div className="block mt-4 text-center">
+                                    <div className="block mt-4 text-right">
                                         <PrimaryButton className="button blue text-uppercase mb-4" disabled={processing}>
                                             Let's Do This
                                         </PrimaryButton>

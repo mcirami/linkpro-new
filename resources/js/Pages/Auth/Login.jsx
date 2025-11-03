@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import Checkbox from "@/Components/Checkbox";
 import GuestLayout from "@/Layouts/GuestLayout";
 import InputError from "@/Components/InputError";
@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
+import PageHeader from "@/Components/PageHeader.jsx";
 
 export default function Login({ status, canResetPassword, course = null }) {
     const { auth } = usePage().props;
@@ -34,14 +35,20 @@ export default function Login({ status, canResetPassword, course = null }) {
             <Head title="Log in" />
 
             <div className="container">
-                <div className="my_row form_page">
+                <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
+                    <PageHeader
+                        heading="Login To LinkPro"
+                        description="Login to your account to access all the features of LinkPro."
+                    />
+                </div>
+                <div className="my_row form_page mt-10">
                     <div className="card bg-white guest login_form shadow-md">
-                        <div className={`${course ? "mb-0" : "mb-4"}`}>
+                        {/*<div className={`${course ? "mb-0" : "mb-4"}`}>
                             <h3>Log in to LinkPro</h3>
-                        </div>
+                        </div>*/}
                         {course && (
                             <>
-                                <p className="text-center">to Access</p>
+                                <p className="text-center">Login to Access</p>
                                 <div
                                     className="course_heading"
                                     style={{ background: course.header_color }}
@@ -139,7 +146,7 @@ export default function Login({ status, canResetPassword, course = null }) {
 
                             <div className="text-center mt-4">
                                 <PrimaryButton
-                                    className="button blue mb-4"
+                                    className="button blue mb-4 !max-w-full"
                                     disabled={processing}
                                 >
                                     Sign in

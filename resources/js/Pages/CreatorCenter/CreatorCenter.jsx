@@ -8,7 +8,9 @@ import {activatePage} from '@/Services/LandingPageRequests';
 import Preview from './Components/Preview';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import {Head, Link} from '@inertiajs/react';
-import { RiEdit2Fill } from "react-icons/ri";
+import { RiEdit2Fill, RiPagesLine } from "react-icons/ri";
+import StandardButton from "@/Components/StandardButton.jsx";
+import { MdOutlineDashboard } from "react-icons/md";
 
 function CreatorCenter({offers, landingPage}) {
 
@@ -57,35 +59,88 @@ function CreatorCenter({offers, landingPage}) {
                         triangleRef
                     }}>
                         {offers?.length === 0 ?
-                            <>
-                                <h3>Become a LinkPro Course Creator to generate revenue from your social following and beyond!</h3>
-                                <ul>
-                                    <li>
-                                        <span className="number">1</span>
-                                        <div className="text_wrap">
-                                            <h4>Add A Course</h4>
-                                            <p>Create and upload your proprietary Course videos and charge for customers to access your content.</p>
+                            <section className="mx-auto max-w-5xl mt-10">
+                                <div className="rounded-2xl bg-white shadow-md">
+                                    <div className="flex items-start gap-3 border-b border-gray-100 px-6 py-5 sm:items-center">
+                                        <span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200">
+                                            <MdOutlineDashboard />
+                                        </span>
+                                        <div>
+                                            <h2 className="text-xl font-semibold text-gray-900">
+                                                Become a LinkPro Course Creator and turn your audience into revenue
+                                            </h2>
+                                            <p className="mt-1 text-sm text-gray-600">
+                                                Follow these three quick steps to launch.
+                                            </p>
                                         </div>
-                                    </li>
-                                    <li>
-                                        <span className="number">2</span>
-                                        <div className="text_wrap">
-                                            <h4>Create A Landing Page</h4>
-                                            <p>A Landing Page is your exclusive page and link you build to help market the Courses you create.</p>
+                                    </div>
+                                    <ol className="px-6 py-6">
+                                        <div className="grid gap-6">
+                                            <li className="flex gap-4">
+                                                <div className="relative shrink-0">
+                                                    <span className="grid h-12 w-12 place-items-center rounded-full bg-indigo-600 text-white text-lg font-semibold shadow-md">
+                                                        1
+                                                    </span>
+                                                    <span
+                                                        className="absolute left-1/2 top-12 -ml-px hidden h-8 w-0.5 bg-indigo-100 sm:block"
+                                                        aria-hidden
+                                                    />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <h3 className="text-lg font-semibold text-gray-900">Add A Course</h3>
+                                                    <p className="mt-1 text-gray-700">Create and upload your proprietary Course videos and charge for customers to access your content.</p>
+                                                </div>
+                                            </li>
+                                            <li className="flex gap-4">
+                                                <div className="relative shrink-0">
+                                                    <span className="grid h-12 w-12 place-items-center rounded-full bg-indigo-600 text-white text-lg font-semibold shadow-md">
+                                                        2
+                                                    </span>
+                                                    <span
+                                                        className="absolute left-1/2 top-12 -ml-px hidden h-8 w-0.5 bg-indigo-100 sm:block"
+                                                        aria-hidden
+                                                    />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <h3 className="text-lg font-semibold text-gray-900">Create A Landing Page</h3>
+                                                    <p className="mt-1 text-gray-700">A Landing Page is your exclusive page and link you build to help market the Courses you create.</p>
+                                                </div>
+                                            </li>
+                                            <li className="flex gap-4">
+                                                <div className="relative shrink-0">
+                                                    <span className="grid h-12 w-12 place-items-center rounded-full bg-indigo-600 text-white text-lg font-semibold shadow-md">
+                                                        3
+                                                    </span>
+                                                </div>
+                                                <div className="text_wrap">
+                                                    <h3 className="text-lg font-semibold text-gray-900">Promote your Course link and get paid!</h3>
+                                                    <p className="mt-1 text-gray-700">Publish and market your Course to generate income. Recruit others to sell your Course to earn shared profits!</p>
+                                                </div>
+                                            </li>
                                         </div>
-                                    </li>
-                                    <li>
-                                        <span className="number">3</span>
-                                        <div className="text_wrap">
-                                            <h4>Promote your Course link and get paid!</h4>
-                                            <p>Publish and market your Course to generate income. Recruit others to sell your Course to earn shared profits!</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <a className="button blue" href="/creator-center/add-course">
-                                    Get Started!
-                                </a>
-                            </>
+                                    </ol>
+                                    <div className="mt-6 flex items-center justify-start p-10 pt-0">
+                                        <StandardButton
+                                            color="blue"
+                                            text="Get Started!"
+                                            size={"w-1/3"}
+                                            onClick={() => {
+                                                window.location.href = '/creator-center/add-course';
+                                            }}
+                                        />
+                                        {/*<a className="button blue !w-full md:!w-1/3 !flex items-center justify-center gap-2"
+                                           href="/creator-center/add-course">
+                                            <span className="ml-auto">Get Started!</span>
+                                            <span className="text-white inline-flex items-center self-end ml-auto">
+                                             spark/launch icon
+                                                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
+                                                    <path d="M13 3l8 8-8 8-2-2 4.59-4.59H3v-2h12.59L11 5l2-2z" />
+                                                </svg>
+                                            </span>
+                                        </a>*/}
+                                    </div>
+                                </div>
+                            </section>
                             :
                             <div className="grid_columns">
                                 <div className="column">
