@@ -17,7 +17,7 @@ export const SubscriptionPaymentButtons = ({
                                                showPaymentButtons,
                                                setShowPaymentButtons,
                                                env,
-                                               subId,
+                                               subId = null,
                                                defaultPage = null,
                                                setUserInfo = {},
                                                setSubscription = {},

@@ -7,6 +7,7 @@ use App\Services\StripeService;
 use App\Services\SubscriptionService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -110,9 +111,15 @@ class SubscriptionController extends Controller
     /**
      * @param Request $request
      *
-     * @return Response
+     * @return RedirectResponse | Response
      */
-    public function showPlans(Request $request): Response {
+    public function showPlans(Request $request): RedirectResponse|Response {
+
+        $user = Auth::user();
+        $sub = $user->subscriptions()->first();
+        if ($sub) {
+            return redirect()->to('/edit-account');
+        }
 
         $type = $request->get('type');
 

@@ -259,7 +259,7 @@ button {
     }
 }
 
-.button, button {
+.button {
     color: $white;
     display: inline-block;
     width: 150px;
@@ -268,7 +268,6 @@ button {
     border-radius: 6px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
-    border: none;
     text-transform: uppercase;
     //box-shadow: 0 0 5px 0 rgba(0, 0, 0, .70);
 

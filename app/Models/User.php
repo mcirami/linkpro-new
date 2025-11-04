@@ -3,7 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Session;
@@ -55,63 +59,63 @@ class User extends \TCG\Voyager\Models\User
 
     /** Relationships **/
 
-    public function pages(){
+    public function pages(): HasMany|Builder|User {
         return $this->hasMany(Page::class);
     }
 
-    public function links(){
+    public function links(): User|Builder|HasMany {
         return $this->hasMany(Link::class);
     }
 
-    public function folders(){
+    public function folders(): HasMany|Builder|User {
         return $this->hasMany(Folder::class);
     }
 
-    public function linkVisits() {
+    public function linkVisits(): HasManyThrough|Builder|User {
         return $this->hasManyThrough(LinkVisit::class, Link::class);
     }
 
-    public function pageVisits() {
+    public function pageVisits(): HasManyThrough|Builder|User {
         return $this->hasManyThrough(PageVisit::class, Page::class);
     }
 
-    public function subscriptions() {
+    public function subscriptions(): HasOne|Builder|User {
         return $this->hasOne(Subscription::class);
     }
 
-    public function referrals(){
+    public function referrals(): HasMany|Builder|User {
         return $this->hasMany(Referral::class);
     }
 
-    public function ShopifyStores() {
+    public function ShopifyStores(): HasMany|Builder|User {
         return $this->hasMany(ShopifyStore::class);
     }
 
-    public function LandingPages() {
+    public function LandingPages(): HasOne|Builder|User {
         return $this->hasOne(LandingPage::class);
     }
 
-    public function LandingPageSections() {
+    public function LandingPageSections(): HasMany|Builder|User {
         return $this->hasMany(LandingPageSection::class);
     }
 
-    public function Courses() {
+    public function Courses(): HasMany|Builder|User {
         return $this->hasMany(Course::class);
     }
 
-    public function Offers() {
+    public function Offers(): HasMany|Builder|User {
         return $this->hasMany(Offer::class);
     }
 
-    public function OfferClicks() {
+    public function OfferClicks(): HasMany|Builder|User {
         return $this->hasMany(OfferClick::class, 'referral_id');
     }
 
-    public function Purchases() {
+    public function Purchases(): HasMany|Builder|User {
         return $this->hasMany(Purchase::class);
     }
 
-    public function Affiliates() {
+    public function Affiliates(): HasOne|Builder|User {
         return $this->hasOne(Affiliate::class);
     }
 
@@ -119,8 +123,12 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(Ban::class);
     }
 
-    public function UserIpAddress() {
+    public function UserIpAddress(): HasMany|Builder|User {
         return $this->hasMany(UserIpAddress::class);
+    }
+
+    public function UserPayout(): HasOne|Builder|User {
+        return $this->hasOne(UserPayout::class);
     }
 
     /** Other Functions **/

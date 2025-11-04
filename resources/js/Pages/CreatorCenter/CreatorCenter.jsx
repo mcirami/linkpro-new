@@ -121,9 +121,9 @@ function CreatorCenter({offers, landingPage}) {
                                     </ol>
                                     <div className="mt-6 flex items-center justify-start p-10 pt-0">
                                         <StandardButton
-                                            color="blue"
+                                            classes="w-full md:w-1/4 text-white shadow-md bg-indigo-600 hover:bg-indigo-700
+                                                focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
                                             text="Get Started!"
-                                            size={"w-1/3"}
                                             onClick={() => {
                                                 window.location.href = '/creator-center/add-course';
                                             }}

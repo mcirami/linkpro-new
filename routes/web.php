@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\PayoutController;
 use Illuminate\Foundation\Application;
 
 use Illuminate\Support\Facades\Route;
@@ -74,7 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/folder/new', [FolderController::class, 'store'])->name('add.folder');
 
     Route::get('/auth/shopify', [ShopifyController::class, 'auth'])->name('shopify.auth');
-    Route::get('/auth/shopify/callback', [ShopifyController::class, 'callback']);
+    //Route::get('/auth/shopify/callback', [ShopifyController::class, 'callback']);
     Route::get('/shopify/get-products/{id}', [ShopifyController::class, 'getAllProducts'])->name('shopify.get.products');
     Route::get('/shopify/get-stores', [ShopifyController::class, 'getStores'])->name('shopify.get.stores');
 
@@ -87,8 +88,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-standard-icons', [IconController::class, 'getStandardIcons']);
     Route::get('/get-custom-icons', [IconController::class, 'getCustomIcons']);
 
-    Route::post('/payment-onboarding', [UserController::class, 'paymentOnboarding'])->name('payment.onboarding');
-    Route::get('/onboarding-success', [UserController::class, 'onboardingSuccess'])->name('onboarding.success');
+    Route::post('/payment-onboarding', [PayoutController::class, 'paymentOnboarding'])->name('payment.onboarding');
+    Route::get('/stripe/onboarding/return', [PayoutController::class, 'onboardingReturn'])->name('onboarding.return');
+    Route::get('/onboarding-success', [PayoutController::class, 'onboardingSuccess'])->name('onboarding.success');
 
     Route::get('connect-shopify-store', [ShopifyController::class, 'showConnect'])->name('api.show.connect');
     Route::get('auth/shopify', [ShopifyController::class, 'auth']);

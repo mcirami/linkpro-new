@@ -12,7 +12,8 @@ const PayOutComponent = ({setShowLoader, total, setShowMessageAlertPopup}) => {
             setShowLoader({
                 show: true,
                 position: 'fixed',
-                icon: ""
+                icon: "",
+                message: "Redirecting to onboarding..."
             })
             redirectToOnboarding().then(response => {
                 if (response.success) {

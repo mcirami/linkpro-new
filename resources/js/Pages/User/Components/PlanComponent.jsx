@@ -78,25 +78,21 @@ const PlanComponent = ({
     return (
         <div  className="flex flex-col items-center justify-start h-full">
             <CardHeader title="Plan Type" />
-            <div className="text-center p-5 -full">
+            <div className="text-center p-5 w-full">
                 <p className="text-sm text-gray-600 mb-5">Your Current Plan is</p>
-                <div className="mx-auto inline-flex h-[5.5rem] w-[5.5rem] items-center justify-center rounded-full bg-indigo-50 text-indigo-700 font-semibold shadow-inner">
-                    {subscription.name ?? '—'}
-                    {/*<img src={ Vapor.asset('images/plan-type-bg.png')} alt="" />*/}
+                <div className="text-2xl uppercase mx-auto inline-flex h-[8.5rem] w-[8.5rem] items-center justify-center rounded-full bg-indigo-50 text-indigo-700 font-semibold shadow-inner">
+                    {subscription?.name ??
+                        "Free"
+                    }
                 </div>
 
-                { (subscription && subscription.status !== "active" && (subEnd > currentDateTime) ) ?
+                { (subscription && subscription.status !== "active" && (subEnd > currentDateTime) ) &&
                     <div className="canceled_text">
                         <p>Your subscription has been cancelled. It will end on:<br />
                             <span>
                                 {new Date(subscription.ends_at).toLocaleDateString()}
                             </span>
                         </p>
-                    </div>
-                    :
-                    !subscription &&
-                    <div className="mx-auto inline-flex h-28 w-28 items-center justify-center rounded-full bg-indigo-50 text-indigo-700 font-semibold shadow-inner">
-                        Free
                     </div>
                 }
             </div>
@@ -137,8 +133,8 @@ const PlanComponent = ({
                             </button>
                         </div>
                         :
-                        <div className="space-y-2">
-                            <Link className='button blue' href={ route('plans.get') }>
+                        <div className="space-y-2 ">
+                            <Link className={`button blue`} href={ route('plans.get') }>
                                 Change My Plan
                             </Link>
                         </div>

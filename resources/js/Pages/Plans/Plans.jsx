@@ -4,22 +4,11 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import ConfirmChange from "./ConfirmChange.jsx";
 import { Loader } from "@/Utils/Loader.jsx";
 import { SubscriptionPaymentButtons } from "@/Components/Payments/SubscriptionPaymentButtons.jsx";
-import ProPlan from "@/Components/PlanComponents/ProPlan.jsx";
-import PremierPlan from "@/Components/PlanComponents/PremierPlan.jsx";
-import {
-    GetCurrentTime,
-    GetHumanReadableTime,
-} from "@/Services/TimeRequests.jsx";
+
+import PageHeader from "@/Components/PageHeader.jsx";
+import PlanCard from "@/Pages/Plans/PlanCard.jsx";
 function Plans({ type }) {
     const { auth } = usePage().props;
-    const subscriptionName = auth.user.subscription
-        ? auth.user.subscription.name
-        : null;
-    const status = auth.user.subscription
-        ? auth.user.subscription.status
-        : null;
-    const subId = auth.user.subscription ? auth.user.subscription.sub_id : null;
-    const pmType = auth.user.userInfo.pm_type;
     const env = auth.env;
 
     const [showLoader, setShowLoader] = useState({
@@ -43,11 +32,10 @@ function Plans({ type }) {
 
     const [showPaymentButtons, setShowPaymentButtons] = useState({
         show: false,
-        type: "",
         plan: "",
     });
 
-    const [currentDateTime, setCurrentDateTime] = useState("");
+   /* const [currentDateTime, setCurrentDateTime] = useState("");
     const [subEnd, setSubEnd] = useState("");
 
     useEffect(() => {
@@ -58,14 +46,14 @@ function Plans({ type }) {
         if (auth.user.subscription) {
             setSubEnd(GetHumanReadableTime(auth.user.subscription.ends_at));
         }
-    }, []);
+    }, []);*/
 
-    const isCurrentPremier =
+    /*const isCurrentPremier =
         subscriptionName === "premier" &&
         (status === "active" ||
-            (status === "canceled" && currentDateTime < subEnd));
+            (status === "canceled" && currentDateTime < subEnd));*/
 
-    const handleUpgradeClick = useCallback((e, plan) => {
+    /*const handleUpgradeClick = useCallback((e, plan) => {
         e.preventDefault();
 
         if (pmType === "paypal") {
@@ -84,13 +72,13 @@ function Plans({ type }) {
                 pmType: pmType,
             });
         }
-    }, []);
+    }, []);*/
 
     const handlePurchaseClick = useCallback((e, type, planName) => {
         e.preventDefault();
         setShowPaymentButtons({
             show: true,
-            type: type,
+            type: "purchase",
             plan: planName,
         });
     }, []);
@@ -101,31 +89,30 @@ function Plans({ type }) {
             <div className="container">
                 <div className="my_row form_page plans text-center">
                     <div
-                        className={`card inline-block relative ${confirmChange.show || showPaymentButtons.show ? "active" : ""} `}
+                        className={`card inline-block relative ${showPaymentButtons.show ? "active" : ""} `}
                     >
                         {showPaymentButtons.show ? (
                             <SubscriptionPaymentButtons
                                 showPaymentButtons={showPaymentButtons}
                                 setShowPaymentButtons={setShowPaymentButtons}
                                 env={env}
-                                subId={subId}
                             />
                         ) : (
                             <>
                                 {type === "register" ? (
-                                    <>
-                                        <h2 className="page_title !m-0">
-                                            Welcome to Link Pro!
-                                        </h2>
-                                        <p className="sub_title mb-5">
-                                            Continue free forever or upgrade for
-                                            advanced features!
-                                        </p>
-                                    </>
+                                    <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline my-3 border-b border-gray-100">
+                                        <PageHeader
+                                            heading="Welcome to Link Pro!"
+                                            description="Continue free forever or upgrade for advanced features!"
+                                        />
+                                    </div>
                                 ) : (
-                                    <h2 className="page_title">
-                                        Upgrade Now For Advanced Features!
-                                    </h2>
+                                    <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline my-3 border-b border-gray-100 text-left">
+                                        <PageHeader
+                                            heading="Subscribe to Link Pro"
+                                            description="Upgrade Now For Advanced Features!"
+                                        />
+                                    </div>
                                 )}
 
                                 {showLoader.show && (
@@ -149,185 +136,87 @@ function Plans({ type }) {
                                             setShowLoader={setShowLoader}
                                         />
                                     ) : (
-                                        <div
-                                            className={`my_row  ${
-                                                subscriptionName ===
-                                                    "premier" &&
-                                                (status === "active" ||
-                                                    status === "canceled")
-                                                    ? "two_columns"
-                                                    : "three_columns"
-                                            }`}
-                                        >
-                                            {!subscriptionName ||
-                                            subscriptionName !== "premier" ||
-                                            (status !== "active" &&
-                                                status !== "canceled") ? (
-                                                <ProPlan
-                                                    clickMethod={
-                                                        handlePurchaseClick
-                                                    }
-                                                    type="purchase"
-                                                    isCurrent={
-                                                        subscriptionName ===
-                                                            "pro" &&
-                                                        (status === "active" ||
-                                                            (status ===
-                                                                "canceled" &&
-                                                                currentDateTime <
-                                                                    subEnd))
-                                                    }
+                                        <div className="inline-block relative w-full max-w-5xl pt-10">
+                                            <div className="mt-6 grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">
+                                                <PlanCard
+                                                    name="Pro"
+                                                    price="$4.99"
+                                                    period="/ mo"
+                                                    accent="indigo"
+                                                    features={[
+                                                        'Free Features PLUS',
+                                                        'Unlimited Icons',
+                                                        'Custom Icons',
+                                                    ]}
+                                                    ctaLabel="Choose Pro"
+                                                    isCurrent={false}
+                                                    onClick={(e) => {
+                                                        handlePurchaseClick(e, "purchase", "pro");
+                                                    }}
+                                                    ctaProps={{ 'data-level': 'pro' }}
                                                 />
-                                            ) : (
-                                                ""
-                                            )}
-                                            <PremierPlan
-                                                clickMethod={
-                                                    subscriptionName &&
-                                                    !isCurrentPremier
-                                                        ? handleUpgradeClick
-                                                        : handlePurchaseClick
-                                                }
-                                                type={
-                                                    subscriptionName &&
-                                                    !isCurrentPremier
-                                                        ? "changePlan"
-                                                        : "purchase"
-                                                }
-                                                isCurrent={isCurrentPremier}
-                                            />
-                                            <div className="column custom">
-                                                <h2 className="text-uppercase">
-                                                    Custom
-                                                </h2>
-                                                <ul>
-                                                    <li>
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="16"
-                                                            height="16"
-                                                            fill="currentColor"
-                                                            className="bi bi-check-lg"
-                                                            viewBox="0 0 16 16"
-                                                        >
-                                                            <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z" />
-                                                        </svg>
-                                                        <p>Unlimited Links</p>
-                                                    </li>
-                                                    <li>
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="16"
-                                                            height="16"
-                                                            fill="currentColor"
-                                                            className="bi bi-check-lg"
-                                                            viewBox="0 0 16 16"
-                                                        >
-                                                            <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z" />
-                                                        </svg>
-                                                        <p>
-                                                            Dedicated Account
-                                                            Manager
-                                                        </p>
-                                                    </li>
-                                                </ul>
-                                                <div className="pricing">
-                                                    <h3>ASK</h3>
-                                                </div>
-                                                <div className="button_row">
-                                                    <a
-                                                        className="button gray_gradient"
-                                                        href="mailto:admin@link.pro"
-                                                    >
-                                                        Contact Us
-                                                    </a>
-                                                </div>
+                                                <PlanCard
+                                                    name="Premier"
+                                                    price="$19.99"
+                                                    period="/ mo"
+                                                    accent="violet"
+                                                    features={[
+                                                        'Pro Features PLUS',
+                                                        'Up to 5 Unique Links',
+                                                        'Access to Affiliate Program',
+                                                    ]}
+                                                    ctaLabel="Choose Premier"
+                                                    isCurrent={false}
+                                                    onClick={(e) => {
+                                                        handlePurchaseClick(e, "purchase", "premier");
+                                                    }}
+                                                    ctaProps={{ 'data-level': 'premier' }}
+                                                />
+                                                <PlanCard
+                                                    name="Custom"
+                                                    price="Ask For Pricing"
+                                                    period=""
+                                                    accent="gray"
+                                                    features={[
+                                                        'Premier Features PLUS',
+                                                        'Dedicated Account',
+                                                        'Unlimited Links',
+                                                    ]}
+                                                    ctaLabel="Contact Us"
+                                                    isCurrent={false}
+                                                    onClick={() => {
+                                                        window.location.href = "mailto:admin@link.pro?subject=Ask About Custom Pricing";
+                                                    }}
+                                                    ctaProps={{ 'data-level': 'custom' }}
+                                                />
                                             </div>
                                         </div>
                                     )}
                                     {type === "register" && (
-                                        <div className="my_row">
-                                            <div className="column free plans_page">
-                                                <h2 className="text-uppercase">
-                                                    Free
-                                                </h2>
-                                                <div className="my_row three_columns">
-                                                    <div className="column">
-                                                        <h4>
-                                                            Having trouble
-                                                            choosing?
-                                                        </h4>
-                                                        <p>
-                                                            No Problem! Continue
-                                                            now free and upgrade
-                                                            later!
-                                                        </p>
-                                                    </div>
-                                                    <div className="column">
-                                                        <ul>
-                                                            <li>
-                                                                <svg
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16"
-                                                                    height="16"
-                                                                    fill="currentColor"
-                                                                    className="bi bi-check-lg"
-                                                                    viewBox="0 0 16 16"
-                                                                >
-                                                                    <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z" />
-                                                                </svg>
-                                                                <p>
-                                                                    1 Unique
-                                                                    Link
-                                                                </p>
-                                                            </li>
-                                                            <li>
-                                                                <svg
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16"
-                                                                    height="16"
-                                                                    fill="currentColor"
-                                                                    className="bi bi-check-lg"
-                                                                    viewBox="0 0 16 16"
-                                                                >
-                                                                    <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z" />
-                                                                </svg>
-                                                                <p>
-                                                                    Up To 8
-                                                                    Icons
-                                                                </p>
-                                                            </li>
-                                                            <li>
-                                                                <svg
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16"
-                                                                    height="16"
-                                                                    fill="currentColor"
-                                                                    className="bi bi-check-lg"
-                                                                    viewBox="0 0 16 16"
-                                                                >
-                                                                    <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z" />
-                                                                </svg>
-                                                                <p>
-                                                                    Add Social
-                                                                    Links
-                                                                </p>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <div className="column">
-                                                        <Link
-                                                            className="button green_gradient"
-                                                            href={route(
-                                                                "dashboard",
-                                                            )}
-                                                        >
-                                                            Continue
-                                                        </Link>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div className="inline-block relative w-full max-w-5xl mt-10">
+                                        <PlanCard
+                                            name="Free"
+                                            price=""
+                                            period=""
+                                            size="full"
+                                            accent="green"
+                                            features={[
+                                                '1 Unique Link',
+                                                'Up To 8 Icons',
+                                                'Add Social Links',
+                                            ]}
+                                            extraText={[{
+                                                'title' :'Having trouble choosing?',
+                                                'desc' :'No Problem! Continue now free and upgrade later!'
+                                            }]}
+                                            ctaLabel="Continue"
+                                            isCurrent={false}
+                                            onClick={() => {
+                                                window.location.href = route("dashboard");
+                                            }}
+                                            ctaProps={{ 'data-level': 'free' }}
+                                        />
+                                    </div>
                                     )}
                                 </div>
                             </>

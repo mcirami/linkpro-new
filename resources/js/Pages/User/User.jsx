@@ -20,7 +20,7 @@ const User = ({
                   message = null,
                   isAffiliate = false,
                   hasOffers = false,
-                  payoutInfoSubmitted = false,
+                  payoutInfoSubmitted = null,
                   total = false,
 }) => {
 
@@ -51,7 +51,8 @@ const User = ({
         show: false,
         icon: "",
         position: "",
-        progress: null
+        progress: null,
+        message: null
     });
 
     useEffect(() => {
@@ -122,18 +123,27 @@ const User = ({
                                         subEndDate={subscription.ends_at}
                                     />
                                     :
-                                <div className={`w-full inline-block ${ (permissions.includes("view subscription details") &&
-                                    (!subscription || subscription.sub_id === "bypass") ) || (!permissions.includes("view subscription details") && permissions.includes('view courses')) ? "two_columns" : ""}`}>
                                     <div className="card-body w-full inline-block">
-                                        <div>
-                                            <UserForm
-                                                userInfo={userInfo}
-                                                setUserInfo={setUserInfo}
-                                            />
-                                        </div>
+                                        {subscription &&
+                                            <div>
+                                                <UserForm
+                                                    userInfo={userInfo}
+                                                    setUserInfo={setUserInfo}
+                                                    subscription={subscription}
+                                                />
+                                            </div>
+                                        }
                                         <div className=
                                                  {`mt-8 grid gap-6
                   [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))] ${permissions.includes("view subscription details")}`}>
+
+                                            {!subscription &&
+                                                <UserForm
+                                                    userInfo={userInfo}
+                                                    setUserInfo={setUserInfo}
+                                                    subscription={subscription}
+                                                />
+                                            }
 
                                             {permissions.includes('view subscription details') &&
                                                 <div className="rounded-2xl bg-white shadow-md p-5">
@@ -159,7 +169,7 @@ const User = ({
                                                     />
                                                 </div>
                                             }
-                                            { (hasOffers || isAffiliate) && !payoutInfoSubmitted ?
+                                            { (hasOffers || isAffiliate) && payoutInfoSubmitted !== null ?
                                                 <div className="rounded-2xl bg-white shadow-md p-5">
                                                     <PayOutComponent
                                                         setShowLoader={setShowLoader}
@@ -171,7 +181,6 @@ const User = ({
                                                 ""
                                             }
                                         </div>
-                                    </div>
                                 </div>
                             }
                         </div>

@@ -91,7 +91,7 @@
             color: $blue;
         }
 
-        button, .button {
+        .button {
             width: 100%;
             display: block;
             border-radius: 6px;
@@ -107,7 +107,7 @@
         }
 
         form {
-            button, .button {
+            .button {
                 max-width: 300px;
                 margin-left: auto;
 

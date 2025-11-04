@@ -17,7 +17,6 @@ use Inertia\Inertia;
 use App\Http\Traits\UserTrait;
 use Inertia\Response;
 use App\Http\Traits\BillingTrait;
-use Stripe\Exception\ApiErrorException;
 use Mchev\Banhammer\IP;
 
 class UserController extends Controller
@@ -45,7 +44,7 @@ class UserController extends Controller
         $user = Auth::user();
         $hasOffers = $user->offers()->first();
         $isAffiliate = $user->Affiliates()->first();
-        $payoutInfoSubmitted = $user->payout_info_submitted;
+        $payoutInfoSubmitted = $user->payout_info_id;
 
         $statsService = new StatsServices();
         $data = $statsService->getAllOfferStats(['clear' => true]);
@@ -95,62 +94,6 @@ class UserController extends Controller
         $pages = $this->getUserPages($user);
 
         return response()->json(['success' => true, 'pages' => $pages]);
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function paymentOnboarding(): \Symfony\Component\HttpFoundation\Response {
-        $stripe     = $this->createStripeGateway();
-        $domain     = config('app.url');
-        $user = Auth::user();
-        $response = "";
-        try {
-
-            $account = $stripe->accounts->create([
-                'email' => $user->email,
-                'controller' => [
-                    'stripe_dashboard' => [
-                        'type' => 'express',
-                    ],
-                    'fees' => [
-                        'payer' => 'application'
-                    ],
-                    'losses' => [
-                        'payments' => 'application'
-                    ],
-                ],
-            ]);
-            $response = $stripe->accountLinks->create([
-                'account' => $account->id,
-                'refresh_url' => $domain . '/edit-account',
-                'return_url' => $domain . '/onboarding-success',
-                'type' => 'account_onboarding',
-            ]);
-
-        } catch ( ApiErrorException $e ) {
-            $this->saveErrors($e);
-            http_response_code(500);
-            $data = [
-                "success" => false,
-                "message" => 'An error occurred with the message: ' . $e
-            ];
-            //echo json_encode(['error' => $e->getMessage()]);
-        }
-
-        return response()->json(['success' => true, 'url' => $response->url]);
-    }
-
-    /**
-     * @return Response
-     */
-    public function onboardingSuccess(): Response {
-        $user = Auth::user();
-        $user->update([
-            'payout_info_submitted' => true
-        ]);
-
-        return Inertia::render('Onboarding/Success');
     }
 
     public function banUserByType(Request $request, User $user, UserService $userService): JsonResponse {

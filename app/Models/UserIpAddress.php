@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class UserIpAddress extends Model
 {
-    use HasFactory;
 
     protected $guarded = [];
 
@@ -31,7 +32,7 @@ class UserIpAddress extends Model
         return $payload;
     }
 
-    public function Users() {
+    public function Users(): Builder|HasMany|UserIpAddress {
         return $this->hasMany(User::class);
     }
 }

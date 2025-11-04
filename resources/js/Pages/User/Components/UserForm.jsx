@@ -5,7 +5,8 @@ import { CardHeader } from "@mui/material";
 
 const UserForm = ({
                       userInfo,
-                      setUserInfo
+                      setUserInfo,
+                      subscription
 }) => {
 
     const { data, setData, put, processing, errors, clearErrors, reset, setDefaults } = useForm({
@@ -116,7 +117,7 @@ const UserForm = ({
                     }
                 </div>
                 <div className="form_buttons !mb-0">
-                    <button disabled={processing} type="submit" className="button blue text-uppercase">
+                    <button disabled={processing} type="submit" className={`button blue text-uppercase ${!subscription ? "!w-full !max-w-full" : ""} `}>
                         Update My Info
                     </button>
                 </div>

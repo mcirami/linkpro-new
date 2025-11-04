@@ -1350,15 +1350,15 @@ form .bottom_row a {
     display: none;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -ms-flex-direction: row;
-    flex-direction: row;
+    -ms-flex-direction: column;
+    flex-direction: column;
     -ms-flex-wrap: nowrap;
     flex-wrap: nowrap;
     justify-content: center;
     -webkit-justify-content: center;
     align-items: center;
     -webkit-align-items: center;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 998;
     border-radius: 8px;
     -webkit-border-radius: 8px;
@@ -1373,6 +1373,11 @@ form .bottom_row a {
     img {
         max-width: 200px;
         z-index: 999;
+    }
+
+    p {
+        @include osbold;
+        font-size: 2rem;
     }
 }
 
