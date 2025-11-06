@@ -3,7 +3,8 @@ import React, {useState, useRef, useReducer, useEffect} from 'react';
 import {Loader} from '@/Utils/Loader';
 import {Flash} from '@/Utils/Flash';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
-import ContentSelect from '@/Components/CreatorComponents/ContentSelect.jsx';
+import ContentSelectButtons from '@/Components/ContentSelectButtons.jsx';
+import {addSection} from '@/Services/LandingPageRequests.jsx';
 import ColorPicker from '@/Components/CreatorComponents/ColorPicker';
 import {
     LP_ACTIONS,
@@ -24,7 +25,6 @@ import {
     useSensors,
 } from '@dnd-kit/core';
 import {
-    arrayMove,
     SortableContext,
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
@@ -44,6 +44,7 @@ import ImageUploader from '@/Pages/Dashboard/Components/Page/ImageUploader.jsx';
 import ClickToCopyUrl from "@/Components/CreatorComponents/ClickToCopyUrl.jsx";
 import PageTabs from "@/Components/PageTabs.jsx";
 import PageNav from "@/Pages/Dashboard/Components/Page/PageNav.jsx";
+import { BiImage, BiNotepad } from "react-icons/bi";
 
 function LPCreator({landingPageArray, courses, username}) {
 
@@ -388,6 +389,57 @@ function LPCreator({landingPageArray, courses, username}) {
                                         </div>
                                     :
                                     <div className="content_wrap my_row creator">
+                                        <section className="my_row section_row !shadow-none !p-0 mt-5 mb-10">
+                                            <div className="section_title">
+                                                <h4>Add Content</h4>
+                                            </div>
+                                            <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
+                                                <ContentSelectButtons
+                                                    options={[
+                                                        {
+                                                            key: 'text',
+                                                            icon: <BiNotepad className="h-4 w-4 text-[#424fcf]"/>,
+                                                            title: 'Text',
+                                                            description: 'Add formatted text, descriptions, or instructions about the course.'
+                                                        },
+                                                        {
+                                                            key: 'image',
+                                                            icon: <BiImage className="h-4 w-4 text-[#424fcf]"/>,
+                                                            title: 'Image',
+                                                            description: 'Upload a photo, diagram, or chart to visually support your content.'
+                                                        },
+                                                    ]}
+                                                    handleClick={(sectionType) => {
+                                                        const packets = {
+                                                            type: sectionType
+                                                        }
+                                                        addSection(packets, pageData['id'])
+                                                        .then((response) => {
+                                                            if (response.success) {
+                                                                setSections([
+                                                                    ...sections,
+                                                                    response.section
+                                                                ])
+                                                                const newIndex = sections.length;
+                                                                setOpenIndex(prev => ([
+                                                                    ...prev,
+                                                                    newIndex
+                                                                ]))
+                                                                setTimeout(function() {
+                                                                    document.querySelector('.sections_wrap .section_row:last-child').
+                                                                        scrollIntoView({
+                                                                            behavior: 'smooth',
+                                                                            block: "start",
+                                                                            inline: "nearest"
+                                                                        });
+
+                                                                }, 800)
+                                                            }
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+                                        </section>
                                         <section className="my_row">
                                             {sections.length > 0 &&
 
@@ -444,31 +496,6 @@ function LPCreator({landingPageArray, courses, username}) {
                                                     </section>
                                                 </DndContext>
                                             }
-                                        </section>
-
-                                        <section className="my_row section_row !shadow-none !p-0 mt-5">
-                                            <div className="section_title">
-                                                <h4>Add Content</h4>
-                                            </div>
-                                            <ContentSelect
-                                                sections={sections}
-                                                setSections={setSections}
-                                                dataId={pageData['id']}
-                                                setOpenIndex={setOpenIndex}
-                                                saveTo="landingPage"
-                                                options={[
-                                                    {
-                                                        id: 1,
-                                                        type: "text",
-                                                        label: "Text Section"
-                                                    },
-                                                    {
-                                                        id: 2,
-                                                        type: "image",
-                                                        label: "Image Section"
-                                                    }
-                                                ]}
-                                            />
                                         </section>
 
                                         {!pageData['published'] &&

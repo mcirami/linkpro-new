@@ -27,29 +27,30 @@ const MailChimp = ({
         getMailchimpLists().then(
             (data) => {
                 if (data.success) {
-                    data.lists.length > 0 && setLists(data.lists);
+                    data.lists?.length > 0 && setLists(data.lists);
                     //setShowLoader({show: false, icon: "", position: ""});
                 }
             }
         )
     }
+
+    console.log(lists);
     return (
 
-       lists.length < 0 ?
-
-        <MailchimpIntegration
-            connectionError={connectionError}
-            editID={editLink.id}
-            pageID={pageSettings.id}
-            index={index}
-        />
+       lists?.length > 0 ?
+           <MailchimpLists
+               lists={lists}
+               setLists={setLists}
+               currentLink={editLink}
+               setCurrentLink={setEditLink}
+           />
         :
-        <MailchimpLists
-            lists={lists}
-            setLists={setLists}
-            currentLink={editLink}
-            setCurrentLink={setEditLink}
-        />
+           <MailchimpIntegration
+               connectionError={connectionError}
+               editID={editLink.id}
+               pageID={pageSettings.id}
+               index={index}
+           />
 
     );
 };

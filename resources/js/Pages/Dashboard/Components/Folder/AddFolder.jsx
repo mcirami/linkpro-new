@@ -12,6 +12,9 @@ import {
     FOLDER_LINKS_ACTIONS,
 } from '@/Services/Reducer.jsx';
 import { AiFillFolderAdd } from "react-icons/ai";
+import ContentSelectButtons from "@/Components/ContentSelectButtons.jsx";
+import { PiSquaresFour } from "react-icons/pi";
+import { BsViewStacked } from "react-icons/bs";
 
 const AddFolder = ({
                        setShowUpgradePopup,
@@ -25,8 +28,7 @@ const AddFolder = ({
     const { dispatchFolderLinks } = useContext(FolderLinksContext);
     //const { dispatchOrigFolderLinks } = useContext(OriginalFolderLinksContext);
 
-    const handleClick = (e) => {
-        e.preventDefault();
+    const handleClick = () => {
 
         if ( subStatus ) {
 
@@ -51,7 +53,7 @@ const AddFolder = ({
                     //dispatchOrig({ type: ORIGINAL_LINKS_ACTIONS.SET_ORIGINAL_LINKS, payload: {links: newOriginalArray.concat(newFolderObject) }})
                     dispatch({ type: LINKS_ACTIONS.SET_LINKS, payload: {links: newLinks.concat(newFolderObject) }})
 
-                    fetchFolderLinks(data.id);
+                    fetchFolderLinks(data.id).then(r => {});
                 }
             })
 
@@ -84,20 +86,18 @@ const AddFolder = ({
     }
 
     return (
-
-        <a href="#" className="transform-none flex items-start w-full group rounded-xl bg-white p-4 text-left shadow-md
-                 transition-all hover:-translate-y-0.5 hover:shadow-lg focus:outline-none
-                 focus-visible:ring-2 focus-visible:ring-[#424fcf]/30" onClick={handleClick}>
-            <div className="flex-col items-start gap-3">
-                <div className="text-base font-semibold flex items-center gap-2 text-gray-900">
-                    <div className="h-9 w-9 rounded-lg grid place-items-center bg-[#424fcf]/10">
-                        {/* link icon */}
-                        <AiFillFolderAdd className="h-6 w-6 text-[#424fcf]" aria-hidden="true" />
-                    </div>
-                    <h3 className="uppercase">Add Folder</h3>
-                </div>
-            </div>
-        </a>
+        <div className="grid grid-cols-1 gap-4">
+            <ContentSelectButtons
+                options={[
+                    {
+                        title: 'Add Folder',
+                        key: 'layout_one',
+                        icon: <AiFillFolderAdd className="h-6 w-6 text-[#424fcf]" aria-hidden="true" />,
+                    },
+                ]}
+                handleClick={handleClick}
+            />
+        </div>
 
     )
 }

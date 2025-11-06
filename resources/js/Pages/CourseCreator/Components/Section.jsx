@@ -434,7 +434,7 @@ const Section = ({
                                                                     return loopSection;
                                                                 }),
                                                             );
-                                                            const activeSection = "." + section + "_" + index + 1 + "_image_form";
+                                                            const activeSection = `.${section}_${index + 1}_image_form`;
                                                             document.querySelector(activeSection + " .bottom_section")
                                                             .classList.add("hidden");
                                                             setTimeout(function () {

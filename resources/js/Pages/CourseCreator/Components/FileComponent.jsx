@@ -137,11 +137,11 @@ const FileComponent = ({
                             <span>.pdf, .doc, .docx, msword, .mp4, .mp3</span>
                         </p>
                     </div>
-                    <div className="bottom_section hidden">
-                        <div className="bottom_row">
+                    <div className="bottom_section hidden w-full">
+                        <div className="bottom_row w-full">
                             <button
                                 type="submit"
-                                className="button green"
+                                className="button blue"
                                 disabled={disableButton}
                             >
                                 Save

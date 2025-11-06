@@ -9,6 +9,8 @@ import { SiInternetcomputer } from "react-icons/si";
 import { FaMoneyBillWave,FaMailchimp } from "react-icons/fa";
 import AffiliateSignup
     from "@/Pages/Dashboard/Components/Link/Forms/AffiliateSignup.jsx";
+import ContentSelectButtons
+    from "@/Components/ContentSelectButtons.jsx";
 
 const LinkTypeRadio = ({
                            editLink,
@@ -23,8 +25,47 @@ const LinkTypeRadio = ({
     const { folderLinks, dispatchFolderLinks } = useContext(FolderLinksContext);
     const [showAffiliateSignup, setShowAffiliateSignup] = useState(false);
 
+    const [linkOptions, setLinkOptions] = useState( [
+        {
+            key: 'url',
+            icon: <SiInternetcomputer className="h-5 w-5 text-[#424fcf]" aria-hidden="true"/>,
+            title: 'URL',
+            description: 'Open a webpage, launch an email draft, or start a phone call.'
+        },
+        {
+            key: 'offer',
+            icon: <FaMoneyBillWave className="h-5 w-5 text-[#424fcf]" aria-hidden="true" />,
+            title: 'Offer',
+            description: 'Promote a creator’s lesson. Earn a commission when visitors buy from your link.'
+        },
+    ]);
+
+    useEffect(() => {
+        const hasMailchimp = userLinks?.some(obj => obj.type === 'mailchimp');
+        const inFolder = Boolean(editLink?.folder_id);
+
+        if (!hasMailchimp && !inFolder) {
+            setLinkOptions(prev => {
+                if (prev.some(o => o.key === 'mailchimp')) return prev;
+                const newObject = {
+                    key: 'mailchimp',
+                    icon: <FaMailchimp className="h-5 w-5 text-[#424fcf]" aria-hidden="true" />,
+                    title: 'Mailchimp',
+                    description:
+                        'Add a signup form to grow your newsletter—new subscribers go straight to your list.'
+                };
+                return [...prev, newObject];
+            });
+        }
+
+    }, [linkOptions, editLink?.folder_id])
 
     const handleOnChange = (type) => {
+
+        if (type === "offer" && affStatusState !== "approved") {
+            setShowAffiliateSignup(true);
+            return;
+        }
 
         setEditLink((prev) => ({
             ...prev,
@@ -43,18 +84,6 @@ const LinkTypeRadio = ({
 
         addLink(packets).then((data) => {
             if (data.success) {
-                /*let newLinks = [...userLinks];
-                const newLinkObject = {
-                    name: name,
-                    icon: source,
-                    [`${iconType}`]: value,
-                    type: iconType,
-                    course_id: courseId,
-                    id: data.link_id,
-                    position: data.position,
-                    active_status: true,
-                    folder_id: editLink.folder_id,
-                }*/
 
                 const newLinkObject = {
                     id: data.link_id,
@@ -65,24 +94,11 @@ const LinkTypeRadio = ({
                     folder_id: editLink.folder_id,
                 }
 
-                //newLinks = newLinks.concat(newLinkObject)
-
-                /*setEditLink(prevState => ({
-                    ...prevState,
-                    id: data.link_id,
-                    position: data.position,
-                }))*/
-
                 if (editLink.folder_id) {
                     let newFolderLinks = [...folderLinks];
                     newFolderLinks = newFolderLinks.concat(
                         newLinkObject);
 
-                     /*newLinks = newLinks.map((link, index) => {
-                         if (link.id === editLink.folder_id) {
-                             link.links.push(newLinkObject);
-                         }
-                     })*/
                     dispatchFolderLinks({ type: FOLDER_LINKS_ACTIONS.SET_FOLDER_LINKS, payload: {links: newFolderLinks} })
 
                     let folderActive = null;
@@ -149,7 +165,13 @@ const LinkTypeRadio = ({
                 />
                 :
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {/* URL */}
+                    <ContentSelectButtons
+                        options={linkOptions}
+                        handleClick={handleOnChange}
+                    />
+                </div>
+                /*<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {/!* URL *!/}
                     <button
                         type="button"
                         onClick={(e) => { e.preventDefault(); handleOnChange("url"); }}
@@ -158,9 +180,9 @@ const LinkTypeRadio = ({
                      focus-visible:ring-2 focus-visible:ring-[#424fcf]/30"
                     >
                         <div className="flex-col items-start gap-3">
-                            <div className="text-base font-semibold flex items-center gap-2 text-gray-900">
+                            <div className="text-base font-semibold flex items-center gap-2 text-gray-900 mb-2">
                                 <div className="h-9 w-9 rounded-lg bg-[#424fcf]/10 grid place-items-center">
-                                    {/* link icon */}
+                                    {/!* link icon *!/}
                                     <SiInternetcomputer className="h-5 w-5 text-[#424fcf]" aria-hidden="true" />
                                 </div>
                                 <h3 className="uppercase">URL</h3>
@@ -171,7 +193,7 @@ const LinkTypeRadio = ({
                         </div>
                     </button>
 
-                    {/* Offer */}
+                    {/!* Offer *!/}
                     <button
                         type="button"
                         onClick={(e) => {
@@ -188,7 +210,7 @@ const LinkTypeRadio = ({
                         <div className="flex-col items-start gap-3">
                             <div className="text-base font-semibold flex items-center gap-2 text-gray-900">
                                 <div className="h-9 w-9 rounded-lg bg-[#424fcf]/10 grid place-items-center">
-                                    {/* ticket/offer icon */}
+                                    {/!* ticket/offer icon *!/}
                                     <FaMoneyBillWave className="h-5 w-5 text-[#424fcf]" aria-hidden="true" />
                                 </div>
                                 <h3 className="uppercase">Offer</h3>
@@ -199,7 +221,7 @@ const LinkTypeRadio = ({
                         </div>
                     </button>
 
-                    {/* Mailchimp (conditionally render) */}
+                    {/!* Mailchimp (conditionally render) *!/}
                     {(!userLinks.some(obj => obj.type === "mailchimp") && !editLink.folder_id) && (
                         <button
                             type="button"
@@ -211,7 +233,7 @@ const LinkTypeRadio = ({
                             <div className="flex-col items-start gap-3">
                                 <div className="flex items-center gap-2 text-base font-semibold text-gray-900">
                                     <div className="h-9 w-9 rounded-lg bg-[#424fcf]/10 grid place-items-center">
-                                        {/* inbox icon */}
+                                        {/!* inbox icon *!/}
                                         <FaMailchimp className="h-5 w-5 text-[#424fcf]" aria-hidden="true" />
                                     </div>
                                     <h3 className="uppercase">Mailchimp</h3>
@@ -222,7 +244,7 @@ const LinkTypeRadio = ({
                             </div>
                         </button>
                     )}
-                </div>
+                </div>*/
             }
         </div>
 

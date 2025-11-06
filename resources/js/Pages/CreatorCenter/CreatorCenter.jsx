@@ -152,7 +152,7 @@ function CreatorCenter({offers, landingPage}) {
                                     </div>
                                     <div className="content_wrap flex-wrap shadow-md w-full p-5 rounded-xl flex relative">
                                         <div className="buttons_wrap w-full flex justify-between gap-2 items-center mb-5">
-                                            <h3 className="!p-0 font-medium text-gray-900 truncate">{landingPage['title']}</h3>
+                                            <h3 className="!p-0 font-medium text-gray-900 truncate">{landingPage?.title || "(no title)"}</h3>
                                             <div className="button_wrap !mb-0">
                                                 <Link className="flex items-center gap-2 text-sm text-indigo-600"
                                                       href={landingPage ? `/creator-center/landing-page/${landingPage["id"]}` : '/creator-center/add-landing-page'}>

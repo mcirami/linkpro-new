@@ -4,7 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import {Loader} from '@/Utils/Loader';
 import {Flash} from '@/Utils/Flash';
 import InputComponent from '@/Components/CreatorComponents/InputComponent.jsx';
-import ContentSelect from '@/Components/CreatorComponents/ContentSelect.jsx';
+import ContentSelectButtons from '@/Components/ContentSelectButtons.jsx';
 import ColorPicker from '@/Components/CreatorComponents/ColorPicker.jsx';
 import PreviewButton from '@/Components/PreviewButton.jsx';
 import {
@@ -15,9 +15,9 @@ import {
 } from "@/Components/Reducers/CreatorReducers.jsx";
 import Preview from './Components/Preview/Preview';
 import EventBus from '@/Utils/Bus';
-import SwitchOptions from './Components/SwitchOptions';
 import PublishButton from './Components/PublishButton';
 import Section from './Components/Section';
+import {addSection} from '@/Services/CourseRequests.jsx';
 import DropdownComponent from './Components/DropdownComponent';
 import {previewButtonRequest} from '@/Services/PageRequests';
 import { ToolTipContextProvider } from '@/Utils/ToolTips/ToolTipContext';
@@ -52,7 +52,7 @@ import ImageUploader from "@/Pages/Dashboard/Components/Page/ImageUploader.jsx";
 import { ImageUploader as InlineImageUploader } from '@/Components/ImageUploader.jsx';
 import { updateIcon, updateOfferData } from "@/Services/OfferRequests.jsx";
 import IOSSwitch from "@/Utils/IOSSwitch.jsx";
-
+import { BiNotepad, BiImage, BiVideo, BiFolderOpen } from "react-icons/bi";
 function CourseCreator({
                            courseArray,
                            offerArray,
@@ -369,26 +369,9 @@ function CourseCreator({
                                                             />
                                                            {/* <ToolTipIcon section="course_header_color"/>*/}
                                                         </div>
-
-
-                                                        {/*{courseData['slug'] &&
-                                                        offerData['published'] ?
-                                                            <>
-                                                                <div className="url_wrap mb-4">
-                                                                    <p>Landing Page:</p>
-                                                                    <a target="_blank" href={landerUrl}>View Course Landing Page</a>
-                                                                </div>
-                                                                <div className="url_wrap">
-                                                                    <p>Live Page:</p>
-                                                                    <a target="_blank" href={liveUrl}>View Live Course Page</a>
-                                                                </div>
-                                                            </>
-                                                            :
-                                                            ''
-                                                        }*/}
                                                     </div>
                                                 </section>
-                                                    </>
+                                                </>
                                                 }
                                                 {pageTab === "intro" &&
                                                     <>
@@ -413,11 +396,12 @@ function CourseCreator({
                                                             />
                                                         </div>
                                                     </section>
-                                                    <section id="intro_text_section"
-                                                             className="my_row section_row"
-                                                             onMouseEnter={(e) =>
-                                                                 setHoverSection(e.target.id)
-                                                             }>
+                                                    <section
+                                                        id="intro_text_section"
+                                                        className="my_row section_row"
+                                                        onMouseEnter={(e) =>
+                                                            setHoverSection(e.target.id)
+                                                    }>
                                                         <div className="section_content my_row">
                                                             <InputComponent
                                                                 placeholder="Intro Text"
@@ -450,9 +434,70 @@ function CourseCreator({
                                             }
 
                                             {pageTab === "sections" &&
-                                                sections.length > 0 &&
-
                                                 <>
+                                                    <section className="my_row section_row mb-10">
+                                                        <h2 className="text-xl font-bold text-gray-900 mb-2">Add Section</h2>
+                                                        <p className="text-gray-500 mb-6">Choose the type of section you want to add to your course.</p>
+                                                        <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+                                                            <ContentSelectButtons
+                                                                handleClick={(sectionType) => {
+                                                                    const packets = {
+                                                                        type: sectionType
+                                                                    }
+                                                                    addSection(packets, courseData['id'])
+                                                                    .then((response) => {
+                                                                        if (response.success) {
+                                                                            setSections([
+                                                                                ...sections,
+                                                                                response.section
+                                                                            ])
+                                                                            const newIndex = sections.length;
+                                                                            setOpenIndex(prev => ([
+                                                                                ...prev,
+                                                                                newIndex
+                                                                            ]))
+                                                                            setTimeout(function() {
+                                                                                document.querySelector(
+                                                                                    '.sections_wrap .section_row:last-child').
+                                                                                    scrollIntoView({
+                                                                                        behavior: 'smooth',
+                                                                                        block: "start",
+                                                                                        inline: "nearest"
+                                                                                    });
+
+                                                                            }, 800)
+                                                                        }
+                                                                    })
+                                                                }}
+                                                                options={[
+                                                                    {
+                                                                        key: 'text',
+                                                                        icon: <BiNotepad className="h-4 w-4 text-[#424fcf]"/>,
+                                                                        title: 'Text',
+                                                                        description: 'Add formatted text, descriptions, or instructions for your students.'
+                                                                    },
+                                                                    {
+                                                                        key: 'image',
+                                                                        icon: <BiImage className="h-4 w-4 text-[#424fcf]"/>,
+                                                                        title: 'Image',
+                                                                        description: 'Upload a photo, diagram, or chart to visually support your content.'
+                                                                    },
+                                                                    {
+                                                                        key: 'video',
+                                                                        icon: <BiVideo className="h-4 w-4 text-[#424fcf]"/>,
+                                                                        title: 'Video',
+                                                                        description: 'Embed a video lesson directly into your course.'
+                                                                    },
+                                                                    {
+                                                                        key: 'file',
+                                                                        icon: <BiFolderOpen className="h-4 w-4 text-[#424fcf]"/>,
+                                                                        title: 'File',
+                                                                        description: 'Attach a downloadable file such as a PDF, ZIP, or worksheet.'
+                                                                    },
+                                                                ]}
+                                                            />
+                                                        </div>
+                                                    </section>
 
                                                     <DndContext
                                                         sensors={sensors}
@@ -510,41 +555,6 @@ function CourseCreator({
 
                                                         </section>
                                                     </DndContext>
-
-                                                    <section className="my_row section_row">
-                                                        <div className="section_title">
-                                                            <h4>Add Content</h4>
-                                                        </div>
-                                                        <ContentSelect
-                                                            sections={sections}
-                                                            setSections={setSections}
-                                                            dataId={courseData['id']}
-                                                            setOpenIndex={setOpenIndex}
-                                                            saveTo="course"
-                                                            options={[
-                                                                {
-                                                                    id: 1,
-                                                                    type: "text",
-                                                                    label: "Text Section"
-                                                                },
-                                                                {
-                                                                    id: 2,
-                                                                    type: "image",
-                                                                    label: "Image Section"
-                                                                },
-                                                                {
-                                                                    id: 3,
-                                                                    type: "video",
-                                                                    label: "Video Section"
-                                                                },
-                                                                {
-                                                                    id: 4,
-                                                                    type: "file",
-                                                                    label: "File Section"
-                                                                }
-                                                            ]}
-                                                        />
-                                                    </section>
                                                     </>
                                             }
                                             {pageTab === "settings" &&
@@ -672,28 +682,25 @@ function CourseCreator({
                                                         </div>
                                                         {/* Legend */}
                                                         <section className="mb-10 rounded-2xl bg-white/60 p-4 shadow-md">
-                                                            {/*<div className="mb-4 text-sm font-medium text-gray-700">Legend</div>*/}
-
                                                             <dl className="grid gap-4 sm:grid-cols-2">
                                                                 {/* PRP */}
                                                                 <div className="flex items-start gap-3">
-                                                <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-indigo-50 px-2 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200">
-                                                    PRP
-                                                </span>
+                                                                    <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-indigo-50 px-2 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200">
+                                                                        PRP
+                                                                    </span>
                                                                     <div className="min-w-0">
                                                                         <dt className="text-sm font-medium text-gray-900">Personal Referral Payout</dt>
                                                                         <dd className="text-sm text-gray-600">
-                                                                            Your payout will be <span className="font-semibold">80%</span> of the price you set when you
-                                                                            personally refer someone to your course.
+                                                                            Your payout will be <span className="font-semibold">80%</span> of the price you set when you personally refer someone to your course.
                                                                         </dd>
                                                                     </div>
                                                                 </div>
 
                                                                 {/* ARP */}
                                                                 <div className="flex items-start gap-3">
-      <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-indigo-50 px-2 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200">
-        ARP
-      </span>
+                                                                    <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-indigo-50 px-2 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200">
+                                                                        ARP
+                                                                    </span>
                                                                     <div className="min-w-0">
                                                                         <dt className="text-sm font-medium text-gray-900">Affiliate Referral Payout</dt>
                                                                         <dd className="text-sm text-gray-600">
@@ -727,27 +734,8 @@ function CourseCreator({
                                                                         </dd>
                                                                     </div>
                                                                 </div>
-                                                                {/* Public */}
-                                                                {/*<div className="flex items-start gap-3">
-                                                                  <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-blue-50 px-2 text-xs font-semibold text-blue-700 ring-1 ring-blue-200">
-                                                                    Public
-                                                                  </span>
-                                                                    <div className="min-w-0">
-                                                                        <dt className="text-sm font-medium text-gray-900">Visibility</dt>
-                                                                        <dd className="text-sm text-gray-600">
-                                                                            Making a course public lets any LinkPro user add the course icon to their page and sell it as an affiliate.
-                                                                        </dd>
-                                                                        <dd className="text-sm text-gray-600">
-                                                                            <small>(Course must be Published before being made public.)</small>
-                                                                        </dd>
-                                                                    </div>
-                                                                </div>*/}
                                                             </dl>
                                                         </section>
-                                                       {/* <SwitchOptions
-                                                            dispatch={dispatchOfferData}
-                                                            data={offerData}
-                                                        />*/}
                                                     </div>
                                                 </section>
 

@@ -33,7 +33,7 @@ const PublishButton = ({pageData, dispatch}) => {
                 Publish
             </button>
             {!pageData["title"] ?
-                <p><IoWarningOutline /> Course requires a title/slug before being published</p>
+                <p><IoWarningOutline />Page requires a title/slug before being published</p>
                 :
                 ""
             }
