@@ -144,6 +144,7 @@ export const ImageUploader = ({
         } else {
             setInternalCompletedCrop(null);
         }
+        setOpen(false);
     };
 
     const handleCancel = () => {

@@ -140,7 +140,7 @@ const Section = ({
         setOpenIndex([])
     }
 
-    const getSectionTitle = () => {
+    const getSectionTitle = (length = null) => {
         switch(type) {
             case 'video':
                 const ellipsis = section.video_title?.length > 20 ? "..." : ""
@@ -182,9 +182,13 @@ const Section = ({
                 if(section.file) {
                     const fileNameObj = getFileParts(section.file)
                     content = fileNameObj.name + "." + fileNameObj.type
-                    content = content.length > 20 ?
-                        content.slice(0, 20) + '...' :
-                        content;
+
+                    if (length !== "full") {
+                        content = content.length > 20 ?
+                            content.slice(0, 20) + '...' :
+                            content;
+                    }
+
                 } else {
                     content = type  + " " + fileCount
                 }
@@ -468,8 +472,11 @@ const Section = ({
                                 <>
                                     {pageTab === "content" &&
                                         <>
-                                            <div className="section_title !mb-5">
+                                            <div className="section_title !mb-5 w-full flex flex-between items-center">
                                                 <h4>File</h4>
+                                                <span className="text-sm text-gray-500">
+                                                    <p>{getSectionTitle("full") || "No File Uploaded"}</p>
+                                                </span>
                                             </div>
                                             <FileComponent
                                                 elementName={`file`}
@@ -478,6 +485,8 @@ const Section = ({
                                                 sections={sections}
                                                 setSections={setSections}
                                                 index={index}
+                                                startCollapsed={section.file}
+                                                getSectionTitle={getSectionTitle}
                                             />
                                         </>
                                     }
