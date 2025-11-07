@@ -48,9 +48,9 @@ export const MessageAlertPopup = ({
             />
             {/* Modal */}
             <div className="
-        relative w-[92vw] max-w-md rounded-2xl border border-gray-200 bg-white
-        shadow-md animate-in fade-in zoom-in-95 duration-150
-      ">
+            relative w-[92vw] max-w-md rounded-2xl border border-gray-200 bg-white
+            shadow-md animate-in fade-in zoom-in-95 duration-150
+            ">
                 <div className="px-6 pt-6 pb-4">
                     <div className="flex items-center justify-start gap-3 mb-5">
                         <div className="grid h-12 w-12 place-items-center rounded-xl ring-1 bg-amber-50  text-amber-800  ring-amber-200">

@@ -11,10 +11,8 @@ import {
     LINKS_ACTIONS,
     FOLDER_LINKS_ACTIONS,
 } from '@/Services/Reducer.jsx';
-import { AiFillFolderAdd } from "react-icons/ai";
+import { AiOutlineFolderAdd } from "react-icons/ai";
 import ContentSelectButtons from "@/Components/ContentSelectButtons.jsx";
-import { PiSquaresFour } from "react-icons/pi";
-import { BsViewStacked } from "react-icons/bs";
 
 const AddFolder = ({
                        setShowUpgradePopup,
@@ -92,7 +90,7 @@ const AddFolder = ({
                     {
                         title: 'Add Folder',
                         key: 'layout_one',
-                        icon: <AiFillFolderAdd className="h-6 w-6 text-[#424fcf]" aria-hidden="true" />,
+                        icon: <AiOutlineFolderAdd className="h-6 w-6 text-[#424fcf]" aria-hidden="true" />,
                     },
                 ]}
                 handleClick={handleClick}

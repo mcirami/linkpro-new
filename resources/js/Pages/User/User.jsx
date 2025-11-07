@@ -20,8 +20,9 @@ const User = ({
                   message = null,
                   isAffiliate = false,
                   hasOffers = false,
-                  payoutInfoSubmitted = null,
                   total = false,
+                  payoutInfo,
+                  updateMethodLink
 }) => {
 
     const { auth } = usePage().props;
@@ -169,12 +170,14 @@ const User = ({
                                                     />
                                                 </div>
                                             }
-                                            { (hasOffers || isAffiliate) && payoutInfoSubmitted !== null ?
+                                            { (hasOffers || isAffiliate) ?
                                                 <div className="rounded-2xl bg-white shadow-md p-5">
                                                     <PayOutComponent
                                                         setShowLoader={setShowLoader}
                                                         total={total}
                                                         setShowMessageAlertPopup={setShowMessageAlertPopup}
+                                                        payoutInfo={payoutInfo}
+                                                        updateMethodLink={updateMethodLink}
                                                     />
                                                 </div>
                                                 :

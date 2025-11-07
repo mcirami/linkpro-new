@@ -1,5 +1,5 @@
 import React from 'react';
-import { BsFillCreditCard2FrontFill } from "react-icons/bs";
+import { BsCreditCard2Front } from "react-icons/bs";
 import {router} from '@inertiajs/react';
 import { CardHeader } from "@mui/material";
 
@@ -36,7 +36,7 @@ const PaymentComponent = ({
                     {pm_type === 'card' ?
                         <div className="p-5">
                             <div className="mb-3 mx-auto inline-flex text-4xl h-[5rem] w-[5rem] items-center justify-center rounded-full bg-indigo-50 text-indigo-700 font-semibold shadow-inner">
-                                <BsFillCreditCard2FrontFill  />
+                                <BsCreditCard2Front  />
                             </div>
                             <p className="text-sm text-gray-600">
                                 Last 4 numbers of card on file:

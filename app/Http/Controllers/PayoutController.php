@@ -88,6 +88,7 @@ class PayoutController extends Controller
                 'pm_type' => $pmType,
                 'pm_last_four' => $last4,
                 'pm_brand' => $label,
+                'account_id' => $accountId,
             ]);
 
             $user->update([

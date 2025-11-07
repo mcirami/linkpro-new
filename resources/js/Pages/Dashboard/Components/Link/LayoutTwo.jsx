@@ -68,7 +68,7 @@ const LayoutTwo = ({
                         currentValue={type === "url" ? url : type === "email" ? email : type === "phone" ? phone : ""}
                     />
                 }
-                <div className={`edit_wrap flex items-center switch_wrap`}>
+                <div className={`edit_wrap flex items-center switch_wrap w-full`}>
                     <div className="switch_wrap">
                         <IOSSwitch
                             onChange={() => handleSwitchChange(link, setEditLink, dispatch, "active_status")}

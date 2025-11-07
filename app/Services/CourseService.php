@@ -17,13 +17,21 @@ class CourseService {
      *
      * @return mixed
      */
-    public function getCourses($user): mixed {
+    public function getCourses($user, $currentCourseId = null): mixed {
 
-        return $user->Offers()
+        $courses = $user->Offers()
                     ->where('published', '=', true)
                     ->leftJoin("courses", "offers.course_id", "=", "courses.id")
                     ->select('courses.id', 'courses.title', 'courses.slug')
                     ->get()->toArray();
+
+        if ($currentCourseId) {
+            $courses = array_filter($courses, function ($course) use ($currentCourseId) {
+                return $course['id'] != $currentCourseId;
+            });
+        }
+
+        return $courses;
     }
 
     /**

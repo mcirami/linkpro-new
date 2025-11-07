@@ -18,6 +18,7 @@ use App\Http\Traits\UserTrait;
 use Inertia\Response;
 use App\Http\Traits\BillingTrait;
 use Mchev\Banhammer\IP;
+use Stripe\Exception\ApiErrorException;
 
 class UserController extends Controller
 {
@@ -39,12 +40,22 @@ class UserController extends Controller
     /**
      *
      * @return Response
+     * @throws ApiErrorException
      */
     public function edit(): Response {
         $user = Auth::user();
         $hasOffers = $user->offers()->first();
         $isAffiliate = $user->Affiliates()->first();
         $payoutInfoSubmitted = $user->payout_info_id;
+        $payoutInfo = null;
+        $updateMethodLink = null;
+        if ($payoutInfoSubmitted) {
+            $payoutInfo = $user->UserPayout()->first();
+            $stripe = $this->createStripeGateway();
+            $updateMethodLink = $stripe->accounts->createLoginLink($payoutInfo->account_id, [
+                'redirect_url' => url('/edit-account'),
+            ]);
+        }
 
         $statsService = new StatsServices();
         $data = $statsService->getAllOfferStats(['clear' => true]);
@@ -53,7 +64,13 @@ class UserController extends Controller
             $total = $data['totals']['totalPayout'];
         }
 
-        return Inertia::render('User/User')->with(compact('hasOffers', 'isAffiliate', 'payoutInfoSubmitted', 'total'));
+        return Inertia::render('User/User')->with(compact(
+            'hasOffers',
+            'isAffiliate',
+            'total',
+            'payoutInfo',
+            'updateMethodLink'
+        ));
     }
 
     /**

@@ -36,7 +36,7 @@ const PageNav = ({
                         <li className={`border-b border-gray-200 ${!handleClick ? "no_hover" : ""}`}>
                         {handleClick ?
 
-                            <a className="flex items-center justify-start gap-2" onClick={(e) => { handleClick(e) }} href="#">
+                            <a className="flex items-center justify-start gap-2" onClick={(e) => {handleClick && handleClick(e) }} href="#">
                                 <span className="icon_wrap">
                                     <MdAddCircleOutline className="!w-5 !h-5" />
                                 </span>
@@ -55,11 +55,11 @@ const PageNav = ({
 
                             return (
                                 (page["disabled"] || !userSub || userSub.name !== "premier") && settings.type === "page" ?
-                                    <li key={page["id"]} className="disabled_link flex flex-row gap-2 justify-start items-center" data-type="disabled" onClick={(e) => { handleClick(e) }} >
-                                        <div className="icon_wrap">
-                                            <RiEdit2Fill />
+                                    <li key={page["id"]} className="disabled_link !flex flex-row gap-2 justify-start items-center" data-type="disabled" onClick={(e) => {handleClick && handleClick(e) }} >
+                                        <div className="icon_wrap !text-gray-400">
+                                            <RiEdit2Fill className="!w-4 !h-4" />
                                         </div>
-                                        <p>{getLabelText(page["name"])}</p>
+                                        <span className="text-gray-400">{getLabelText(page["name"])}</span>
                                     </li>
                                     :
                                     <li className="border-b border-gray-100 flex justify-start items-center" id={page["id"]} key={page["id"]}>

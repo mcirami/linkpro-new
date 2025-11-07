@@ -140,25 +140,41 @@ export const ConfirmPopup = ({
 
     return (
 
-        <div id="confirm_popup_link" className={showConfirmPopup.show ? 'open' : "" }>
-            <div className="box">
-                <div className="form_icon_wrap svg check">
-                    <MdCheckCircle/>
+        <div id="confirm_popup_link" className={`${showConfirmPopup.show ? 'open' : ""}`}>
+            <div className="rounded-2xl bg-white shadow-md">
+                <div className="flex items-center gap-3 border-b border-gray-100 p-5">
+                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-green-50 text-green-700 ring-1 ring-green-200">
+                        {/* success/check icon */}
+                        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
+                            <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 className="!text-left !text-2xl font-semibold text-gray-900">
+                            Confirm Delete
+                        </h2>
+                    </div>
                 </div>
-                <h2>Confirm</h2>
-                <div className="text_wrap">
-                    <p className="confirm_text">Are you sure you want to delete this
+                <div className="py-8 px-10">
+                    <p className="text-center text-base text-gray-800">
+                        Are you sure you want to delete this
                         {type === "folder" || showConfirmPopup.type === "folder" ?
                             " folder" :
                             " icon"}?
                     </p>
-                    <form action="" className="button_row">
-                        <a className="button green" href="#" onClick={deleteItem}>Yes</a>
-                        <a className="button transparent gray" href="#" onClick={handleCancel}>No</a>
-                    </form>
+                    <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                        <button
+                            className='!w-40 button blue'
+                            onClick={deleteItem}
+                        >
+                            Yes
+                        </button>
+                        <button className="!w-40 close_details button transparent gray"
+                           onClick={handleCancel}
+                        >No</button>
+                    </div>
                 </div>
             </div>
         </div>
-
     )
 }

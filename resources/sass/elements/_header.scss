@@ -239,20 +239,6 @@
             margin-top: 38px;
             position: relative;
 
-            /*&:before {
-                content: '';
-                position: absolute;
-                width: 0;
-                height: 0;
-                border-left: 14px solid transparent;
-                border-right: 14px solid transparent;
-                border-bottom: 14px solid;
-                border-bottom-color: $white;
-                top: -8px;
-                left: 11px;
-                z-index: -1;
-            }*/
-
             svg {
                 width: 30px;
                 height: 30px;
@@ -269,7 +255,7 @@
                     font-size: .9rem;
                 }
 
-                &:hover {
+                &:hover:not(.disabled_link) {
                     background: $blue;
 
                     &:before {

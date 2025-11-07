@@ -12,6 +12,7 @@ import {FOLDER_LINKS_ACTIONS, LINKS_ACTIONS} from '@/Services/Reducer.jsx';
 import {FolderLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
 import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import { RiEdit2Fill } from "react-icons/ri";
+import ToolTipIcon from "@/Utils/ToolTips/ToolTipIcon.jsx";
 const IconSettingComponent = ({
                                   inputType,
                                   editLink,
@@ -246,14 +247,17 @@ const IconSettingComponent = ({
                         pageSettings.page_layout === 'layout_two' && (isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'),
                     ].join(' ')}
                 >
-                    {maxChar != null &&
-                        <div className="info_text w-full flex justify-end mb-2">
-                            <p className="char_count">
-                                <span className="count">
-                                    {charactersLeft < 0 ? 0 : charactersLeft} </span> / {maxChar}
-                            </p>
-                        </div>
-                    }
+                    <div className="section_title w-full flex justify-between !mb-0">
+                        <h4 className="w-full mb-5 capitalize">{label}</h4>
+                        {maxChar != null &&
+                            <div className="info_text w-full flex justify-end mb-2">
+                                <p className="char_count">
+                                    <span className="count">
+                                        {charactersLeft < 0 ? 0 : charactersLeft} </span> / {maxChar}
+                                </p>
+                            </div>
+                        }
+                    </div>
                     <div className="input_wrap w-full">
                         <input
                             ref={inputRef}
@@ -273,18 +277,21 @@ const IconSettingComponent = ({
                             autoFocus={isActive}
                             placeholder={placeholder}
                         />
-                        <label className="capitalize">{label}</label>
                     </div>
                 </div>
             </div>
 
-            {pageSettings.page_layout === 'layout_one' && maxChar != null && draft?.length > maxChar && (
-                <div className="my_row info_text title min-h-[1.5rem] text-right">
-                    <p className="char_count">
-                        <span className="over">Only {maxChar} Characters Will Be Shown</span>
-                    </p>
+
+                <div className="my_row info_text title text-right min-h-[1.2rem]">
+                    {pageSettings.page_layout === 'layout_one' && maxChar != null && draft?.length > maxChar ? (
+                        <p className="char_count ">
+                            <span className="over">Only {maxChar} Characters Will Be Shown</span>
+                        </p>
+                        ) :
+                        ""
+                    }
                 </div>
-            )}
+
         </>
     );
 };

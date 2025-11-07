@@ -67,26 +67,24 @@ const LayoutOne = ({
         }
             <div className="link_content w-full inline-block">
                 <div className={`right_col w-full block text-center`}>
-                    <div>
-                        <div className="switch_wrap">
-                            <IOSSwitch
-                                onChange={() => handleSwitchChange(
-                                    link,
-                                    setEditLink,
-                                    dispatch,
-                                    "active_status",
-                                    subStatus,
-                                    hasLinks,
-                                    setShowUpgradePopup
-                                )}
-                                checked={Boolean(active_status)}
-                            />
-                            <div className="hover_text switch">
-                                <p>
-                                    {Boolean(active_status) ? "Disable " : "Enable "}
-                                    {type === "folder" ? "Folder" : "Icon"}
-                                </p>
-                            </div>
+                    <div className="switch_wrap">
+                        <IOSSwitch
+                            onChange={() => handleSwitchChange(
+                                link,
+                                setEditLink,
+                                dispatch,
+                                "active_status",
+                                subStatus,
+                                hasLinks,
+                                setShowUpgradePopup
+                            )}
+                            checked={Boolean(active_status)}
+                        />
+                        <div className="hover_text switch">
+                            <p>
+                                {Boolean(active_status) ? "Disable " : "Enable "}
+                                {type === "folder" ? "Folder" : "Icon"}
+                            </p>
                         </div>
                     </div>
                 </div>

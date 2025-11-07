@@ -1,7 +1,8 @@
 @use "../partials/variables" as *;
 @use "../partials/mixins" as *;
 
-#confirm_popup_link, #confirm_cancel_popup, #confirm_folder_popup_link {
+
+#upgrade_popup, #confirm_popup_link, #confirm_cancel_popup, #confirm_folder_popup_link {
     display: none;
     opacity: 0;
     position: fixed;
@@ -11,7 +12,7 @@
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,.8);
+    //background: rgba(0,0,0,.6);
     transition: 100ms opacity linear;
     -webkit-transition: 100ms opacity linear;
     -moz-transition: 100ms opacity linear;
@@ -36,7 +37,7 @@
     }
 }
 
-#popup_payment_method, #confirm_popup, #confirm_popup_link, #confirm_folder_popup_link, #confirm_cancel_popup, #confirm_cancel_details {
+#popup_payment_method, #confirm_popup, #confirm_folder_popup_link, #confirm_cancel_popup, #confirm_cancel_details {
 
     h2 {
         @include osbold;
