@@ -6,6 +6,7 @@ import {
     GetHumanReadableTime,
 } from '@/Services/TimeRequests.jsx';
 import { CardHeader } from "@mui/material";
+import StandardButton from "@/Components/StandardButton.jsx";
 
 const PlanComponent = ({
                            subscription,
@@ -31,8 +32,7 @@ const PlanComponent = ({
 
     }, [])
 
-    const handleResumeClick = (e) => {
-        e.preventDefault();
+    const handleResumeClick = () => {
 
         if(pmType === 'paypal') {
             setShowPaymentButtons((prev) => ({
@@ -112,31 +112,36 @@ const PlanComponent = ({
                 }
                 { (subscription && subscription.status === "active") ?
                     <div className="space-y-2">
-                        <button className="button blue w-full"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setShowSection((prev) => [
-                                        ...prev,
-                                        "plans"])
-                                }}
-                        >
-                            Change My Plan
-                        </button>
+                        <StandardButton
+                            text="Change My Plan"
+                            classes="w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
+                            focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setShowSection((prev) => [
+                                    ...prev,
+                                    "plans"])
+                            }}
+                        />
                     </div>
                     :
                     subscription && subEnd > currentDateTime ?
                         <div className="space-y-2">
-                            <button className="button blue w-full"
-                                    onClick={(e) => handleResumeClick(e)}
-                            >
-                                Resume
-                            </button>
+                            <StandardButton
+                                text="Resume"
+                                classes="w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
+                                focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                                onClick={handleResumeClick}
+                            />
                         </div>
                         :
                         <div className="space-y-2 ">
-                            <Link className={`button blue`} href={ route('plans.get') }>
-                                Change My Plan
-                            </Link>
+                            <StandardButton
+                                text=" Change My Plan"
+                                classes="w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
+                                focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                                onClick={() => { window.location.href = route('plans.get')}}
+                            />
                         </div>
                 }
             </div>

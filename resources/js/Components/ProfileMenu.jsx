@@ -4,6 +4,7 @@ import {
     GetCurrentTime,
     GetHumanReadableTime,
 } from '@/Services/TimeRequests.jsx';
+import StandardButton from "@/Components/StandardButton.jsx";
 
 const ProfileMenu = () => {
 
@@ -34,7 +35,12 @@ const ProfileMenu = () => {
                     (auth.user.subscription && auth.user.subscription.name !== "premier" && !auth.user.subscription.ends_at) ||
                     (auth.user.subscription && auth.user.subscription.ends_at && subEnd < currentDateTime)  ?
                     <li className="upgrade_link">
-                        <Link className="button blue" href={route('plans.get')}>Upgrade</Link>
+                        <StandardButton
+                            text="Upgrade"
+                            classes="w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
+                            focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                            onClick={() => {window.location.href = route('plans.get')}}
+                        />
                     </li>
                     :
                     ""

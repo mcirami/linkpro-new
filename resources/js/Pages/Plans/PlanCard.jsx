@@ -95,7 +95,7 @@ const PlanCard = ({
                             ))}
                         </ul>
 
-                        {name !== 'Free' &&
+                        {price &&
                             <div className="mt-5 flex items-end gap-1">
                                 <span className="text-3xl font-bold text-gray-900">{price}</span>
                                 {period && <span className="text-sm text-gray-600">{period}</span>}

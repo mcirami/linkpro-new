@@ -3,6 +3,7 @@ import {redirectToOnboarding} from '@/Services/UserService.jsx';
 import { CardHeader } from "@mui/material";
 import { CiBank } from "react-icons/ci";
 import { BsCreditCard2Front } from "react-icons/bs";
+import StandardButton from "@/Components/StandardButton.jsx";
 const PayOutComponent = ({
                              setShowLoader,
                              total,
@@ -11,8 +12,7 @@ const PayOutComponent = ({
                              updateMethodLink
 }) => {
 
-    const handleClick = (e) => {
-        e.preventDefault();
+    const handleClick = () => {
 
         if (total > 100) {
             setShowLoader({
@@ -95,13 +95,12 @@ const PayOutComponent = ({
                     </p>
                 </div>
                 <div className="w-full mt-auto">
-                    <a target="_blank"
-                            href="#"
-                            className="button blue text-uppercase self-center"
-                            onClick={handleClick}
-                    >
-                        Submit Payout Details
-                    </a>
+                    <StandardButton
+                        text="Submit Payout Details"
+                        classes="w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
+                            focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                        onClick={handleClick}
+                    />
                 </div>
                 </>
             }

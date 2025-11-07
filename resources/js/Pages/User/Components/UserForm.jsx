@@ -2,6 +2,7 @@ import React, {useRef} from 'react';
 import {useForm} from '@inertiajs/react';
 import EventBus from '@/Utils/Bus.jsx';
 import { CardHeader } from "@mui/material";
+import StandardButton from "@/Components/StandardButton.jsx";
 
 const UserForm = ({
                       userInfo,
@@ -18,8 +19,7 @@ const UserForm = ({
     const passwordInput = useRef();
     const confirmPasswordInput = useRef();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         clearErrors()
 
         put('/update-account/', {
@@ -117,9 +117,14 @@ const UserForm = ({
                     }
                 </div>
                 <div className="form_buttons !mb-0">
-                    <button disabled={processing} type="submit" className={`button blue text-uppercase ${!subscription ? "!w-full !max-w-full" : ""} `}>
-                        Update My Info
-                    </button>
+                    <StandardButton
+                        text="Update My Info"
+                        classes={`w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
+                                focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60
+                                ${!subscription ? "!w-full !max-w-full" : ""} `}
+                        onClick={handleSubmit}
+                        disabled={processing}
+                    />
                 </div>
             </form>
         </div>
