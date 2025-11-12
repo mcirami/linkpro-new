@@ -91,7 +91,7 @@ const AffiliateSignup = ({
                             />
                             <span className="text-sm text-gray-700">
                               I’ve read and agree to the{" "}
-                                <a href="/terms/affiliate" className="font-medium text-indigo-700 hover:underline">Affiliate Terms & Conditions
+                                <a target="_blank" href="/affiliate-terms-and-conditions" className="font-medium text-indigo-700 hover:underline">Affiliate Terms & Conditions
                               </a>.
                             </span>
                         </label>

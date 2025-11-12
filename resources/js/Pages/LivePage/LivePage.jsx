@@ -169,13 +169,18 @@ function LivePage({links, page, subscribed}) {
                                             "bg_image"
                                             :
                                             ""
-                                        }`
+                                        }
+                                        ${page_layout ==="layout_two" ? "!shadow-md" : ""}`
                                     } else {
                                         colClasses = `icon_col ${!icon_active ? "no_icon" : "" } ${bg_image && bg_active && page_layout ==="layout_two" ?
                                             "bg_image"
                                             :
                                             ""
-                                        }`;
+                                        }
+                                        ${page_layout === "layout_two" ?
+                                            "shadow-md" :
+                                            ""}
+                                        `;
                                     }
 
                                     return (
@@ -214,12 +219,12 @@ function LivePage({links, page, subscribed}) {
                                                                 <div className={` ${colClasses} `}>
                                                                     {active_status ? page_layout === "layout_one" ?
                                                                         <>
-                                                                            <a className={!url || !displayIcon ? "default" : ""}
+                                                                            <a className={`shadow-md rounded-lg hover:!shadow-lg ${!url || !displayIcon ? "default" : ""}`}
                                                                                target="_blank"
                                                                                href={url || "#"}
                                                                                onClick={(e) => TrackIconClick(id)}
                                                                             >
-                                                                                <img src={displayIcon} alt=""/>
+                                                                                <img className="rounded-lg" src={displayIcon} alt=""/>
                                                                             </a>
                                                                             <p>
                                                                                 {name?.length > 11 ? name.substring(0, 11) + "..."
@@ -246,7 +251,10 @@ function LivePage({links, page, subscribed}) {
                                                                                         }
                                                                                         <h3>{name || "Link Name"}</h3>
                                                                                     </span>
-                                                                                    <IoOpenOutline />
+                                                                                    <span className="flex items-center justify-end ext_icon">
+                                                                                        <IoOpenOutline />
+                                                                                    </span>
+
                                                                                 </div>
                                                                             </a>
                                                                         </>

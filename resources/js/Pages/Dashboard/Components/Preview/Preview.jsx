@@ -193,18 +193,15 @@ const Preview = ({
                                         "mailchimp" || type === "shopify" ||
                                         type === "advanced") {
                                         colClasses=`icon_col folder
-                                        ${!icon_active && pageSettings.page_layout ==="layout_two" ? "no_icon" : "" }
+                                        ${!icon_active && pageSettings.page_layout ==="layout_two" ? "no_icon" : ""}
                                        ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ?
-                                            "bg_image"
-                                            :
-                                            ""
-                                        }`
+                                            "bg_image" : ""}
+                                        ${pageSettings.page_layout ==="layout_two" ? "shadow-md" : ""}`
                                     } else {
-                                        colClasses = `icon_col ${!icon_active && pageSettings.page_layout ==="layout_two" ? "no_icon" : "" } ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ?
-                                            "bg_image"
-                                            :
-                                            ""
-                                        }`;
+                                        colClasses = `icon_col ${!icon_active && pageSettings.page_layout ==="layout_two" ? "no_icon" : "" }
+                                        ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ? "bg_image" : ""}
+                                        ${pageSettings.page_layout ==="layout_two" ? "shadow-md" : ""}
+                                        `;
                                     }
 
                                     return (
@@ -244,7 +241,7 @@ const Preview = ({
                                                             <div className={` ${colClasses} `}>
                                                                 {active_status && pageSettings.page_layout === "layout_one" ?
                                                                     <>
-                                                                        <a className={`
+                                                                        <a className={`rounded-lg shadow-md
                                                                         ${ (!url || !displayIcon) ?
                                                                             "default"
                                                                             :

@@ -45,7 +45,7 @@ const StandardForm = ({
 
     const [customIconArray, setCustomIconArray] = useState([]);
 
-    const [ showFormTab, setShowFormTab ] = useState("icon");
+    const [ showFormTab, setShowFormTab ] = useState("");
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -198,6 +198,8 @@ const StandardForm = ({
             id: null,
         }));
     }
+
+    console.log("showFormTab: ", showFormTab);
 
     return (
         <>

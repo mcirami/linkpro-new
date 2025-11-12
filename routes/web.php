@@ -273,6 +273,9 @@ Route::get('/terms-and-conditions', function () {
 Route::get('/privacy-policy', function () {
     return Inertia::render('Utilities/Privacy');
 })->name('privacy');
+Route::get('/affiliate-terms-and-conditions', function () {
+    return Inertia::render('Utilities/AffiliateTerms');
+})->name('affiliate.terms');
 
 Route::get('/how-it-works', function () {
     return Inertia::render('HowItWorks/Index');

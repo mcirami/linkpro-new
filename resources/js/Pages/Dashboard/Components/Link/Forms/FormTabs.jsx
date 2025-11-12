@@ -22,12 +22,13 @@ const FormTabs = ({
             } else {
                 setHasList(true);
             }
+        } else if (editLink.type === "offer") {
+            setShowFormTab("offers");
+        } else {
+            setShowFormTab("icon");
         }
 
-        if (editLink.type === "offer") {
-            setShowFormTab("offers");
-        }
-    },[])
+    },[setShowFormTab, editLink.type])
 
     useEffect(() => {
         const optionsArray = [];

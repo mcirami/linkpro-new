@@ -7,18 +7,14 @@ function Contact({auth}) {
     return (
         <>
             <Head title="Contact Us" />
-            { auth.user.userInfo.length < 1 ?
-
-                <GuestLayout>
-                    <PageLayout />
-                </GuestLayout>
-
-                :
-
+            { auth?.user.userInfo ?
                 <AuthenticatedLayout>
                     <PageLayout />
                 </AuthenticatedLayout>
-
+                :
+                <GuestLayout>
+                    <PageLayout />
+                </GuestLayout>
             }
         </>
     )

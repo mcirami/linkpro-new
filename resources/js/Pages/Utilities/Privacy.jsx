@@ -1,21 +1,19 @@
 import React from 'react';
-import {Head} from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout.jsx';
-import PageContent from '@/Pages/Utilities/Components/PageContent.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
+import PrivacyPolicy from "@/Pages/Utilities/Components/PrivacyPolicy.jsx";
 
 const Privacy = ({auth}) => {
     return (
         <>
-            <Head title="Privacy Policy"/>
-            {auth.user.userInfo.length < 1 ?
-                <GuestLayout>
-                    <PageContent pageName="privacy"/>
-                </GuestLayout>
-                :
+            {auth?.user.userInfo ?
                 <AuthenticatedLayout>
-                    <PageContent pageName="privacy"/>
+                    <PrivacyPolicy/>
                 </AuthenticatedLayout>
+                :
+                <GuestLayout>
+                    <PrivacyPolicy />
+                </GuestLayout>
             }
         </>
     );

@@ -2,7 +2,8 @@ import React from 'react';
 import {Head} from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
-import PageContent from '@/Pages/Utilities/Components/PageContent.jsx';
+import TermsAndConditions
+    from "@/Pages/Utilities/Components/TermsAndConditions.jsx";
 
 const Terms = ({auth}) => {
 
@@ -10,14 +11,14 @@ const Terms = ({auth}) => {
 
         <>
             <Head title="Terms and Conditions" />
-            { auth.user.userInfo.length < 1 ?
-                <GuestLayout>
-                    <PageContent pageName="terms" />
-                </GuestLayout>
-                :
+            { auth?.user.userInfo ?
                 <AuthenticatedLayout>
-                    <PageContent pageName="terms" />
+                    <TermsAndConditions />
                 </AuthenticatedLayout>
+                :
+                <GuestLayout>
+                    <TermsAndConditions />
+                </GuestLayout>
             }
             </>
 

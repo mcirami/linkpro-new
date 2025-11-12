@@ -507,7 +507,10 @@
                 }
 
                 &.no_icon:not(.bg_image) {
-                    padding: 25px 10px;
+                    a {
+                        padding: 15px 0;
+                    }
+
                 }
             }
         }
@@ -839,23 +842,23 @@
             }
         }
         .icons_wrap.layout_one {
-            gap: .4rem;
+            gap: 1rem;
 
             .icon_col {
                 box-shadow: none;
                 padding: 0;
 
                 img, a {
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+                    //box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
                     transition: .5s all linear;
                     -moz-transition: .5s all linear;
                     -webkit-transition: .5s all linear;
                     -o-transition: .5s all linear;
                     height: 100%;
 
-                    &:hover {
+                    /*&:hover {
                         box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
-                    }
+                    }*/
                 }
             }
         }

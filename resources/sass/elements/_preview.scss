@@ -347,7 +347,7 @@
                     -webkit-border-radius: 8px !important;
                     -moz-border-radius: 8px !important;
 
-                    .icon_wrap span {
+                    .icon_wrap span:not(.ext_icon) {
                         width: 90%;
                     }
 

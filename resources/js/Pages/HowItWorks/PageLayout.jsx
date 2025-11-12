@@ -1,10 +1,17 @@
 import React from 'react';
+import { Head } from "@inertiajs/react";
+import PageHeader from "@/Components/PageHeader.jsx";
 
 const PageLayout = () => {
     return (
         <div className="container">
-            <div className="utility_page mx-auto">
-                <h2 className="page_title !mb-10">How It Works</h2>
+            <Head title="Contact Us"/>
+            <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
+                <PageHeader
+                    heading="How it Works"
+                />
+            </div>
+            <div className="utility_page mx-auto mt-20 shadow-md">
                 <div className="row flex flex-col-reverse md:flex-row gap-5">
                     <div className="column w-full">
                         <div className="image_wrap">

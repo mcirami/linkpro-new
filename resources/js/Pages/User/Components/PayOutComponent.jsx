@@ -93,6 +93,10 @@ const PayOutComponent = ({
                         In order to be paid out as an affiliate or course creator, submit your payout details.
                         Once you earn $100 or more we will send your payment.
                     </p>
+                    <p className="text-sm text-gray-600 md:max-w-3xl text-left">
+                        If you <span className="font-bold italic">have</span> earned $100 or more, click the button below and you will be redirected to the Stripe onboarding page.
+                        Submit your payment information and we will set you up to be paid ASAP!
+                    </p>
                 </div>
                 <div className="w-full mt-auto">
                     <StandardButton
