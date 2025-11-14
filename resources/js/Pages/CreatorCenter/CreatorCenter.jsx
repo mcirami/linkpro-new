@@ -228,9 +228,9 @@ function CreatorCenter({offers, landingPage}) {
 
                                             {/* ARP */}
                                             <div className="flex items-start gap-3">
-      <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-indigo-50 px-2 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200">
-        ARP
-      </span>
+                                                <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-indigo-50 px-2 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200">
+                                                    ARP
+                                                </span>
                                                 <div className="min-w-0">
                                                     <dt className="text-sm font-medium text-gray-900">Affiliate Referral Payout</dt>
                                                     <dd className="text-sm text-gray-600">

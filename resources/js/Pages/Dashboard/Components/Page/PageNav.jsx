@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { MdAddCircleOutline, MdOutlineSchool } from "react-icons/md";
 import {FiChevronDown} from 'react-icons/fi';
 import {usePageContext} from '@/Context/PageContext.jsx';
@@ -51,7 +51,7 @@ const PageNav = ({
 
                         }
                         </li>
-                        { allUserPages.map((page) => {
+                        { allUserPages?.map((page) => {
 
                             return (
                                 (page["disabled"] || !userSub || userSub.name !== "premier") && settings.type === "page" ?
