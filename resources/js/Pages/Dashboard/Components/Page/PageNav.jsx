@@ -14,18 +14,23 @@ const PageNav = ({
 }) => {
 
     const getLabelText = (label) => {
-        const ellipsis = label.length > 24 ? "..." : ""
-        return (
-            label.slice(0, 24) + ellipsis
-        )
+
+        if(label) {
+            const ellipsis = label?.length > 24 ? "..." : "";
+            label = label?.slice(0, 24) + ellipsis;
+        } else {
+            label = "(no title)";
+        }
+
+        return label;
     }
 
     return (
         <div className="menu_wrap">
 
-            <div className={allUserPages?.length > 1 ? "menu_icon add_border" : "menu_icon"}>
+            <div className={allUserPages?.length > 0 ? "menu_icon add_border" : "menu_icon"}>
 
-                    {allUserPages?.length > 1 ?
+                    { allUserPages?.length > 0 ?
                         <FiChevronDown/>
                         :
                         <MdAddCircleOutline/>
@@ -51,7 +56,7 @@ const PageNav = ({
 
                         }
                         </li>
-                        { allUserPages?.map((page) => {
+                        { allUserPages?.length > 0 ? allUserPages.map((page) => {
 
                             return (
                                 (page["disabled"] || !userSub || userSub.name !== "premier") && settings.type === "page" ?
@@ -71,7 +76,10 @@ const PageNav = ({
                                         </Link>
                                     </li>
                             )
-                        })}
+                        })
+                        :
+                            ""
+                        }
                     </ul>
                 </div>
             </div>

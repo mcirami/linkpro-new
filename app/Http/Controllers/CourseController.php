@@ -129,6 +129,7 @@ class CourseController extends Controller
         $offerData = $courseService->getCourseOfferData($course);
         $userCourses = $courseService->getCourses($user, $course->id);
 
+        //dd($userCourses);
         $categories = Category::with('children')->whereNull('parent_id')->get();
 
         return Inertia::render('CourseCreator/CourseCreator')->with([
