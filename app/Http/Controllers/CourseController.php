@@ -153,6 +153,11 @@ class CourseController extends Controller
             'course_id' => $course->id,
         ]);
 
+        $roles = $user->getRoleNames();
+        if (!$roles->contains("course.user")) {
+            $user->assignRole('course.user');
+        }
+
         return Inertia::location('/creator-center/course/' . $course->id);
     }
 

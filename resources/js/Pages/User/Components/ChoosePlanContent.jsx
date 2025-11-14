@@ -161,7 +161,7 @@ const ChoosePlanContent = ({
                                 {(!subscription?.name || subscription?.name === 'pro' || subscription?.name === 'free') && (
                                     <PlanCard
                                         name="Premier"
-                                        price="$9.99"
+                                        price="$19.99"
                                         period="/ mo"
                                         accent="violet"
                                         features={[

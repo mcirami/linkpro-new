@@ -30,7 +30,7 @@ function Course({
 
     const [introText, setIntroText] = useState(intro_text);
 
-    const userAuth = auth.user.userInfo.length > 0;
+    const userAuth = auth?.user?.userInfo?.length > 0;
 
     let additionalVars = "";
     if (affRef && clickId) {
@@ -131,7 +131,7 @@ function Course({
     return (
 
         <CourseLayout course={course} auth={auth}>
-            {auth.user.userInfo.length > 0 &&
+            {auth?.user?.userInfo?.length > 0 &&
                 <Menu />
             }
             <Head title={title} />

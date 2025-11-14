@@ -185,15 +185,19 @@ class SubscriptionController extends Controller
         if(isset($request->type)) {
             $type = $request->type;
         }
+        $plan = null;
+        if ($request->get('plan')) {
+            $plan = $request->get('plan');
+        }
 
-        return Inertia::render('Checkout/Success')->with(['type' => $type, 'name' => $name ]);
+        return Inertia::render('Checkout/Success')->with(['type' => $type, 'name' => $name, 'plan' => $plan ]);
     }
 
     /**
      * @return JsonResponse
      */
     public function getPayPalClient(): JsonResponse {
-        $payPalClient = App::environment() == "production" ? config('paypal.live.client_id') : env('PAYPAL_SANDBOX_CLIENT_ID');
+        $payPalClient = App::environment() == "production" ? config('paypal.live.client_id') : config('paypal.sandbox.client_id');
         return response()->json([
             'success'       => true,
             'payPalClient'  => $payPalClient,

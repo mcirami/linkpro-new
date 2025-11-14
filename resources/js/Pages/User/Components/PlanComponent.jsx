@@ -100,14 +100,18 @@ const PlanComponent = ({
                 { (subscription && subscription.status === "active") &&
 
                     userInfo.sub_id !== "bypass" &&
-                    <div className="space-y-2">
-                        <button
-                            className="btn-link w-full text-red-600"
+                    <div className="space-y-2 text-sm mb-2">
+                        <a
+                            className="font-medium hover:underline text-red-600"
                             data-plan={subscription.sub_id}
-                            onClick={(e) => setShowSection(["cancel"])}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setShowSection(["cancel"])
+                            }}
+                            href="#"
                         >
                             Cancel Subscription
-                        </button>
+                        </a>
                     </div>
                 }
                 { (subscription && subscription.status === "active") ?

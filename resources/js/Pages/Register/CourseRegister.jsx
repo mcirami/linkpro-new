@@ -4,13 +4,15 @@ import InputAnimations from '@/Utils/InputAnimations.jsx';
 import SetFlash from '@/Utils/SetFlash.jsx';
 import {Loader} from '@/Utils/Loader.jsx';
 import LoginModal from '@/Pages/Checkout/Components/LoginModal.jsx';
-import {Head, router} from '@inertiajs/react';
+import { Head, Link, router } from "@inertiajs/react";
 import GuestLayout from '@/Layouts/GuestLayout';
 import {
     checkRecaptcha,
     useGoogleRecaptchaV3,
 } from '@/Utils/useGoogleRecaptchaV3.jsx';
 import {IoWarningOutline} from 'react-icons/io5';
+import StandardButton from "@/Components/StandardButton.jsx";
+import PageHeader from "@/Components/PageHeader.jsx";
 
 const CourseRegister = ({
                             course,
@@ -49,9 +51,7 @@ const CourseRegister = ({
         }));
     }, []);*/
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
+    const handleSubmit = async () => {
         setShowLoader((prevState) => ({
             ...prevState,
             show: true,
@@ -127,9 +127,14 @@ const CourseRegister = ({
             <div className="container">
                 <InputAnimations/>
                 <SetFlash/>
-                <div className="my_row form_page course_register text-center">
-                    <h2 className="page_title text-center !mb-10">Register For An Account</h2>
-                    <div className="card my-auto guest relative">
+                <div className="my_row form_page course_register">
+                    <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100 mb-10">
+                        <PageHeader
+                            heading="Register For A LinkPro Account"
+                            description="Create your free account below to purchse this course!"
+                        />
+                    </div>
+                    <div className="card my-auto guest relative shadow-md">
                         {spamDetected ?
                             <div className="warning_message">
                                 <div className="icon_wrap red">
@@ -140,9 +145,17 @@ const CourseRegister = ({
                             </div>
                             :
                             <div className="card-body text-left w-full inline-block">
-                                <div className="course_banner" style={{background: course.header_color}}>
-                                    <div className="image_wrap w-1/2 mx-auto mb-5">
-                                        <img src={course.logo} alt=""/>
+                                <div className="flex items-center gap-3 border-b border-gray-100 p-5" style={{background: course.header_color}}>
+                                    {/*<div className="grid h-10 w-10 place-items-center rounded-xl bg-[#424fcf]/10 ring-1 ring-indigo-200">
+                                        <img src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro Logo" className="h-5 w-5" />
+                                    </div>*/}
+                                    <div>
+                                        <div className="image_wrap w-1/2 mr-auto mb-5">
+                                            <img className="max-w-2xl" src={course.logo} alt=""/>
+                                        </div>
+                                        <p className="text-sm text-gray-700">
+                                            In order to access the {course.title} course you'll need to create an account.
+                                        </p>
                                     </div>
                                 </div>
                                 <form method="post"
@@ -150,9 +163,6 @@ const CourseRegister = ({
                                       className="my_row !min-w-full"
                                       id="payment-form"
                                 >
-                                    <div className="text_wrap text-center mb-5">
-                                        <h3>In order to access the {course.title} course you'll need to create an account.</h3>
-                                    </div>
                                     <div className={`column_wrap columns-1`}>
                                         <section id="account_register" className="w-full inline-block">
                                             <div className="relative mb-5">
@@ -208,7 +218,7 @@ const CourseRegister = ({
                                                     id="email"
                                                     type="email"
                                                     className={`animate w-full ${formErrors.email &&
-                                                    "error"} ${registerData.username &&
+                                                    "error"} ${registerData.email &&
                                                     " active"}`}
                                                     name="email"
                                                     value={registerData.email}
@@ -232,7 +242,7 @@ const CourseRegister = ({
                                                     type="password"
                                                     value={registerData.password}
                                                     className={`animate w-full ${formErrors.password &&
-                                                    "error"} ${registerData.username &&
+                                                    "error"} ${registerData.password &&
                                                     " active"}`}
                                                     name="password"
                                                     required
@@ -254,7 +264,8 @@ const CourseRegister = ({
                                                     id="password-confirm"
                                                     value={registerData.password_confirmation}
                                                     type="password"
-                                                    className="animate w-full"
+                                                    className={`animate w-full ${registerData.password_confirmation &&
+                                                    " active"}`}
                                                     name="password_confirmation"
                                                     required
                                                     autoComplete="new-password"
@@ -265,27 +276,28 @@ const CourseRegister = ({
                                                 />
                                                 <label htmlFor="password-confirm">Confirm Password</label>
                                             </div>
-                                            <p>Already have an account?<br/>
-                                                <a style={{cursor: 'pointer'}}
-                                                   href="#"
-                                                   onClick={e => {
-                                                       e.preventDefault()
-                                                       setShowLogin(true);
-                                                   }}
-                                                >
-                                                    Click Here To Login</a>
-                                            </p>
                                         </section>
 
                                     </div>
                                     <div className="button_wrap my_row mt-5">
-                                        <a
-                                            className="button blue"
-                                            href="#"
-                                            onClick={(e) => handleSubmit(e)}
+                                        <StandardButton
+                                            classes="w-full md:w-1/3 ml-auto mb-2 text-white shadow-md bg-indigo-600 hover:bg-indigo-700
+                                            focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                                            text="Let's Do This"
+                                            onClick={handleSubmit}
+                                            disabled={""}
+                                        />
+                                    </div>
+                                    <div className="w-full float-right">
+                                        <Link
+                                            onClick={e => {
+                                                e.preventDefault()
+                                                setShowLogin(true);
+                                            }}
+                                            className="flex justify-end text-blue-600 font-bold text-sm hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                         >
-                                            Submit
-                                        </a>
+                                            Already on LinkPro? Login Now
+                                        </Link>
                                     </div>
                                 </form>
                                 {showLoader.show &&

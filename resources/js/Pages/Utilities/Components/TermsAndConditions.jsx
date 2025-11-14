@@ -7,12 +7,12 @@ const TermsAndConditions = () => {
         <div className="container">
             <div className="my_row terms form_page">
                 <Head title="Terms and Conditions"/>
-                <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
+                <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 mb-10 border-b border-gray-100">
                     <PageHeader
                         heading="Terms and Conditions"
                     />
                 </div>
-                <div className="card guest shadow-md mt-10">
+                <div className="card guest shadow-md">
                     <div className="card-body">
                         <h4>Effective Date: August 5, 2025</h4>
                         <p>

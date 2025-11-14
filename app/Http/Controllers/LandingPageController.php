@@ -59,6 +59,11 @@ class LandingPageController extends Controller
             $landingPage = $user->LandingPages()->create([]);
         }
 
+        $roles = $user->getRoleNames();
+        if (!$roles->contains("course.user")) {
+            $user->assignRole('course.user');
+        }
+
         return Inertia::location('/creator-center/landing-page/' . $landingPage->id);
     }
 

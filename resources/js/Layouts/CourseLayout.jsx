@@ -3,7 +3,7 @@ import React from 'react';
 const CourseLayout = ({auth, children = null, course}) => {
 
     return (
-        <div id="app_wrap" className={`my_row ${auth.user.userInfo.length > 0 ? "member" : ""} landing_page`}>
+        <div id="app_wrap" className={`my_row ${auth?.user?.userInfo?.length > 0 ? "member" : ""} landing_page`}>
             <div className="page_content my_row">
                 <header className="my_row nav_row" style={{background: course.header_color }}>
                     <nav>

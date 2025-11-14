@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import Checkbox from '@/Components/Checkbox.jsx';
@@ -10,6 +9,8 @@ import {useGoogleRecaptchaV3, checkRecaptcha} from '@/Utils/useGoogleRecaptchaV3
 import {Loader} from '@/Utils/Loader.jsx';
 import {IoWarningOutline} from 'react-icons/io5';
 import PageHeader from "@/Components/PageHeader.jsx";
+import StandardButton from "@/Components/StandardButton.jsx";
+import { MdOutlineLink } from "react-icons/md";
 
 export default function Register({honeypot, spamDetected = false}) {
 
@@ -79,8 +80,18 @@ export default function Register({honeypot, spamDetected = false}) {
                             </div>
                         :
                             <>
-                            <div className="mb-4">
-                                <h3>Take control of your social sharing!</h3>
+                            <div className="flex items-center gap-3 border-b border-gray-100 p-5">
+                                <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#424fcf]/10 ring-1 ring-indigo-200">
+                                    <img src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro Logo" className="h-5 w-5" />
+                                </div>
+                                <div>
+                                    <h2 className="!text-left !text-2xl font-semibold text-gray-900">
+                                        Take control of your social sharing!
+                                    </h2>
+                                    <p className="text-sm text-gray-700">
+                                        Join LinkPro today and start sharing your content with the world!
+                                    </p>
+                                </div>
                             </div>
                             <div className="card-body">
                                 <form onSubmit={submit}>
@@ -169,18 +180,23 @@ export default function Register({honeypot, spamDetected = false}) {
                                         />
                                         {/*<input className="form-check-input" type="checkbox" name="remember" id="remember" required />
     */}
-                                        <label className="form-check-label flex gap-2" htmlFor="terms">
+                                        <label className="form-check-label flex gap-2 flex-col md:flex-row" htmlFor="terms">
                                             Check here to agree to LinkPro's
-                                            <Link target="_blank" href={route(
-                                                'terms')}>Terms and Conditions</Link> and
-                                            <Link target="_blank" href={route(
-                                                'privacy')}> Privacy Policy</Link>
+                                            <div className="flex gap-2">
+                                                <Link target="_blank" href={route(
+                                                    'terms')}>Terms and Conditions</Link> and
+                                                <Link target="_blank" href={route(
+                                                    'privacy')}> Privacy Policy</Link>
+                                            </div>
                                         </label>
                                     </div>
                                     <div className="block mt-4 text-right">
-                                        <PrimaryButton className="button blue text-uppercase mb-4" disabled={processing}>
-                                            Let's Do This
-                                        </PrimaryButton>
+                                        <StandardButton
+                                            classes="w-full md:w-1/3 ml-auto mb-2 text-white shadow-md bg-indigo-600 hover:bg-indigo-700
+                            focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                                            text="Let's Do This"
+                                            onClick={submit}
+                                            disabled={processing} />
                                         <Link
                                             href={route('login')}
                                             className="text-blue-600 font-bold text-sm hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
