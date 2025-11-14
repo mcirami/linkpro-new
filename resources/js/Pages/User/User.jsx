@@ -87,7 +87,11 @@ const User = ({
                             showSection.includes("changePayPalPlan") ||
                             showPaymentButtons.show) && 'active'}`}
                         >
-
+                            {auth?.status &&
+                                <div className="my-3 p-3 mb-5 bg-red-50 rounded-lg">
+                                    <h2 className="text-lg font-bold text-red-500">Please finish onboarding to enable payouts.{/*{auth?.status}*/}</h2>
+                                </div>
+                             }
                             {showLoader.show &&
                                 <Loader
                                     showLoader={showLoader}

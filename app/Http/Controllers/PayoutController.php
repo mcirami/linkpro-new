@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 use Stripe\Exception\ApiErrorException;
@@ -39,7 +40,7 @@ class PayoutController extends Controller
             $response = $stripe->accountLinks->create([
                 'account' => $account->id,
                 'refresh_url' => $domain . '/edit-account',
-                'return_url' => $domain . '/stripe/onboarding/return',
+                'return_url' => $domain . '/stripe/onboarding/return?stripe_user=' . $account->id,
                 'type' => 'account_onboarding',
             ]);
 
@@ -57,7 +58,7 @@ class PayoutController extends Controller
      */
     public function onboardingReturn(Request $request): RedirectResponse {
         $user = $request->user();
-        $accountId = $user->stripe_account_id;
+        $accountId = $request->query('stripe_user');
         $stripe     = $this->createStripeGateway();
         $acct = $stripe->accounts->retrieve($accountId,  [
             'expand' => ['external_accounts'],
@@ -67,7 +68,13 @@ class PayoutController extends Controller
         $pmType  = null;   // 'bank' or 'card'
         $label   = null;   // bank name or card brand (nice to show)
         $currency = $acct->default_currency ?? 'usd';
-
+        Log::channel( 'webhooks' )->info(
+            " --- external_accounts --- " .
+            print_r($acct->external_accounts, true) .
+            " --- data --- " .
+            print_r($acct->external_accounts?->data, true) .
+            " --- accountId --- " . print_r($accountId, true)
+        );
         if (!empty($acct->external_accounts) && !empty($acct->external_accounts->data)) {
             // Pick the one used for payouts.
             // Stripe marks the default for a currency on the external account.

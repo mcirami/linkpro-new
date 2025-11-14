@@ -46,7 +46,7 @@ const Success = ({
                             {/* Header row */}
                             <div className="flex flex-row items-center gap-4">
                                 {/* Icon */}
-                                <div className="flex-shrink-0 inline-flex items-center justify-center h-12 w-12 rounded-2xl bg-[#424fcf]/10">
+                                <div className="flex-shrink-0 inline-flex items-center justify-center h-12 w-12 rounded-xl bg-[#424fcf]/10">
                                     <div className="flex items-center justify-center h-7 w-7 rounded-full bg-emerald-500 text-white text-xl">
                                         ✓
                                     </div>

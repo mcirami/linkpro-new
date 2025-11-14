@@ -45,7 +45,7 @@ const PayOutComponent = ({
         <div className="flex flex-col items-center justify-start h-full">
             <CardHeader title="Payout Information" />
             {payoutInfo ?
-                <div className="p-5 text-center">
+                <div className="text-center w-full">
                     <p className="text-sm text-gray-600">Your current payout method is:</p>
                     {payoutInfo.pm_type === "bank" &&
                         <div className="p-5">
@@ -77,12 +77,12 @@ const PayOutComponent = ({
                     }
                     {updateMethodLink &&
                         <div className="w-full mt-auto">
-                            <a target="_blank"
-                               href={updateMethodLink}
-                               className="button blue text-uppercase self-center"
-                            >
-                               Update Payment Method
-                            </a>
+                            <StandardButton
+                                text="Update Payout Method"
+                                classes="w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
+                            focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                                onClick={updateMethodLink}
+                            />
                         </div>
                     }
                 </div>
