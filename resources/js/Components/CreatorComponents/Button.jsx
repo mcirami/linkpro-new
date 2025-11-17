@@ -8,7 +8,7 @@ const Button = ({
 }) => {
 
 
-    const [buttonStyle, setButtonStyle] = useState(null);
+    const [buttonStyle, setButtonStyle] = useState({});
 
     const {
         button_text,

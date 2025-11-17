@@ -248,7 +248,9 @@ const IconSettingComponent = ({
                     ].join(' ')}
                 >
                     <div className="section_title w-full flex justify-between !mb-0">
-                        <h4 className="w-full mb-5 capitalize">{label}</h4>
+                        {pageSettings.page_layout === 'layout_one' &&
+                            <h4 className="w-full mb-5 capitalize">{label}</h4>
+                        }
                         {maxChar != null &&
                             <div className="info_text w-full flex justify-end mb-2">
                                 <p className="char_count">

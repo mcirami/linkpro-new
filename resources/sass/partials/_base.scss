@@ -438,3 +438,9 @@ button {
         padding-top: 2px;
     }
 }
+
+.content_select_button h3 {
+    @include query(mobile) {
+        font-size: .9rem;
+    }
+}

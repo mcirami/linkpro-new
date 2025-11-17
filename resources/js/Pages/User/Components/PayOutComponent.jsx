@@ -41,6 +41,7 @@ const PayOutComponent = ({
         }
     }
 
+    console.log("updateMethodLink", updateMethodLink);
     return (
         <div className="flex flex-col items-center justify-start h-full">
             <CardHeader title="Payout Information" />
@@ -81,7 +82,7 @@ const PayOutComponent = ({
                                 text="Update Payout Method"
                                 classes="w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
                             focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
-                                onClick={updateMethodLink}
+                                onClick={() => window.open(updateMethodLink.url, "_blank")}
                             />
                         </div>
                     }

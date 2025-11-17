@@ -274,7 +274,7 @@ function Dashboard({
                         />
                     </div>
                 </div>
-                <section className="card edit_page">
+                <section className="edit_page mt-20">
                     <div id="links_page">
                         <div className="my_row page_wrap">
 
@@ -563,10 +563,6 @@ function Dashboard({
                                                             divRef={leftColWrap}
                                                         />*/}
 
-                                                        {showPreviewButton &&
-                                                            <PreviewButton setShowPreview={setShowPreview}/>
-                                                        }
-
                                                         {(userSub &&
                                                                 !subStatus) &&
                                                             <DowngradeAlert/>
@@ -726,6 +722,9 @@ function Dashboard({
                                                 setShowPreview={setShowPreview}
                                                 profileImgActive={profileImgActive}
                                             />
+                                            {showPreviewButton &&
+                                                <PreviewButton setShowPreview={setShowPreview}/>
+                                            }
                                         </ToolTipContextProvider>
                                     </PageContext.Provider>
                                 </FolderLinksContext.Provider>

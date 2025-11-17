@@ -49,13 +49,13 @@ const IconList = ({
         if(editLink.type !== "offer") {
             optionsArray.push({
                 value: "standard",
-                label: "Standard Icons",
+                label: "Standard",
             });
         }
 
         optionsArray.push({
             value: "custom",
-            label: "Custom Icons"
+            label: "Custom"
         })
 
         setIconTabs(optionsArray);
@@ -271,49 +271,12 @@ const IconList = ({
         const value = e.target.value;
         setSearchInput(value);
 
-        /*if (editLink.type === "url" || editLink.type === "email" || editLink.type === "phone") {*/
-            setFilteredIcons(showIconList?.list?.filter((i) => {
-                const iconName = i.name && i.name.toLowerCase().replace(" ", "");
-                const userInput = value.toLowerCase().replace(" ", "");
-                return iconName && iconName.match(userInput);
-            }))
-        /*} else {
-            const filterList = filteredByCat.length > 0 ?
-                filteredByCat :
-                showIconList.list;
-
-            setFilteredIcons(filterList?.filter((i) => {
-                const offerName = i.name && i.name.toLowerCase().replace(" ", "");
-                const userInput = value.toLowerCase().replace(" ", "");
-                return offerName && offerName.match(userInput);
-            }))
-
-        }*/
+        setFilteredIcons(showIconList?.list?.filter((i) => {
+            const iconName = i.name && i.name.toLowerCase().replace(" ", "");
+            const userInput = value.toLowerCase().replace(" ", "");
+            return iconName && iconName.match(userInput);
+        }))
     }
-
-    /*useEffect(() => {
-
-        if (editLink.type === "url" || editLink.type === "email" || editLink.type === "phone") {
-            setFilteredIcons(showIconList?.list?.filter((i) => {
-                const iconName = i.name && i.name.toLowerCase().replace(" ", "");
-                const userInput = searchInput.toLowerCase().replace(" ", "");
-                return iconName && iconName.match(userInput);
-            }))
-        } else {
-
-            const filterList = filteredByCat.length > 0 ?
-                filteredByCat :
-                showIconList.list;
-
-            setFilteredIcons(filterList?.filter((i) => {
-                const offerName = i.name && i.name.toLowerCase().replace(" ", "");
-                const userInput = searchInput.toLowerCase().replace(" ", "");
-                return offerName && offerName.match(userInput);
-            }))
-
-        }
-
-    },[editLink, searchInput]);*/
 
     const handleTabClick = useCallback ((e, type) => {
         e.preventDefault();
@@ -333,14 +296,14 @@ const IconList = ({
                 <>
                     {showFormTab !== "offers" &&
                         <div className="icon_col default_icon">
-                            <p>Current Icon</p>
+                            <p>Current</p>
                             {editLink.icon ?
                                 <img alt=""
                                      className={`active img-fluid icon_image`}
                                      src={editLink.icon}
                                 />
                                 :
-                                <p>No Icon Selected</p>
+                                <p className="text-center text-xs break-normal p-4">No Icon Selected</p>
                             }
                         </div>
                     }
@@ -354,29 +317,6 @@ const IconList = ({
                                     options={iconTabs}
                                     size="max-w-xl"
                                 />
-                                {/*{editLink.type !== "offer" &&
-                                    <div className="relative">
-                                        <a className={`relative block tab_link
-                                        ${showIconList.type === "standard" && "active"}`}
-                                           href="#"
-                                           onClick={(e) => {
-                                               e.preventDefault();
-                                               handleTabClick(e, "standard");
-                                           }}>
-                                            Standard Icons
-                                        </a>
-                                    </div>
-                                }
-                                <div className="relative">
-                                    <a className={`relative block tab_link ${showIconList.type === "custom" && editLink.type !== "offer" ? "active" : ""}`}
-                                       href="#"
-                                       onClick={(e) => {
-                                           e.preventDefault()
-                                           editLink.type !== "offer" && handleTabClick(e, "custom")
-                                       }}>
-                                        Custom Icons
-                                    </a>
-                                </div>*/}
                             </div>
                         }
 

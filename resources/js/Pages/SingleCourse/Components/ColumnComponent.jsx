@@ -36,9 +36,9 @@ const ColumnComponent = ({
 
     const {header_color, header_text_color} = course;
 
-    const [imagePlaceholder, setImagePlaceholder] = useState(null);
+    const [imagePlaceholder, setImagePlaceholder] = useState("");
     const [mobileVideo, setMobileVideo] = useState(null);
-    const [bgStyle, setBgStyle] = useState(null);
+    const [bgStyle, setBgStyle] = useState({});
     const [textValue, setTextValue] = useState(text)
 
     useEffect(() => {
@@ -176,7 +176,7 @@ const ColumnComponent = ({
                                 <a className="button"
                                    href={!userAuth ? buttonUrl : "#"}
                                    style={{ background: header_color, color: header_text_color }}
-                                   onClick={!userAuth ? "" : handleButtonClick}
+                                   onClick={!userAuth ? null : handleButtonClick}
                                 >
                                     Purchase Now
                                 </a>

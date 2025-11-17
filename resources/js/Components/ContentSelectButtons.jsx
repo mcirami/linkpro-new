@@ -8,7 +8,7 @@ const ContentSelectButtons = ({
             <button
                 key={item.key}
                 onClick={() => handleClick(item.key)}
-                className={`transform-none flex items-start w-full group rounded-xl border border-gray-200 bg-white p-4 text-left shadow-md
+                className={`content_select_button transform-none flex items-start w-full group rounded-xl border border-gray-200 bg-white p-4 text-left shadow-md
                  transition-all hover:-translate-y-0.5 hover:shadow-lg focus:outline-none
                  focus-visible:ring-2 focus-visible:ring-[#424fcf]/30 ${item.buttonClasses} `}
             >

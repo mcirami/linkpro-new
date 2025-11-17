@@ -329,7 +329,7 @@ export const SubscriptionPaymentButtons = ({
                                 </a>
                             }
                         </div>
-                        <p className="text-right text-sm text-gray-500">(Credit Card, GooglePay, ApplePay, CashApp)</p>
+                        <p className="text-right text-xs text-gray-500">(Credit Card, GooglePay, ApplePay, CashApp)</p>
                         <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row sm:justify-between">
                             <div className="flex items-center gap-2 text-xs text-gray-500">
                                 <svg viewBox="0 0 24 24" className="h-4 w-4 text-gray-400" fill="currentColor">

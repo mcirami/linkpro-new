@@ -145,7 +145,7 @@ const CourseRegister = ({
                             </div>
                             :
                             <div className="card-body text-left w-full inline-block">
-                                <div className="flex items-center gap-3 border-b border-gray-100 p-5" style={{background: course.header_color}}>
+                                <div className="flex items-center gap-3 border-b border-gray-100 p-5">
                                     {/*<div className="grid h-10 w-10 place-items-center rounded-xl bg-[#424fcf]/10 ring-1 ring-indigo-200">
                                         <img src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro Logo" className="h-5 w-5" />
                                     </div>*/}
@@ -288,13 +288,13 @@ const CourseRegister = ({
                                             disabled={""}
                                         />
                                     </div>
-                                    <div className="w-full float-right">
+                                    <div className="w-full text-right">
                                         <Link
                                             onClick={e => {
                                                 e.preventDefault()
                                                 setShowLogin(true);
                                             }}
-                                            className="flex justify-end text-blue-600 font-bold text-sm hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                            className="inline-flex ml-auto justify-end text-blue-600 font-bold text-sm hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                         >
                                             Already on LinkPro? Login Now
                                         </Link>

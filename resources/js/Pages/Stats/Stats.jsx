@@ -81,14 +81,7 @@ function Stats() {
                             description="View your page, icon, folder and affiliate clicks and sales."
                         />
                     </div>
-                    <div className="card flex relative">
-                        {/*{isLoading &&
-                            <div id="loading_spinner" className="active">
-                                <div >
-                                    <img src={Vapor.asset('images/spinner.svg')} alt="" />
-                                </div>
-                            </div>
-                        }*/}
+                    <div className="max-w-5xl mx-auto flex relative mt-20">
                         <div id="stats" className="my_row">
                             <div className="tabs_wrap shadow-md w-full">
                                 <div className="page_tabs w-full">

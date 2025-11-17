@@ -30,7 +30,7 @@ function Course({
 
     const [introText, setIntroText] = useState(intro_text);
 
-    const userAuth = auth?.user?.userInfo?.length > 0;
+    const userAuth = auth?.user?.userInfo;
 
     let additionalVars = "";
     if (affRef && clickId) {

@@ -85,6 +85,16 @@ select {
             font-size 500ms ease-in-out,
             color 500ms ease-in-out;
         z-index: 1;
+
+        @include query(mobile) {
+            font-size: .8rem;
+        }
+
+        &.crop {
+            @include query(mobile) {
+                font-size: .6rem;
+            }
+        }
     }
 
     &.active {
@@ -592,12 +602,20 @@ form .bottom_row a {
                         .animated_tabs {
                             border-top: 0 !important;
                             border-right: 0 !important;
+
+                            a {
+                                font-size: .8rem;
+
+                                @include query(mobile) {
+                                    font-size: .7rem;
+                                }
+                            }
                         }
 
                         .icons_wrap.inner {
                             --n: 6;
                             overflow-y: scroll;
-                            height: 190px;
+                            max-height: 190px;
                             justify-content: flex-start;
                             -webkit-justify-content: flex-start;
                             align-items: flex-start;
@@ -607,6 +625,10 @@ form .bottom_row a {
 
                             .icon_col {
                                 margin-bottom: 0;
+                                border: 1px solid rgba(155,155,155,.2);
+                                border-radius: 8px;
+                                -webkit-border-radius: 8px;
+                                -moz-border-radius: 8px;
                             }
                         }
                     }
@@ -634,10 +656,18 @@ form .bottom_row a {
                         }
 
                         p:first-child {
+                            width: 100%;
+                            text-align: center;
                             border-bottom: 1px solid $borderGray;
                             padding: 10px 5px;
                             margin-bottom: 5px;
                             font-size: .8rem;
+                            text-transform: uppercase;
+
+                            @include query(mobile) {
+                                padding: 5px;
+                                margin-bottom: 10px;
+                            }
                         }
 
                         img {
@@ -1240,8 +1270,6 @@ form .bottom_row a {
 }
 
 #links_page .top_section .button_row {
-    border-bottom: 1px solid $borderGray;
-    padding-bottom: 20px;
 
     a.button {
         width: 48% !important;
@@ -1555,5 +1583,9 @@ form .bottom_row a {
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
         text-transform: uppercase;
+
+        @include query(mobile) {
+            font-size: 0.7rem;
+        }
     }
 }
