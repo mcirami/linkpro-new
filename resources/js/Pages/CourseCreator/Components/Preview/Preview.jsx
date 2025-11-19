@@ -7,6 +7,7 @@ import {
     UseResizePreviewHeight
 } from '@/Services/PreviewHooks.jsx';
 import {IoIosCloseCircleOutline} from 'react-icons/io';
+import LivePageButton from "@/Components/LivePageButton.jsx";
 
 const Preview = ({
                      data,
@@ -17,7 +18,8 @@ const Preview = ({
                      nodesRef,
                      imgRef,
                      completedCrop,
-                     setShowMessageAlertPopup
+                     setShowMessageAlertPopup,
+                     liveUrl
 }) => {
 
 
@@ -52,7 +54,11 @@ const Preview = ({
             <div className="close_preview" onClick={ClosePreview}>
                 <IoIosCloseCircleOutline />
             </div>
-
+            <div className="view_live_link d-block md:none">
+                <LivePageButton
+                    url={liveUrl}
+                />
+            </div>
             <div className="links_wrap preview creator">
                 <div className="inner_content" id="preview_wrap">
                     <div className="inner_content_wrap" style={{ maxHeight: resizePreviewHeight ? resizePreviewHeight + "px" : loadPreviewHeight + "px"}}>

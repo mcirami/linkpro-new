@@ -19,16 +19,16 @@ const CropTools = ({
                 <a href="#" className="number_control" onClick={(e) => handleScaleChange(e, scale, setScale, "decrease")}>
                     <HiMinus />
                 </a>
-                <div className="relative">
+                <div className="relative flex flex-col">
+                    <label className="crop text-[.6rem] text-gray-400 mb-[-3px] uppercase" htmlFor="scale-input">Scale</label>
                     <input
-                        className="active animate"
+                        className="!h-[25px] !text-[.8rem]"
                         id="scale-input"
                         type="text"
                         step="0.1"
                         value={scale}
                         onChange={(e) => setScale(Number(e.target.value))}
                     />
-                    <label className="crop" htmlFor="scale-input">Scale</label>
                 </div>
                 <a href="#" className="number_control" onClick={(e) => handleScaleChange(e, scale, setScale, "increase")}>
                     <HiPlus />
@@ -38,9 +38,10 @@ const CropTools = ({
                 <a href="#" className="number_control" onClick={(e) => handleRotateChange(e, rotate, setRotate, "decrease")}>
                     <HiMinus />
                 </a>
-                <div className="relative">
+                <div className="relative flex flex-col">
+                    <label className="crop text-[.6rem] text-gray-400 mb-[-3px] uppercase" htmlFor="rotate-input">Rotate</label>
                     <input
-                        className="active animate"
+                        className="!h-[25px] !text-[.8rem]"
                         id="rotate-input"
                         type="text"
                         value={rotate}
@@ -48,7 +49,7 @@ const CropTools = ({
                             setRotate(Math.min(180, Math.max(-180, Number(e.target.value))))
                         }
                     />
-                    <label className="crop" htmlFor="rotate-input">Rotate</label>
+
                 </div>
                 <a href="#" className="number_control" onClick={(e) => handleRotateChange(e, rotate, setRotate, "increase")}>
                     <HiPlus />

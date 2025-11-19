@@ -358,6 +358,10 @@
                             font-size: .8rem;
                             color: $blue;
                             text-transform: uppercase;
+
+                            @include query(smallMobile) {
+                                font-size: .6rem
+                            }
                         }
                     }
                 }
@@ -612,11 +616,6 @@
                 p {
                     font-size: .49rem;
 
-
-                    @media all and (max-width: 550px) {
-                        font-size: 1.1vw;
-                    }
-
                     @media screen and (max-width: 350px) {
                         line-height: 1.3;
                         margin-top: 3px;
@@ -643,6 +642,10 @@
                         h3 {
                             font-size: .8rem;
                             text-transform: uppercase;
+
+                            @include query(smallMobile) {
+                                font-size: .6rem !important;
+                            }
                         }
                     }
                 }

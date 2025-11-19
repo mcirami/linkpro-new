@@ -339,7 +339,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                                         <div className="section_title w-full !mb-5">
                                                             <h4>Font Size</h4>
                                                         </div>
-                                                        <div className="w-1/3">
+                                                        <div className="w-full sm:w-1/3">
                                                             <SliderComponent
                                                                 id={pageData["id"]}
                                                                 dispatch={dispatchPageData}
@@ -393,7 +393,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                             <div className="section_title">
                                                 <h4>Add Content</h4>
                                             </div>
-                                            <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
+                                            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
                                                 <ContentSelectButtons
                                                     options={[
                                                         {

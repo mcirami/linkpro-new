@@ -159,7 +159,7 @@ const SectionButtonOptions = ({
                         :
                         ""
                     }
-                    <div className={`${buttonType === 'purchase' ? 'p-5 w-1/2' : "w-1/3"} `}>
+                    <div className={`${buttonType === 'purchase' ? 'px-5 pt-0 mb-auto w-1/2' : "w-1/3"} `}>
                         <div className="section_title w-full !mb-5">
                             <h4>Size</h4>
                         </div>

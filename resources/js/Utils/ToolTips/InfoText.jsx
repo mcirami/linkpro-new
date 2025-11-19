@@ -26,6 +26,13 @@ const InfoText = ({divRef}) => {
             const margin = 16;
             const pointerOffset = 12;
 
+            const menuWrapper = document.querySelector('.menu_wrap');
+            const menuRect = menuWrapper ? menuWrapper.getBoundingClientRect() : null;
+            const menuStyles = menuWrapper ? window.getComputedStyle(menuWrapper) : null;
+            const isMenuVisible = menuRect && menuStyles && menuStyles.display !== 'none' && menuStyles.visibility !== 'hidden' && menuRect.width > 0;
+            const leftBoundary = isMenuVisible ? Math.max(margin, menuRect.left + menuRect.width + margin) : margin;
+            const rightBoundary = windowWidth - margin;
+
             if (divRef?.current) {
                 if (infoText?.section?.includes('creator') || infoText?.section?.includes('course')) {
                     if (windowWidth < 600) {
@@ -47,23 +54,23 @@ const InfoText = ({divRef}) => {
             const {center, top} = infoLocation;
 
             let leftPosition = center - boxWidth / 2;
-            const availableWidth = windowWidth - margin * 2;
-            const maxLeft = windowWidth - margin - boxWidth;
+            const availableWidth = rightBoundary - leftBoundary;
+            const maxLeft = rightBoundary - boxWidth;
 
 
             if (availableWidth <= 0) {
-                leftPosition = margin;
+                leftPosition = leftBoundary;
             } else if (boxWidth > availableWidth) {
-                leftPosition = margin;
+                leftPosition = leftBoundary;
             } else {
-                leftPosition = Math.min(Math.max(leftPosition, margin), maxLeft);
+                leftPosition = Math.min(Math.max(leftPosition, leftBoundary), maxLeft);
 
                 if (center < leftPosition + pointerOffset) {
-                    leftPosition = Math.max(margin, center - pointerOffset);
+                    leftPosition = Math.max(leftBoundary, center - pointerOffset);
                 } else if (center > leftPosition + boxWidth - pointerOffset) {
                     leftPosition = Math.min(center + pointerOffset - boxWidth, maxLeft);
                 }
-                leftPosition = Math.min(Math.max(leftPosition, margin), maxLeft);
+                leftPosition = Math.min(Math.max(leftPosition, leftBoundary), maxLeft);
             }
 
             let topPosition = top - boxHeight - 10;

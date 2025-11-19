@@ -419,7 +419,7 @@ function CourseCreator({
                                                             <div className="section_title">
                                                                 <h4>Color</h4>
                                                             </div>
-                                                            <div className="w-1/3">
+                                                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                                                                 <ColorPicker
                                                                     label="Background"
                                                                     data={courseData}
@@ -767,6 +767,7 @@ function CourseCreator({
                                             nodesRef={nodesRef}
                                             completedCrop={completedCrop}
                                             setShowMessageAlertPopup={setShowMessageAlertPopup}
+                                            liveUrl={liveUrl}
                                         />
                                     </div>
                                 </div>

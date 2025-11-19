@@ -957,6 +957,7 @@ ul.breadcrumb_list {
             color: $blue;
             width: 100%;
             max-width: 45px;
+            height: 40px;
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
@@ -970,6 +971,9 @@ ul.breadcrumb_list {
             -webkit-align-items: center;
             justify-content: center;
             -webkit-justify-content: center;
+            border-radius: 8px;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
 
             @include query(tablet) {
                 max-width: 35px;
@@ -990,9 +994,9 @@ ul.breadcrumb_list {
         }
 
         .input_wrap {
-            border-radius: 6px;
-            -webkit-border-radius: 6px;
-            -moz-border-radius: 6px;
+            border-radius: 8px;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
 
             input {
                 height: 95%;
@@ -1003,7 +1007,9 @@ ul.breadcrumb_list {
                 line-height: 1;
                 block-size: 100%;
                 inline-size: 100%;
-                border-radius: 4px;
+                border-radius: 8px;
+                -webkit-border-radius: 8px;
+                -moz-border-radius: 8px;
             }
         }
     }
