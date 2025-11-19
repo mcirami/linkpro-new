@@ -49,7 +49,7 @@ const LayoutTwo = ({
                     />
 
                 {type === "offer" || type === "mailchimp" ?
-                    <p>{type === "offer" ? url : "(mailchimp form)"}</p>
+                    <p className="mb-2">{type === "offer" ? url : "(mailchimp form)"}</p>
                     :
                     <IconSettingComponent
                         inputType={type === "url" ? "text" : type === "email" ? "email" : type === "phone" ? "tel" : ""}
@@ -68,7 +68,7 @@ const LayoutTwo = ({
                         currentValue={type === "url" ? url : type === "email" ? email : type === "phone" ? phone : ""}
                     />
                 }
-                <div className={`edit_wrap flex items-center switch_wrap w-full`}>
+                <div className={`edit_wrap inline-flex items-center switch_wrap`}>
                     <div className="switch_wrap">
                         <IOSSwitch
                             onChange={() => handleSwitchChange(link, setEditLink, dispatch, "active_status")}

@@ -217,7 +217,7 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                         className={`text-gray-500 text-sm font-semibold tracking-wide transition-opacity duration-300 ${
                                             open ? 'opacity-0' : 'opacity-100'
                                         }`}
-                                    > {startCollapsed ? 'CHANGE IMAGE' : 'Add an Image'}
+                                    > {startCollapsed ? 'CHANGE IMAGE' : 'ADD IMAGE'}
                                     </span>
 
                                     {/* Single icon that moves from right → above text in the expanded area */}
@@ -229,8 +229,8 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                                 : { right: '1rem', top: '50%', transform: 'translateY(-50%)' } // right side of header
                                         }
                                     >
-                                <FiUploadCloud className="h-8 w-8" />
-                              </span>
+                                        <FiUploadCloud className="h-8 w-8" />
+                                    </span>
                                 </button>
 
                                 {/* Row 2 — expanding content */}
@@ -245,6 +245,17 @@ const ImageUploader = forwardRef(function ImageUploader(props, ref) {
                                 >
                                     <div className="mx-auto flex h-full w-full max-w-3xl flex-col items-center justify-center">
                                         {/* no duplicate icon here—header icon slides into position */}
+                                        {/* Close (X) */}
+                                        <button
+                                            onClick={() => setOpen(false)}
+                                            className="border-1 border-gray-500 absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full
+                                            bg-gray-50 text-gray-500 ring-1 hover:text-gray-700"
+                                            aria-label="Close"
+                                        >
+                                            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
+                                                <path d="M6.4 5l5.6 5.6L17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19 5 17.6 10.6 12 5 6.4z"/>
+                                            </svg>
+                                        </button>
                                         <p className="text-sm font-medium text-gray-600">
                                             Drop your <span className="font-bold">{label}</span> here, or{' '}
                                             <label

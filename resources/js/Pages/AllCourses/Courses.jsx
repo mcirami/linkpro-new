@@ -64,7 +64,7 @@ const Courses = ({purchasedCourses, unPurchasedCourses}) => {
         <AuthenticatedLayout>
             <Head title="Courses" />
             <div className="creator course_creator">
-                <div id="links_page" className="live_page course">
+                <div id="links_page" className="course">
                     <div className="my_row courses_grid all_courses">
                         <div className="container">
                             <section className="section_wrap my_row">
@@ -97,15 +97,15 @@ const Courses = ({purchasedCourses, unPurchasedCourses}) => {
                                     </div>
                                 }
                             </section>
-                            <section className="section_wrap my_row">
+                            <section className="section_wrap my_row mt-10">
                                 <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100 mb-10">
                                     <PageHeader
                                         heading="Available Courses"
                                         description="Click on a course below to view details and purchase. Filter by creator or category or search to find what you're looking for."
                                     />
                                 </div>
-                                <div className="filters" style={{display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem'}}>
-                                    <div className="filter_control" style={{display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: '180px'}}>
+                                <div className="filters w-full flex flex-wrap md:flex-nowrap gap-4 items-center justify-between mb-10">
+                                    <div className="filter_control w-full sm:w-[48%] lg:w-1/3">
                                         <label htmlFor="creator-filter">Creator</label>
                                         <select
                                             id="creator-filter"
@@ -118,7 +118,7 @@ const Courses = ({purchasedCourses, unPurchasedCourses}) => {
                                             ))}
                                         </select>
                                     </div>
-                                    <div className="filter_control" style={{display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: '180px'}}>
+                                    <div className="filter_control w-full sm:w-[48%] lg:w-1/3">
                                         <label htmlFor="category-filter">Category</label>
                                         <select
                                             id="category-filter"
@@ -131,10 +131,11 @@ const Courses = ({purchasedCourses, unPurchasedCourses}) => {
                                             ))}
                                         </select>
                                     </div>
-                                    <div className="filter_control search" style={{display: 'flex', flexDirection: 'column', gap: '0.5rem', flexGrow: 1, minWidth: '220px'}}>
+                                    <div className="filter_control search w-full lg:w-1/3 flex flex-col gap-2 grow-1">
                                         <label htmlFor="course-search">Search</label>
                                         <input
                                             id="course-search"
+                                            className="mb-2"
                                             type="text"
                                             value={searchTerm}
                                             onChange={(event) => setSearchTerm(event.target.value)}

@@ -274,7 +274,7 @@ function Dashboard({
                         />
                     </div>
                 </div>
-                <section className="edit_page mt-20">
+                <section className="edit_page mt-10 md:mt-20">
                     <div id="links_page">
                         <div className="my_row page_wrap">
 

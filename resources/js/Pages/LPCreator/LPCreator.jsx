@@ -58,8 +58,6 @@ function LPCreator({landingPageArray, courses, username}) {
         Array.isArray(landingPageArray?.sections) ? landingPageArray.sections : []
     );
 
-    console.log("courses", courses);
-
     const [showPreviewButton, setShowPreviewButton] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
 
@@ -157,7 +155,7 @@ function LPCreator({landingPageArray, courses, username}) {
                         />
                     </div>
                 </div>
-                <section className="card edit_page creator">
+                <section className="edit_page creator mt-10 md:mt-20">
                     <div id="links_page">
                         <div id="creator" className="my_row creator_wrap">
                             <div className="my_row page_wrap">

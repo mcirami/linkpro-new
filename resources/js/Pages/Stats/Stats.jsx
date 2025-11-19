@@ -81,16 +81,16 @@ function Stats() {
                             description="View your page, icon, folder and affiliate clicks and sales."
                         />
                     </div>
-                    <div className="max-w-5xl mx-auto flex relative mt-20">
+                    <div className="max-w-5xl mx-auto flex relative mt-10 md:mt-20">
                         <div id="stats" className="my_row">
                             <div className="tabs_wrap shadow-md w-full">
                                 <div className="page_tabs w-full">
                                     <PageTabs
                                         tabs={[
-                                            { value: "page", label: "Page Stats"},
-                                            { value: "icon", label: "Icon Stats"},
-                                            { value: "folder", label: "Folder Stats"},
-                                            { value: "affiliate", label: "Affiliate Stats"}
+                                            { value: "page", label: window.innerWidth > 549 ? "Page Stats" : "Page" },
+                                            { value: "icon", label:  window.innerWidth > 549 ? "Icon Stats" : "Icon" },
+                                            { value: "folder", label:  window.innerWidth > 549 ? "Folder Stats" : "Folder" },
+                                            { value: "affiliate", label:  window.innerWidth > 549 ? "Affiliate Stats" : "Affiliate" }
                                         ]}
                                         pageTab={tab}
                                         setPageTab={setTab}

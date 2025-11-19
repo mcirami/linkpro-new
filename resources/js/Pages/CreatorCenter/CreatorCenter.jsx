@@ -59,7 +59,7 @@ function CreatorCenter({offers, landingPage}) {
                         triangleRef
                     }}>
                         {offers?.length === 0 ?
-                            <section className="mx-auto max-w-5xl mt-10">
+                            <section className="mx-auto max-w-5xl mt-5 md:mt-10">
                                 <div className="rounded-2xl bg-white shadow-md">
                                     <div className="flex items-start gap-3 border-b border-gray-100 px-6 py-5 sm:items-center">
                                         <span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200">
@@ -144,13 +144,13 @@ function CreatorCenter({offers, landingPage}) {
                             :
                             <div className="grid_columns">
                                 <div className="column">
-                                    <div className="column_title w-full !pt-5 border-b border-gray-100">
+                                    <div className="column_title w-full md:!pt-5 border-b border-gray-100">
                                         <h3>
                                             <span>Global Course Page</span>
                                             <ToolTipIcon section="creator_lp" />
                                         </h3>
                                     </div>
-                                    <div className="content_wrap flex-wrap shadow-md w-full p-5 rounded-xl flex relative">
+                                    <div className="content_wrap flex-wrap shadow-md w-full p-5 rounded-xl flex relative mt-5">
                                         <div className="buttons_wrap w-full flex justify-between gap-2 items-center mb-5">
                                             <h3 className="!p-0 font-medium text-gray-900 truncate">{landingPage?.title || "(no title)"}</h3>
                                             <div className="button_wrap !mb-0">
@@ -208,7 +208,7 @@ function CreatorCenter({offers, landingPage}) {
                                         </Link>
                                     </div>
                                     {/* Legend */}
-                                    <section className="mb-10 rounded-2xl bg-white/60 p-4 shadow-md">
+                                    <section className="mt-10 mb-10 rounded-2xl bg-white/60 p-4 shadow-md">
                                         {/*<div className="mb-4 text-sm font-medium text-gray-700">Legend</div>*/}
 
                                         <dl className="grid gap-4 sm:grid-cols-2">

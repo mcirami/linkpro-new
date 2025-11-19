@@ -283,9 +283,9 @@ const IconSettingComponent = ({
                 </div>
             </div>
 
-
+            {pageSettings.page_layout === 'layout_one' && maxChar != null &&
                 <div className="my_row info_text title text-right min-h-[1.2rem]">
-                    {pageSettings.page_layout === 'layout_one' && maxChar != null && draft?.length > maxChar ? (
+                    {draft?.length > maxChar ? (
                         <p className="char_count ">
                             <span className="over">Only {maxChar} Characters Will Be Shown</span>
                         </p>
@@ -293,7 +293,7 @@ const IconSettingComponent = ({
                         ""
                     }
                 </div>
-
+            }
         </>
     );
 };

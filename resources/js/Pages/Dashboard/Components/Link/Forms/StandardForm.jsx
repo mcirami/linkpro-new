@@ -278,7 +278,7 @@ const StandardForm = ({
                                     />
                                     <div className="hover_text switch">
                                         <p>
-                                            {Boolean(editLink.icon_active) ? "Hide" : "Show"} Icon
+                                            {Boolean(editLink.icon_active) ? "Hide" : "Show"}
                                         </p>
                                     </div>
                                 </div>
@@ -369,7 +369,7 @@ const StandardForm = ({
                                         />
                                         <div className="hover_text switch">
                                             <p>
-                                                {Boolean(editLink.bg_active) ? "Disable" : "Enable"} Background
+                                                {Boolean(editLink.bg_active) ? "Hide" : "Show"}
                                             </p>
                                         </div>
                                     </div>

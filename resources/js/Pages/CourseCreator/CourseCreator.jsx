@@ -217,7 +217,7 @@ function CourseCreator({
                     />
                 }
                 <div className="container">
-                    <section className="card edit_page creator course_creator">
+                    <section className="mt-20 edit_page creator course_creator">
                         <div id="links_page">
                             <div id="edit_course" className="my_row creator_wrap">
                                 <div className="my_row page_wrap">

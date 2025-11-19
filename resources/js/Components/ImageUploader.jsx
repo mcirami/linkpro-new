@@ -222,6 +222,17 @@ export const ImageUploader = ({
                                 ].join(' ')}
                             >
                                 <div className="mx-auto flex h-full w-full max-w-3xl flex-col items-center justify-center">
+                                    {/* Close (X) */}
+                                    <button
+                                        onClick={() => setOpen(false)}
+                                        className="border-1 border-gray-500 absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full
+                                            bg-gray-50 text-gray-500 ring-1 hover:text-gray-700"
+                                        aria-label="Close"
+                                    >
+                                        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
+                                            <path d="M6.4 5l5.6 5.6L17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19 5 17.6 10.6 12 5 6.4z"/>
+                                        </svg>
+                                    </button>
                                     {/* no duplicate icon here—header icon slides into position */}
                                     <p className="text-sm font-medium text-gray-600">
                                         Drop your <span className="font-bold">{label}</span> here, or{' '}
