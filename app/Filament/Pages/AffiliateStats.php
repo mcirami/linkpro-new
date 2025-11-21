@@ -68,7 +68,7 @@ class AffiliateStats extends Page implements HasForms
                     ->options($this->getQuickRangeOptions())
                     ->native(false)
                     ->live()
-                    ->afterStateUpdated(function (callable $set, $state) {
+                    ->afterStateUpdated(function (Set $set, $state) {
                         if ($state !== 'custom') {
                             $set('customStart', null);
                             $set('customEnd', null);
@@ -86,7 +86,7 @@ class AffiliateStats extends Page implements HasForms
                 DatePicker::make('customEnd')
                     ->label('End date')
                     ->native(false)
-                    ->minDate(fn (callable $get) => $get('customStart'))
+                    ->minDate(fn (Get $get) => $get('customStart'))
                     ->maxDate(now())
                     ->live()
                     ->afterStateUpdated(fn () => $this->refreshStats()),

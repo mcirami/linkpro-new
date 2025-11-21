@@ -2,8 +2,6 @@
     use Illuminate\Support\Str;
 @endphp
 
-@routes
-
 <x-filament-panels::page>
     <div class="space-y-6">
         <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
