@@ -351,12 +351,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="voyager-skull"></i> Ban User Account or IP?</h4>
+                <h4 class="modal-title"><i class="voyager-skull"></i> Ban Users Account or IP?</h4>
             </div>
             <div class="modal-body">
                 <h3>Select Ban Type</h3>
                 <select name="ban_type" id="ban_type">
-                    <option value="user">User</option>
+                    <option value="user">Users</option>
                     <option value="ip">IP</option>
                 </select>
             </div>

@@ -83,7 +83,7 @@
                             <ul>
                                 @foreach($referrals as $referral)
                                 {{--{{$referral->referral_id}}
-                                @php $username = \App\Models\User::where('id', $referral->referral_id)->get()->pluck('username') @endphp--}}
+                                @php $username = \App\Models\Users::where('id', $referral->referral_id)->get()->pluck('username') @endphp--}}
                                 <li>
                                     <p>{{ $referral->referral_id }}</p>
                                 </li>

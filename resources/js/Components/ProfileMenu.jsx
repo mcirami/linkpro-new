@@ -53,12 +53,12 @@ const ProfileMenu = () => {
                             <img id="user_image" src={
                                 auth.user.userInfo?.avatar.includes('default') ?
                                     Vapor.asset('images/profile-placeholder-img.png') : auth.user.userInfo?.avatar }
-                                 alt="User Profile" />
+                                 alt="Users Profile" />
                             <span id="username">{auth.user.userInfo?.username}</span>
                         </Link>
                         :
                         <>
-                            <img id="user_image" src={Vapor.asset('images/profile-placeholder-img.png') } alt="User Profile" />
+                            <img id="user_image" src={Vapor.asset('images/profile-placeholder-img.png') } alt="Users Profile" />
                             <span id="username">{auth.user.userInfo?.username}</span>
                         </>
                     }

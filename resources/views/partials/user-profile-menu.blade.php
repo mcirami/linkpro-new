@@ -33,7 +33,7 @@
             <li class="nav-item">
 
                 <a class="nav-link" href="{{ route('user.edit') }}" role="button" >
-                    <img id="user_image" src="{{ $image ? : asset('images/profile-placeholder-img.png') }}" alt="User Profile">
+                    <img id="user_image" src="{{ $image ? : asset('images/profile-placeholder-img.png') }}" alt="Users Profile">
                     <span id="username">{{ $user->username }}</span>
                 </a>
             </li>

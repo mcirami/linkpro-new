@@ -138,7 +138,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::group(['prefix' => 'admin'], function () {
+/*Route::group(['prefix' => 'admin'], function () {
     //::routes();
     Route::get('/affiliate-stats', [AdminStatsController::class, 'show'])->name('adminAffStats');
     Route::post('/stats/get/offer', [AdminStatsController::class, 'getOfferStats']);
@@ -153,7 +153,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/referrals', [App\Http\Controllers\VoyagerFilterController::class, 'index']);
     Route::post('/purchases', [App\Http\Controllers\VoyagerFilterController::class, 'index']);
     Route::post('/offers', [App\Http\Controllers\VoyagerFilterController::class, 'index']);*/
-});
+/*});*/
 
 Auth::routes();
 

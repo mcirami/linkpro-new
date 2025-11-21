@@ -18,10 +18,13 @@ use App\Models\Page as Page;
 use App\Models\Referral as Referral;
 use Mchev\Banhammer\Models\Ban;
 use Spatie\Permission\Traits\HasRoles;
-//use TCG\Voyager\Models\User as VoyagerUser;
+use Spatie\Permission\Models\Permission;
 use Mchev\Banhammer\Traits\Bannable;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use Filament\Models\Contracts\HasName;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser, HasName
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, Bannable;
 
@@ -56,6 +59,26 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getFilamentName(): string
+    {
+        // Make SURE this always returns a string
+        // Adjust to whatever fields you actually have.
+        if (! empty($this->username)) {
+            return $this->username;
+        }
+
+        if (! empty($this->first_name) || ! empty($this->last_name)) {
+            return trim($this->first_name . ' ' . $this->last_name);
+        }
+
+        // Fallback so it NEVER returns null:
+        return (string) $this->email;
+    }
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->hasRole('admin');
+    }
 
     /** Relationships **/
 

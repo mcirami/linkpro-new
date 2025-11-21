@@ -147,7 +147,7 @@
                         </li>
                         <li>
                             <p>
-                                administer User records and verify identity;
+                                administer Users records and verify identity;
                             </p>
                         </li>
                         <li>
