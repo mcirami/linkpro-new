@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "ext-bcmath": "*",
         "ext-curl": "*",
         "doctrine/dbal": "^4.3",
@@ -65,7 +65,6 @@
     },
     "scripts": {
         "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
@@ -93,7 +92,7 @@
             "php-http/discovery": true
         },
         "platform": {
-            "php": "8.3"
+            "php": "8.4"
         }
     },
     "minimum-stability": "stable",
