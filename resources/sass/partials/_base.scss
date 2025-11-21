@@ -17,6 +17,7 @@ body.stop_scroll {
             max-width: 1600px !important;
             padding-left: 100px;
             padding-right: 20px;
+            margin: 0 auto;
 
             @media screen and (max-width: 768px) {
                 padding-left: 0.75rem;
@@ -119,7 +120,7 @@ main {
     display: inline-block;
     margin-left: auto;
     margin-right: auto;*/
-
+    margin: 0 auto;
     @include query(mobile) {
         padding: 0 20px;
     }

@@ -1,3 +1,31 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@source "../views/**/*.blade.php";
+@source "../js/**/*.{js,jsx,ts,tsx,vue}";
+
+/* Tailwind v4 way to configure the theme */
+@theme {
+    /* === Font family: make Figtree the default `font-sans` === */
+    --font-sans: "Figtree",
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
+
+    /* === Breakpoints (replaces theme.screens) === */
+    /* These match your old config: sm 550, md 768, lg 992, xl 1199, 2xl 1536 */
+    --breakpoint-sm: 550px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1199px;
+    --breakpoint-2xl: 1536px;
+
+    /* Container centering:
+       Tailwind's `container` utility is centered by default in v4,
+       so you don't need a special token here. */
+}
+
+/* Tailwind v4 forms plugin (replaces plugins: [forms]) */
+@plugin "@tailwindcss/forms";

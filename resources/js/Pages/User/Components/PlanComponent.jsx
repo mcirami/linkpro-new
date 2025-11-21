@@ -80,7 +80,7 @@ const PlanComponent = ({
             <CardHeader title="Plan Type" />
             <div className="text-center p-5 w-full">
                 <p className="text-sm text-gray-600 mb-5">Your Current Plan is</p>
-                <div className="text-2xl uppercase mx-auto inline-flex h-[8.5rem] w-[8.5rem] items-center justify-center rounded-full bg-indigo-50 text-indigo-700 font-semibold shadow-inner">
+                <div className="text-lg uppercase mx-auto inline-flex h-[8.5rem] w-[8.5rem] items-center justify-center rounded-full bg-indigo-50 text-indigo-700 font-semibold shadow-inner">
                     {subscription?.name ??
                         "Free"
                     }

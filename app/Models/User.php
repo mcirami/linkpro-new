@@ -18,10 +18,10 @@ use App\Models\Page as Page;
 use App\Models\Referral as Referral;
 use Mchev\Banhammer\Models\Ban;
 use Spatie\Permission\Traits\HasRoles;
-use TCG\Voyager\Models\User as VoyagerUser;
+//use TCG\Voyager\Models\User as VoyagerUser;
 use Mchev\Banhammer\Traits\Bannable;
 
-class User extends \TCG\Voyager\Models\User
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, Bannable;
 

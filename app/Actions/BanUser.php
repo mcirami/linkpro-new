@@ -3,9 +3,9 @@
 namespace App\Actions;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use TCG\Voyager\Actions\AbstractAction;
+//use TCG\Voyager\Actions\AbstractAction;
 
-class BanUser extends AbstractAction {
+class BanUser {
 
     private $isBanned = false;
 

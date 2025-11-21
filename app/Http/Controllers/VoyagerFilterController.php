@@ -5,11 +5,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use TCG\Voyager\Facades\Voyager;
+//use TCG\Voyager\Facades\Voyager;
 use Illuminate\Http\Request;
 use App\Http\Traits\DateTrait;
 
-class VoyagerFilterController extends \TCG\Voyager\Http\Controllers\VoyagerBaseController
+class VoyagerFilterController
 {
     use DateTrait;
 
@@ -31,7 +31,7 @@ class VoyagerFilterController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
         $slug = $this->getSlug($request);
 
         // GET THE DataType based on the slug
-        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+        $dataType = null; //Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
         $this->authorize('browse', app($dataType->model_name));
@@ -175,7 +175,7 @@ class VoyagerFilterController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
 
         // Actions
         $actions = [];
-        if (!empty($dataTypeContent->first())) {
+        /*if (!empty($dataTypeContent->first())) {
             foreach (Voyager::actions() as $action) {
                 $action = new $action($dataType, $dataTypeContent->first());
 
@@ -183,7 +183,7 @@ class VoyagerFilterController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
                     $actions[] = $action;
                 }
             }
-        }
+        }*/
 
         // Define showCheckboxColumn
         $showCheckboxColumn = false;
@@ -213,7 +213,7 @@ class VoyagerFilterController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
             $view = "voyager::$slug.browse";
         }
 
-        return Voyager::view($view, compact(
+        return 0; /*Voyager::view($view, compact(
             'actions',
             'dataType',
             'dataTypeContent',
@@ -229,6 +229,6 @@ class VoyagerFilterController extends \TCG\Voyager\Http\Controllers\VoyagerBaseC
             'usesSoftDeletes',
             'showSoftDeleted',
             'showCheckboxColumn'
-        ));
+        ));*/
     }
 }

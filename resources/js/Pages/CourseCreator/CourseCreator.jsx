@@ -577,7 +577,7 @@ function CourseCreator({
                                                                 <ToolTipIcon section="offer_icon"/>
                                                             </div>
                                                             {offerData['icon'] &&
-                                                                <img className='w-10 h-10 rounded-lg' src={offerData['icon']} alt="" />
+                                                                <img className='!w-10 !h-10 rounded-lg' src={offerData['icon']} alt="" />
                                                             }
                                                         </div>
                                                         <InlineImageUploader

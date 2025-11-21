@@ -34,7 +34,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\ShopifyWebhookController;
 use App\Http\Controllers\UserVerificationController;
 use Spatie\Honeypot\ProtectAgainstSpam;
-use TCG\Voyager\Facades\Voyager;
+//use TCG\Voyager\Facades\Voyager;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -139,7 +139,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::group(['prefix' => 'admin'], function () {
-    Voyager::routes();
+    //::routes();
     Route::get('/affiliate-stats', [AdminStatsController::class, 'show'])->name('adminAffStats');
     Route::post('/stats/get/offer', [AdminStatsController::class, 'getOfferStats']);
     Route::post('/stats/get/publisher', [AdminStatsController::class, 'getPublisherStats']);

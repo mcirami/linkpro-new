@@ -47,7 +47,7 @@ const CancelCheckout = ({type}) => {
                                                 onClick={() => window.location.href = route('dashboard')}
                                             />
                                             <StandardButton
-                                                classes="w-full md:w-1/4 shadow-md border border-solid border-indigo-600 text-indigo-600 px-6 py-3 hover:bg-indigo-400 hover:text-white transition"
+                                                classes="w-full md:w-1/4 shadow-md border border-solid !border-indigo-600 !text-indigo-600 px-6 py-3 hover:bg-indigo-400 hover:!text-white transition"
                                                 text="View Plans"
                                                 onClick={() => window.location.href = route('plans.get')}
                                             />
