@@ -103,7 +103,7 @@ trait DateTrait {
         } else if ( (is_array($request) && key_exists('dateValue', $request)) ||
                     (is_object($request) && $request->dateValue) ) {
 
-            $data = $this->getDateRange($request->dateValue);
+            $data = $this->getDateRange(is_object($request) ? $request->dateValue : $request['dateValue']);
             $startDate = $data['startDate'];
             $endDate = $data['endDate'];
 
@@ -115,8 +115,8 @@ trait DateTrait {
 
         } else {
 
-            $startDate = Carbon::createFromTimestamp($request->startDate)->startOfDay();
-            $endDate = Carbon::createFromTimestamp($request->endDate)->endOfDay();
+            $startDate = Carbon::createFromTimestamp(is_object($request) ? $request->startDate : $request['startDate'])->startOfDay();
+            $endDate = Carbon::createFromTimestamp(is_object($request) ? $request->endDate : $request['endDate'])->endOfDay();
         }
 
         return [

@@ -8,26 +8,27 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
 class AffiliateStats extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static ?string $navigationIcon = Heroicon::OutlinedChartBarSquare;
+    protected string $view = 'filament.pages.affiliate-stats';
+    protected AdminStatsServices $statsService;
+
+    protected static string|null|\BackedEnum $navigationIcon = Heroicon::OutlinedChartBarSquare;
 
     protected static ?string $navigationLabel = 'Affiliate Stats';
 
     protected static ?string $slug = 'affiliate-stats';
 
-    protected static string $view = 'filament.pages.affiliate-stats';
-
     protected static bool $shouldRegisterNavigation = true;
 
-    protected AdminStatsServices $statsService;
+
 
     public ?array $data = [];
 
@@ -35,9 +36,12 @@ class AffiliateStats extends Page implements HasForms
 
     public array $totals = [];
 
-    public function mount(AdminStatsServices $adminStatsServices): void
+    public function boot(AdminStatsServices $adminStatsServices): void
     {
         $this->statsService = $adminStatsServices;
+    }
+    public function mount(): void
+    {
 
         $this->form->fill($this->getDefaultFormState());
 
@@ -49,10 +53,9 @@ class AffiliateStats extends Page implements HasForms
         return auth()->check() && auth()->user()->hasRole('admin');
     }
 
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
+    public function form(Schema $schema): Schema {
+        return $schema
+            ->components([
                 Select::make('filterBy')
                     ->label('Stats by')
                     ->options([
@@ -68,7 +71,7 @@ class AffiliateStats extends Page implements HasForms
                     ->options($this->getQuickRangeOptions())
                     ->native(false)
                     ->live()
-                    ->afterStateUpdated(function (Set $set, $state) {
+                    ->afterStateUpdated(function (callable $set, $state) {
                         if ($state !== 'custom') {
                             $set('customStart', null);
                             $set('customEnd', null);
@@ -86,7 +89,7 @@ class AffiliateStats extends Page implements HasForms
                 DatePicker::make('customEnd')
                     ->label('End date')
                     ->native(false)
-                    ->minDate(fn (Get $get) => $get('customStart'))
+                    ->minDate(fn (callable $get) => $get('customStart'))
                     ->maxDate(now())
                     ->live()
                     ->afterStateUpdated(fn () => $this->refreshStats()),

@@ -10,7 +10,7 @@
                     <h2 class="text-lg font-semibold leading-6 text-gray-900">Affiliate stats</h2>
                     <p class="text-sm text-gray-500">Switch between publisher and offer views and refine the date range.</p>
                 </div>
-                <x-filament::button color="gray" wire:click="clearFilters">
+                <x-filament::button class="text-white bg-indigo-500" wire:click="clearFilters">
                     Clear filters
                 </x-filament::button>
             </div>
@@ -36,7 +36,7 @@
                     </div>
                 @else
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200 text-left text-sm">
+                        <table class="w-full divide-y divide-gray-200 text-left text-sm">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-4 py-3 font-semibold text-gray-700">{{ $this->isOfferView() ? 'Offer name' : 'Affiliate' }}</th>
@@ -74,4 +74,5 @@
             </div>
         </div>
     </div>
+
 </x-filament-panels::page>

@@ -16,7 +16,7 @@ class AdminStatsController extends Controller
      */
     public function show(): View {
 
-        return view('stats.admin.affiliate-stats');
+        return view('filment.pages.affiliate-stats');
     }
 
     /**
