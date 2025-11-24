@@ -6,12 +6,15 @@ use App\Services\AdminStatsServices;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Str;
 
 class AffiliateStats extends Page implements HasForms
 {
@@ -56,46 +59,76 @@ class AffiliateStats extends Page implements HasForms
     public function form(Schema $schema): Schema {
         return $schema
             ->components([
-                Select::make('filterBy')
-                    ->label('Stats by')
-                    ->options([
-                        'publisher' => 'Publisher',
-                        'offer' => 'Offer',
+                Grid::make()
+                    ->columns([
+                        'default' => 1,
+                        'md' => 4,
                     ])
-                    ->native(false)
-                    ->live()
-                    ->afterStateUpdated(fn () => $this->refreshStats())
-                    ->required(),
-                Select::make('datePreset')
-                    ->label('Date range')
-                    ->options($this->getQuickRangeOptions())
-                    ->native(false)
-                    ->live()
-                    ->afterStateUpdated(function (callable $set, $state) {
-                        if ($state !== 'custom') {
-                            $set('customStart', null);
-                            $set('customEnd', null);
-                        }
+                    ->schema([
+                        Select::make('filterBy')
+                            ->label('Stats by')
+                            ->options([
+                                'publisher' => 'Publisher',
+                                'offer' => 'Offer',
+                            ])
+                            ->native(false)
+                            ->live()
+                            ->afterStateUpdated(fn () => $this->refreshStats())
+                            ->required()
+                            ->columnSpan(1),
+                        Select::make('datePreset')
+                            ->label('Date range')
+                            ->options($this->getQuickRangeOptions())
+                            ->native(false)
+                            ->live()
+                            ->afterStateUpdated(function (callable $set, $state) {
+                                if ($state !== 'custom') {
+                                    $set('customStart', null);
+                                    $set('customEnd', null);
 
-                        $this->refreshStats();
-                    })
-                    ->required(),
-                DatePicker::make('customStart')
-                    ->label('Start date')
-                    ->native(false)
-                    ->maxDate(now())
-                    ->live()
-                    ->afterStateUpdated(fn () => $this->refreshStats()),
-                DatePicker::make('customEnd')
-                    ->label('End date')
-                    ->native(false)
-                    ->minDate(fn (callable $get) => $get('customStart'))
-                    ->maxDate(now())
-                    ->live()
-                    ->afterStateUpdated(fn () => $this->refreshStats()),
-            ])
-            ->columns([
-                'md' => 4,
+                                    $this->refreshStats();
+                                    return;
+                                }
+
+                                $this->stats = [];
+                                $this->totals = [];
+                            })
+                            ->required()->columnSpan(1),
+                        DatePicker::make('customStart')
+                            ->label('Start date')
+                            ->native(false)
+                            ->maxDate(now())
+                            ->live()
+                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                if ($state) {
+                                    $set('datePreset', 'custom');
+                                }
+
+                                if ($get('customEnd')) {
+                                    $this->refreshStats();
+                                }
+                            })->columnSpan(1),
+                        DatePicker::make('customEnd')
+                            ->label('End date')
+                            ->native(false)
+                            ->minDate(fn (callable $get) => $get('customStart'))
+                            ->maxDate(now())
+                            ->live()
+                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                if ($state) {
+                                    $set('datePreset', 'custom');
+                                }
+
+                                if ($state && $get('customStart')) {
+                                    $this->refreshStats();
+                                }
+                            })->columnSpan(1),
+                    ]),
+                TextInput::make('search')
+                         ->label('Search')
+                         ->placeholder('Search by name')
+                         ->live(debounce: 500)
+                         ->afterStateUpdated(fn () => $this->refreshStats()),
             ])
             ->statePath('data');
     }
@@ -127,8 +160,21 @@ class AffiliateStats extends Page implements HasForms
             ? $this->statsService->getAllOfferStats($payload)
             : $this->statsService->getAllPublisherStats($payload);
 
-        $this->stats = $data['affiliateData'] ?? [];
-        $this->totals = $data['totals'] ?? [];
+        $stats = $data['affiliateData'] ?? [];
+        $totals = $data['totals'] ?? [];
+
+        $search = Str::of($this->data['search'] ?? '')->trim();
+
+        if ($search->isNotEmpty()) {
+            $stats = array_values(array_filter($stats, function ($row) use ($search) {
+                return Str::of($row['name'] ?? '')->lower()->contains($search->lower());
+            }));
+
+            $totals = $this->calculateTotalsFromStats($stats);
+        }
+
+        $this->stats = $stats;
+        $this->totals = $totals;
     }
 
     protected function buildDatePayload(): ?array
@@ -162,7 +208,7 @@ class AffiliateStats extends Page implements HasForms
         }
 
         return [
-            'dateValue' => (int) ($preset ?? 1),
+            'dateValue' => (int) ($preset),
         ];
     }
 
@@ -178,6 +224,7 @@ class AffiliateStats extends Page implements HasForms
             'datePreset' => '1',
             'customStart' => null,
             'customEnd' => null,
+            'search' => '',
         ];
     }
 
@@ -193,5 +240,24 @@ class AffiliateStats extends Page implements HasForms
             '7' => 'Last month',
             'custom' => 'Custom',
         ];
+    }
+
+    protected function calculateTotalsFromStats(array $stats): array
+    {
+        $totals = [
+            'totalRaw' => 0,
+            'totalUnique' => 0,
+            'totalConversions' => 0,
+            'totalPayout' => 0.0,
+        ];
+
+        foreach ($stats as $row) {
+            $totals['totalRaw'] += (float) ($row['rawCount'] ?? 0);
+            $totals['totalUnique'] += (float) ($row['uniqueCount'] ?? 0);
+            $totals['totalConversions'] += (float) ($row['conversionCount'] ?? 0);
+            $totals['totalPayout'] += (float) ($row['payout'] ?? 0);
+        }
+
+        return $totals;
     }
 }

@@ -15,10 +15,6 @@ trait DateTrait {
 
         switch ($value) {
 
-            case 1:
-                $startDate = Carbon::now()->startOfDay();
-                $endDate = Carbon::now();
-                break;
             case 2:
                 $startDate = Carbon::now()->subDays(1)->startOfDay();
                 $endDate = Carbon::now()->subDays(1)->endOfDay();
@@ -44,12 +40,14 @@ trait DateTrait {
                 $endDate = Carbon::now()->startOfMonth()->subDays(1)->endOfMonth()->endOfDay();
                 break;
             default:
+                $startDate = Carbon::now()->startOfDay();
+                $endDate = Carbon::now();
                 break;
         }
 
         return [
-            'startDate' => $startDate,
-            'endDate' => $endDate
+            'startDate' => $startDate ?? null,
+            'endDate' => $endDate ?? null
         ];
     }
 
