@@ -63,6 +63,7 @@ class AffiliateStats extends Page implements HasForms
                     ->columns([
                         'default' => 1,
                         'md' => 4,
+                        'lg' => 4
                     ])
                     ->schema([
                         Select::make('filterBy')

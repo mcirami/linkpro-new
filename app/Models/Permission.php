@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Permission extends Model
 {
-    use HasFactory;
 
     /**
      * The table associated with the model.
@@ -16,7 +15,12 @@ class Permission extends Model
      */
     protected $table = 'spatie_permissions';
 
-    public function Roles() {
-        return $this->belongsToMany(Role::class);
+    public function roles(): BelongsToMany {
+        return $this->belongsToMany(
+            Role::class,
+            'role_has_permissions',   // same pivot table
+            'spatie_permission_id',   // FK on pivot pointing to this model
+            'spatie_role_id'          // FK on pivot pointing to Role
+        );
     }
 }

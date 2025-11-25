@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class RoleHasPermission extends Model
 {
-    use HasFactory;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -19,11 +18,11 @@ class RoleHasPermission extends Model
         'spatie_permission_id'
     ];
 
-    public function Roles() {
+    public function roles(): RoleHasPermission|HasMany {
         return $this->hasMany(Role::class);
     }
 
-    public function Permissions() {
+    public function permissions(): RoleHasPermission|HasMany {
         return $this->hasMany(Permission::class);
     }
 }

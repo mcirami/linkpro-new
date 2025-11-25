@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Filament\Resources\RoleHasPermissions\Pages;
+namespace App\Filament\Resources\Roles\Pages;
 
-use App\Filament\Resources\RoleHasPermissions\RoleHasPermissionResource;
+use App\Filament\Resources\Roles\RoleResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
-class EditRoleHasPermission extends EditRecord
+class EditRole extends EditRecord
 {
-    protected static string $resource = RoleHasPermissionResource::class;
+    protected static string $resource = RoleResource::class;
 
     protected function getHeaderActions(): array
     {
