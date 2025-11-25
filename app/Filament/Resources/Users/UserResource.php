@@ -21,11 +21,11 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
     // 👇 Make sure navigation will be registered
     protected static bool $shouldRegisterNavigation = true;
-
+    protected static ?int $navigationSort = 0;
     // 👇 Who can see this resource at all?
     public static function canAccess(): bool
     {

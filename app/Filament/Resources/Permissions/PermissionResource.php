@@ -20,10 +20,10 @@ class PermissionResource extends Resource
 {
     protected static ?string $model = Permission::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedLockClosed;
 
     protected static ?string $recordTitleAttribute = 'Permissions';
-
+    protected static ?int $navigationSort = 12;
     public static function form(Schema $schema): Schema
     {
         return PermissionForm::configure($schema);

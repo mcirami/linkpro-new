@@ -20,10 +20,10 @@ class LinkResource extends Resource
 {
     protected static ?string $model = Link::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Link;
 
     protected static ?string $recordTitleAttribute = 'links';
-
+    protected static ?int $navigationSort = 8;
     public static function form(Schema $schema): Schema
     {
         return LinkForm::configure($schema);

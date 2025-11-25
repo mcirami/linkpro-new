@@ -20,10 +20,11 @@ class PurchaseResource extends Resource
 {
     protected static ?string $model = Purchase::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCurrencyDollar;
 
     protected static ?string $recordTitleAttribute = 'purchases';
 
+    protected static ?int $navigationSort = 3;
     public static function form(Schema $schema): Schema
     {
         return PurchaseForm::configure($schema);

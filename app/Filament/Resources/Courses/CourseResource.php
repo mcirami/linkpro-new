@@ -20,10 +20,10 @@ class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
 
     protected static ?string $recordTitleAttribute = 'courses';
-
+    protected static ?int $navigationSort = 9;
     public static function form(Schema $schema): Schema
     {
         return CourseForm::configure($schema);

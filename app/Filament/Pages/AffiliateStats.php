@@ -26,6 +26,7 @@ class AffiliateStats extends Page implements HasForms
     protected static string|null|\BackedEnum $navigationIcon = Heroicon::OutlinedChartBarSquare;
 
     protected static ?string $navigationLabel = 'Affiliate Stats';
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $slug = 'affiliate-stats';
 

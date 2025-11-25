@@ -20,10 +20,10 @@ class ReferralResource extends Resource
 {
     protected static ?string $model = Referral::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowUturnLeft;
 
     protected static ?string $recordTitleAttribute = 'referrals';
-
+    protected static ?int $navigationSort = 5;
     public static function form(Schema $schema): Schema
     {
         return ReferralForm::configure($schema);

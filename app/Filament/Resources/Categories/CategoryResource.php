@@ -20,10 +20,10 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
     protected static ?string $recordTitleAttribute = 'categories';
-
+    protected static ?int $navigationSort = 10;
     public static function form(Schema $schema): Schema
     {
         return CategoryForm::configure($schema);
