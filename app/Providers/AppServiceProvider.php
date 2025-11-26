@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-//use TCG\Voyager\Facades\Voyager;
+use Laravel\Breeze\BreezeServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        if ($this->app->environment('local')) {
+            $this->app->register( BreezeServiceProvider::class);
+        }
     }
 
     /**
