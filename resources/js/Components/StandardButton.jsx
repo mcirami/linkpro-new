@@ -9,7 +9,7 @@ const StandardButton = ({
                         }) => {
 
     return (
-        <button target="_blank" disabled={disabled} className={`${classes} uppercase rounded-lg px-4 py-3 text-sm font-medium text-center flex items-center justify-center gap-2`}
+        <button target="_blank" disabled={disabled} className={`${classes} rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/40 transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white flex items-center justify-center gap-2`}
            onClick={onClick} {...ctaProps}>
             <span className="ml-auto">{text}</span>
             <span className={`ml-auto`}>

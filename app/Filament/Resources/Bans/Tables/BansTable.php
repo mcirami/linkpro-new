@@ -2,13 +2,14 @@
 
 namespace App\Filament\Resources\Bans\Tables;
 
+use App\Models\Ban;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-
+use Filament\Actions\Action;
 class BansTable
 {
     public static function configure(Table $table): Table
@@ -47,6 +48,17 @@ class BansTable
                 //
             ])
             ->recordActions([
+                Action::make('unban')
+                      ->label('Unban')
+                      ->requiresConfirmation()
+                      ->color('success')
+                      ->icon('heroicon-o-check-circle')
+                      ->visible(fn (Ban $record): bool => method_exists($record, 'bannable') && filled($record->bannable))
+                      ->action(function (Ban $record): void {
+                          if (method_exists($record, 'bannable') && $record->bannable) {
+                              $record->bannable->unban();
+                          }
+                      }),
                 ViewAction::make(),
                 EditAction::make(),
             ])

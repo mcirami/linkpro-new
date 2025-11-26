@@ -6,6 +6,7 @@ import InputLabel from '@/Components/InputLabel.jsx';
 import InputError from '@/Components/InputError.jsx';
 import {useGoogleRecaptchaV3, checkRecaptcha} from '@/Utils/useGoogleRecaptchaV3.jsx';
 import {IoWarningOutline} from 'react-icons/io5';
+import StandardButton from "@/Components/StandardButton.jsx";
 const ContactForm = ({honeypot, spamDetected, setShowLoader}) => {
     const { data, setData, post, processing, errors, wasSuccessful } = useForm({
         name: '',
@@ -150,9 +151,12 @@ const ContactForm = ({honeypot, spamDetected, setShowLoader}) => {
 
                         <div className="form-group row !mb-0">
                             <div className="col-sm-10 mx-auto">
-                                <button className="button blue" type="submit" disabled={processing}>
-                                    Submit
-                                </button>
+                                <StandardButton
+                                    onClick={handleSubmit}
+                                    text="Submit"
+                                    disabled={processing}
+                                    classes={"w-full md:w-1/3 ml-auto"}
+                                />
                             </div>
                         </div>
                     </form>

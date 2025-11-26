@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Users\Tables;
 
+use App\Models\User;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -60,6 +62,18 @@ class UsersTable
                 //
             ])
             ->recordActions([
+                Action::make('ban')
+                      ->label(fn (User $record): string => $record->isBanned() ? 'Unban' : 'Ban')
+                      ->icon(fn (User $record): string => $record->isBanned() ? 'heroicon-o-check-circle' : 'heroicon-o-no-symbol')
+                      ->color(fn (User $record): string => $record->isBanned() ? 'success' : 'danger')
+                      ->requiresConfirmation()
+                      ->action(function (User $record): void {
+                          if ($record->isBanned()) {
+                              $record->unban();
+                          } else {
+                              $record->ban();
+                          }
+                      }),
                 ViewAction::make(),
                 EditAction::make(),
             ])

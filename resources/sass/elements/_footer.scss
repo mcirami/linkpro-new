@@ -1,6 +1,6 @@
 @use "../partials/variables" as *;
 @use "../partials/mixins" as *;
-
+/*
 footer {
     @include boxShadow;
     width: 100%;
@@ -52,7 +52,7 @@ footer {
             color: #999999;
         }
     }
-}
+}*/
 
 .user_page_footer {
     margin-top: 10px;

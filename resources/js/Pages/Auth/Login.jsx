@@ -7,6 +7,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import PageHeader from "@/Components/PageHeader.jsx";
+import StandardButton from "@/Components/StandardButton.jsx";
 
 export default function Login({ status, canResetPassword, course = null }) {
     const { auth } = usePage().props;
@@ -144,13 +145,19 @@ export default function Login({ status, canResetPassword, course = null }) {
                                 </label>
                             </div>
 
-                            <div className="text-center mt-4">
-                                <PrimaryButton
+                            <div className="mt-4 text-center md:text-right">
+                                {/*<PrimaryButton
                                     className="button blue mb-4 !max-w-full"
                                     disabled={processing}
                                 >
                                     Sign in
-                                </PrimaryButton>
+                                </PrimaryButton>*/}
+                                <StandardButton
+                                    classes={"ml-auto w-full md:w-1/3 mb-5"}
+                                    onClick={submit}
+                                    text="Sign In"
+                                    disabled={processing}
+                                />
 
                                 {canResetPassword && (
                                     <Link
@@ -162,7 +169,7 @@ export default function Login({ status, canResetPassword, course = null }) {
                                 )}
                             </div>
 
-                            <div className="form-group text-center mt-2">
+                            <div className="form-group text-center md:text-right mt-2">
                                 <p className="text-sm">
                                     Not on LinkPro?
                                     <Link

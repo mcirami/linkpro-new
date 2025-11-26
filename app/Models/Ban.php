@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Mchev\Banhammer\Models\Ban as BaseBan;
 
-class Ban extends Model
+class Ban extends BaseBan
 {
     use HasFactory;
 }
