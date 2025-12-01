@@ -222,7 +222,7 @@ const ColumnComponent = ({
             }
 
             {type === "image" ?
-                <section className={`my_row text_wrap ${type}`} style={bgStyle}>
+                <div className={`my_row text_wrap ${type}`} style={bgStyle}>
                     { (!hasCourseAccess || page === "lander") && button ?
                         <Button
                             section={section}
@@ -234,7 +234,7 @@ const ColumnComponent = ({
                         ""
                     }
 
-                </section>
+                </div>
                 :
                 ""
             }

@@ -55,6 +55,12 @@ main {
     }
 }
 
+.member main {
+    @include query(mobile) {
+        padding: 100px 0 0;
+    }
+}
+
 .guest main {
     padding: 100px 0;
 

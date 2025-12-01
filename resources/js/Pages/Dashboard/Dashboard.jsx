@@ -264,11 +264,13 @@ function Dashboard({
             <Head title="Dashboard" />
             <div className="container">
                 <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
-                    <PageHeader
-                        heading="Pages"
-                        description="Manage your public page title, images, layout and links."
-                    />
-                    <div className="view_live_link header mt-auto w-1/4">
+                    <div className="flex flex-col w-3/4">
+                        <PageHeader
+                            heading="Pages"
+                            description="Manage your public page title, images, layout and links."
+                        />
+                    </div>
+                    <div className="view_live_link header max-w-[15rem] w-1/4">
                         <LivePageButton
                             pageName={pageSettings.name}
                         />

@@ -89,7 +89,7 @@ const Preview = ({
             <div className="close_preview" onClick={ClosePreview}>
                 <IoIosCloseCircleOutline/>
             </div>
-            <div className="view_live_link w-full justify-center">
+            <div className="view_live_link max-w-[20rem] w-1/2 mx-auto justify-center">
                 <LivePageButton
                     pageName={pageSettings.name}
                 />

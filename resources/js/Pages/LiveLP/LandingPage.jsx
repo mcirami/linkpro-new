@@ -20,7 +20,7 @@ function LandingPage({page, sections}) {
                                 <p style={{color: page.header_text_color}}>{page.slogan}</p>
                             </div>
                         </div>
-                        <div className="header_image my_row sm:mb-5"
+                        <div className="header_image my_row"
                              style={{
                                  background: 'url(' + page.hero +
                                      ') no-repeat',

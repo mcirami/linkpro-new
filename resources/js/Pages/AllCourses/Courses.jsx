@@ -91,7 +91,7 @@ const Courses = ({purchasedCourses, unPurchasedCourses}) => {
                                         </div>
                                     :
                                     <div className="text-center min-h-[300px] flex flex-col justify-center items-center relative">
-                                        <img className="absolute top-4 w-[300px] h-[300px] opacity-[.05]" src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro"/>
+                                        <img className="absolute top-4 !w-[300px] !h-[300px] opacity-[.05]" src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro"/>
                                         <p className="text-[1.8rem] mb-4">You have not purchased any courses.</p>
                                         <p className="text-lg">Check out our available courses for purchase below to get started.</p>
                                     </div>

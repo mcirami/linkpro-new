@@ -54,7 +54,7 @@ const Preview = ({
             <div className="close_preview" onClick={ClosePreview}>
                 <IoIosCloseCircleOutline />
             </div>
-            <div className="view_live_link d-block md:none">
+            <div className="view_live_link max-w-[20rem] w-1/2  d-block md:none">
                 <LivePageButton
                     url={liveUrl}
                 />

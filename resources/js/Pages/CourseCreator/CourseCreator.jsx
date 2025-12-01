@@ -40,7 +40,7 @@ import {
 import {
     updateSectionsPositions,
 } from '../../Services/CourseRequests';
-import {Head, usePage} from '@inertiajs/react';
+import { Head, Link, usePage } from "@inertiajs/react";
 import SliderComponent from '@/Components/CreatorComponents/SliderComponent.jsx';
 import {MessageAlertPopup} from '@/Utils/Popups/MessageAlertPopup.jsx';
 import PageHeader from "@/Components/PageHeader.jsx";
@@ -53,6 +53,8 @@ import { ImageUploader as InlineImageUploader } from '@/Components/ImageUploader
 import { updateIcon, updateOfferData } from "@/Services/OfferRequests.jsx";
 import IOSSwitch from "@/Utils/IOSSwitch.jsx";
 import { BiNotepad, BiImage, BiVideo, BiFolderOpen } from "react-icons/bi";
+import { IoChevronForwardOutline } from "react-icons/io5";
+
 function CourseCreator({
                            courseArray,
                            offerArray,
@@ -187,16 +189,29 @@ function CourseCreator({
             <Head title="Course Creator"/>
             <div className="container">
                 <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
-                    <PageHeader
-                        heading="Course Creator"
-                        description="Create your own course adding text, images, videos and files. Share your course with the world!"
-                    />
-                    <div className="view_live_link header mt-auto">
+                    <div className="flex flex-col w-3/4">
+                        <PageHeader
+                            heading="Course Creator"
+                            description="Create your own course adding text, images, videos and files. Share your course with the world!"
+                        />
+                    </div>
+                    <div className="view_live_link header max-w-[15rem] w-1/4 mt-auto">
                         <LivePageButton
                             url={liveUrl}
                         />
                     </div>
                 </div>
+                <div className="flex justify-start items-center gap-2 py-5 w-full">
+                    <Link
+                        href={route('creator.center')}
+                        className="text-xs font-medium tracking-wide text-slate-800 transition  hover:text-indigo-500"
+                    >
+                        Creator Center
+                    </Link>
+                    <IoChevronForwardOutline className="h-3 w-3 text-slate-900" />
+                    <h4 className="text-xs font-bold tracking-wide text-slate-800">Course: <span className="font-medium">{courseData["title"] || "(no title)"}</span></h4>
+                </div>
+
             </div>
             <ToolTipContextProvider value={{
                 infoText,
@@ -217,7 +232,7 @@ function CourseCreator({
                     />
                 }
                 <div className="container">
-                    <section className="mt-20 edit_page creator course_creator">
+                    <section className="mt-5 edit_page creator course_creator">
                         <div id="links_page">
                             <div id="edit_course" className="my_row creator_wrap">
                                 <div className="my_row page_wrap">

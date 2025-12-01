@@ -71,19 +71,11 @@ export default function Guest({ children = null, ...props }) {
                 <header className="mb-8 flex items-center justify-between sm:mb-12">
                     {/* Logo */}
                     <a href={route("home")} className="flex items-center gap-2">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-2xl shadow-md shadow-blue-500/30">
-                            <img
-                                src={Vapor.asset("images/preview-device-bg.png")}
-                                alt="LinkPro Logo"
-                                className="w-5"
-                            />
-                        </div>
-                        <div className="leading-tight">
-                            <div className="text-xl font-semibold tracking-[0.18em] text-slate-600">
-                                Link<span className="text-black font-semibold">Pro</span>
-                            </div>
-                            <p className="text-[0.9rem] text-slate-500">Link-in-bio for serious creators</p>
-                        </div>
+                        <img
+                            src={Vapor.asset("images/logo.png")}
+                            alt="LinkPro Logo"
+                            className="!w-35"
+                        />
                     </a>
 
                     {/* Desktop nav */}

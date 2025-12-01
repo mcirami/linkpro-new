@@ -145,11 +145,13 @@ function LPCreator({landingPageArray, courses, username}) {
             <div className="container">
 
                 <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
-                    <PageHeader
-                        heading="Landing Page Creator"
-                        description="Create your own landing page where you can display your courses and direct your traffic to purchase them."
-                    />
-                    <div className="view_live_link header mt-auto">
+                    <div className="flex flex-col w-3/4">
+                        <PageHeader
+                            heading="Landing Page Creator"
+                            description="Create your own landing page where you can display your courses and direct your traffic to purchase them."
+                        />
+                    </div>
+                    <div className="view_live_link header max-w-[15rem] w-1/4 mt-auto">
                         <LivePageButton
                             url={livePage}
                         />
@@ -518,6 +520,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                         pageData={pageData}
                                         setShowPreview={setShowPreview}
                                         hoverSection={hoverSection}
+                                        livePage={livePage}
                                     />
                                 </div>
 
