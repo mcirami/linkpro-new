@@ -268,7 +268,7 @@ function Dashboard({
                         heading="Pages"
                         description="Manage your public page title, images, layout and links."
                     />
-                    <div className="view_live_link header mt-auto">
+                    <div className="view_live_link header mt-auto w-1/4">
                         <LivePageButton
                             pageName={pageSettings.name}
                         />

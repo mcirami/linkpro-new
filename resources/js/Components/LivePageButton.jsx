@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { IoOpenOutline } from "react-icons/io5";
+import StandardButton from "@/Components/StandardButton.jsx";
 const LivePageButton = ({
                             pageName = null,
                             url = null
@@ -13,10 +14,12 @@ const LivePageButton = ({
     }, [pageName, url])
 
     return (
-        <a className="button green !w-60 !flex justify-center items-center gap-4 shadow-md" target="_blank" href={buttonLink}>
-            <p>Open Live Page</p>
-            <IoOpenOutline />
-        </a>
+        <StandardButton
+            text="Open Live Page"
+            classes="w-full"
+            icon={<IoOpenOutline />}
+            onClick={() => window.open(buttonLink, '_blank')}
+        />
     );
 };
 

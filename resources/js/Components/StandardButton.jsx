@@ -5,7 +5,8 @@ const StandardButton = ({
                             onClick,
                             text,
                             ctaProps = [],
-                            disabled = null
+                            disabled = null,
+                            icon = null
                         }) => {
 
     return (
@@ -13,9 +14,13 @@ const StandardButton = ({
            onClick={onClick} {...ctaProps}>
             <span className="ml-auto">{text}</span>
             <span className={`ml-auto`}>
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
-                    <path d="M13 3l8 8-8 8-2-2 4.59-4.59H3v-2h12.59L11 5l2-2z" />
-                </svg>
+                {icon ?
+                    icon :
+                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
+                        <path d="M13 3l8 8-8 8-2-2 4.59-4.59H3v-2h12.59L11 5l2-2z" />
+                    </svg>
+                }
+
             </span>
         </button>
     );

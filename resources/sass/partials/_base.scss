@@ -258,7 +258,9 @@ button {
         background: $red;
     }
 }
-
+button:hover {
+    cursor: pointer;
+}
 .button {
     color: $white;
     display: inline-block;
