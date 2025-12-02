@@ -58,9 +58,7 @@ const CancelCheckout = ({type}) => {
                                         :
                                         <>
                                             <StandardButton
-                                                classes="w-full md:w-1/4
-                                                text-white shadow-md bg-indigo-600 hover:bg-indigo-700
-                                                focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                                                classes="w-full md:w-1/4"
                                                 text="View Courses"
                                                 onClick={() => window.location.href = route('all.courses')}
                                             />

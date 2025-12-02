@@ -17,6 +17,7 @@ const LivePageButton = ({
         <StandardButton
             text="Open Live Page"
             classes="w-full"
+            colors="bg-gradient-to-r from-green-500 via-green-600 to-green-600 shadow-green-500/40 focus-visible:ring-2 focus-visible:ring-green-400"
             icon={<IoOpenOutline />}
             onClick={() => window.open(buttonLink, '_blank')}
         />

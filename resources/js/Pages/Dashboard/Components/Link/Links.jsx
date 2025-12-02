@@ -178,9 +178,12 @@ const Links = ({
         <section id={pageSettings['page_layout']} ref={pageLayoutRef} className={`icons_wrap add_icons icons ${userLinks?.length === 0 ? "no_icons" : ""} `}>
 
             {userLinks?.length === 0 ?
-                <div className="info_message">
-                    <p>You don't have any icons to display.</p>
-                    <p>Click 'Add Icon' above to start adding links.</p>
+                <div className="info_message text-gray-500 font-semibold text-sm flex items-center justify-center gap-2">
+                    <img className="!w-10 !h-10" src={Vapor.asset('images/preview-device-bg.png')} alt="" />
+                    <div>
+                        <p>You don't have any icons to display.</p>
+                        <p>Click 'Add Link' above to get started.</p>
+                    </div>
                 </div>
             :
                 <DndContext

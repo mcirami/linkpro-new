@@ -80,8 +80,7 @@ const PayOutComponent = ({
                         <div className="w-full mt-auto">
                             <StandardButton
                                 text="Update Payout Method"
-                                classes="w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
-                            focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                                classes="w-full text-white"
                                 onClick={() => window.open(updateMethodLink.url, "_blank")}
                             />
                         </div>
@@ -102,8 +101,7 @@ const PayOutComponent = ({
                 <div className="w-full mt-auto">
                     <StandardButton
                         text="Submit Payout Details"
-                        classes="w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
-                            focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                        classes="w-full text-white"
                         onClick={handleClick}
                     />
                 </div>

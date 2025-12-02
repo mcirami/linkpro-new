@@ -281,8 +281,7 @@ const CourseRegister = ({
                                     </div>
                                     <div className="button_wrap my_row mt-5">
                                         <StandardButton
-                                            classes="w-full md:w-1/3 ml-auto mb-2 text-white shadow-md bg-indigo-600 hover:bg-indigo-700
-                                            focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                                            classes="w-full md:w-1/3 ml-auto mb-2"
                                             text="Let's Do This"
                                             onClick={handleSubmit}
                                             disabled={""}

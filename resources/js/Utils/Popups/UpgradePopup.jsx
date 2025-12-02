@@ -23,7 +23,7 @@ export const UpgradePopup = ({showUpgradePopup, setShowUpgradePopup}) => {
                 <button
                     onClick={handleClose}
                     className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full
-                     bg-gray-50 text-gray-500 ring-1 ring-gray-200 hover:text-gray-700"
+                     bg-gray-50 !text-gray-500 ring-1 !ring-gray-200 hover:!text-gray-700"
                     aria-label="Close"
                 >
                     <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
@@ -49,7 +49,7 @@ export const UpgradePopup = ({showUpgradePopup, setShowUpgradePopup}) => {
                     <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
                         <StandardButton
                             text="Learn More"
-                            classes="bg-indigo-600 hover:bg-indigo-700"
+                            classes=""
                             onClick={() => window.location.href = route('plans.get')} />
                     </div>
                 </div>

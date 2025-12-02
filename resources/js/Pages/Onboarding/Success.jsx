@@ -76,7 +76,7 @@ const Success = () => {
                             {/* Primary CTA */}
                             <div className="mt-8 flex flex-col items-center gap-3">
                                 <StandardButton
-                                    classes="w-full md:w-auto bg-[#424fcf] hover:bg-[#353fbe] text-white"
+                                    classes="w-full md:w-auto"
                                     onClick={() => router.visit(route('dashboard'))}
                                     text="Go to Dashboard"
                                 />

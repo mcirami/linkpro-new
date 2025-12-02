@@ -71,8 +71,7 @@ const PaymentComponent = ({
                     {status !== 'canceled' &&
                         <StandardButton
                             text="Change Payment Method"
-                            classes="w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
-                           focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                            classes="w-full text-white"
                             onClick={handleButtonClick}
                         />
                     }

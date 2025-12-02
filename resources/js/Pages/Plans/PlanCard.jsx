@@ -20,28 +20,28 @@ const PlanCard = ({
         green:  {
             ring: 'ring-green-300',
             pill: 'bg-green-50 text-green-700 ring-green-200',
-            button: 'bg-green-600 hover:bg-green-700',
+            button: 'bg-gradient-to-r from-green-500 via-green-600 to-green-700 shadow-green-500/40 focus-visible:ring-2 focus-visible:ring-green-400',
             shadow: 'shadow-green-100',
             text: '!text-green-700'
         },
         indigo: {
             ring: 'ring-indigo-300',
             pill: 'bg-indigo-50 text-indigo-700 ring-indigo-200',
-            button: 'bg-indigo-600 hover:bg-indigo-700',
+            button: 'bg-gradient-to-r from-sky-500 via-indigo-500 to-indigo-700 shadow-blue-500/40 focus-visible:ring-2 focus-visible:ring-blue-400',
             shadow: 'shadow-indigo-100',
             text: 'text-indigo-700'
         },
         violet: {
             ring: 'ring-fuchsia-300',
             pill: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-200',
-            button: 'bg-fuchsia-600 hover:bg-fuchsia-700',
+            button: 'bg-gradient-to-r from-fuchsia-500 via-fuchsia-600 to-fuchsia-700 shadow-fuchsia-500/40 focus-visible:ring-2 focus-visible:ring-fuchsia-400',
             shadow: 'shadow-fuchsia-100',
             text: 'text-fuchsia-700'
         },
         gray: {
             ring: 'ring-stone-300',
             pill: 'bg-stone-50 text-stone-700 ring-stone-200',
-            button: 'bg-stone-600 hover:bg-stone-700',
+            button: 'bg-gradient-to-r from-stone-500 via-stone-600 to-stone-700 shadow-stone-500/40 focus-visible:ring-2 focus-visible:ring-stone-400',
             shadow: 'shadow-stone-100',
             text: 'text-stone-700'
         },
@@ -104,13 +104,11 @@ const PlanCard = ({
                         {/* CTA */}
                         <div className={`${size === 'full' ? 'w-full md:!w-1/3 mt-4 md:mt-0' : ""} flex flex-col items-center justify-center `}>
                             <StandardButton
-                                classes={`w-full
-                                  text-white shadow-md ${accentMap.button}
-                                  focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60
-                                  disabled:opacity-50 disabled:cursor-not-allowed`}
+                                classes={`w-full disabled:opacity-50 disabled:cursor-not-allowed`}
                                 text={ctaLabel}
                                 onClick={onClick}
                                 ctaProps={ctaProps}
+                                colors={accentMap.button}
                             />
                         </div>
                     </div>

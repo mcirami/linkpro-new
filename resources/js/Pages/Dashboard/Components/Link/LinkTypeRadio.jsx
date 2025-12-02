@@ -153,7 +153,7 @@ const LinkTypeRadio = ({
                 <button
                     type="button"
                     onClick={() => setShowLinkTypeRadio(false)}
-                    className="text-red-600 shadow-none p-0 w-auto text-sm font-medium hover:underline"
+                    className="!text-red-600 shadow-none p-0 w-auto text-sm font-medium hover:underline"
                 >
                     Cancel
                 </button>
@@ -170,81 +170,6 @@ const LinkTypeRadio = ({
                         handleClick={handleOnChange}
                     />
                 </div>
-                /*<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {/!* URL *!/}
-                    <button
-                        type="button"
-                        onClick={(e) => { e.preventDefault(); handleOnChange("url"); }}
-                        className="transform-none flex items-start w-full group rounded-xl border border-gray-200 bg-white p-4 text-left shadow-md
-                     transition-all hover:-translate-y-0.5 hover:shadow-lg focus:outline-none
-                     focus-visible:ring-2 focus-visible:ring-[#424fcf]/30"
-                    >
-                        <div className="flex-col items-start gap-3">
-                            <div className="text-base font-semibold flex items-center gap-2 text-gray-900 mb-2">
-                                <div className="h-9 w-9 rounded-lg bg-[#424fcf]/10 grid place-items-center">
-                                    {/!* link icon *!/}
-                                    <SiInternetcomputer className="h-5 w-5 text-[#424fcf]" aria-hidden="true" />
-                                </div>
-                                <h3 className="uppercase">URL</h3>
-                            </div>
-                            <p className="mt-1 text-sm text-gray-600">
-                                Open a webpage, launch an email draft, or start a phone call.
-                            </p>
-                        </div>
-                    </button>
-
-                    {/!* Offer *!/}
-                    <button
-                        type="button"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            affStatusState === "approved" ?
-                                handleOnChange("offer")
-                            :
-                            setShowAffiliateSignup(true);
-                        }}
-                        className="transform-none flex items-start w-full group rounded-xl border border-gray-200 bg-white p-4 text-left shadow-md
-                     transition-all hover:-translate-y-0.5 hover:shadow-lg focus:outline-none
-                     focus-visible:ring-2 focus-visible:ring-[#424fcf]/30"
-                    >
-                        <div className="flex-col items-start gap-3">
-                            <div className="text-base font-semibold flex items-center gap-2 text-gray-900">
-                                <div className="h-9 w-9 rounded-lg bg-[#424fcf]/10 grid place-items-center">
-                                    {/!* ticket/offer icon *!/}
-                                    <FaMoneyBillWave className="h-5 w-5 text-[#424fcf]" aria-hidden="true" />
-                                </div>
-                                <h3 className="uppercase">Offer</h3>
-                            </div>
-                            <p className="mt-1 text-sm text-gray-600">
-                                Promote a creator’s lesson. Earn a commission when visitors buy from your link.
-                            </p>
-                        </div>
-                    </button>
-
-                    {/!* Mailchimp (conditionally render) *!/}
-                    {(!userLinks.some(obj => obj.type === "mailchimp") && !editLink.folder_id) && (
-                        <button
-                            type="button"
-                            onClick={(e) => { e.preventDefault(); handleOnChange("mailchimp"); }}
-                            className="transform-none flex items-start w-full group rounded-xl border border-gray-200 bg-white p-4 text-left shadow-md
-                       transition-all hover:-translate-y-0.5 hover:shadow-lg focus:outline-none
-                       focus-visible:ring-2 focus-visible:ring-[#424fcf]/30"
-                        >
-                            <div className="flex-col items-start gap-3">
-                                <div className="flex items-center gap-2 text-base font-semibold text-gray-900">
-                                    <div className="h-9 w-9 rounded-lg bg-[#424fcf]/10 grid place-items-center">
-                                        {/!* inbox icon *!/}
-                                        <FaMailchimp className="h-5 w-5 text-[#424fcf]" aria-hidden="true" />
-                                    </div>
-                                    <h3 className="uppercase">Mailchimp</h3>
-                                </div>
-                                <p className="mt-1 text-sm text-gray-600">
-                                    Add a signup form to grow your newsletter—new subscribers go straight to your list.
-                                </p>
-                            </div>
-                        </button>
-                    )}
-                </div>*/
             }
         </div>
 

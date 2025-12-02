@@ -118,8 +118,7 @@ const PlanComponent = ({
                     <div className="space-y-2">
                         <StandardButton
                             text="Change My Plan"
-                            classes="w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
-                            focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                            classes="w-full"
                             onClick={(e) => {
                                 e.preventDefault();
                                 setShowSection((prev) => [
@@ -133,8 +132,7 @@ const PlanComponent = ({
                         <div className="space-y-2">
                             <StandardButton
                                 text="Resume"
-                                classes="w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
-                                focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                                classes="w-full"
                                 onClick={handleResumeClick}
                             />
                         </div>
@@ -142,8 +140,7 @@ const PlanComponent = ({
                         <div className="space-y-2 ">
                             <StandardButton
                                 text=" Change My Plan"
-                                classes="w-full text-white shadow-md bg-indigo-600 hover:bg-indigo-700
-                                focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                                classes="w-full"
                                 onClick={() => { window.location.href = route('plans.get')}}
                             />
                         </div>

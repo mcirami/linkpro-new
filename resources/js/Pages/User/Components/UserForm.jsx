@@ -119,9 +119,7 @@ const UserForm = ({
                 <div className="form_buttons !mb-0">
                     <StandardButton
                         text="Update My Info"
-                        classes={`text-white shadow-md bg-indigo-600 hover:bg-indigo-700
-                                focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60
-                                ${!subscription ? "!w-full !max-w-full" : "w-full md:w-1/3 ml-auto"} `}
+                        classes={`${!subscription ? "!w-full !max-w-full" : "w-full md:w-1/3 ml-auto"} `}
                         onClick={handleSubmit}
                         disabled={processing}
                     />

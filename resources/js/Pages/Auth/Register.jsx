@@ -82,7 +82,7 @@ export default function Register({honeypot, spamDetected = false}) {
                             <>
                             <div className="flex items-center gap-3 border-b border-gray-100 p-5">
                                 <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#424fcf]/10 ring-1 ring-indigo-200">
-                                    <img src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro Logo" className="h-5 w-5" />
+                                    <img src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro Logo" className="!h-5 !w-5" />
                                 </div>
                                 <div>
                                     <h2 className="!text-left !text-2xl font-semibold text-gray-900">
@@ -192,8 +192,7 @@ export default function Register({honeypot, spamDetected = false}) {
                                     </div>
                                     <div className="block mt-4 text-right">
                                         <StandardButton
-                                            classes="w-full md:w-1/3 ml-auto mb-2 text-white shadow-md bg-indigo-600 hover:bg-indigo-700
-                            focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                                            classes="w-full md:w-1/3 ml-auto mb-2"
                                             text="Let's Do This"
                                             onClick={submit}
                                             disabled={processing} />

@@ -11,7 +11,7 @@ const PageHeader = ({
                 <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">{heading}</h1>
             </div>
             {description &&
-                <p className="mt-1 text-sm text-gray-500">{description}</p>
+                <p className="mt-1 text-sm text-gray-500 text-left">{description}</p>
             }
         </div>
     );

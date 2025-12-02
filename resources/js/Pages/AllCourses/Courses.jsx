@@ -68,7 +68,7 @@ const Courses = ({purchasedCourses, unPurchasedCourses}) => {
                     <div className="my_row courses_grid all_courses">
                         <div className="container">
                             <section className="section_wrap my_row">
-                                <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
+                                <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 mb-10 border-b border-gray-100">
                                     <PageHeader
                                         heading="Your Courses"
                                         description="Courses that you have purchased are displayed below."

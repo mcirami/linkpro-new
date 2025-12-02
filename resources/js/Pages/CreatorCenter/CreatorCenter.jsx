@@ -59,11 +59,11 @@ function CreatorCenter({offers, landingPage}) {
                         triangleRef
                     }}>
                         {offers?.length === 0 ?
-                            <section className="mx-auto max-w-5xl mt-5 md:mt-10">
+                            <section className="mx-auto max-w-5xl mt-5 md:mt-10 min-h-lvh">
                                 <div className="rounded-2xl bg-white shadow-md">
-                                    <div className="flex items-start gap-3 border-b border-gray-100 px-6 py-5 sm:items-center">
+                                    <div className="flex items-start flex-wrap gap-3 border-b border-gray-100 px-6 py-5 sm:items-center">
                                         <span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200">
-                                            <MdOutlineDashboard />
+                                            <MdOutlineDashboard className="h-6 w-6" aria-hidden="true" />
                                         </span>
                                         <div>
                                             <h2 className="text-xl font-semibold text-gray-900">
@@ -78,7 +78,7 @@ function CreatorCenter({offers, landingPage}) {
                                         <div className="grid gap-6">
                                             <li className="flex gap-4">
                                                 <div className="relative shrink-0">
-                                                    <span className="grid h-12 w-12 place-items-center rounded-full bg-indigo-600 text-white text-lg font-semibold shadow-md">
+                                                    <span className="grid h-12 w-12 place-items-center rounded-full bg-indigo-500 text-white text-lg font-semibold shadow-md">
                                                         1
                                                     </span>
                                                     <span
@@ -93,7 +93,7 @@ function CreatorCenter({offers, landingPage}) {
                                             </li>
                                             <li className="flex gap-4">
                                                 <div className="relative shrink-0">
-                                                    <span className="grid h-12 w-12 place-items-center rounded-full bg-indigo-600 text-white text-lg font-semibold shadow-md">
+                                                    <span className="grid h-12 w-12 place-items-center rounded-full bg-indigo-500 text-white text-lg font-semibold shadow-md">
                                                         2
                                                     </span>
                                                     <span
@@ -108,7 +108,7 @@ function CreatorCenter({offers, landingPage}) {
                                             </li>
                                             <li className="flex gap-4">
                                                 <div className="relative shrink-0">
-                                                    <span className="grid h-12 w-12 place-items-center rounded-full bg-indigo-600 text-white text-lg font-semibold shadow-md">
+                                                    <span className="grid h-12 w-12 place-items-center rounded-full bg-indigo-500 text-white text-lg font-semibold shadow-md">
                                                         3
                                                     </span>
                                                 </div>
@@ -121,23 +121,12 @@ function CreatorCenter({offers, landingPage}) {
                                     </ol>
                                     <div className="mt-6 flex items-center justify-start p-10 pt-0">
                                         <StandardButton
-                                            classes="w-full md:w-1/4 text-white shadow-md bg-indigo-600 hover:bg-indigo-700
-                                                focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/60"
+                                            classes="w-full md:w-1/4"
                                             text="Get Started!"
                                             onClick={() => {
                                                 window.location.href = '/creator-center/add-course';
                                             }}
                                         />
-                                        {/*<a className="button blue !w-full md:!w-1/3 !flex items-center justify-center gap-2"
-                                           href="/creator-center/add-course">
-                                            <span className="ml-auto">Get Started!</span>
-                                            <span className="text-white inline-flex items-center self-end ml-auto">
-                                             spark/launch icon
-                                                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
-                                                    <path d="M13 3l8 8-8 8-2-2 4.59-4.59H3v-2h12.59L11 5l2-2z" />
-                                                </svg>
-                                            </span>
-                                        </a>*/}
                                     </div>
                                 </div>
                             </section>
