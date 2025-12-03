@@ -150,8 +150,8 @@ const CourseRegister = ({
                                         <img src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro Logo" className="h-5 w-5" />
                                     </div>*/}
                                     <div>
-                                        <div className="image_wrap w-1/2 mr-auto mb-5">
-                                            <img className="max-w-2xl" src={course.logo} alt=""/>
+                                        <div className="image_wrap w-1/4 mr-auto mb-5">
+                                            <img src={course.logo} alt=""/>
                                         </div>
                                         <p className="text-sm text-gray-700">
                                             In order to access the {course.title} course you'll need to create an account.

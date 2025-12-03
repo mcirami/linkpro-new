@@ -25,7 +25,7 @@ function Course({
 
 }) {
 
-    const {id, slug, intro_video, intro_text, intro_background_color, title} = course;
+    const {id, slug, intro_video, intro_text, intro_background_color, title, logo} = course;
     const [indexValue, setIndexValue] = useState(null);
 
     const [introText, setIntroText] = useState(intro_text);
@@ -45,7 +45,9 @@ function Course({
         price: offerPrice,
         affRef: affRef,
         clickId: clickId,
-        offerId: id
+        offerId: id,
+        title: title,
+        logo: logo
     });
 
     useEffect(() => {
@@ -130,71 +132,66 @@ function Course({
 
     return (
 
-        <CourseLayout course={course} auth={auth}>
-            {auth?.user?.userInfo?.length > 0 &&
-                <Menu />
-            }
+        <CourseLayout course={course} auth={auth} showPayment={showPaymentButtons.show}>
             <Head title={title} />
             <SetFlash />
             <div className="creator course_creator">
                 <div id="links_page" className="live_page course">
                     <div className="my_row">
                         <div className="single_course_content my_row">
-                            <div className="container">
-                                {showPaymentButtons.show ?
-                                    <div className={`card relative active`}>
-                                        <PurchasePaymentButtons
-                                            showPaymentButtons={showPaymentButtons}
+                            {showPaymentButtons.show ?
+                                <div className={`card relative active`}>
+                                    <PurchasePaymentButtons
+                                        showPaymentButtons={showPaymentButtons}
+                                    />
+                                </div>
+                            :
+                                <div className="my_row courses_grid">
+                                    {indexValue &&
+                                        <VideoComponent
+                                            indexValue={indexValue}
+                                            sections={sections}
                                         />
-                                    </div>
-                                :
-                                    <div className="my_row courses_grid">
-                                        {indexValue &&
-                                            <VideoComponent
-                                                indexValue={indexValue}
-                                                sections={sections}
-                                            />
-                                        }
-                                        <section className="header">
-                                            { (intro_video && !indexValue) &&
-                                                <div className="intro_video">
-                                                    <div className="video_wrapper">
-                                                        <iframe src={intro_video} allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture;" allowFullScreen></iframe>
-                                                    </div>
+                                    }
+                                    <section className="header">
+                                        { (intro_video && !indexValue) &&
+                                            <div className="intro_video">
+                                                <div className="video_wrapper">
+                                                    <iframe src={intro_video} allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture;" allowFullScreen></iframe>
                                                 </div>
-                                            }
-                                            {intro_text &&
-                                                <div className="intro_text my_row" style={{background: intro_background_color}}>
-                                                    <div dangerouslySetInnerHTML={createMarkup(introText)}>
-                                                    </div>
-                                                </div>
-                                            }
-                                        </section>
-                                        <section className="my_row">
-                                            <div className="sections">
-                                                {sections.map((section, index) => {
-                                                    return(
-                                                        <React.Fragment key={section.id}>
-                                                             <ColumnComponent
-                                                                section={section}
-                                                                indexValue={indexValue}
-                                                                setIndexValue={setIndexValue}
-                                                                index={index}
-                                                                course={course}
-                                                                hasCourseAccess={hasCourseAccess}
-                                                                page={page}
-                                                                userAuth={userAuth}
-                                                                setShowPaymentButtons={setShowPaymentButtons}
-                                                                buttonUrl={buttonUrl}
-                                                            />
-                                                        </React.Fragment>
-                                                    )
-                                                })}
                                             </div>
-                                        </section>
-                                    </div>
-                                }
-                            </div>
+                                        }
+                                        {intro_text &&
+                                            <div className="intro_text my_row" style={{background: intro_background_color}}>
+                                                <div dangerouslySetInnerHTML={createMarkup(introText)}>
+                                                </div>
+                                            </div>
+                                        }
+                                    </section>
+                                    <section className="my_row">
+                                        <div className="sections">
+                                            {sections.map((section, index) => {
+                                                return(
+                                                    <React.Fragment key={section.id}>
+                                                         <ColumnComponent
+                                                            section={section}
+                                                            indexValue={indexValue}
+                                                            setIndexValue={setIndexValue}
+                                                            index={index}
+                                                            course={course}
+                                                            hasCourseAccess={hasCourseAccess}
+                                                            page={page}
+                                                            userAuth={userAuth}
+                                                            setShowPaymentButtons={setShowPaymentButtons}
+                                                            buttonUrl={buttonUrl}
+                                                        />
+                                                    </React.Fragment>
+                                                )
+                                            })}
+                                        </div>
+                                    </section>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

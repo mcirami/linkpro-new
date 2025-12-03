@@ -1,28 +1,31 @@
 import React from 'react';
-
-const CourseLayout = ({auth, children = null, course}) => {
+import { Head } from "@inertiajs/react";
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
+import CourseContent from "@/Pages/SingleCourse/Components/CourseContent.jsx";
+const CourseLayout = ({
+                          auth,
+                          course,
+                          children = null,
+                          showPayment = null
+}) => {
 
     return (
-        <div id="app_wrap" className={`flex flex-col min-h-screen md:py-20 my_row ${auth?.user?.userInfo?.length > 0 ? "member" : ""} landing_page`}>
-            <div className="page_content my_row">
-                <header className="my_row nav_row" style={{background: course.header_color }}>
-                    <nav>
-                        <div className="container">
-                            <a className="logo" href="/">
-                                <h1>
-                                    <img src={course.logo || Vapor.asset('images/logo.png') } alt={course.title ?? ''} />
-                                </h1>
-                            </a>
-                            <h2 id="course_title" className="title" style={{ color: course.header_text_color, fontSize: course.header_font_size + "rem" }}>{course.title}</h2>
-                        </div>
-                    </nav>
-                </header>
+        auth?.user?.userInfo ?
+            <AuthenticatedLayout>
+               <CourseContent
+                   auth={true}
+                   course={course}
+                   children={children}
+                   showPayment={showPayment}
+               />
+            </AuthenticatedLayout>
 
-                <main className="!p-0">
-                    {children || ""}
-                </main>
-            </div>
-        </div>
+        :
+            <CourseContent
+                course={course}
+                children={children}
+                showPayment={showPayment}
+            />
     )
 }
 

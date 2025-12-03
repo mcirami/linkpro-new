@@ -53,6 +53,12 @@
                     height: 100%;
                     background: rgba(0,0,0,.4);
                     transition: all 100ms ease-in-out;
+                    border-top-right-radius: 20px;
+                    -webkit-border-top-right-radius: 20px;
+                    -moz-border-radius-topright: 20px;
+                    border-top-left-radius: 20px;
+                    -webkit-border-top-left-radius: 20px;
+                    -moz-border-radius-topleft: 20px;
 
                     svg {
                         font-size: 5rem;

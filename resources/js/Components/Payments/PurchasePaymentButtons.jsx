@@ -11,6 +11,7 @@ import PageHeader from "@/Components/PageHeader.jsx";
 
 const PurchasePaymentButtons = ({showPaymentButtons}) => {
 
+    console.log(showPaymentButtons);
     const [initialOptions, setInitialOptions] = useState({});
     const [showLoader, setShowLoader] = useState({
         show: true,
@@ -115,13 +116,17 @@ const PurchasePaymentButtons = ({showPaymentButtons}) => {
             <>
                 <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
                     <PageHeader
-                        heading="Course Puchase"
+                        heading="Purchase Course"
+                        courseTitle={showPaymentButtons.title}
                         description="Complete your purchase to unlock the full course content."
                     />
                 </div>
                 <div className="container">
-                    <div className="payment_buttons rounded-2xl bg-white shadow-md pt-10 mt-5 max-w-3xl mx-auto p-5">
-                        <div className="flex items-center justify-start gap-3 mb-5">
+                    <div className="payment_buttons rounded-2xl bg-white shadow-md pt-10 mt-10 max-w-3xl mx-auto p-5">
+                        <h1 className="mb-10 border-b border-gray-100 pb-3 w-full">
+                            <img className="!max-w-[150px] md:!max-w-[175px]" src={showPaymentButtons.logo || Vapor.asset('images/logo.png') } alt={showPaymentButtons.title ?? ''} />
+                        </h1>
+                        <div className="flex flex-wrap items-center justify-start gap-3 mb-5">
                             <div className="h-9 w-9 rounded-lg bg-indigo-50 grid text-indigo-700 place-items-center ring-1 ring-indigo-200">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-credit-card-2-front-fill" viewBox="0 0 16 16">
                                     <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-2zm0 3a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
@@ -156,6 +161,7 @@ const PurchasePaymentButtons = ({showPaymentButtons}) => {
                                 Having trouble? Contact support →
                             </a>
                         </div>
+
                     </div>
                 </div>
             </>

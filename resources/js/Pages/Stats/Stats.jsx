@@ -99,10 +99,8 @@ function Stats() {
                                 <div className="relative w-full flex flex-col">
 
                                     {isLoading &&
-                                        <div id="loading_spinner" className="active">
-                                            <div >
-                                                <img src={Vapor.asset('images/spinner.svg')} alt="" />
-                                            </div>
+                                        <div id="loading_spinner" className="active flex justify-center items-center w-full">
+                                            <img className="mx-auto" src={Vapor.asset('images/spinner.svg')} alt="" />
                                         </div>
                                     }
 

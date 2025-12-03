@@ -142,7 +142,7 @@ const ColumnComponent = ({
 
     return (
 
-        <div className={`column ${type} ${index == indexValue ? "open" : ""}`}
+        <div className={`column ${type} ${type === "video" ? "shadow-md" : ""} ${index == indexValue ? "open !shadow-lg" : ""}`}
              style={{background: background_color}}>
 
             {type === "video" ?
