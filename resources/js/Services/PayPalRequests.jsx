@@ -92,7 +92,7 @@ export const updatePaymentMethod = (packets) => {
 
 export const getClientId = () => {
 
-    return axios.post('/subscribe/get-paypal-client').then(
+    return axios.get('/subscribe/get-paypal-client').then(
         (response) => {
             return {
                 success: response.data.success,

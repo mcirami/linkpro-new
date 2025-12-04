@@ -145,18 +145,13 @@ const CourseRegister = ({
                             </div>
                             :
                             <div className="card-body text-left w-full inline-block">
-                                <div className="flex items-center gap-3 border-b border-gray-100 p-5">
-                                    {/*<div className="grid h-10 w-10 place-items-center rounded-xl bg-[#424fcf]/10 ring-1 ring-indigo-200">
-                                        <img src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro Logo" className="h-5 w-5" />
-                                    </div>*/}
-                                    <div>
-                                        <div className="image_wrap w-1/4 mr-auto mb-5">
-                                            <img src={course.logo} alt=""/>
-                                        </div>
-                                        <p className="text-sm text-gray-700">
-                                            In order to access the {course.title} course you'll need to create an account.
-                                        </p>
+                                <div className="border-b border-gray-100 p-5">
+                                    <div className="image_wrap w-1/3 md:w-1/5 mr-auto mb-5">
+                                        <img className="rounded-xl" src={course.logo} alt=""/>
                                     </div>
+                                    <p className="text-sm text-gray-700">
+                                        In order to access the <span className="font-semibold italic capitalize">{course.title}</span> course you'll need to create an account.
+                                    </p>
                                 </div>
                                 <form method="post"
                                       action=""

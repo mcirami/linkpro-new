@@ -38,7 +38,7 @@ export default function Login({ status, canResetPassword, course = null }) {
             <div className="container">
                 <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
                     <PageHeader
-                        heading="Login To LinkPro"
+                        heading="Login"
                         description="Login to your account to access all the features of LinkPro."
                     />
                 </div>
@@ -47,30 +47,42 @@ export default function Login({ status, canResetPassword, course = null }) {
                         {/*<div className={`${course ? "mb-0" : "mb-4"}`}>
                             <h3>Log in to LinkPro</h3>
                         </div>*/}
-                        {course && (
-                            <>
-                                <p className="text-center">Login to Access</p>
-                                <div
-                                    className="course_heading"
-                                    style={{ background: course.header_color }}
-                                >
-                                    {course.logo && (
-                                        <img
-                                            className="mx-auto"
-                                            src={course.logo}
-                                            alt={course.title}
-                                        />
-                                    )}
-                                    <h3
-                                        style={{
-                                            color: course.header_text_color,
-                                        }}
-                                    >
-                                        {course.title}
-                                    </h3>
+                        {course ? (
+                            <div
+                                className="course_heading flex items-center justify-start gap-5 border-b border-gray-100 mb-4"
+                                style={{ background: course.header_color }}
+                            >
+                                {course.logo && (
+                                    <img
+                                        className="rounded-xl !w-1/3"
+                                        src={course.logo}
+                                        alt={course.title}
+                                    />
+                                )}
+                               <div>
+                                   <p className="">Login to Access</p>
+                                   <h3 className="capitalize"
+                                       style={{
+                                           color: course.header_text_color,
+                                       }}
+                                   >
+                                       {course.title}
+                                   </h3>
+                               </div>
+                            </div>
+                        )
+                            :
+                            <div className="flex items-center gap-3 border-b border-gray-100 pb-5 mb-8">
+                                <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#424fcf]/10 ring-1 ring-indigo-200">
+                                    <img src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro Logo" className="!h-5 !w-5" />
                                 </div>
-                            </>
-                        )}
+                                <div>
+                                    <h2 className="!text-left !text-2xl font-semibold text-gray-900">
+                                        Login to get started!
+                                    </h2>
+                                </div>
+                            </div>
+                        }
                         {status && (
                             <div className="mb-4 w-full text-center">
                                 <p className="text-lg text-blue-800">

@@ -1382,8 +1382,10 @@ form .bottom_row a {
 
     &.active {
         display: flex;
-        display: -webkit-box;
-        display: -ms-flexbox;
+        justify-content: center;
+        -webkit-justify-content: center;
+        align-items: center;
+        -webkit-align-items: center;
     }
 
     img {

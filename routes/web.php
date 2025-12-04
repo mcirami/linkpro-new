@@ -121,7 +121,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-course-categories', [CourseController::class, 'getCourseCategories']);
 
     Route::group(['prefix' => 'subscribe'], function () {
-        Route::post('/get-paypal-client', [SubscriptionController::class, 'getPayPalClient']);
+        Route::get('/get-paypal-client', [SubscriptionController::class, 'getPayPalClient']);
         Route::get(
             '/stripe-success',
             [SubscriptionController::class, 'stripeSubscribeSuccess']

@@ -11,18 +11,16 @@ import PageHeader from "@/Components/PageHeader.jsx";
 
 const PurchasePaymentButtons = ({showPaymentButtons}) => {
 
-    console.log(showPaymentButtons);
     const [initialOptions, setInitialOptions] = useState({});
     const [showLoader, setShowLoader] = useState({
         show: true,
-        icon: "",
+        icon: null,
         position: "absolute",
         progress: null
     });
 
     useEffect(() => {
         getClientId().then((response) => {
-
             if(response.success) {
                 setInitialOptions({
                     clientId : response.client,
@@ -33,10 +31,15 @@ const PurchasePaymentButtons = ({showPaymentButtons}) => {
                     "data-sdk-integration-source":"integrationbuilder_sc",
                 })
 
-                setShowLoader({
-                    show: false,
+                setShowLoader((prevState) => {
+                    return {
+                        ...prevState,
+                        show: false
+                    }
                 });
             }
+        }).catch((error) => {
+            console.log("getClientId error", error);
         })
 
     }, [showPaymentButtons]);
@@ -117,15 +120,20 @@ const PurchasePaymentButtons = ({showPaymentButtons}) => {
                 <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
                     <PageHeader
                         heading="Purchase Course"
-                        courseTitle={showPaymentButtons.title}
                         description="Complete your purchase to unlock the full course content."
                     />
                 </div>
                 <div className="container">
                     <div className="payment_buttons rounded-2xl bg-white shadow-md pt-10 mt-10 max-w-3xl mx-auto p-5">
-                        <h1 className="mb-10 border-b border-gray-100 pb-3 w-full">
-                            <img className="!max-w-[150px] md:!max-w-[175px]" src={showPaymentButtons.logo || Vapor.asset('images/logo.png') } alt={showPaymentButtons.title ?? ''} />
-                        </h1>
+                        <div className="border-b border-gray-100 pb-5 mb-10">
+                            <div className="image_wrap w-1/3 md:w-1/5 mr-auto mb-5">
+                                <img className="!max-w-[150px] md:!max-w-[175px]l rounded-xl" src={showPaymentButtons.logo || Vapor.asset('images/logo.png') } alt={showPaymentButtons.title ?? ''} />
+                            </div>
+                            <p className="text-lg text-gray-700">
+                                <span className="font-semibold italic capitalize">{showPaymentButtons.title}</span>
+                            </p>
+                        </div>
+
                         <div className="flex flex-wrap items-center justify-start gap-3 mb-5">
                             <div className="h-9 w-9 rounded-lg bg-indigo-50 grid text-indigo-700 place-items-center ring-1 ring-indigo-200">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-credit-card-2-front-fill" viewBox="0 0 16 16">

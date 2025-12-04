@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import InputAnimations from '@/Utils/InputAnimations.jsx';
 import {router, useForm} from '@inertiajs/react';
 import InputError from '@/Components/InputError.jsx';
+import StandardButton from "@/Components/StandardButton.jsx";
 
 const LoginModal = ({setShowLogin}) => {
 
@@ -30,9 +31,9 @@ const LoginModal = ({setShowLogin}) => {
         },300)
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = () => {
 
+        console.log("redirectUrl", redirectUrl)
         post(('/custom-login'), {
             preserveScroll: true,
             onSuccess: () => router.visit(redirectUrl),
@@ -43,9 +44,6 @@ const LoginModal = ({setShowLogin}) => {
         <div className={`modal fade form_page ${active}`} id="loginModal" tabIndex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
             <InputAnimations />
             <div className="modal-content card guest login_form bg-white">
-                <div className="standard_heading">
-                    <h3 className="modal-title text-center">Log In</h3>
-                </div>
                 <a className="close"
                    aria-label="Close"
                    href="#"
@@ -54,6 +52,16 @@ const LoginModal = ({setShowLogin}) => {
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
                     </svg>
                 </a>
+                <div className="flex items-center gap-3 border-b border-gray-100 pb-5 mb-8">
+                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#424fcf]/10 ring-1 ring-indigo-200">
+                        <img src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro Logo" className="!h-5 !w-5" />
+                    </div>
+                    <div>
+                        <h2 className="!text-left !text-2xl font-semibold text-gray-900">
+                            Log In
+                        </h2>
+                    </div>
+                </div>
                 <div className="modal-body">
                     <form id="custom_login_form" method="POST" onSubmit={(e) => handleSubmit(e)}>
                         <div className="w-full mx-auto mb-3">
@@ -100,10 +108,13 @@ const LoginModal = ({setShowLogin}) => {
                                 </label>
                             </div>
                         </div>*/}
-                        <div className="w-full mx-auto p-0">
-                            <button type="submit" className="button blue text-uppercase">
-                                Log In
-                            </button>
+                        <div className="w-full flex justify-end p-0">
+                            <StandardButton
+                                classes={"w-1/3"}
+                                text="Log In"
+                                disabled={processing}
+                                onClick={handleSubmit}
+                            />
                         </div>
                     </form>
                 </div>
