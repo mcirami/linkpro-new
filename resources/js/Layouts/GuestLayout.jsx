@@ -66,7 +66,7 @@ export default function Guest({ children = null, ...props }) {
             />
             <div className="pointer-events-none absolute inset-0 bg-[url('/images/dots-light.svg')] mix-blend-soft-light opacity-40" aria-hidden="true" />
 
-            <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col px-4 pb-16 pt-6 sm:px-6 lg:px-8 lg:pt-10">
+            <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-4 pb-16 pt-6 sm:px-6 lg:px-8 lg:pt-10">
                 {/* Nav */}
                 <header className="mb-8 flex items-center justify-between sm:mb-12">
                     {/* Logo */}
