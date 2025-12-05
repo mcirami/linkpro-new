@@ -12,6 +12,7 @@ function Contact({auth, honeypot = null, spamDetected = false}) {
                     <ContactLayout
                         honeypot={honeypot}
                         spamDetected={spamDetected}
+                        loggedIn={auth?.user.userInfo}
                     />
                 </AuthenticatedLayout>
                 :
@@ -20,6 +21,7 @@ function Contact({auth, honeypot = null, spamDetected = false}) {
                     <ContactLayout
                         honeypot={honeypot}
                         spamDetected={spamDetected}
+                        loggedIn={auth?.user.userInfo}
                     />
                 </GuestLayout>
 

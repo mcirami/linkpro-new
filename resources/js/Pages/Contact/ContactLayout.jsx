@@ -4,7 +4,7 @@ import ContactForm from '@/Pages/Contact/ContactForm.jsx';
 import {Loader} from '@/Utils/Loader.jsx';
 import PageHeader from "@/Components/PageHeader.jsx";
 
-const ContactLayout = ({honeypot, spamDetected}) => {
+const ContactLayout = ({honeypot, spamDetected, loggedIn}) => {
 
     const [showLoader, setShowLoader] = useState({
         show: false,
@@ -20,7 +20,7 @@ const ContactLayout = ({honeypot, spamDetected}) => {
                 <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100">
                     <PageHeader
                         heading="Contact Us"
-                        description="Got questions? Need Support? Want to inquire about business opportunities? Send us a message and we'll respond as soon as possible"
+                        description="Got questions? Need Support? Want to inquire about business opportunities?"
                     />
                 </div>
                 <div className="my_row form_page mt-10">
@@ -32,6 +32,7 @@ const ContactLayout = ({honeypot, spamDetected}) => {
                                 honeypot={honeypot}
                                 spamDetected={spamDetected}
                                 setShowLoader={setShowLoader}
+                                loggedIn={loggedIn}
                             />
                         </div>
                     </div>

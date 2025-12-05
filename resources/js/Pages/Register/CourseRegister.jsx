@@ -136,22 +136,38 @@ const CourseRegister = ({
                     </div>
                     <div className="card my-auto guest relative shadow-md">
                         {spamDetected ?
-                            <div className="warning_message">
-                                <div className="icon_wrap red">
-                                    <IoWarningOutline />
+                            <>
+                                <div className="flex flex-wrap items-center gap-3 border-b border-gray-100 pb-5 mb-8">
+                                    <div className="flex-shrink-0 inline-flex items-center justify-center h-12 w-12 rounded-xl bg-red-500/10">
+                                        <div className="flex items-center justify-center h-7 w-7 rounded-full bg-red-500 text-white text-xl">
+                                            <IoWarningOutline className="w-4 h-4" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 className="!text-left !text-2xl font-semibold text-gray-900">
+                                            You have been flagged!
+                                        </h2>
+                                    </div>
                                 </div>
-                                <h3>You have been flagged!</h3>
-                                <h3>GO AWAY!</h3>
-                            </div>
+                                <p className="text-lg text-gray-700">
+                                    We don't like spammers!
+                                </p>
+                                <p className="text-lg text-gray-700">
+                                    Go away and take your shenanigans elsewhere!
+                                </p>
+                            </>
                             :
-                            <div className="card-body text-left w-full inline-block">
-                                <div className="border-b border-gray-100 p-5">
-                                    <div className="image_wrap w-1/3 md:w-1/5 mr-auto mb-5">
+                            <div className="card-body text-left w-full inline-block !p-5">
+                                <div className="border-b border-gray-100 flex justify-start gap-3 pb-8 mb-8">
+                                    <div className="image_wrap w-1/3 md:w-1/5 mr-auto">
                                         <img className="rounded-xl" src={course.logo} alt=""/>
                                     </div>
-                                    <p className="text-sm text-gray-700">
-                                        In order to access the <span className="font-semibold italic capitalize">{course.title}</span> course you'll need to create an account.
-                                    </p>
+                                    <div className="flex flex-col justify-start gap-2 w-full md:w-4/5">
+                                        <h2 className="!text-left !text-2xl text-gray-900 font-semibold italic capitalize">{course.title}</h2>
+                                        <p className="text-sm text-gray-700">
+                                            In order to access this course you'll need to create a LinkPro account.
+                                        </p>
+                                    </div>
                                 </div>
                                 <form method="post"
                                       action=""

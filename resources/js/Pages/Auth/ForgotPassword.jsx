@@ -3,15 +3,16 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import {Head, useForm} from '@inertiajs/react';
+import StandardButton from "@/Components/StandardButton.jsx";
+import React from "react";
+import PageHeader from "@/Components/PageHeader.jsx";
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         login: '',
     });
 
-    const submit = (e) => {
-        e.preventDefault();
-
+    const submit = () => {
         post('/send-reset-password-email', {
             preserveScroll: true,
             onSuccess: () => reset('login'),
@@ -24,12 +25,26 @@ export default function ForgotPassword({ status }) {
             <Head title="Forgot Password" />
             <div className="container">
                 <div className="my_row form_page">
+                    <div className="pb-6 gap-3 flex justify-between align-bottom items-baseline mt-3 border-b border-gray-100 mb-10">
+                        <PageHeader
+                            heading="Password Reset"
+                            description="Submit your email address below to receive a password reset link."
+                        />
+                    </div>
                     <div className="mb-4 card guest login_form shadow-md">
-                        <div className="mb-4">
-                            <h3>Reset Password</h3>
+                        <div className="flex flex-wrap md:flex-nowrap items-center gap-3 border-b border-gray-100 pb-5 mb-8">
+                            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#424fcf]/10 ring-1 ring-indigo-200">
+                                <img src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro Logo" className="!h-6 !w-6" />
+                            </div>
+                            <div>
+                                <h2 className="!text-left !text-2xl font-semibold text-gray-900">
+                                    Forgot your password?
+                                </h2>
+                                <p className="text-sm text-gray-700">
+                                    No problem! Submit your email address and we will send you a password reset link.
+                                </p>
+                            </div>
                         </div>
-                        <h5 className="text-center text-sm mb-4">Forgot your password? No problem. Just let us know your email address and we will email you a password
-                            reset link that will allow you to choose a new one.</h5>
                         {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
                         <div className="card-body">
                             <form onSubmit={submit}>
@@ -48,9 +63,13 @@ export default function ForgotPassword({ status }) {
                                 <InputError message={errors.email} className="mt-2" />
 
                                 <div className="flex items-center justify-end mt-4">
-                                    <PrimaryButton disabled={processing}>
-                                        Email Password Reset Link
-                                    </PrimaryButton>
+                                    <StandardButton
+                                        classes="w-full md:w-1/2 ml-auto mb-2"
+                                        text="Send Password Reset Link"
+                                        onClick={submit}
+                                        disabled={processing}
+                                    />
+
                                 </div>
                             </form>
                         </div>

@@ -71,16 +71,29 @@ export default function Register({honeypot, spamDetected = false}) {
                         {showLoader.show &&
                             <Loader showLoader={showLoader} />}
                         {spamDetected ?
-                            <div className="warning_message">
-                                <div className="icon_wrap red">
-                                    <IoWarningOutline />
+                            <>
+                                <div className="flex flex-wrap items-center gap-3 border-b border-gray-100 pb-5 mb-8">
+                                    <div className="flex-shrink-0 inline-flex items-center justify-center h-12 w-12 rounded-xl bg-red-500/10">
+                                        <div className="flex items-center justify-center h-7 w-7 rounded-full bg-red-500 text-white text-xl">
+                                            <IoWarningOutline className="w-4 h-4" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 className="!text-left !text-2xl font-semibold text-gray-900">
+                                            You have been flagged!
+                                        </h2>
+                                    </div>
                                 </div>
-                                <h3>You have been flagged!</h3>
-                                <h3>GO AWAY!</h3>
-                            </div>
+                                <p className="text-lg text-gray-700">
+                                    We don't like spammers!
+                                </p>
+                                <p className="text-lg text-gray-700">
+                                    Go away and take your shenanigans elsewhere!
+                                </p>
+                            </>
                         :
                             <>
-                            <div className="flex items-center gap-3 border-b border-gray-100 p-5">
+                            <div className="flex flex-wrap md:flex-nowrap items-center gap-3 border-b border-gray-100 pb-5 mb-5">
                                 <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#424fcf]/10 ring-1 ring-indigo-200">
                                     <img src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro Logo" className="!h-5 !w-5" />
                                 </div>

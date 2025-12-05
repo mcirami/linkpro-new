@@ -44,35 +44,27 @@ export default function Login({ status, canResetPassword, course = null }) {
                 </div>
                 <div className="my_row form_page mt-10">
                     <div className="card bg-white guest login_form shadow-md">
-                        {/*<div className={`${course ? "mb-0" : "mb-4"}`}>
-                            <h3>Log in to LinkPro</h3>
-                        </div>*/}
                         {course ? (
-                            <div
-                                className="course_heading flex items-center justify-start gap-5 border-b border-gray-100 mb-4"
-                                style={{ background: course.header_color }}
-                            >
+                            <div className="border-b border-gray-100 flex justify-start gap-3 pb-8 mb-8">
                                 {course.logo && (
-                                    <img
-                                        className="rounded-xl !w-1/3"
-                                        src={course.logo}
-                                        alt={course.title}
-                                    />
+                                    <div className="image_wrap w-1/3 md:w-1/5 mr-auto">
+                                        <img
+                                            className="rounded-xl"
+                                            src={course.logo}
+                                            alt={course.title}
+                                        />
+                                    </div>
                                 )}
-                               <div>
-                                   <p className="">Login to Access</p>
-                                   <h3 className="capitalize"
-                                       style={{
-                                           color: course.header_text_color,
-                                       }}
-                                   >
-                                       {course.title}
-                                   </h3>
-                               </div>
+                                <div className="flex flex-col justify-start gap-2 w-full md:w-4/5">
+                                    <h2 className="!text-left !text-2xl text-gray-900 font-semibold italic capitalize"> {course.title}</h2>
+                                    <p className="text-sm text-gray-700">
+                                        Login to LinkPro to access this course.
+                                    </p>
+                                </div>
                             </div>
                         )
                             :
-                            <div className="flex items-center gap-3 border-b border-gray-100 pb-5 mb-8">
+                            <div className="flex flex-wrap items-center gap-3 border-b border-gray-100 pb-5 mb-8">
                                 <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#424fcf]/10 ring-1 ring-indigo-200">
                                     <img src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro Logo" className="!h-5 !w-5" />
                                 </div>

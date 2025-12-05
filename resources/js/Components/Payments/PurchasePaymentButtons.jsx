@@ -125,13 +125,16 @@ const PurchasePaymentButtons = ({showPaymentButtons}) => {
                 </div>
                 <div className="container">
                     <div className="payment_buttons rounded-2xl bg-white shadow-md pt-10 mt-10 max-w-3xl mx-auto p-5">
-                        <div className="border-b border-gray-100 pb-5 mb-10">
-                            <div className="image_wrap w-1/3 md:w-1/5 mr-auto mb-5">
-                                <img className="!max-w-[150px] md:!max-w-[175px]l rounded-xl" src={showPaymentButtons.logo || Vapor.asset('images/logo.png') } alt={showPaymentButtons.title ?? ''} />
+                        <div className="border-b border-gray-100 flex justify-start gap-3 pb-8 mb-8">
+                            <div className="image_wrap w-1/3 md:w-1/5 mr-auto">
+                                <img className="rounded-xl" src={showPaymentButtons.logo || Vapor.asset('images/logo.png') } alt={showPaymentButtons.title ?? ''} />
                             </div>
-                            <p className="text-lg text-gray-700">
-                                <span className="font-semibold italic capitalize">{showPaymentButtons.title}</span>
-                            </p>
+                            <div className="flex flex-col justify-start gap-2 w-full md:w-4/5">
+                                <h2 className="!text-left !text-2xl text-gray-900 font-semibold italic capitalize">{showPaymentButtons.title}</h2>
+                                <p className="text-sm text-gray-700">
+                                    Purchase course now to start learning!
+                                </p>
+                            </div>
                         </div>
 
                         <div className="flex flex-wrap items-center justify-start gap-3 mb-5">

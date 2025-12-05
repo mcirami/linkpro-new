@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 import {BiMailSend} from 'react-icons/bi';
-import {useForm} from '@inertiajs/react';
+import { Link, router, useForm } from "@inertiajs/react";
 import TextInput from '@/Components/TextInput.jsx';
 import InputLabel from '@/Components/InputLabel.jsx';
 import InputError from '@/Components/InputError.jsx';
 import {useGoogleRecaptchaV3, checkRecaptcha} from '@/Utils/useGoogleRecaptchaV3.jsx';
 import {IoWarningOutline} from 'react-icons/io5';
 import StandardButton from "@/Components/StandardButton.jsx";
-const ContactForm = ({honeypot, spamDetected, setShowLoader}) => {
+const ContactForm = ({honeypot, spamDetected, setShowLoader, loggedIn}) => {
     const { data, setData, post, processing, errors, wasSuccessful } = useForm({
         name: '',
         email: '',
@@ -53,26 +53,104 @@ const ContactForm = ({honeypot, spamDetected, setShowLoader}) => {
         <>
         {wasSuccessful ?
 
-            <div className="success_message">
-                <div className="icon_wrap blue">
-                    <BiMailSend />
+            <>
+                <div className="flex flex-wrap items-center gap-3 border-b border-gray-100 pb-5 mb-8">
+                    <div className="flex-shrink-0 inline-flex items-center justify-center h-12 w-12 rounded-xl bg-[#424fcf]/10">
+                        <div className="flex items-center justify-center h-6 w-6 rounded-full bg-emerald-500 text-white text-xl">
+                            ✓
+                        </div>
+                    </div>
+                    <div>
+                        <h2 className="!text-left !text-2xl font-semibold text-gray-900">
+                            Your Message Has Been Sent.
+                        </h2>
+                    </div>
                 </div>
 
-                <h3>Your Inquiry Has Been Sent.</h3>
-                <p>We will get back to you soon!</p>
-            </div>
+                <p className="text-lg text-gray-700">
+                    Thanks for your inquiry.
+                </p>
+                <p className="text-lg text-gray-700">
+                    We will get back to you as soon as possible!
+                </p>
+                <div className="mt-8 flex flex-col items-center gap-3">
+                    {loggedIn ?
+                        <>
+                            <StandardButton
+                                classes="w-full md:w-auto"
+                                onClick={() => router.visit(route('dashboard'))}
+                                text="Go to Dashboard"
+                            />
+
+                            <p className="text-xs md:text-sm text-gray-500">
+                                or{" "}
+                                <Link
+                                    href={route('user.edit')}
+                                    className="font-medium text-[#424fcf] hover:underline"
+                                >
+                                    manage my account
+                                </Link>
+                            </p>
+                        </>
+                        :
+                        <>
+                            <StandardButton
+                                classes="w-full md:w-auto"
+                                onClick={() => router.visit(route('login'))}
+                                text="Login Now"
+                            />
+
+                            <p className="text-xs md:text-sm text-gray-500">
+                                or{" "}
+                                <Link
+                                    href={route('register')}
+                                    className="capitalize font-medium text-[#424fcf] hover:underline"
+                                >
+                                    sign up free
+                                </Link>
+                            </p>
+                        </>
+                    }
+                </div>
+            </>
             :
             spamDetected ?
-                <div className="warning_message">
-                    <div className="icon_wrap red">
-                        <IoWarningOutline />
-                    </div>
-                    <h3>You have been flagged!</h3>
-                    <h3>GO AWAY!</h3>
-                </div>
+                    <>
+                        <div className="flex flex-wrap items-center gap-3 border-b border-gray-100 pb-5 mb-8">
+                            <div className="flex-shrink-0 inline-flex items-center justify-center h-12 w-12 rounded-xl bg-red-500/10">
+                                <div className="flex items-center justify-center h-7 w-7 rounded-full bg-red-500 text-white text-xl">
+                                    <IoWarningOutline className="w-4 h-4" />
+                                </div>
+                            </div>
+                            <div>
+                                <h2 className="!text-left !text-2xl font-semibold text-gray-900">
+                                    You have been flagged!
+                                </h2>
+                            </div>
+                        </div>
+                        <p className="text-lg text-gray-700">
+                            We don't like spammers!
+                        </p>
+                        <p className="text-lg text-gray-700">
+                            Go away and take your shenanigans elsewhere!
+                        </p>
+                    </>
                 :
 
                 <>
+                    <div className="flex flex-wrap items-center gap-3 border-b border-gray-100 pb-5 mb-8">
+                        <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#424fcf]/10 ring-1 ring-indigo-200">
+                            <BiMailSend className="text-indigo-500 w-6 h-6" />
+                        </div>
+                        <div>
+                            <h2 className="!text-left !text-2xl font-semibold text-gray-900">
+                                Submit Your Inquiry
+                            </h2>
+                            <p className="text-sm text-gray-700 !text-left">
+                                Send us a message and we'll respond as soon as possible
+                            </p>
+                        </div>
+                    </div>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group relative p-0 mb-5">
                             <TextInput
