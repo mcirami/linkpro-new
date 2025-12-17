@@ -33,7 +33,7 @@ import {
     updateImage,
     updateSectionsPositions
 } from "@/Services/LandingPageRequests";
-import {Head} from '@inertiajs/react';
+import { Head, Link } from "@inertiajs/react";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import {handleDragEndAction} from '@/Services/CreatorServices.jsx';
 import SliderComponent
@@ -45,6 +45,7 @@ import ClickToCopyUrl from "@/Components/CreatorComponents/ClickToCopyUrl.jsx";
 import PageTabs from "@/Components/PageTabs.jsx";
 import PageNav from "@/Pages/Dashboard/Components/Page/PageNav.jsx";
 import { BiImage, BiNotepad } from "react-icons/bi";
+import { IoChevronForwardOutline } from "react-icons/io5";
 
 function LPCreator({landingPageArray, courses, username}) {
 
@@ -157,7 +158,17 @@ function LPCreator({landingPageArray, courses, username}) {
                         />
                     </div>
                 </div>
-                <section className="edit_page creator mt-10 md:mt-20">
+                <div className="flex justify-start items-center gap-2 py-5 w-full">
+                    <Link
+                        href={route('creator.center')}
+                        className="text-xs font-medium tracking-wide text-slate-800 transition  hover:text-indigo-500"
+                    >
+                        Creator Center
+                    </Link>
+                    <IoChevronForwardOutline className="h-3 w-3 text-slate-900" />
+                    <h4 className="text-xs tracking-wide text-slate-800">Page Title: <span className="font-medium">{landingPageArray["title"] || "(no title)"}</span></h4>
+                </div>
+                <section className="edit_page creator mt-5">
                     <div id="links_page">
                         <div id="creator" className="my_row creator_wrap">
                             <div className="my_row page_wrap">

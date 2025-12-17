@@ -66,7 +66,7 @@ function Menu() {
 
     return (
         <div id="off_canvas_menu">
-            <div className="menu_wrap">
+            <div className="menu_wrap bg-gradient-to-r from-indigo-600 via-indigo-600 to-indigo-700">
                 <div className="menu_top">
                     <div className="logo">
                         <img src={Vapor.asset('images/logo-white.png')} alt=""/>

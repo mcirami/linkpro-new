@@ -103,13 +103,13 @@ export default function Guest({ children = null, ...props }) {
                         </a>
                         <Link
                             href={loginUrl + "/login"}
-                            className="rounded-full border border-slate-300 px-4 py-1.5 text-xs font-medium tracking-wide text-slate-800 transition hover:border-blue-400 hover:bg-blue-50"
+                            className="rounded-lg border border-slate-300 px-4 py-1.5 text-xs font-medium tracking-wide text-slate-800 transition hover:border-blue-400 hover:bg-blue-50"
                         >
                             Log in
                         </Link>
                         <Link
                             href={route("register")}
-                            className="rounded-full border border-slate-300 px-4 py-1.5 text-xs font-medium tracking-wide text-slate-800 transition hover:border-blue-400 hover:bg-blue-50"
+                            className="rounded-lg border bg-gradient-to-r from-indigo-600 via-indigo-600 to-indigo-700 shadow-blue-500/20 focus-visible:ring-2 focus-visible:ring-blue-400 px-4 py-1.5 text-xs font-medium tracking-wide text-white transition"
                         >
                             Sign Up
                         </Link>
@@ -168,13 +168,13 @@ export default function Guest({ children = null, ...props }) {
                         <div className="mt-2 flex flex-col gap-2">
                             <Link
                                 href={loginUrl + "/login"}
-                                className="w-full rounded-full border border-slate-300 px-4 py-2 text-center text-xs font-medium text-slate-800 transition hover:border-blue-400 hover:bg-blue-50"
+                                className="w-full rounded-lg border border-slate-300 px-4 py-2 text-center text-xs font-medium text-slate-800 transition hover:border-blue-400 hover:bg-blue-50"
                             >
                                 Log in
                             </Link>
                             <Link
                                 href={route("register")}
-                                className="w-full rounded-full bg-slate-900 px-4 py-2 text-center text-xs font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                                className="w-full rounded-lg bg-gradient-to-r from-indigo-600 via-indigo-600 to-indigo-700 shadow-blue-500/20 focus-visible:ring-2 focus-visible:ring-blue-400 px-4 py-2 text-center text-xs font-semibold text-white shadow-sm transition hover:bg-slate-800"
                             >
                                 Sign Up
                             </Link>

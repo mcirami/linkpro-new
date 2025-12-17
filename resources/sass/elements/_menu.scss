@@ -72,7 +72,7 @@
         top: 0;
         height: 100%;
         width: 350px;
-        background: $blue;
+        //background: $blue;
         transition: all ease-in-out 500ms;
         -moz-transition: all ease-in-out 500ms;
         -webkit-transition: all ease-in-out 500ms;
@@ -131,12 +131,11 @@
 
         .menu {
             width: 100%;
-            padding: 3rem 0;
             height: 100%;
 
             ul {
                 list-style: none;
-                padding: 0;
+                padding: 3rem 0;
                 margin: 0;
                 display: -webkit-box;
                 display: -ms-flexbox;

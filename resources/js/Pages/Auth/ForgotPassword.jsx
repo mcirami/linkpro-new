@@ -1,12 +1,11 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
-import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import {Head, useForm} from '@inertiajs/react';
 import StandardButton from "@/Components/StandardButton.jsx";
 import React from "react";
 import PageHeader from "@/Components/PageHeader.jsx";
-
+import { MdOutlineLockReset } from "react-icons/md";
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         login: '',
@@ -34,7 +33,7 @@ export default function ForgotPassword({ status }) {
                     <div className="mb-4 card guest login_form shadow-md">
                         <div className="flex flex-wrap md:flex-nowrap items-center gap-3 border-b border-gray-100 pb-5 mb-8">
                             <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#424fcf]/10 ring-1 ring-indigo-200">
-                                <img src={Vapor.asset('images/preview-device-bg.png')} alt="LinkPro Logo" className="!h-6 !w-6" />
+                                <MdOutlineLockReset className="!h-6 !w-6 text-indigo-500" />
                             </div>
                             <div>
                                 <h2 className="!text-left !text-2xl font-semibold text-gray-900">

@@ -57,7 +57,7 @@ export default function Welcome({ auth }) {
                            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                                <Link
                                    href={route("register")}
-                                   className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/40 transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                                   className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-indigo-700 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/40 transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                                >
                                    Sign up free
                                </Link>
@@ -321,7 +321,7 @@ export default function Welcome({ auth }) {
                            <div className="mt-4 flex flex-wrap items-center gap-4">
                                <Link
                                    href={route("register")}
-                                   className="inline-flex items-center justify-center rounded-full bg-white px-7 py-3 text-sm font-semibold text-sky-600 shadow-lg shadow-slate-900/60 transition hover:bg-slate-50"
+                                   className="inline-flex items-center justify-center rounded-xl bg-white px-7 py-3 text-sm font-semibold text-sky-600 shadow-lg shadow-slate-900/60 transition hover:bg-slate-50"
                                >
                                    Get started free
                                </Link>

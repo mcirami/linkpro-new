@@ -20,28 +20,28 @@ const PlanCard = ({
         green:  {
             ring: 'ring-green-300',
             pill: 'bg-green-50 text-green-700 ring-green-200',
-            button: 'bg-gradient-to-r from-green-500 via-green-600 to-green-700 shadow-green-500/40 focus-visible:ring-2 focus-visible:ring-green-400',
+            button: 'bg-gradient-to-r from-green-600 via-green-600 to-green-600 shadow-green-500/20 focus-visible:ring-2 focus-visible:ring-green-400',
             shadow: 'shadow-green-100',
             text: '!text-green-700'
         },
         indigo: {
             ring: 'ring-indigo-300',
             pill: 'bg-indigo-50 text-indigo-700 ring-indigo-200',
-            button: 'bg-gradient-to-r from-sky-500 via-indigo-500 to-indigo-700 shadow-blue-500/40 focus-visible:ring-2 focus-visible:ring-blue-400',
+            button: 'bg-gradient-to-r from-indigo-600 via-indigo-600 to-indigo-700 shadow-blue-500/20 focus-visible:ring-2 focus-visible:ring-blue-400',
             shadow: 'shadow-indigo-100',
             text: 'text-indigo-700'
         },
         violet: {
             ring: 'ring-fuchsia-300',
             pill: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-200',
-            button: 'bg-gradient-to-r from-fuchsia-500 via-fuchsia-600 to-fuchsia-700 shadow-fuchsia-500/40 focus-visible:ring-2 focus-visible:ring-fuchsia-400',
+            button: 'bg-gradient-to-r from-fuchsia-600 via-fuchsia-600 to-fuchsia-600 shadow-fuchsia-500/20 focus-visible:ring-2 focus-visible:ring-fuchsia-400',
             shadow: 'shadow-fuchsia-100',
             text: 'text-fuchsia-700'
         },
         gray: {
             ring: 'ring-stone-300',
             pill: 'bg-stone-50 text-stone-700 ring-stone-200',
-            button: 'bg-gradient-to-r from-stone-500 via-stone-600 to-stone-700 shadow-stone-500/40 focus-visible:ring-2 focus-visible:ring-stone-400',
+            button: 'bg-gradient-to-r from-stone-600 via-stone-600 to-stone-600 shadow-stone-500/20 focus-visible:ring-2 focus-visible:ring-stone-400',
             shadow: 'shadow-stone-100',
             text: 'text-stone-700'
         },

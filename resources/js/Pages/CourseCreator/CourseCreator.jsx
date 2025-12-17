@@ -209,7 +209,7 @@ function CourseCreator({
                         Creator Center
                     </Link>
                     <IoChevronForwardOutline className="h-3 w-3 text-slate-900" />
-                    <h4 className="text-xs font-bold tracking-wide text-slate-800">Course: <span className="font-medium">{courseData["title"] || "(no title)"}</span></h4>
+                    <h4 className="text-xs tracking-wide text-slate-800">Course: <span className="font-medium">{courseData["title"] || "(no title)"}</span></h4>
                 </div>
 
             </div>
