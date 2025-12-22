@@ -1,26 +1,34 @@
 import React from 'react';
 import {TrackIconClick} from '@/Services/TrackClicks.jsx';
+import { IoOpenOutline } from "react-icons/io5";
 
 const AdvancedIcon = ({
-                          id,
+                          linkItem,
                           colClasses,
                           displayIcon,
-                          icon_active,
-                          name,
-                          active_status,
                           dataRow,
                           mainIndex,
                           setRow,
                           value,
                           setValue,
-                          url,
                           index,
                           setClickType,
                           clickType,
-                          type,
                           viewType,
-                          pageLayout
+                          pageLayout,
+                          styles
                       }) => {
+
+    let {
+        id,
+        type,
+        name,
+        url,
+        icon_active,
+        active_status,
+        bg_image,
+        bg_active
+    } = linkItem;
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -79,18 +87,28 @@ const AdvancedIcon = ({
                             </p>
                         </>
                         :
-                        <a className={`icon_wrap !justify-start gap-2 ${!displayIcon ?
-                            "default" :
-                            ""}`}
-                           target="_blank"
-                           href={url || "#"}>
-                            {icon_active ?
-                                <img src={displayIcon} alt=""/>
-                                :
-                                ""
-                            }
-                            <h3>{name || "Link Name"}</h3>
-                        </a>
+                        <>
+                            <div className="bg_image_wrap" style={styles}></div>
+                            <a className={`icon_wrap flex items-center !justify-between ${!displayIcon ?
+                                "default" :
+                                ""}`}
+                               target="_blank"
+                               href={url || "#"}>
+                                <div className={`${ (bg_image && bg_active) ?
+                                    "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
+                                    :
+                                    "flex items-center justify-between w-full"}`}>
+                                    <span className="flex items-center justify-start gap-2">
+                                        { (displayIcon && icon_active) ?
+                                            <img src={displayIcon} alt=""/>
+                                            :
+                                            ""
+                                        }
+                                        <h3>{name || "Link Name"}</h3>
+                                    </span>
+                                </div>
+                            </a>
+                        </>
                     }
                 </div>
                 :

@@ -99,7 +99,7 @@ const IconList = ({
             if (editLink.type === "mailchimp") {
                 setEditLink(prevState => ({
                     ...prevState,
-                    icon: "https://local-lp-user-images.s3.us-east-2.amazonaws.com/icons/Mailchimp.png",
+                    icon: "https://lp-production-images.s3.us-east-2.amazonaws.com/icons/Mailchimp.png",
                     type: "mailchimp"
                 }))
             }
@@ -122,7 +122,7 @@ const IconList = ({
     const selectIcon = useCallback((e, source) => {
         e.preventDefault();
         const el = e.target.closest('a');
-        const iconType = el.dataset.icontype;
+        let iconType = el.dataset.icontype;
         const iconIndex = el.dataset.index || null;
         const courseId = el.dataset.course || null;
 
@@ -134,16 +134,22 @@ const IconList = ({
             setCharactersLeft(11 - name.length);
 
             let value = editLink[iconType];
-            if(iconType === "url" && showIconList.type === "standard") {
-                let icon = icons.find(icon => icon.name === name);
-                if (icon?.prefix) {
-                    value = icon.prefix;
-                }
-            }
 
-            if(iconType === "offer") {
-                //url = window.location.origin + "/" + el.dataset.creator + "/course-page/" + el.dataset.slug + "?a=" + authUser;
-                value = window.location.origin + "/offers/" + el.dataset.offer + "/" + authUser
+            if (editLink.type === "mailchimp") {
+                value = null;
+                iconType = "mailchimp"
+            } else {
+                if(iconType === "url" && showIconList.type === "standard") {
+                    let icon = icons.find(icon => icon.name === name);
+                    if (icon?.prefix) {
+                        value = icon.prefix;
+                    }
+                }
+
+                if(iconType === "offer") {
+                    //url = window.location.origin + "/" + el.dataset.creator + "/course-page/" + el.dataset.slug + "?a=" + authUser;
+                    value = window.location.origin + "/offers/" + el.dataset.offer + "/" + authUser
+                }
             }
 
             setTimeout(function(){
@@ -429,12 +435,6 @@ const IconList = ({
     return (
 
         <>
-        { (editLink.type === "url" ||
-                editLink.type === "offer" ||
-                editLink.type === "email" ||
-                editLink.type === "phone" ||
-                editLink.type === "mailchimp"
-            ) &&
             <div className="uploader">
                 { (editLink.type === "offer" && showIconList.type !== "custom" && showFormTab === "offers") &&
                     <DropdownComponent
@@ -496,7 +496,6 @@ const IconList = ({
                     </div>
                 }
             </div>
-        }
             {!imageSelected &&
                 <>
                     <div className={`icons_wrap icon_select shadow-md my_row outer ${showFormTab === "offers" ? "offer_list" : ""}`}>

@@ -34,7 +34,6 @@ const LayoutTwo = ({
     return (
         <div className="link_content">
             <div className="left_col">
-               {/* {isEditing.active && isEditing.section === "name" ?*/}
                     <IconSettingComponent
                         inputType="text"
                         id={id}
@@ -68,7 +67,7 @@ const LayoutTwo = ({
                         currentValue={type === "url" ? url : type === "email" ? email : type === "phone" ? phone : ""}
                     />
                 }
-                <div className={`edit_wrap inline-flex items-center switch_wrap`}>
+                <div className={`edit_wrap inline-flex items-center relative`}>
                     <div className="switch_wrap">
                         <IOSSwitch
                             onChange={() => handleSwitchChange(link, setEditLink, dispatch, "active_status")}

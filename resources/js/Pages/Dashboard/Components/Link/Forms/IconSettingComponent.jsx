@@ -156,7 +156,13 @@ const IconSettingComponent = ({
     // ----- Blur / Enter / Esc behavior
     const onBlur = async () => {
         // Only commit if something actually changed (prevents redundant API calls)
-        if (draft !== currentValue) await commitValue(draft);
+        if (draft !== currentValue) {
+            await commitValue(draft);
+        } else {
+            if (isEditing?.active && setIsEditing) {
+                setIsEditing({ active: false, section: '', value: '', id: null, type: null });
+            }
+        }
     };
 
     const onKeyDown = async (e) => {
@@ -195,7 +201,7 @@ const IconSettingComponent = ({
                     ].join(' ')}
                 >
                     {pageSettings.page_layout === 'layout_two' &&
-                        <div className="inline-flex items-center gap-1 min-w-0">
+                        <div className="inline-flex items-center gap-1 min-w-0 relative">
                             <span
                               ref={readTextRef}
                               className={[
@@ -211,7 +217,7 @@ const IconSettingComponent = ({
                             {setIsEditing && (
                                 <button
                                     type="button"
-                                    className="w-auto shrink-0 ml-1 text-[#88c3d7] hover:text-indigo-600 transition"
+                                    className="shrink-0 ml-1 text-[#88c3d7] hover:text-indigo-600 transition absolute left-0 flex h-full w-full"
                                     onClick={(e) => {
                                         e.preventDefault();
                                         setIsEditing({
@@ -230,7 +236,7 @@ const IconSettingComponent = ({
                                     }}
                                     aria-label={`Edit ${label || elementName}`}
                                 >
-                                    <RiEdit2Fill className="h-4 w-4" />
+                                    {/*<RiEdit2Fill className="h-4 w-4" />*/}
                                 </button>
                             )}
                         </div>
@@ -240,8 +246,7 @@ const IconSettingComponent = ({
                 {/* EDIT LAYER */}
                 <div
                    /* aria-hidden={!isActive}*/
-                    className={[
-            `${pageSettings.page_layout === 'layout_two' && 'absolute'}`,
+                    className={[`${pageSettings.page_layout === 'layout_two' && 'absolute'}`,
                         'inset-0 flex flex-wrap items-center',
                         'transition-all duration-200 ease-out',
                         pageSettings.page_layout === 'layout_two' && (isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'),

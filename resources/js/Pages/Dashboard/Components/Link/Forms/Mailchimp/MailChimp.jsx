@@ -34,7 +34,6 @@ const MailChimp = ({
         )
     }
 
-    console.log(lists);
     return (
 
        lists?.length > 0 ?

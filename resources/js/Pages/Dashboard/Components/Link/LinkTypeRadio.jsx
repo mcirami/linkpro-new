@@ -67,6 +67,11 @@ const LinkTypeRadio = ({
             return;
         }
 
+        let icon = null;
+        if (type === "mailchimp") {
+            icon = "https://lp-production-images.s3.us-east-2.amazonaws.com/icons/Mailchimp.png";
+        }
+
         setEditLink((prev) => ({
             ...prev,
             type: type,
@@ -80,6 +85,7 @@ const LinkTypeRadio = ({
             type: type,
             page_id: pageId,
             folder_id: editLink.folder_id,
+            icon: icon
         }
 
         addLink(packets).then((data) => {
@@ -92,6 +98,7 @@ const LinkTypeRadio = ({
                     page_id: pageId,
                     position: data.position,
                     folder_id: editLink.folder_id,
+                    icon: icon
                 }
 
                 if (editLink.folder_id) {

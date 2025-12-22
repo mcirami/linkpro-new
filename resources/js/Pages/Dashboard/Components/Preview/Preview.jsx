@@ -299,23 +299,20 @@ const Preview = ({
                                                         return (
                                                             (!active_status && pageSettings.page_layout === "layout_one") || active_status ?
                                                                 <AdvancedIcon
+                                                                    linkItem={linkItem}
                                                                     colClasses={colClasses}
                                                                     displayIcon={displayIcon}
-                                                                    icon_active={icon_active}
-                                                                    name={name}
-                                                                    active_status={active_status}
                                                                     dataRow={dataRow}
                                                                     mainIndex={index}
                                                                     setRow={setRow}
                                                                     value={value}
                                                                     setValue={setValue}
-                                                                    url={url}
                                                                     index={index}
                                                                     setClickType={setClickType}
                                                                     clickType={clickType}
-                                                                    type={type}
                                                                     viewType="preview"
                                                                     pageLayout={pageSettings.page_layout}
+                                                                    styles={styles}
                                                                 />
                                                                 :
                                                                 ""

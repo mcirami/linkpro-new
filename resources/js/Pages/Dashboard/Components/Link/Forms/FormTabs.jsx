@@ -21,6 +21,7 @@ const FormTabs = ({
                 setShowFormTab("integration");
             } else {
                 setHasList(true);
+                setShowFormTab("icon");
             }
         } else if (editLink.type === "offer") {
             setShowFormTab("offers");
@@ -28,7 +29,7 @@ const FormTabs = ({
             setShowFormTab("icon");
         }
 
-    },[setShowFormTab, editLink.type])
+    },[setShowFormTab, editLink])
 
     useEffect(() => {
         const optionsArray = [];

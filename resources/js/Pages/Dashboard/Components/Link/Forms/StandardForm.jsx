@@ -92,27 +92,36 @@ const StandardForm = ({
 
         switch (editLink.type) {
             case "url":
-            case "email":
-            case "phone":
-                const type = editLink.icon?.includes("custom-icons") ? "custom" : "standard";
-                setShowIconList((prev) => ({
-                    ...prev,
-                    type: type,
-                }));
-                break;
-            case "offer":
-                //const offerIconType = editLink.icon?.includes("custom-icons") ? "custom" : "offers"
-                setShowIconList((prev) => ({
-                    ...prev,
-                    type: "offers",
-                }));
-                break;
-            default:
-                setShowIconList((prev) => ({
-                    ...prev,
-                    type: "standard",
-                }));
-                break;
+                case "email":
+                    case "phone":
+                        let stdType = editLink.icon?.includes("custom-icons") ? "custom" : "standard";
+                        setShowIconList((prev) => ({
+                            ...prev,
+                            type: stdType,
+                        }));
+                        break;
+                        case "offer":
+                            //const offerIconType = editLink.icon?.includes("custom-icons") ? "custom" : "offers"
+                            setShowIconList((prev) => ({
+                                ...prev,
+                                type: "offers",
+                            }));
+                            break;
+
+                            case "mailchimp":
+                                let mcType = editLink.icon?.includes("custom-icons") ? "custom" : "standard";
+                                setShowIconList((prev) => ({
+                                    ...prev,
+                                    type: mcType,
+                                }));
+                                break;
+
+                                default:
+                                    setShowIconList((prev) => ({
+                                        ...prev,
+                                        type: "standard",
+                                    }));
+                                    break;
         }
 
     }, []);
@@ -198,8 +207,6 @@ const StandardForm = ({
             id: null,
         }));
     }
-
-    console.log("showFormTab: ", showFormTab);
 
     return (
         <>

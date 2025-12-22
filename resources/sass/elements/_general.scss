@@ -131,9 +131,9 @@
     -webkit-transition: .3s opacity linear;
     top: -15px;
     width: 100%;
-    border-radius: 2%;
-    -webkit-border-radius: 2%;
-    -moz-border-radius: 2%;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
     background: $blue;
     color: $white;
 
@@ -146,10 +146,6 @@
         -moz-border-radius: 5px;
         color: $white;
         text-transform: capitalize;
-    }
-
-    &.switch {
-        top: -27px;
     }
 
     &.password {

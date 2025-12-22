@@ -272,22 +272,17 @@ function LivePage({links, page, subscribed}) {
                                                         return (
                                                             (!active_status && page_layout=== "layout_one") || active_status ?
                                                                 <AdvancedIcon
-                                                                    id={id}
+                                                                    linkItem={linkItem}
                                                                     colClasses={colClasses}
                                                                     displayIcon={displayIcon}
-                                                                    icon_active={icon_active}
-                                                                    name={name}
-                                                                    active_status={active_status}
                                                                     dataRow={dataRow}
                                                                     mainIndex={index}
                                                                     setRow={setRow}
                                                                     value={value}
                                                                     setValue={setValue}
-                                                                    url={url}
                                                                     index={index}
                                                                     setClickType={setClickType}
                                                                     clickType={clickType}
-                                                                    type={type}
                                                                     viewType="live"
                                                                     pageLayout={page_layout}
                                                                 />

@@ -1459,11 +1459,24 @@ form.icon {
         }
     }
 
+    .hover_text {
+        transition: .5s all linear;
+        -moz-transition: .5s all linear;
+        -webkit-transition: .5s all linear;
+        -o-transition: .5s all linear;
+    }
+
     &:hover {
 
         .hover_text {
             @media all and (min-width: 769px) {
                 opacity: 1;
+            }
+
+            &.switch {
+                @media all and (min-width: 769px) {
+                    top: -27px;
+                }
             }
         }
     }
