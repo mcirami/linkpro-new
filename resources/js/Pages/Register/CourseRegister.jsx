@@ -159,7 +159,7 @@ const CourseRegister = ({
                             :
                             <div className="card-body text-left w-full inline-block !p-5">
                                 <div className="border-b border-gray-100 flex justify-start gap-3 pb-8 mb-8">
-                                    <div className="image_wrap w-1/3 md:w-1/5 mr-auto">
+                                    <div className="image_wrap w-1/3 md:w-1/5 mr-auto p-2 rounded-lg" style={{ background: course.header_color}}>
                                         <img className="rounded-xl" src={course.logo} alt=""/>
                                     </div>
                                     <div className="flex flex-col justify-start gap-2 w-full md:w-4/5">

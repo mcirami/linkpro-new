@@ -8,9 +8,11 @@ const SectionImage = ({
 
 }) => {
 
-    const [sectionImageStyle, setSectionImageStyle] = useState(null);
-
-    useEffect(() => {
+    //const [sectionImageStyle, setSectionImageStyle] = useState(null);
+    const cropEntry = completedCrop[elementName];
+    const hasCompletedCrop = !!cropEntry?.isCompleted;
+    const backgroundImg = imgUrl || Vapor.asset("images/image-placeholder.jpg");
+    /*useEffect(() => {
         const backgroundImg = imgUrl || Vapor.asset("images/image-placeholder.jpg");
         setSectionImageStyle (
             completedCrop[elementName]?.isCompleted ?
@@ -27,11 +29,25 @@ const SectionImage = ({
                     padding: '29%'
                 }
         )
-    },[completedCrop[elementName]])
+    },[completedCrop[elementName]])*/
+
+    const sectionImageStyle = hasCompletedCrop
+        ? {
+            width: (completedCrop[elementName]?.isCompleted) ? `100%` : 0,
+            height: (completedCrop[elementName]?.isCompleted) ? `auto` : 0,
+            maxHeight: '232px',
+            overflow:'hidden',
+            backgroundSize: `cover`,
+        }
+        : {
+            background: "url(" + backgroundImg + ") center 25% / cover no-repeat",
+            backgroundSize: 'cover',
+            padding: '29%'
+        };
 
     return (
         <div className="image_bg" style={sectionImageStyle}>
-            {completedCrop[elementName] ?
+            {cropEntry &&
                 <canvas
                     className={`${elementName}_bg_image`}
                     ref={ref => nodesRef.current[elementName] = ref}
@@ -46,8 +62,6 @@ const SectionImage = ({
                         height: completedCrop[elementName]?.isCompleted ? `auto` : 0,
                     }}
                 />
-                :
-                ""
             }
         </div>
     );

@@ -158,8 +158,8 @@ export const updateSectionImage = (packets, id) => {
     return axios.patch('/creator-center/landing-page/update-section-image/' + id, packets)
     .then(
         (response) => {
-            const returnMessage = JSON.stringify(response.data.message);
-           EventBus.dispatch("success", { message: returnMessage.replaceAll("_", " ") });
+            //const returnMessage = JSON.stringify(response.data.message);
+           //EventBus.dispatch("success", { message: returnMessage.replaceAll("_", " ") });
 
             return {
                 success : true,

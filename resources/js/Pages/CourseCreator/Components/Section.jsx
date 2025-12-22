@@ -35,7 +35,6 @@ const Section = ({
                      nodesRef,
                      setShowLoader
 }) => {
-
     const [lockVideo, setLockVideo] = useState(true);
     const [showTiny, setShowTiny]   = useState(false);
     const [pageTab, setPageTab] = useState("content");
@@ -58,6 +57,8 @@ const Section = ({
         title_size,
         video_link,
         lock_video,
+        image,
+        file
     } = section;
 
     const {
@@ -66,7 +67,7 @@ const Section = ({
         setNodeRef,
         transform,
         transition,
-    } = useSortable({id: section.id});
+    } = useSortable({id: id});
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -122,15 +123,15 @@ const Section = ({
             lock_video: newLockVideoValue,
         };
 
-        updateSectionData(packets, section.id)
+        updateSectionData(packets, id)
         .then((response) => {
             if(response.success) {
                 setSections(
-                    sections.map((section) => {
-                        if(section.id === id) {
-                            section.lock_video = newLockVideoValue;
+                    sections.map((currentSection) => {
+                        if(currentSection.id === id) {
+                            currentSection.lock_video = newLockVideoValue;
                         }
-                        return section;
+                        return currentSection;
                     })
                 )
             }
@@ -143,24 +144,24 @@ const Section = ({
     const getSectionTitle = (length = null) => {
         switch(type) {
             case 'video':
-                const ellipsis = section.video_title?.length > 20 ? "..." : ""
+                const ellipsis = video_title?.length > 20 ? "..." : ""
                 return (
-                    section.video_title ?
-                        section.video_title.slice(0, 20) + ellipsis :
+                    video_title ?
+                        video_title.slice(0, 20) + ellipsis :
                         type  + " " + videoCount
                 )
             case 'text':
                 const regex = /(<([^>]+)>)/gi;
                 let parsedText = "";
-                if (section.text && isJSON(section.text)) {
-                    const convertedText = convertText(section.text);
+                if (text && isJSON(text)) {
+                    const convertedText = convertText(text);
                     parsedText = convertedText.text;
                     const result = parsedText.replace(regex, "");
                     parsedText = result.length > 20 ?
                         result.slice(0, 20) + '...' :
                         result;
-                } else if (section.text) {
-                    const result = section.text.replace(regex, "");
+                } else if (text) {
+                    const result = text.replace(regex, "");
                     parsedText = result.length > 20 ?
                         result.slice(0,20) + "..." :
                         result;
@@ -172,15 +173,15 @@ const Section = ({
                 return parsedText;
             case 'image' :
                 return (
-                    section.image ?
-                        <img className="input_image" src={section.image} alt=""/>
+                    image ?
+                        <img className="input_image" src={image} alt=""/>
                         :
                         type  + " " + imageCount
                 )
             case 'file' :
                 let content = "";
-                if(section.file) {
-                    const fileNameObj = getFileParts(section.file)
+                if(file) {
+                    const fileNameObj = getFileParts(file)
                     content = fileNameObj.name + "." + fileNameObj.type
 
                     if (length !== "full") {
@@ -418,27 +419,27 @@ const Section = ({
                                                 setShowLoader={setShowLoader}
                                                 completedCrop={completedCrop}
                                                 setCompletedCrop={setCompletedCrop}
-                                                startCollapsed={section['image']}
+                                                startCollapsed={image}
                                                 onUpload={(response) => {
                                                     const packets = {
-                                                        [`${section}_${index + 1}_image}`]: response.key,
+                                                        [`section_${index + 1}_image}`]: response.key,
                                                         ext: response.extension,
                                                     };
-                                                    updateCourseSectionImage(packets, section['id'])
-                                                    .then((response) => {
-                                                        if (response.success) {
+                                                    updateCourseSectionImage(packets, id)
+                                                    .then((response2) => {
+                                                        if (response2.success) {
                                                             setSections(
-                                                                sections.map((loopSection) => {
-                                                                    if (loopSection.id === section.id) {
+                                                                sections.map((sectionMap) => {
+                                                                    if (sectionMap.id === id) {
                                                                         return {
-                                                                            ...loopSection,
-                                                                            image: response.imagePath,
+                                                                            ...sectionMap,
+                                                                            image: response2.imagePath,
                                                                         };
                                                                     }
-                                                                    return loopSection;
+                                                                    return sectionMap;
                                                                 }),
                                                             );
-                                                            const activeSection = `.${section}_${index + 1}_image_form`;
+                                                            const activeSection = `.section_${index + 1}_image`;
                                                             document.querySelector(activeSection + " .bottom_section")
                                                             .classList.add("hidden");
                                                             setTimeout(function () {

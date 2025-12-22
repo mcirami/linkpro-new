@@ -34,6 +34,7 @@ const PreviewSection = ({
         file
     } = currentSection;
 
+    console.log("image", image);
     const [buttonStyle, setButtonStyle] = useState(null);
 
     useEffect(() => {

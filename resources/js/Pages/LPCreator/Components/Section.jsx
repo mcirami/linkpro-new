@@ -37,6 +37,7 @@ const Section = ({
         type,
         text,
         button_course_id,
+        image
     } = section;
 
     const {
@@ -45,7 +46,7 @@ const Section = ({
         setNodeRef,
         transform,
         transition,
-    } = useSortable({id: section.id});
+    } = useSortable({id: id});
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -80,8 +81,8 @@ const Section = ({
         if (type === 'text') {
             const regex = /(<([^>]+)>)/gi;
 
-            if (section.text && isJSON(section.text)) {
-                const convertedText = convertText(section.text);
+            if (text && isJSON(text)) {
+                const convertedText = convertText(text);
                 if (convertedText.type === 'blocks') {
                     const blocks = convertedText.text.blocks || [];
                     const previewText = blocks[0]?.text ?? '';
@@ -98,8 +99,8 @@ const Section = ({
                     ? `${sanitizedText.slice(0, 20)}...`
                     : sanitizedText;
             }
-            if (section.text) {
-                const result = section.text.replace(regex, '');
+            if (text) {
+                const result = text.replace(regex, '');
 
                 return result.length > 20 ? `${result.slice(0, 20)}...` : result;
             }
@@ -107,12 +108,12 @@ const Section = ({
         }
 
         if (type === 'image') {
-            return section.image
-                ? <img className="input_image" src={section.image} alt=""/>
+            return image
+                ? <img className="input_image" src={image} alt=""/>
                 : `${type} ${imageCount}`;
         }
         return '';
-    }, [imageCount, section.image, section.text, textCount, type]);
+    }, [imageCount, image, text, textCount, type]);
 
     const createMarkup = (convertText) => {
         return {
@@ -221,19 +222,19 @@ const Section = ({
                                 aspect: 16 / 8
                             }}
                             label="Background"
-                            startCollapsed={section.image}
+                            startCollapsed={image}
                             onUpload={(response) => {
                                 const packets = {
                                     [`section_${index + 1}_image`]: response.key,
                                     ext: response.extension,
                                 };
 
-                                updateSectionImage(packets, section.id)
+                                updateSectionImage(packets, id)
                                 .then((response) => {
                                     if (response.success) {
                                         setSections(
                                             sections.map((sectionMap) => {
-                                                if (sectionMap.id === section.id) {
+                                                if (sectionMap.id === id) {
                                                     return {
                                                         ...sectionMap,
                                                         image: response.imagePath,

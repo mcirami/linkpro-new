@@ -71,7 +71,9 @@ function CourseCreator({
 
     const [offerData, dispatchOfferData] = useReducer(offerDataReducer, offerArray);
     const [courseData, dispatchCourseData] = useReducer(pageDataReducer, courseArray);
-    const [sections, setSections] = useState(courseArray["sections"]);
+    const [sections, setSections] = useState(() =>
+            Array.isArray(courseArray["sections"]) ? courseArray["sections"] : []
+        );
     const [showPreviewButton, setShowPreviewButton] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
 

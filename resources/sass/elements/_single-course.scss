@@ -188,7 +188,6 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
         justify-content: center;
-        gap: 20px;
 
         .column {
             padding: 0;
@@ -227,7 +226,7 @@
 
             &.video {
                 margin: 20px 0;
-                max-width: 500px;
+                //max-width: 500px;
                 border-radius: 20px;
                 -webkit-border-radius: 20px;
                 -moz-border-radius: 20px;
@@ -289,9 +288,10 @@
 }
 
 #links_page {
-    .live_page.course {
+    &.live_page.course {
         .sections {
             padding-top: 40px;
+            column-gap: 40px;
         }
     }
 }

@@ -47,7 +47,7 @@ export default function Login({ status, canResetPassword, course = null }) {
                         {course ? (
                             <div className="border-b border-gray-100 flex justify-start gap-3 pb-8 mb-8">
                                 {course.logo && (
-                                    <div className="image_wrap w-1/3 md:w-1/5 mr-auto">
+                                    <div className="image_wrap w-1/3 md:w-1/5 mr-auto p-2 rounded-lg" style={{ background: course.header_color}}>
                                         <img
                                             className="rounded-xl"
                                             src={course.logo}
