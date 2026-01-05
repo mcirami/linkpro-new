@@ -84,19 +84,16 @@ const AddFolder = ({
     }
 
     return (
-        <div className="grid grid-cols-1 gap-4">
-            <ContentSelectButtons
-                options={[
-                    {
-                        title: 'Add Folder',
-                        key: 'layout_one',
-                        icon: <AiOutlineFolderAdd className="h-6 w-6 text-[#424fcf]" aria-hidden="true" />,
-                    },
-                ]}
-                handleClick={handleClick}
-            />
-        </div>
-
+        <ContentSelectButtons
+            options={[
+                {
+                    title: 'Add Folder',
+                    key: 'layout_one',
+                    icon: <AiOutlineFolderAdd className="h-6 w-6 text-[#424fcf]" aria-hidden="true" />,
+                },
+            ]}
+            handleClick={handleClick}
+        />
     )
 }
 export default AddFolder;

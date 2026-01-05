@@ -404,7 +404,7 @@ function LPCreator({landingPageArray, courses, username}) {
                                             <div className="section_title">
                                                 <h4>Add Content</h4>
                                             </div>
-                                            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                                            <div className="flex flex-wrap gap-4">
                                                 <ContentSelectButtons
                                                     options={[
                                                         {

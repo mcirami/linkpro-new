@@ -629,26 +629,23 @@ function Dashboard({
                                                                 />
                                                             </div>
                                                             <div className="my_row link_row">
-                                                                <div className={`add_content_links !pl-0 !pr-0 !border-0`}>
-
-                                                                        <div className="add_more_link">
+                                                                <div className={`add_content_links w-full !pl-0 !pr-0 !border-0`}>
+                                                                    <div className="flex flex-wrap w-full gap-4">
                                                                             <AddLink
                                                                                 setShowLinkTypeRadio={setShowLinkTypeRadio}
                                                                                 subStatus={subStatus}
                                                                                 setShowUpgradePopup={setShowUpgradePopup}
                                                                             />
-                                                                        </div>
-                                                                    {(pageSettings.page_layout ===
-                                                                            "layout_one" &&
-                                                                            !editLink.folder_id) &&
-                                                                        <div className="add_more_link">
-                                                                            <AddFolder
-                                                                                subStatus={subStatus}
-                                                                                setShowUpgradePopup={setShowUpgradePopup}
-                                                                                setEditLink={setEditLink}
-                                                                            />
-                                                                        </div>
-                                                                    }
+                                                                        {(pageSettings.page_layout ===
+                                                                                "layout_one" &&
+                                                                                !editLink.folder_id) &&
+                                                                                <AddFolder
+                                                                                    subStatus={subStatus}
+                                                                                    setShowUpgradePopup={setShowUpgradePopup}
+                                                                                    setEditLink={setEditLink}
+                                                                                />
+                                                                        }
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </>

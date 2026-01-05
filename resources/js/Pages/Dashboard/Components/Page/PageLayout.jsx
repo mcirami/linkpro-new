@@ -29,7 +29,7 @@ function PageLayout({pageLayoutRef}) {
                     <h4 className="capitalize">Layout</h4>
                     <ToolTipIcon section="layout" />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-wrap w-full gap-4">
                     <ContentSelectButtons
                         options={[
                             {

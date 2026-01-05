@@ -39,7 +39,7 @@ const AddLink = ({
     };
 
     return (
-        <div className="grid grid-cols-1 gap-4">
+
             <ContentSelectButtons
                 handleClick={handleClick}
                 options={[
@@ -50,7 +50,6 @@ const AddLink = ({
                     },
                 ]}
             />
-        </div>
 
     )
 }

@@ -540,10 +540,6 @@
                 grid-gap: 10px;
             }
 
-            @include query(smallMobile) {
-                padding-left: 0;
-            }
-
             .icon_col {
                 width: 100%;
                 position: relative;

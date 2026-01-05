@@ -491,25 +491,29 @@ function CourseCreator({
                                                                         key: 'text',
                                                                         icon: <BiNotepad className="h-4 w-4 text-[#424fcf]"/>,
                                                                         title: 'Text',
-                                                                        description: 'Add formatted text, descriptions, or instructions for your students.'
+                                                                        description: 'Add formatted text, descriptions, or instructions for your students.',
+                                                                        buttonClasses: '!w-full'
                                                                     },
                                                                     {
                                                                         key: 'image',
                                                                         icon: <BiImage className="h-4 w-4 text-[#424fcf]"/>,
                                                                         title: 'Image',
-                                                                        description: 'Upload a photo, diagram, or chart to visually support your content.'
+                                                                        description: 'Upload a photo, diagram, or chart to visually support your content.',
+                                                                        buttonClasses: '!w-full'
                                                                     },
                                                                     {
                                                                         key: 'video',
                                                                         icon: <BiVideo className="h-4 w-4 text-[#424fcf]"/>,
                                                                         title: 'Video',
-                                                                        description: 'Embed a video lesson directly into your course.'
+                                                                        description: 'Embed a video lesson directly into your course.',
+                                                                        buttonClasses: '!w-full'
                                                                     },
                                                                     {
                                                                         key: 'file',
                                                                         icon: <BiFolderOpen className="h-4 w-4 text-[#424fcf]"/>,
                                                                         title: 'File',
-                                                                        description: 'Attach a downloadable file such as a PDF, ZIP, or worksheet.'
+                                                                        description: 'Attach a downloadable file such as a PDF, ZIP, or worksheet.',
+                                                                        buttonClasses: '!w-full'
                                                                     },
                                                                 ]}
                                                             />
