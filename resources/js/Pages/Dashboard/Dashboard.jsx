@@ -628,6 +628,9 @@ function Dashboard({
                                                                     pageLayoutRef={pageLayoutRef}
                                                                 />
                                                             </div>
+                                                            <div className="section_title w-full flex justify-start gap-2">
+                                                                <h4 className="capitalize">Links</h4>
+                                                            </div>
                                                             <div className="my_row link_row">
                                                                 <div className={`add_content_links w-full !pl-0 !pr-0 !border-0`}>
                                                                     <div className="flex flex-wrap w-full gap-4">
