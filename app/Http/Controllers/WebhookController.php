@@ -123,12 +123,22 @@ class WebhookController extends Controller
         }*/
     }
 
-    public function receivePaypalWebhookResponse(Request $request, WebhookService $webhook_service): void {
+    public function receivePaypalWebhookResponse(Request $request, WebhookService $webhook_service, \App\Services\PayPalService $payPalService): \Illuminate\Http\Response {
+
+        if (!$payPalService->verifyWebhookSignature($request)) {
+            Log::channel('webhooks')->warning('Rejected PayPal webhook with invalid signature.', [
+                'transmission_id' => $request->header('PAYPAL-TRANSMISSION-ID'),
+                'event_type'      => $request->input('event_type'),
+            ]);
+            return response('Invalid signature', 400);
+        }
+
         $webhookData = $request->all();
-        $event_type = $webhookData["event_type"];
-        $subscription_id = $webhookData['resource']['id'];
-        $endDate = $webhookData['resource']['start_time'];
-        $plan_id = $webhookData['resource']['plan_id'];
+        $event_type = $webhookData["event_type"] ?? null;
+        $resource = $webhookData['resource'] ?? [];
+        $subscription_id = $resource['id'] ?? null;
+        $endDate = $resource['start_time'] ?? null;
+        $plan_id = $resource['plan_id'] ?? null;
 
         if (App::environment() === "production") {
             $planName = $plan_id == "P-6MH1893903516972EMX5QADY" ? "pro" : "premier";
@@ -147,6 +157,8 @@ class WebhookController extends Controller
                 $webhook_service->handleSubscriptionEnded($subscription_id, null, $planName);
                 break;
         }
+
+        return response('', 200);
     }
 
     private function getStripeWebhookInstance($type) {

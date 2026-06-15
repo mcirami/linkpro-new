@@ -13,6 +13,12 @@ class ChangeFolderIdStartingPoint extends Migration
      */
     public function up()
     {
+        // The folder id offset is a MySQL-specific data concern. Skip on other
+        // drivers (e.g. the sqlite database used by the test suite).
+        if (Schema::getConnection()->getDriverName() !== 'mysql') {
+            return;
+        }
+
         Schema::table('folders', function (Blueprint $table) {
             $table->id()->from(1000)->change();
 
@@ -27,6 +33,10 @@ class ChangeFolderIdStartingPoint extends Migration
      */
     public function down()
     {
+        if (Schema::getConnection()->getDriverName() !== 'mysql') {
+            return;
+        }
+
         Schema::table('folders', function (Blueprint $table) {
             $table->id()->change();
             \Illuminate\Support\Facades\DB::statement("ALTER TABLE folders AUTO_INCREMENT = 1;");

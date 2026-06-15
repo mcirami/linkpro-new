@@ -55,17 +55,22 @@ trait StatsTrait {
         }
     }
 
-    public function calculatePayout($clicks, $price,  $userId = null) {
+    /**
+     * Commission is calculated against the amount actually paid for each
+     * purchase (purchase_amount), NOT the offer's current price. Using the
+     * live price would retroactively change historical payouts whenever a
+     * creator edits their offer price.
+     *
+     * @param $price  Retained for backwards compatibility; no longer used.
+     */
+    public function calculatePayout($clicks, $price = null, $userId = null) {
 
         $payout = 0.00;
         foreach ( $clicks as $click ) {
 
             if ($click->purchase_amount) {
-                if ( $click->referral_id == $userId ) {
-                    $payout += $price * .80;
-                } else {
-                    $payout += $price * .40;
-                }
+                $rate = ( $click->referral_id == $userId ) ? .80 : .40;
+                $payout += $click->purchase_amount * $rate;
             }
         }
 

@@ -88,24 +88,20 @@ const PurchasePaymentButtons = ({showPaymentButtons}) => {
         });
     }
 
-    const onApprove = (data, actions) => {
+    const onApprove = (data) => {
 
-        actions.order.get(data.orderID)
-        .then((response) => {
-            router.visit(route('course.purchase.success'), {
-                method: 'get',
-                data: {
-                    price: showPaymentButtons.price,
-                    affRef: showPaymentButtons.affRef,
-                    cid: showPaymentButtons.clickId,
-                    offer: showPaymentButtons.offerId,
-                    orderId: data.orderID,
-                    pmType: "paypal",
-                    status: response.status,
-                    customerId: data.payerID,
-                    customerName: response.payer.name.given_name
-                }
-            })
+        // The order is captured and verified server-side. We only forward the
+        // orderId and affiliate attribution — amount/status are never trusted
+        // from the client.
+        router.visit(route('course.purchase.success'), {
+            method: 'get',
+            data: {
+                affRef: showPaymentButtons.affRef,
+                cid: showPaymentButtons.clickId,
+                offer: showPaymentButtons.offerId,
+                orderId: data.orderID,
+                pmType: "paypal",
+            }
         })
 
     }

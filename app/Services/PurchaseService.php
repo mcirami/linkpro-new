@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Events\PurchasedItem;
+use App\Models\Purchase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use App\Http\Traits\BillingTrait;
@@ -65,11 +66,22 @@ class PurchaseService {
             'payment_method_types'      => [],
             'invoice_creation'          => ['enabled' => true],
             'allow_promotion_codes'     => true,
+            // Tie the session to this offer/user so the success handler can
+            // verify the session genuinely belongs to this purchase.
+            'client_reference_id'       => (string) $offer->id,
+            'metadata'                  => [
+                'offer_id' => $offer->id,
+                'user_id'  => $authUser->id,
+            ],
             $customerData
         ]);
     }
 
     /**
+     * Record a course purchase ONLY after verifying the payment with the
+     * gateway. Amounts and status come from Stripe/PayPal, never from the
+     * client, and the write is idempotent on the gateway transaction id.
+     *
      * @param $offer
      * @param $request
      *
@@ -77,58 +89,99 @@ class PurchaseService {
      */
     public function savePurchase($offer, $request): array {
 
-        $user = Auth::user();
-        $roles = $user->getRoleNames();
-        if (!$roles->contains("course.user")) {
-            $user->assignRole('course.user');
-        }
-
+        $user   = Auth::user();
+        $course = $offer->Course()->first();
         $pmType = $request->pmType;
 
+        // Affiliate click id used for commission attribution.
         if ( $request->cid && $request->cid != "" ) {
             $clickId = $request->cid;
         } else {
             $clickId = Cookie::get( 'lpcid_' . $request->affRef . '_' . $offer->id );
         }
 
-        if($pmType == "paypal") {
-            $purchaseData = [
+        if ($pmType == "paypal") {
+
+            // Capture and verify the order with PayPal server-side.
+            $verified = app(PayPalService::class)->captureAndVerifyOrder($request->orderId);
+
+            if (!$verified || $verified['amount'] === null) {
+                return [
+                    "success" => false,
+                    "message" => "We couldn't verify your PayPal payment. If you were charged, please contact support.",
+                ];
+            }
+
+            $transactionId = $verified['transaction_id'];
+            $customerName  = $verified['payer_name'];
+            $purchaseData  = [
                 'user_id'         => $user->id,
                 'offer_click_id'  => $clickId,
-                'customer_id'     => $request->customerId,
-                'transaction_id'  => $request->orderId,
-                'purchase_amount' => $request->price,
-                'pm_type'         => $pmType,
-                'status'          => $request->status,
+                'customer_id'     => $verified['payer_id'] ?: $request->customerId,
+                'transaction_id'  => $transactionId,
+                'purchase_amount' => $verified['amount'],
+                'pm_type'         => 'paypal',
+                'status'          => $verified['status'],
             ];
+
         } else {
-            $billing = $this->getCustomerBillingInfo($request);
-            $price  = (float) number_format( ( $request->price / 100 ), 2, '.', ' ' );
-            $purchaseData = [
+
+            // Verify the Stripe checkout session: it must be paid and must
+            // belong to this offer (set as client_reference_id at creation).
+            $billing      = $this->getCustomerBillingInfo($request);
+            $isPaid       = ($billing['paymentStatus'] ?? null) === 'paid';
+            $matchesOffer = (string) ($billing['clientReference'] ?? '') === (string) $offer->id;
+
+            if (!$isPaid || !$matchesOffer) {
+                return [
+                    "success" => false,
+                    "message" => "We couldn't verify your payment. If you were charged, please contact support.",
+                ];
+            }
+
+            $transactionId = $billing['sessionId'];
+            $customerName  = $billing['name'];
+            $purchaseData  = [
                 'user_id'         => $user->id,
                 'offer_click_id'  => $clickId,
                 'customer_id'     => $billing['id'],
-                'transaction_id'  => $billing['invoice'],
-                'purchase_amount' => $price,
+                'transaction_id'  => $transactionId,
+                // Amount is the Stripe-confirmed total (in cents), never the client value.
+                'purchase_amount' => (float) number_format( $billing['amountTotal'] / 100, 2, '.', '' ),
                 'pm_last_four'    => $billing['last4'],
                 'pm_type'         => $billing['pmType'],
-                'status'          => $billing['status'],
+                'status'          => 'active',
             ];
         }
 
-        $course = $offer->Course()->first();
-        $purchase = $course->Purchases()->create($purchaseData);
+        // Idempotency: a refreshed success page must not create a second
+        // purchase, re-grant access, or fire another commission.
+        $existing = Purchase::where('transaction_id', $transactionId)->first();
+        if ($existing) {
+            return $this->purchaseResult($course, $customerName);
+        }
 
-        $data = [
+        // Payment is verified — grant the buyer access and record the sale.
+        if (!$user->getRoleNames()->contains("course.user")) {
+            $user->assignRole('course.user');
+        }
+
+        $purchase = $course->Purchases()->create($purchaseData);
+        PurchasedItem::dispatch( $purchase );
+
+        return $this->purchaseResult($course, $customerName);
+    }
+
+    /**
+     * Build the success payload returned to the controller.
+     */
+    private function purchaseResult($course, $customerName): array {
+        return [
             "success"      => true,
             "message"      => "Congrats! You Have Purchased The " . str_replace( '-', " ", $course->slug ) . " Course",
             "courseSlug"   => $course->slug,
             'courseTitle'  => $course->title,
-            "customerName" => $pmType == "paypal" ? $request->customerName : $billing['name']
+            "customerName" => $customerName,
         ];
-
-        PurchasedItem::dispatch( $purchase );
-
-        return $data;
     }
 }

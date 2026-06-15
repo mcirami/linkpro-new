@@ -5,8 +5,10 @@ use App\Http\Traits\BillingTrait;
 use App\Http\Traits\UserTrait;
 use App\Notifications\NotifyAboutUpgrade;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Throwable;
 
@@ -205,5 +207,146 @@ class PayPalService {
         } else {
             return $planName === "pro" ? "P-5XM03253A6686724NMYGYLEQ" : "P-17R924989P608662RMYGYLWQ";
         }
+    }
+
+    /**
+     * The PayPal REST API host for the current environment.
+     */
+    public function getApiHost(): string {
+        return App::environment() == 'production'
+            ? config('paypal.live.api_host')
+            : config('paypal.sandbox.api_host');
+    }
+
+    /**
+     * The configured webhook id for the current environment.
+     */
+    private function getWebhookId(): string {
+        return App::environment() == 'production'
+            ? config('paypal.live.webhook_id')
+            : config('paypal.sandbox.webhook_id');
+    }
+
+    /**
+     * Verify that an incoming webhook actually originated from PayPal by asking
+     * PayPal to validate the transmission signature against our webhook id.
+     *
+     * @throws Throwable
+     */
+    public function verifyWebhookSignature(Request $request): bool {
+
+        $webhookId = $this->getWebhookId();
+        if (empty($webhookId)) {
+            Log::channel('webhooks')->error('PayPal webhook id is not configured; rejecting webhook.');
+            return false;
+        }
+
+        $payload = [
+            'auth_algo'         => $request->header('PAYPAL-AUTH-ALGO'),
+            'cert_url'          => $request->header('PAYPAL-CERT-URL'),
+            'transmission_id'   => $request->header('PAYPAL-TRANSMISSION-ID'),
+            'transmission_sig'  => $request->header('PAYPAL-TRANSMISSION-SIG'),
+            'transmission_time' => $request->header('PAYPAL-TRANSMISSION-TIME'),
+            'webhook_id'        => $webhookId,
+            'webhook_event'     => $request->json()->all(),
+        ];
+
+        $response = $this->payPalApiCall(
+            $this->getApiHost() . '/v1/notifications/verify-webhook-signature',
+            'POST',
+            $payload
+        );
+
+        return ($response['verification_status'] ?? null) === 'SUCCESS';
+    }
+
+    /**
+     * Capture an approved PayPal order server-side and return the verified,
+     * PayPal-confirmed details. Never trusts client supplied amounts/status.
+     *
+     * Returns null when the order cannot be confirmed as completed.
+     *
+     * @throws Throwable
+     */
+    public function captureAndVerifyOrder(string $orderId): ?array {
+
+        $host = $this->getApiHost();
+
+        // Attempt the capture. If the order was already captured (e.g. a retry
+        // or duplicate request) fall back to reading the existing capture.
+        $response = $this->payPalApiCall($host . "/v2/checkout/orders/{$orderId}/capture", 'POST');
+
+        $alreadyCaptured = collect($response['details'] ?? [])
+            ->contains(fn ($d) => ($d['issue'] ?? null) === 'ORDER_ALREADY_CAPTURED');
+
+        if ($alreadyCaptured || ($response['status'] ?? null) !== 'COMPLETED') {
+            $response = $this->payPalApiCall($host . "/v2/checkout/orders/{$orderId}", 'GET');
+        }
+
+        if (($response['status'] ?? null) !== 'COMPLETED') {
+            Log::channel('webhooks')->error('PayPal order not completed', [
+                'order_id' => $orderId,
+                'status'   => $response['status'] ?? 'unknown',
+            ]);
+            return null;
+        }
+
+        $unit    = $response['purchase_units'][0] ?? [];
+        $capture = $unit['payments']['captures'][0] ?? [];
+
+        return [
+            'status'         => 'active',
+            'transaction_id' => $capture['id'] ?? $orderId,
+            'amount'         => isset($capture['amount']['value'])
+                ? (float) $capture['amount']['value']
+                : null,
+            'payer_name'     => $response['payer']['name']['given_name'] ?? null,
+            'payer_id'       => $response['payer']['payer_id'] ?? null,
+        ];
+    }
+
+    /**
+     * Minimal PayPal REST helper that returns the full decoded JSON response.
+     *
+     * @throws Throwable
+     */
+    private function payPalApiCall(string $endpoint, string $method = 'GET', ?array $body = null): array {
+
+        $provider    = new PayPalClient;
+        $accessToken = $provider->getAccessToken();
+
+        $options = [
+            CURLOPT_URL            => $endpoint,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING       => "",
+            CURLOPT_TIMEOUT        => 30,
+            CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST  => $method,
+            CURLOPT_HTTPHEADER     => [
+                'Content-Type: application/json',
+                'Accept: application/json',
+                'Authorization: Bearer ' . $accessToken['access_token'],
+            ],
+        ];
+
+        if ($body !== null) {
+            $options[CURLOPT_POSTFIELDS] = json_encode($body);
+        }
+
+        $curl = curl_init();
+        curl_setopt_array($curl, $options);
+        $response = curl_exec($curl);
+        $err      = curl_error($curl);
+        curl_close($curl);
+
+        if ($err) {
+            Log::channel('webhooks')->error('cURL error on PayPal call', [
+                'endpoint' => $endpoint,
+                'error'    => $err,
+            ]);
+            return [];
+        }
+
+        return json_decode($response, true) ?: [];
     }
 }
