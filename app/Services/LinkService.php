@@ -238,17 +238,22 @@ class LinkService {
      */
     public function updateLinksPositions($request): void {
 
+        // Only ever reorder the current user's own links/folders. Ids that
+        // don't belong to them are silently skipped so a crafted payload can't
+        // touch (or probe for) another user's content.
+        $userId = Auth::id();
+
         if (array_key_exists("userLinks", $request) && !empty($request['userLinks']) ) {
             foreach ( $request["userLinks"] as $index => $link ) {
                 if ( array_key_exists( "type", $link ) && $link["type"] == "folder" ) {
-                    $currentFolder = Folder::findOrFail( $link["id"] );
-                    if ( $currentFolder["position"] != $index ) {
+                    $currentFolder = Folder::where('id', $link["id"])->where('user_id', $userId)->first();
+                    if ( $currentFolder && $currentFolder["position"] != $index ) {
                         $currentFolder["position"] = $index;
                         $currentFolder->save();
                     }
                 } else {
-                    $currentLink = Link::findOrFail( $link["id"] );
-                    if ( $currentLink["position"] != $index ) {
+                    $currentLink = Link::where('id', $link["id"])->where('user_id', $userId)->first();
+                    if ( $currentLink && $currentLink["position"] != $index ) {
                         $currentLink["position"] = $index;
                         $currentLink->save();
                     }
@@ -258,8 +263,8 @@ class LinkService {
 
         if (array_key_exists( "folderLinks", $request ) && !empty($request['folderLinks'])) {
             foreach ($request['folderLinks'] as $index => $folderLink) {
-                $link = Link::findOrFail( $folderLink["id"] );
-                if ($link["position"] != $index) {
+                $link = Link::where('id', $folderLink["id"])->where('user_id', $userId)->first();
+                if ($link && $link["position"] != $index) {
                     $link["position"] = $index;
                     $link->save();
                 }

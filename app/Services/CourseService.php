@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\CourseSection;
 use App\Models\Link;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -280,9 +281,12 @@ class CourseService {
      */
     public function updateAllSectionsPositions($request): void {
 
+        // Only reorder sections owned by the current user; skip foreign ids.
+        $userId = Auth::id();
+
         foreach($request['sections'] as $index => $section) {
-            $currentSection = CourseSection::findOrFail( $section["id"] );
-            if ( $currentSection["position"] != $index ) {
+            $currentSection = CourseSection::where('id', $section["id"])->where('user_id', $userId)->first();
+            if ( $currentSection && $currentSection["position"] != $index ) {
                 $currentSection["position"] = $index;
                 $currentSection->save();
             }
