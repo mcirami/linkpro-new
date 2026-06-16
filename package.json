@@ -59,6 +59,7 @@
         "eslint-plugin-react-hooks": "^7.0.1",
         "laravel-vapor": "^0.7.1",
         "laravel-vite-plugin": "^2.0.1",
+        "mysql2": "^3.22.5",
         "postcss": "^8.4.45",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
