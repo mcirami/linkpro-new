@@ -110,6 +110,12 @@ class WebhookController extends Controller
             case 'BILLING.SUBSCRIPTION.EXPIRED':
                 $webhook_service->handleSubscriptionEnded($subscription_id, null, $planName);
                 break;
+            case 'BILLING.SUBSCRIPTION.PAYMENT.FAILED':
+                $webhook_service->handlePaymentFailed($subscription_id);
+                break;
+            case 'BILLING.SUBSCRIPTION.SUSPENDED':
+                $webhook_service->handleSubscriptionSuspended($subscription_id, $planName);
+                break;
         }
 
         return response('', 200);
