@@ -121,9 +121,7 @@ class CourseController extends Controller
     public function edit(Course $course, CourseService $courseService): \Inertia\Response {
         $user = Auth::user();
 
-        if ($course->user_id != $user["id"]) {
-            return abort(404);
-        }
+        $this->authorize('manage', $course);
 
         $courseData = $courseService->getCourseData($course);
         $offerData = $courseService->getCourseOfferData($course);
@@ -170,11 +168,7 @@ class CourseController extends Controller
      * @return JsonResponse
      */
     public function saveCourseData(Request $request, Course $course, CourseService $courseService): JsonResponse {
-        $userID = Auth::id();
-
-        if ($course->user_id != $userID) {
-            return abort(404);
-        }
+        $this->authorize('manage', $course);
 
         $key = $courseService->saveCourseData($course, $request);
 
@@ -189,11 +183,9 @@ class CourseController extends Controller
      * @return JsonResponse
      */
     public function saveImage(Request $request, Course $course, CourseService $courseService): JsonResponse {
-        $userID = Auth::id();
+        $this->authorize('manage', $course);
 
-        if ($course->user_id != $userID) {
-            return abort(404);
-        }
+        $userID = Auth::id();
         $keys = collect($request->all())->keys();
         $imagePath = $courseService->saveCourseImage($userID, $request, $keys[0], $course);
 
@@ -208,12 +200,9 @@ class CourseController extends Controller
      * @return JsonResponse
      */
     public function updateSectionImage(Request $request, CourseSection $courseSection, CourseService $courseService): JsonResponse {
+        $this->authorize('manage', $courseSection);
+
         $userID = Auth::id();
-
-        if ($courseSection->user_id != $userID) {
-            return abort(404);
-        }
-
         $keys = collect($request->all())->keys();
 
         $imagePath = $courseService->saveSectionImage($userID, $request, $keys[0], $courseSection);
@@ -229,12 +218,9 @@ class CourseController extends Controller
      * @return JsonResponse
      */
     public function addSection(Request $request, Course $course, CourseService $service): JsonResponse {
+        $this->authorize('manage', $course);
+
         $userID = Auth::id();
-
-        if ($course->user_id != $userID) {
-            return abort(404);
-        }
-
         $section = $service->addCourseSection($course, $userID, $request);
 
         return response()->json(['section' => $section]);
@@ -248,11 +234,7 @@ class CourseController extends Controller
      * @return JsonResponse
      */
     public function updateSectionData(Request $request, CourseSection $courseSection, CourseService $service): JsonResponse {
-        $userID = Auth::id();
-
-        if ($courseSection->user_id != $userID) {
-            return abort(404);
-        }
+        $this->authorize('manage', $courseSection);
 
         $key = $service->saveSectionData($courseSection, $request);
 
@@ -267,12 +249,9 @@ class CourseController extends Controller
      * @return JsonResponse
      */
     public function updateSectionFile(Request $request, CourseSection $courseSection, CourseService $courseService): JsonResponse {
+        $this->authorize('manage', $courseSection);
+
         $userID = Auth::id();
-
-        if ($courseSection->user_id != $userID) {
-            return abort(404);
-        }
-
         $keys = collect($request->all())->keys();
 
         $filePath = $courseService->saveSectionFile($userID, $request, $keys[0], $courseSection);
@@ -288,11 +267,7 @@ class CourseController extends Controller
      * @return JsonResponse
      */
     public function deleteSection(Request $request, CourseSection $courseSection, CourseService $courseService): JsonResponse {
-        $userID = Auth::id();
-
-        if ($courseSection->user_id != $userID) {
-            return abort(404);
-        }
+        $this->authorize('manage', $courseSection);
         $courseSection->delete();
         $courseService->updateAllSectionsPositions($request->all());
 

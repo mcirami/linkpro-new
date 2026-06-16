@@ -79,9 +79,7 @@ class LandingPageController extends Controller
 
         $user = Auth::user();
 
-        if ($landingPage->user_id != $user["id"]) {
-            return abort(404);
-        }
+        $this->authorize('manage', $landingPage);
 
         $landingPageData = $service->getLPData($landingPage);
         $courses = $courseService->getCourses($user);
@@ -100,11 +98,9 @@ class LandingPageController extends Controller
      */
     public function saveImage(Request $request, LandingPage $landingPage, LandingPageService $service) {
 
-        $userID = Auth::id();
+        $this->authorize('manage', $landingPage);
 
-        if ($landingPage->user_id != $userID) {
-            return abort(404);
-        }
+        $userID = Auth::id();
         $keys = collect($request->all())->keys();
 
         $imagePath = $service->savePageImage($userID, $request, $keys[0], $landingPage);
@@ -121,11 +117,7 @@ class LandingPageController extends Controller
      */
     public function saveLandingPageData(Request $request, LandingPage $landingPage, LandingPageService $service) {
 
-        $userID = Auth::id();
-
-        if ($landingPage->user_id != $userID) {
-            return abort(404);
-        }
+        $this->authorize('manage', $landingPage);
 
         $key = $service->savePageData($landingPage, $request);
 
@@ -140,12 +132,9 @@ class LandingPageController extends Controller
      * @return JsonResponse|never
      */
     public function addSection(Request $request, LandingPage $landingPage, LandingPageService $service) {
+        $this->authorize('manage', $landingPage);
+
         $userID = Auth::id();
-
-        if ($landingPage->user_id != $userID) {
-            return abort(404);
-        }
-
         $section = $service->addLPSection($landingPage, $userID, $request);
 
         return response()->json(['section' => $section]);
@@ -159,11 +148,7 @@ class LandingPageController extends Controller
      * @return JsonResponse|never
      */
     public function updateSectionData(Request $request, LandingPageSection $landingPageSection, LandingPageService $service) {
-        $userID = Auth::id();
-
-        if ($landingPageSection->user_id != $userID) {
-            return abort(404);
-        }
+        $this->authorize('manage', $landingPageSection);
 
         $key = $service->saveLPSection($landingPageSection, $request);
 
@@ -179,12 +164,9 @@ class LandingPageController extends Controller
      * @return JsonResponse
      */
     public function updateSectionImage(Request $request, LandingPageSection $landingPageSection, LandingPageService $service): JsonResponse {
+        $this->authorize('manage', $landingPageSection);
+
         $userID = Auth::id();
-
-        if ($landingPageSection->user_id != $userID) {
-            return abort(404);
-        }
-
         $keys = collect($request->all())->keys();
 
         $imagePath = $service->saveSectionImage($userID, $request, $keys[0], $landingPageSection);
@@ -201,11 +183,7 @@ class LandingPageController extends Controller
      * @return JsonResponse|never
      */
     public function deleteSection(Request $request, LandingPageSection $landingPageSection, LandingPageService $landingPageService): JsonResponse {
-        $userID = Auth::id();
-
-        if ($landingPageSection->user_id != $userID) {
-            return abort(404);
-        }
+        $this->authorize('manage', $landingPageSection);
 
         $landingPageSection->delete();
         $landingPageService->updateAllSectionsPositions($request->all());
@@ -220,11 +198,7 @@ class LandingPageController extends Controller
      * @return JsonResponse|never
      */
     public function publishLandingPage(LandingPage $landingPage, LandingPageService $landingPageService) {
-        $userID = Auth::id();
-
-        if ($landingPage->user_id != $userID) {
-            return abort(404);
-        }
+        $this->authorize('manage', $landingPage);
 
         $success = $landingPageService->publishPage($landingPage);
 
@@ -252,11 +226,7 @@ class LandingPageController extends Controller
      * @return JsonResponse|never
      */
     public function activateLandingPage(LandingPage $landingPage, LandingPageService $landingPageService) {
-        $userID = Auth::id();
-
-        if ($landingPage->user_id != $userID) {
-            return abort(404);
-        }
+        $this->authorize('manage', $landingPage);
 
         $landingPageService->activatePage($landingPage);
 

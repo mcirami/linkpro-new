@@ -8,7 +8,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Link;
 use App\Models\Page;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,6 +21,8 @@ class LinkController extends Controller
      * @return JsonResponse
      */
     public function getPageLinks(Page $page, LinkService $linkService): JsonResponse {
+
+        $this->authorize('manage', $page);
 
         $links = $linkService->getAllLinks($page);
 
@@ -55,9 +56,7 @@ class LinkController extends Controller
      */
     public function update(LinkRequest $request, Link $link, LinkService $linkService): JsonResponse {
 
-        if ($link->user_id != Auth::id()) {
-            return abort(403);
-        }
+        $this->authorize('manage', $link);
 
         $path = $linkService->updateLink($request, $link);
 
@@ -77,9 +76,7 @@ class LinkController extends Controller
      * @return JsonResponse
      */
     public function updateLinkItemStatus(Request $request, Link $link, LinkService $linkService): JsonResponse {
-        if ($link->user_id != Auth::id()) {
-            return abort(403);
-        }
+        $this->authorize('manage', $link);
 
         $message = $linkService->updateItemStatus($request, $link);
 
@@ -110,9 +107,7 @@ class LinkController extends Controller
      * @return JsonResponse
      */
     public function destroy(Request $request, Link $link, LinkService $linkService): JsonResponse {
-        if ($link->user_id != Auth::id()) {
-            return abort(403);
-        }
+        $this->authorize('manage', $link);
 
         $allRequest = $request->all();
 
