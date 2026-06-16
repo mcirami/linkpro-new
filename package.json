@@ -26,10 +26,7 @@
         "@tiptap/starter-kit": "^2.27.1",
         "compressorjs": "^1.2.1",
         "dompurify": "^3.3.0",
-        "draft-js": "^0.11.7",
         "draftjs-to-html": "^0.9.1",
-        "html-react-parser": "^5.1.15",
-        "html-to-draftjs": "^1.5.0",
         "lodash": "^4.17.21",
         "lodash.range": "^3.2.0",
         "prettier": "^3.3.3",
@@ -47,11 +44,6 @@
         "resize-observer-polyfill": "^1.5.1",
         "validator": "^13.15.23",
         "vite": "^7.2.4"
-    },
-    "overrides": {
-        "draft-js": {
-            "immutable": "3.8.3"
-        }
     },
     "devDependencies": {
         "@headlessui/react": "^2.2.9",
