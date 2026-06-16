@@ -24,7 +24,6 @@
         "@tiptap/pm": "^2.27.1",
         "@tiptap/react": "^2.27.1",
         "@tiptap/starter-kit": "^2.27.1",
-        "bootstrap-icons": "^1.11.3",
         "compressorjs": "^1.2.1",
         "dompurify": "^3.3.0",
         "draft-js": "^0.11.7",
@@ -65,9 +64,7 @@
         "autoprefixer": "^10.4.20",
         "axios": "^1.13.2",
         "baseline-browser-mapping": "^2.9.19",
-        "bootstrap": "^5.3.3",
         "eslint-plugin-react-hooks": "^7.0.1",
-        "jquery": "^3.6",
         "laravel-vapor": "^0.7.1",
         "laravel-vite-plugin": "^2.0.1",
         "postcss": "^8.4.45",
@@ -77,7 +74,6 @@
         "resolve-url-loader": "^5.0.0",
         "sass": "^1.94.2",
         "sass-loader": "^16.0.6",
-        "styled-components": "^6.1.13",
         "tailwindcss": "^4.1.17"
     }
 }

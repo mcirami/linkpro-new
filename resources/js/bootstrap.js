@@ -14,8 +14,6 @@ if (token) {
 } else {
     console.error('CSRF token not found. Make sure its in a <meta> tag.');
 }
-import $ from "jquery";
-window.$ = $;
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
