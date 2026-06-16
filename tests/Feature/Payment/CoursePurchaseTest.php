@@ -78,6 +78,32 @@ test('a paid stripe session that matches the offer records the purchase', functi
     Event::assertDispatched(PurchasedItem::class);
 });
 
+test('a direct purchase with no affiliate click is recorded with a null offer_click_id', function () {
+    Event::fake([PurchasedItem::class]);
+
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    $offer = Offer::factory()->create(['price' => 100]);
+
+    $service = stripePurchaseService([
+        'id' => 'cus_1', 'name' => 'A', 'last4' => null, 'pmType' => 'card',
+        'paymentStatus' => 'paid', 'amountTotal' => 10000,
+        'sessionId' => 'cs_no_click', 'clientReference' => (string) $offer->id,
+    ]);
+
+    // No cid and no affiliate cookie -> offer_click_id resolves to null.
+    $result = $service->savePurchase($offer, purchaseRequest([
+        'pmType' => 'stripe', 'session_id' => 'cs_no_click', 'offer' => $offer->id,
+    ]));
+
+    expect($result['success'])->toBeTrue();
+    $this->assertDatabaseHas('purchases', [
+        'transaction_id' => 'cs_no_click',
+        'offer_click_id' => null,
+        'user_id'        => $user->id,
+    ]);
+});
+
 test('the recorded amount comes from stripe, never the client', function () {
     Event::fake([PurchasedItem::class]);
 
