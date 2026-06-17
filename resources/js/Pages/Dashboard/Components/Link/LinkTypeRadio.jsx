@@ -175,6 +175,7 @@ const LinkTypeRadio = ({
                     <ContentSelectButtons
                         options={linkOptions}
                         handleClick={handleOnChange}
+                        extraClasses="!w-full"
                     />
                 </div>
             }

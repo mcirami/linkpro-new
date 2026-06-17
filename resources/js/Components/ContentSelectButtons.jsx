@@ -2,13 +2,14 @@ import React from 'react';
 const ContentSelectButtons = ({
                                   options,
                                   handleClick,
+                                  extraClasses=""
 }) => {
 
     return (options.map((item) => (
             <button
                 key={item.key}
                 onClick={() => handleClick(item.key)}
-                className={`content_select_button transform-none flex items-start w-full sm:w-1/3 group rounded-xl border border-gray-200 bg-white p-4 text-left shadow-md
+                className={`content_select_button transform-none flex items-start ${extraClasses} w-full sm:w-1/3 group rounded-xl border border-gray-200 bg-white p-4 text-left shadow-md
                  transition-all hover:-translate-y-0.5 hover:shadow-lg focus:outline-none
                  focus-visible:ring-2 focus-visible:ring-[#424fcf]/30 ${item.buttonClasses} `}
             >
