@@ -44,12 +44,17 @@ class PurchaseController extends Controller
         $offer = Offer::findOrFail($request->get('offer'));
         $data = $purchaseService->savePurchase($offer, $request);
 
-        $url = "";
-        if ($data["success"]) {
-            $username = $offer->user()->pluck('username')->first();
-            $url = config('app.url') . "/" . $username . "/course/" . $data["courseSlug"];
+        // Payment could not be verified with the gateway — do not show success.
+        if (!$data["success"]) {
+            return Inertia::render('Checkout/CancelCheckout')->with([
+                'type'    => 'purchase',
+                'message' => $data["message"],
+            ]);
         }
-        
+
+        $username = $offer->user()->pluck('username')->first();
+        $url = config('app.url') . "/" . $username . "/course/" . $data["courseSlug"];
+
         return Inertia::render('Checkout/Success')->with([
             'type'          => 'purchase',
             'name'          => $data["customerName"],

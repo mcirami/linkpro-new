@@ -57,7 +57,7 @@ function Menu() {
                 // 'application/json' is the modern content-type for JSON, but some
                 // older servers may use 'text/json'.
                 // See: http://bit.ly/text-json
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
             }
         });
 

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Folder;
 use App\Models\Subscription;
 use App\Models\User;
+use App\Notifications\NotifyAboutPaymentFailed;
 use Carbon\Carbon;
 use App\Http\Traits\BillingTrait;
 use Illuminate\Support\Facades\DB;
@@ -163,6 +164,78 @@ class WebhookService
             'sub_id'        => null,
             'downgraded'    => true
         ]);
+    }
+
+    /**
+     * A recurring payment failed but the subscription is still active while the
+     * gateway retries. Flag it and ask the user to update their payment method;
+     * access is intentionally left untouched (it is gated on ends_at).
+     *
+     * @param $subId
+     *
+     * @return void
+     */
+    public function handlePaymentFailed($subId): void
+    {
+        $subscription = Subscription::where('sub_id', '=', $subId)->first();
+
+        if (!$subscription) {
+            return;
+        }
+
+        $subscription->update(['status' => 'past_due']);
+
+        $this->notifyPaymentFailed($subscription, false);
+    }
+
+    /**
+     * The gateway exhausted its retries and suspended the subscription. Treat
+     * this like the subscription ending: downgrade to free, disable premium
+     * features, and notify the user so they can reactivate.
+     *
+     * @param $subId
+     * @param $planName
+     *
+     * @return void
+     */
+    public function handleSubscriptionSuspended($subId, $planName): void
+    {
+        $subscription = Subscription::where('sub_id', '=', $subId)->first();
+
+        if (!$subscription) {
+            return;
+        }
+
+        // Capture the paid plan name before the downgrade rewrites it to "free".
+        $planLabel = $subscription->name;
+
+        $this->handleSubscriptionEnded($subId, null, $planName);
+
+        $this->notifyPaymentFailed($subscription, true, $planLabel);
+    }
+
+    /**
+     * Send the payment-failure email to the subscription's owner.
+     *
+     * @param Subscription $subscription
+     * @param bool $suspended
+     * @param string|null $planLabel
+     *
+     * @return void
+     */
+    private function notifyPaymentFailed(Subscription $subscription, bool $suspended, ?string $planLabel = null): void
+    {
+        $user = User::find($subscription->user_id);
+
+        if (!$user) {
+            return;
+        }
+
+        $user->notify(new NotifyAboutPaymentFailed([
+            'plan'      => ucfirst($planLabel ?? $subscription->name ?? 'subscription'),
+            'userID'    => $user->id,
+            'suspended' => $suspended,
+        ]));
     }
 
     /**

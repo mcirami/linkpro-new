@@ -69,14 +69,19 @@ trait BillingTrait {
             }
 
             $data = [
-                'id'        => $customer->id,
-                'name'      => $customer->name,
-                'last4'     => $last4,
-                'pmType'    => $pmType,
-                'pmId'      => $pmId,
-                'invoice'   => $session->invoice ?: 'n/a',
-                'status'    => $session->status == "complete" ? "active" : $session->status,
-                'subId'     => $session->subscription
+                'id'                => $customer->id,
+                'name'              => $customer->name,
+                'last4'             => $last4,
+                'pmType'            => $pmType,
+                'pmId'              => $pmId,
+                'invoice'           => $session->invoice ?: 'n/a',
+                'status'            => $session->status == "complete" ? "active" : $session->status,
+                'subId'             => $session->subscription,
+                // Authoritative, server-verified values used to record purchases.
+                'sessionId'         => $session->id,
+                'paymentStatus'     => $session->payment_status,
+                'amountTotal'       => $session->amount_total,
+                'clientReference'   => $session->client_reference_id,
             ];
 
         } catch ( ApiErrorException $e ) {

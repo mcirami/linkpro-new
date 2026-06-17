@@ -93,9 +93,7 @@ class PageController extends Controller
      */
     public function updateName(PageNameRequest $request, PageService $pageService, Page $page): JsonResponse {
 
-        if ($page->user_id != Auth::id()) {
-            return abort(404);
-        }
+        $this->authorize('manage', $page);
 
         $pageService->updatePageName($request, $page);
 
@@ -111,9 +109,9 @@ class PageController extends Controller
      */
     public function edit(PageService $pageService, Page $page): Response {
 
-        $user = Auth::user();
+        $this->authorize('manage', $page);
 
-        if ($page->user_id != $user->id || $page->disabled) {
+        if ($page->disabled) {
             return abort(404);
         }
 
@@ -131,12 +129,9 @@ class PageController extends Controller
      */
     public function updatePageImage(Request $request, Page $page, PageService $pageService): JsonResponse {
 
+        $this->authorize('manage', $page);
+
         $userID = Auth::id();
-
-        if ($page->user_id != $userID) {
-            return abort(404);
-        }
-
         $imgPath = $pageService->updateImage($request, $userID, $page);
 
         return response()->json(['message' => 'Image Updated', 'imgPath' => $imgPath]);
@@ -152,9 +147,7 @@ class PageController extends Controller
      */
     public function updateSetting(PageTitleRequest $request, Page $page, PageService $pageService): JsonResponse {
 
-        if ($page->user_id != Auth::id()) {
-            return abort(404);
-        }
+        $this->authorize('manage', $page);
 
         $updatedElement = $pageService->updatePageSetting($request, $page);
 
@@ -171,9 +164,7 @@ class PageController extends Controller
      */
     public function updateProfileLayout(Request $request, Page $page, PageService $pageService): JsonResponse {
 
-        if ($page->user_id != Auth::id()) {
-            return abort(404);
-        }
+        $this->authorize('manage', $page);
 
         $pageService->updateProfileLayout($request, $page);
 
@@ -189,9 +180,7 @@ class PageController extends Controller
      */
     public function updatePageLayout(Request $request, Page $page, PageService $pageService): JsonResponse {
 
-        if ($page->user_id != Auth::id()) {
-            return abort(404);
-        }
+        $this->authorize('manage', $page);
 
         $pageService->updatePageLayout($request, $page);
 

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\Models\LandingPageSection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -139,9 +140,12 @@ class LandingPageService {
 
     public function updateAllSectionsPositions($request) {
 
+        // Only reorder sections owned by the current user; skip foreign ids.
+        $userId = Auth::id();
+
         foreach($request['sections'] as $index => $section) {
-            $currentSection = LandingPageSection::findOrFail( $section["id"] );
-            if ( $currentSection["position"] != $index ) {
+            $currentSection = LandingPageSection::where('id', $section["id"])->where('user_id', $userId)->first();
+            if ( $currentSection && $currentSection["position"] != $index ) {
                 $currentSection["position"] = $index;
                 $currentSection->save();
             }

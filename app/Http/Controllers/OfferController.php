@@ -23,12 +23,10 @@ class OfferController extends Controller
      * @return JsonResponse
      */
     public function updateOfferIcon(Offer $offer, Request $request, OfferService $offerService): \Illuminate\Http\JsonResponse {
+
+        $this->authorize('manage', $offer);
+
         $userID = Auth::id();
-
-        if ($offer->user_id != $userID) {
-            return abort(404);
-        }
-
         $imagePath = $offerService->updateOfferIcon($request, $userID, $offer);
 
         return response()->json(['message' => 'Course Icon Updated', 'imagePath' => $imagePath]);
@@ -44,11 +42,7 @@ class OfferController extends Controller
      */
     public function updateOfferData(Offer $offer, Request $request, OfferService $offerService): JsonResponse {
 
-        $userID = Auth::id();
-
-        if ($offer->user_id != $userID) {
-            return abort(404);
-        }
+        $this->authorize('manage', $offer);
 
         $message = $offerService->updateOfferData($offer, $request);
 
@@ -63,11 +57,7 @@ class OfferController extends Controller
      * @return JsonResponse
      */
     public function publishOffer(Offer $offer,  OfferService $offerService): JsonResponse {
-        $userID = Auth::id();
-
-        if ($offer->user_id != $userID) {
-            return abort(404);
-        }
+        $this->authorize('manage', $offer);
 
         $success = $offerService->publishOffer($offer);
 

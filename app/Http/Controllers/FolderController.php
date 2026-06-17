@@ -7,7 +7,6 @@ use App\Models\Page;
 use App\Services\LinkService;
 use Illuminate\Http\Request;
 use App\Services\FolderService;
-use Illuminate\Support\Facades\Auth;
 
 class FolderController extends Controller
 {
@@ -21,6 +20,8 @@ class FolderController extends Controller
 
     public function getFolderLinks(Folder $folder, FolderService $folderService, ) {
 
+        $this->authorize('manage', $folder);
+
         $links = $folderService->getLinks($folder);
 
         return response()->json( ['links' => $links]);
@@ -28,15 +29,15 @@ class FolderController extends Controller
 
     public function updateName(Request $request, Folder $folder, FolderService $folder_service) {
 
+        $this->authorize('manage', $folder);
+
         $folder_service->updateFolderName($folder, $request);
 
         return response()->json(['message' => "Folder Name Updated"]);
     }
 
     public function updateFolderStatus(Request $request, Folder $folder, FolderService $folderService) {
-        if ($folder->user_id != Auth::id()) {
-            return abort(403);
-        }
+        $this->authorize('manage', $folder);
 
         $message = $folderService->updateStatus($request, $folder);
 
@@ -44,9 +45,7 @@ class FolderController extends Controller
     }
 
     public function destroy(Request $request, Folder $folder, FolderService $folderService, LinkService $linkService) {
-        if ($folder->user_id != Auth::id()) {
-            return abort(403);
-        }
+        $this->authorize('manage', $folder);
 
         $allRequest = $request->all();
 
