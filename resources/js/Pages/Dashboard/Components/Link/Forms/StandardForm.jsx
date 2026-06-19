@@ -26,6 +26,7 @@ import IOSSwitch from '@/Utils/IOSSwitch.jsx';
 import {getIcons} from '@/Services/IconRequests.jsx';
 import {getIconPaths} from '@/Services/ImageService.jsx';
 import MailChimp from '@/Pages/Dashboard/Components/Link/Forms/Mailchimp/MailChimp.jsx';
+import VideoForm from '@/Pages/Dashboard/Components/Link/Forms/VideoForm.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon.jsx';
 import { LINKS_ACTIONS } from '@/Services/Reducer.jsx';
 const StandardForm = ({
@@ -233,9 +234,9 @@ const StandardForm = ({
                                 inputType="text"
                                 editLink={editLink}
                                 elementName="name"
-                                label="Link Name"
+                                label={editLink.type === "video" ? "Video Title" : "Link Name"}
                                 currentValue={editLink.name}
-                                placeholder="Enter Link Name"
+                                placeholder={editLink.type === "video" ? "Enter Video Title" : "Enter Link Name"}
                                 maxChar={11}
                             />
                         </div>
@@ -243,7 +244,7 @@ const StandardForm = ({
                     </>
                 }
 
-                { (pageSettings.page_layout === "layout_one" && !imageSelected) ?
+                { (pageSettings.page_layout === "layout_one" && !imageSelected && (editLink.type !== "video" || showFormTab === "icon")) ?
                     <div className="my_row mb-4 px-4">
                         {editLink.type === "offer" ?
                             <div className="external_link">
@@ -254,6 +255,16 @@ const StandardForm = ({
                                     <p>Select An Icon Above</p>
                                 }
                             </div>
+                            :
+                            editLink.type === "video" ?
+                                <IconSettingComponent
+                                    inputType="text"
+                                    editLink={editLink}
+                                    elementName="url"
+                                    currentValue={editLink.url}
+                                    placeholder="Enter URL (optional)"
+                                    label="Link (optional)"
+                                />
                             :
                             editLink.type !== "mailchimp" &&
                             <IconSettingComponent
@@ -293,6 +304,7 @@ const StandardForm = ({
                         }
                         { (editLink.type !== "offer" &&
                             editLink.type !== "mailchimp" &&
+                            editLink.type !== "video" &&
                             showFormTab === "icon" &&
                             !imageSelected
                         ) ?
@@ -432,6 +444,12 @@ const StandardForm = ({
                         setEditLink={setEditLink}
                         connectionError={connectionError}
                         index={index}
+                    />
+                }
+                {showFormTab === "video" &&
+                    <VideoForm
+                        editLink={editLink}
+                        setEditLink={setEditLink}
                     />
                 }
                 { (showFormTab === "offers") &&

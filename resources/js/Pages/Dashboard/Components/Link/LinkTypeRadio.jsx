@@ -6,7 +6,7 @@ import {
     FolderLinksContext,
 } from '../../Dashboard.jsx';
 import { SiInternetcomputer } from "react-icons/si";
-import { FaMoneyBillWave,FaMailchimp } from "react-icons/fa";
+import { FaMoneyBillWave,FaMailchimp,FaVideo } from "react-icons/fa";
 import AffiliateSignup
     from "@/Pages/Dashboard/Components/Link/Forms/AffiliateSignup.jsx";
 import ContentSelectButtons
@@ -43,6 +43,22 @@ const LinkTypeRadio = ({
     useEffect(() => {
         const hasMailchimp = userLinks?.some(obj => obj.type === 'mailchimp');
         const inFolder = Boolean(editLink?.folder_id);
+
+        // Video buttons are full-width content, so they live at the page level
+        // only (not inside a folder/accordion).
+        if (!inFolder) {
+            setLinkOptions(prev => {
+                if (prev.some(o => o.key === 'video')) return prev;
+                const videoObject = {
+                    key: 'video',
+                    icon: <FaVideo className="h-5 w-5 text-[#424fcf]" aria-hidden="true" />,
+                    title: 'Video',
+                    description:
+                        'Embed a YouTube or Vimeo video your visitors can play right on your page.'
+                };
+                return [...prev, videoObject];
+            });
+        }
 
         if (!hasMailchimp && !inFolder) {
             setLinkOptions(prev => {
@@ -175,6 +191,7 @@ const LinkTypeRadio = ({
                     <ContentSelectButtons
                         options={linkOptions}
                         handleClick={handleOnChange}
+                        extraClasses="!w-full"
                     />
                 </div>
             }

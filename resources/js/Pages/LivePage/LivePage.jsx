@@ -7,6 +7,8 @@ import StoreProducts from '@/Components/LinkComponents/StoreProducts.jsx';
 import AccordionLinks from '@/Components/LinkComponents/AccordionLinks.jsx';
 import {TrackIconClick} from '@/Services/TrackClicks.jsx';
 import AdvancedIcon from '@/Components/LinkComponents/AdvancedIcon.jsx';
+import VideoButton from '@/Components/LinkComponents/VideoButton.jsx';
+import VideoEmbed from '@/Components/LinkComponents/VideoEmbed.jsx';
 //import IconDescription from '@/Components/LinkComponents/IconDescription.jsx';
 import { IoOpenOutline } from "react-icons/io5";
 function LivePage({links, page, subscribed}) {
@@ -88,6 +90,7 @@ function LivePage({links, page, subscribed}) {
     const accordionLinks = value.index !== null ? links[value.index].links : null;
     const mailchimpListId = value.index  !== null ? links[value.index].mailchimp_list_id : null;
     const storeProducts = value.index  !== null ? links[value.index].shopify_products : null;
+    const videoLink = value.index !== null ? links[value.index] : null;
     //const description = value.index  !== null ? links[value.index].description : null;
 
     return (
@@ -126,6 +129,7 @@ function LivePage({links, page, subscribed}) {
                                         type,
                                         name,
                                         url,
+                                        embed_url,
                                         email,
                                         phone,
                                         icon,
@@ -163,7 +167,7 @@ function LivePage({links, page, subscribed}) {
                                     }
 
                                     let colClasses = "";
-                                    if (type === "folder" || type === "mailchimp" || type === "shopify" || type === "advanced") {
+                                    if (type === "folder" || type === "mailchimp" || type === "shopify" || type === "advanced" || (type === "video" && page_layout === "layout_one")) {
                                         colClasses=`icon_col folder
                                         ${bg_image && bg_active && page_layout ==="layout_two" ?
                                             "bg_image"
@@ -289,10 +293,45 @@ function LivePage({links, page, subscribed}) {
                                                                 :
                                                                 ""
                                                         )
+                                                    case "video":
+                                                        return (
+                                                            page_layout === "layout_two" ?
+                                                                (active_status ?
+                                                                    <div className="icon_col video_col">
+                                                                        <VideoButton
+                                                                            id={id}
+                                                                            name={name}
+                                                                            embedUrl={embed_url}
+                                                                            url={url}
+                                                                            viewType="live"
+                                                                        />
+                                                                    </div>
+                                                                    :
+                                                                    "")
+                                                                :
+                                                                (!active_status && page_layout === "layout_one") || active_status ?
+                                                                    <AdvancedIcon
+                                                                        linkItem={linkItem}
+                                                                        colClasses={colClasses}
+                                                                        displayIcon={displayIcon}
+                                                                        dataRow={dataRow}
+                                                                        mainIndex={index}
+                                                                        setRow={setRow}
+                                                                        value={value}
+                                                                        setValue={setValue}
+                                                                        index={index}
+                                                                        setClickType={setClickType}
+                                                                        clickType={clickType}
+                                                                        viewType="live"
+                                                                        pageLayout={page_layout}
+                                                                    />
+                                                                    :
+                                                                    ""
+                                                        )
                                                 }
                                             })()}
 
-                                            {subscribed &&
+                                            {(subscribed || clickType === "video") &&
                                             ( (index + 1) % 4 === 0 || index + 1 === iconCount) ||
                                             (index + 1 === dataRow && page_layout === "layout_two") ?
                                                 (() => {
@@ -312,6 +351,18 @@ function LivePage({links, page, subscribed}) {
                                                                     dataRow={dataRow}
                                                                     row={row}
                                                                     storeProducts={storeProducts}
+                                                                />
+                                                            )
+                                                        case "video":
+                                                            return (
+                                                                <VideoEmbed
+                                                                    dataRow={dataRow}
+                                                                    row={row}
+                                                                    id={videoLink?.id}
+                                                                    name={videoLink?.name}
+                                                                    embedUrl={videoLink?.embed_url}
+                                                                    url={videoLink?.url}
+                                                                    viewType="live"
                                                                 />
                                                             )
                                                         /*case "advanced":

@@ -25,6 +25,8 @@ const FormTabs = ({
             }
         } else if (editLink.type === "offer") {
             setShowFormTab("offers");
+        } else if (editLink.type === "video") {
+            setShowFormTab("video");
         } else {
             setShowFormTab("icon");
         }
@@ -33,6 +35,24 @@ const FormTabs = ({
 
     useEffect(() => {
         const optionsArray = [];
+
+        // Video buttons embed inline; on the grid layout they also need a tile
+        // icon, so only that layout gets the extra "Icon" tab.
+        if (editLink.type === "video") {
+            optionsArray.push({
+                value: "video",
+                label: "Video Settings"
+            });
+            if (pageLayout === "layout_one") {
+                optionsArray.push({
+                    value: "icon",
+                    label: "Icon"
+                });
+            }
+            setOptions(optionsArray);
+            return;
+        }
+
         if(editLink.type === "offer") {
             optionsArray.push({
                 value: "offers",

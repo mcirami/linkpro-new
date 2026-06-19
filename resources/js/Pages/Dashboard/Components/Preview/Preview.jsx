@@ -15,6 +15,8 @@ import SubscribeForm from '@/Components/LinkComponents/SubscribeForm.jsx';
 import StoreProducts from '@/Components/LinkComponents/StoreProducts.jsx';
 import {UseLoadPreviewHeight, UseResizePreviewHeight} from '@/Services/PreviewHooks.jsx';
 import AdvancedIcon from '@/Components/LinkComponents/AdvancedIcon.jsx';
+import VideoButton from '@/Components/LinkComponents/VideoButton.jsx';
+import VideoEmbed from '@/Components/LinkComponents/VideoEmbed.jsx';
 //import IconDescription from '@/Components/LinkComponents/IconDescription.jsx';
 import { IoOpenOutline } from "react-icons/io5";
 import PageBackground
@@ -78,6 +80,7 @@ const Preview = ({
     const accordionLinks = value.index !== null ? userLinks[value.index]?.links : null;
     const mailchimpListId = value.index !== null ? userLinks[value.index]?.mailchimp_list_id : null;
     const storeProducts = value.index !== null ? userLinks[value.index]?.shopify_products : null;
+    const videoLink = value.index !== null ? userLinks[value.index] : null;
     //const description = value.index !== null ? userLinks[value.index].description : null;
 
     return (
@@ -144,6 +147,7 @@ const Preview = ({
                                         type,
                                         name,
                                         url,
+                                        embed_url,
                                         email,
                                         phone,
                                         icon,
@@ -191,7 +195,8 @@ const Preview = ({
                                     let colClasses = "";
                                     if (type === "folder" || type ===
                                         "mailchimp" || type === "shopify" ||
-                                        type === "advanced") {
+                                        type === "advanced" ||
+                                        (type === "video" && pageSettings.page_layout === "layout_one")) {
                                         colClasses=`icon_col folder
                                         ${!icon_active && pageSettings.page_layout ==="layout_two" ? "no_icon" : ""}
                                        ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ?
@@ -317,6 +322,42 @@ const Preview = ({
                                                                 :
                                                                 ""
                                                         )
+                                                    case "video":
+                                                        return (
+                                                            pageSettings.page_layout === "layout_two" ?
+                                                                (active_status ?
+                                                                    <div className="icon_col video_col">
+                                                                        <VideoButton
+                                                                            id={id}
+                                                                            name={name}
+                                                                            embedUrl={embed_url}
+                                                                            url={url}
+                                                                            viewType="preview"
+                                                                        />
+                                                                    </div>
+                                                                    :
+                                                                    "")
+                                                                :
+                                                                (!active_status && pageSettings.page_layout === "layout_one") || active_status ?
+                                                                    <AdvancedIcon
+                                                                        linkItem={linkItem}
+                                                                        colClasses={colClasses}
+                                                                        displayIcon={displayIcon}
+                                                                        dataRow={dataRow}
+                                                                        mainIndex={index}
+                                                                        setRow={setRow}
+                                                                        value={value}
+                                                                        setValue={setValue}
+                                                                        index={index}
+                                                                        setClickType={setClickType}
+                                                                        clickType={clickType}
+                                                                        viewType="preview"
+                                                                        pageLayout={pageSettings.page_layout}
+                                                                        styles={styles}
+                                                                    />
+                                                                    :
+                                                                    ""
+                                                        )
                                                 }
                                             })()}
 
@@ -338,6 +379,18 @@ const Preview = ({
                                                                     dataRow={dataRow}
                                                                     row={row}
                                                                     storeProducts={storeProducts}
+                                                                />
+                                                            )
+                                                        case "video":
+                                                            return (
+                                                                <VideoEmbed
+                                                                    dataRow={dataRow}
+                                                                    row={row}
+                                                                    id={videoLink?.id}
+                                                                    name={videoLink?.name}
+                                                                    embedUrl={videoLink?.embed_url}
+                                                                    url={videoLink?.url}
+                                                                    viewType="preview"
                                                                 />
                                                             )
                                                         /*case "advanced":

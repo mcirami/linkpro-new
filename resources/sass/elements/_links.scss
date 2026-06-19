@@ -305,12 +305,12 @@
                     position: absolute;
                     left: calc(50% - 12px);
                     transform: rotate(180deg);
-                    bottom: -17px;
-                    z-index: 1;
+                    bottom: -34px;
+                    z-index: 2;
                     border-left: 14px solid transparent;
                     border-right: 14px solid transparent;
                     border-top: 14px solid;
-                    border-top-color: rgba(0,0,0, .7);
+                    border-top-color: rgba(25, 25, 25, .8);
                     opacity: 0;
                     transition: all 100ms ease-in-out;
                     -webkit-transition: all 100ms ease-in-out;

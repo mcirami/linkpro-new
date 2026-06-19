@@ -628,7 +628,7 @@ function Dashboard({
                                                                     pageLayoutRef={pageLayoutRef}
                                                                 />
                                                             </div>
-                                                            <div className="section_title w-full flex justify-start gap-2">
+                                                            <div className="mt-4 !mb-0 section_title link_row w-full flex justify-start gap-2">
                                                                 <h4 className="capitalize">Links</h4>
                                                             </div>
                                                             <div className="my_row link_row">

@@ -707,6 +707,72 @@ a.delete {
     }
 }
 
+/* Video button (layout_two, full-width inline embed) */
+.icon_col.video_col {
+    width: 100%;
+
+    .video_button {
+        width: 100%;
+
+        .video_wrapper {
+            border-radius: 8px;
+            overflow: hidden;
+
+            iframe {
+                border-radius: 8px;
+            }
+        }
+
+        .video_placeholder img {
+            width: 100%;
+            border-radius: 8px;
+            display: block;
+        }
+    }
+}
+
+/* Title + optional CTA link shown beneath a video (both layouts) */
+.video_info {
+    width: 100%;
+    padding: 12px 4px 4px;
+    text-align: left;
+
+    h3 {
+        margin: 0;
+        font-size: .9rem;
+        font-weight: 700;
+        word-break: break-word;
+    }
+
+    .video_cta {
+        margin-top: 6px;
+        gap: 8px;
+        word-break: break-all;
+
+        span {
+            font-size: .8rem;
+        }
+    }
+}
+
+/* Video embed dropdown (layout_one, opens beneath the tile) */
+.my_row.folder.video {
+    .folder_content {
+        .video_wrapper {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .video_info {
+            color: $white;
+
+            h3, .video_cta, .video_cta span, .video_cta svg {
+                color: $white;
+            }
+        }
+    }
+}
+
 .MuiSwitch-input {
     right: 0;
     left: 0 !important;

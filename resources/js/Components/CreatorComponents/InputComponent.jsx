@@ -17,6 +17,7 @@ import {
 import { updateOfferData } from "@/Services/OfferRequests.jsx";
 import EditorComponent from "@/Components/CreatorComponents/EditorComponent.jsx";
 import { HandleFocus } from "@/Utils/InputAnimations.jsx";
+import { checkEmbedLink } from "@/Services/VideoService.jsx";
 import ToolTipIcon from "@/Utils/ToolTips/ToolTipIcon.jsx";
 
 const InputComponent = ({
@@ -269,26 +270,6 @@ const InputComponent = ({
                 return false;
             }
         }
-    };
-
-    const checkEmbedLink = (link) => {
-        //return proper embed link with video code.
-        if (link.includes("embed")) {
-            return link;
-        } else if (link.includes("youtube") && link.includes("v=")) {
-            let split = link.split("v=")[1];
-            if (split.includes("&")) {
-                split = split.split("&")[0];
-            }
-            return "https://www.youtube.com/embed/" + split;
-        } else if (link.includes("youtu.be")) {
-            const split = link.split("youtu.be/");
-            return "https://www.youtube.com/embed/" + split[1];
-        } else if (link.includes("vimeo") && !link.includes("player")) {
-            const split = link.split("vimeo.com/");
-            return "https://player.vimeo.com/video/" + split[1];
-        }
-        return link;
     };
 
     const switchStatement = () => {

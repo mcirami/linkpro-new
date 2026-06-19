@@ -29,6 +29,7 @@ class LinkRequest extends FormRequest
             'name'              => 'sometimes|nullable|max:255',
             'page_id'           => $isUpdate ? 'sometimes|integer' : 'required|integer',
             'url'               => 'sometimes|nullable|string',
+            'embed_url'         => 'sometimes|nullable|string',
             'email'             => 'sometimes|nullable|email',
             'phone'             => 'sometimes|nullable|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
             'mailchimp_list_id' => 'sometimes|nullable|string',

@@ -51,20 +51,20 @@ const LayoutTwo = ({
                     <p className="mb-2">{type === "offer" ? url : "(mailchimp form)"}</p>
                     :
                     <IconSettingComponent
-                        inputType={type === "url" ? "text" : type === "email" ? "email" : type === "phone" ? "tel" : ""}
+                        inputType={type === "url" || type === "video" ? "text" : type === "email" ? "email" : type === "phone" ? "tel" : ""}
                         id={id}
                         editLink={editLink}
                         setEditLink={setEditLink}
                         isEditing={isEditing}
                         setIsEditing={setIsEditing}
-                        elementName={type}
+                        elementName={type === "video" ? "url" : type}
                         placeholder={
-                            type === 'url' ? 'Enter URL' : type === "email" ? 'Enter Email' : type === "phone" ? 'Enter Phone Number' : "Enter Text"
+                            type === 'url' ? 'Enter URL' : type === "video" ? 'Enter URL (optional)' : type === "email" ? 'Enter Email' : type === "phone" ? 'Enter Phone Number' : "Enter Text"
                         }
                         label={
-                            type === 'url' ? 'URL' : type === "email" ? 'Email' : type === "phone" ? 'Phone Number' : "Text"
+                            type === 'url' || type === "video" ? 'URL' : type === "email" ? 'Email' : type === "phone" ? 'Phone Number' : "Text"
                         }
-                        currentValue={type === "url" ? url : type === "email" ? email : type === "phone" ? phone : ""}
+                        currentValue={type === "url" || type === "video" ? url : type === "email" ? email : type === "phone" ? phone : ""}
                     />
                 }
                 <div className={`edit_wrap inline-flex items-center relative`}>
