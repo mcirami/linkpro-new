@@ -34,8 +34,9 @@ class LinksTable
                 IconColumn::make('icon_active')
                     ->boolean(),
                 ImageColumn::make('bg_image'),
-                IconColumn::make('bg_active')
-                    ->boolean(),
+                TextColumn::make('button_design'),
+                TextColumn::make('bg_color'),
+                TextColumn::make('text_color'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

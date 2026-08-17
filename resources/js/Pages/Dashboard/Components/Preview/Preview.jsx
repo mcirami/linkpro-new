@@ -22,6 +22,7 @@ import { IoOpenOutline } from "react-icons/io5";
 import PageBackground
     from '@/Pages/Dashboard/Components/Page/PageBackground.jsx';
 import LivePageButton from "@/Components/LivePageButton.jsx";
+import {getButtonDesign} from '@/Utils/ButtonDesign.jsx';
 const Preview = ({
                      nodesRef,
                      completedCrop,
@@ -154,22 +155,18 @@ const Preview = ({
                                         icon_active,
                                         active_status,
                                         links,
-                                        bg_image,
-                                        bg_active
                                     } = linkItem;
 
-                                    let styles = {};
-                                    if (bg_image && bg_active && pageSettings.page_layout === "layout_two") {
-                                        styles = {
-                                            backgroundImage: `url(${bg_image})`,
-                                            backgroundRepeat: "no-repeat",
-                                            backgroundSize: "cover",
-                                            backgroundPosition: "center",
-                                            display: "flex",
-                                            width: "100%",
-                                            height: "100%"
-                                        }
-                                    }
+                                    const {
+                                        useImage,
+                                        colStyle,
+                                        bgStyle,
+                                        textStyle
+                                    } = getButtonDesign(linkItem, pageSettings.page_layout, {
+                                        display: "flex",
+                                        width: "100%",
+                                        height: "100%"
+                                    });
 
                                     if (type === "email") {
                                         url = "mailto:" + email;
@@ -199,12 +196,11 @@ const Preview = ({
                                         (type === "video" && pageSettings.page_layout === "layout_one")) {
                                         colClasses=`icon_col folder
                                         ${!icon_active && pageSettings.page_layout ==="layout_two" ? "no_icon" : ""}
-                                       ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ?
-                                            "bg_image" : ""}
+                                       ${useImage ? "bg_image" : ""}
                                         ${pageSettings.page_layout ==="layout_two" ? "shadow-md" : ""}`
                                     } else {
                                         colClasses = `icon_col ${!icon_active && pageSettings.page_layout ==="layout_two" ? "no_icon" : "" }
-                                        ${bg_image && bg_active && pageSettings.page_layout ==="layout_two" ? "bg_image" : ""}
+                                        ${useImage ? "bg_image" : ""}
                                         ${pageSettings.page_layout ==="layout_two" ? "shadow-md" : ""}
                                         `;
                                     }
@@ -243,7 +239,7 @@ const Preview = ({
                                                         return (
 
                                                             (!active_status && pageSettings.page_layout === "layout_one") || active_status ?
-                                                            <div className={` ${colClasses} `}>
+                                                            <div className={` ${colClasses} `} style={colStyle}>
                                                                 {active_status && pageSettings.page_layout === "layout_one" ?
                                                                     <>
                                                                         <a className={`rounded-lg shadow-md
@@ -267,14 +263,14 @@ const Preview = ({
                                                                     :
                                                                     active_status ?
                                                                         <>
-                                                                        <div className="bg_image_wrap" style={styles}></div>
+                                                                        <div className="bg_image_wrap" style={bgStyle}></div>
                                                                             <a className={`icon_wrap flex items-center !justify-between
                                                                             ${ (!url || !displayIcon) ? "default"
                                                                                 : ""
                                                                             }`}
                                                                                target="_blank"
                                                                                href={url || "#"}>
-                                                                                <div className={`${ (bg_image && bg_active) ?
+                                                                                <div className={`${ useImage ?
                                                                                     "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
                                                                                     :
                                                                                     "flex items-center justify-between w-full"}`}>
@@ -284,9 +280,9 @@ const Preview = ({
                                                                                                 :
                                                                                                 ""
                                                                                         }
-                                                                                        <h3>{name || "Link Name"}</h3>
+                                                                                        <h3 style={textStyle}>{name || "Link Name"}</h3>
                                                                                     </span>
-                                                                                    <IoOpenOutline />
+                                                                                    <IoOpenOutline style={textStyle} />
                                                                                 </div>
                                                                             </a>
                                                                         </>
@@ -317,7 +313,6 @@ const Preview = ({
                                                                     clickType={clickType}
                                                                     viewType="preview"
                                                                     pageLayout={pageSettings.page_layout}
-                                                                    styles={styles}
                                                                 />
                                                                 :
                                                                 ""
@@ -353,7 +348,6 @@ const Preview = ({
                                                                         clickType={clickType}
                                                                         viewType="preview"
                                                                         pageLayout={pageSettings.page_layout}
-                                                                        styles={styles}
                                                                     />
                                                                     :
                                                                     ""

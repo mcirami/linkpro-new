@@ -1075,6 +1075,88 @@ ul.breadcrumb_list {
             }
         }
     }
+}
 
+.color_box {
+    display:block;
+    border: 1px solid $borderGray;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    width: 40px;
+    height: 40px;
+}
 
+.picker_wrap {
+    position: relative;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+
+    &:last-child {
+        .page_settings {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.picker_container {
+    z-index: 999;
+    display: flex;
+}
+
+.picker_wrapper {
+    @include boxShadow;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    padding: 10px;
+    background: $white;
+
+    .picker_triangle {
+        position: absolute;
+        right: 0;
+        bottom: -24px;
+        z-index: 999;
+
+        svg {
+            width: 40px;
+            height: 40px;
+            color: $white;
+        }
+    }
+
+    .sketch-picker {
+        box-shadow: none !important;
+    }
+
+    .button {
+        float: right;
+        width: 100px;
+        padding: 5px;
+    }
+
+    .close_icon.icon_wrap {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        background: $white;
+        border-radius: 50px;
+        -webkit-border-radius: 50px;
+        -moz-border-radius: 50px;
+
+        svg {
+            width: 26px;
+            height: 26px;
+            color: $black;
+            margin: 0;
+        }
+    }
 }

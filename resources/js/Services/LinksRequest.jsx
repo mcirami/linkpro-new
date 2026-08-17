@@ -1,7 +1,7 @@
 import axios from 'axios';
 import EventBus from '../Utils/Bus';
 import {icons} from './IconObjects';
-import {LINKS_ACTIONS} from '@/Services/Reducer.jsx';
+import {FOLDER_LINKS_ACTIONS, LINKS_ACTIONS} from '@/Services/Reducer.jsx';
 
 /**
  * Submit a request to add a new link
@@ -101,6 +101,75 @@ export const updateLink = (packets, editID) => {
             success : false,
         }
 
+    });
+}
+
+/**
+ * Push a partial link update into the reducers without touching the server,
+ * handling the folder / non-folder split the same way IconSettingComponent
+ * does. Use it on its own for live previews.
+ *
+ * @param values  object of column => value
+ * @param context { editLink, dispatch, dispatchFolderLinks }
+ */
+export const applyLinkUpdate = (values, { editLink, dispatch, dispatchFolderLinks = null }) => {
+
+    if (editLink.folder_id) {
+        dispatchFolderLinks?.({
+            type: FOLDER_LINKS_ACTIONS.UPDATE_FOLDER_LINKS,
+            payload: {
+                id: editLink.id,
+                currentLink: editLink,
+                ...values,
+            },
+        });
+        dispatch({
+            type: LINKS_ACTIONS.UPDATE_LINK_IN_FOLDER,
+            payload: {
+                folder_id: editLink.folder_id,
+                id: editLink.id,
+                currentLink: editLink,
+                ...values,
+            },
+        });
+    } else {
+        dispatch({
+            type: LINKS_ACTIONS.UPDATE_LINK,
+            payload: {
+                id: editLink.id,
+                editLink: null,
+                ...values,
+            },
+        });
+    }
+}
+
+/**
+ * Persist a partial link update, then mirror it into the reducers.
+ *
+ * @param values  object of column => value to save
+ * @param context { editLink, dispatch, dispatchFolderLinks, pageId }
+ *
+ * return Promise<boolean> - true once the update is stored
+ */
+export const commitLinkUpdate = (values, { editLink, dispatch, dispatchFolderLinks = null, pageId = null }) => {
+
+    if (!editLink?.id) return Promise.resolve(false);
+
+    const packets = {
+        ...values,
+        page_id: pageId ?? editLink.page_id,
+        folder_id: editLink.folder_id,
+        type: editLink.type,
+    };
+
+    return updateLink(packets, editLink.id).then((res) => {
+
+        if (!res?.success) return false;
+
+        applyLinkUpdate(values, { editLink, dispatch, dispatchFolderLinks });
+
+        return true;
     });
 }
 

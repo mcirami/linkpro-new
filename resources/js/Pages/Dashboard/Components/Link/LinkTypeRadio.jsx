@@ -93,7 +93,7 @@ const LinkTypeRadio = ({
             type: type,
             page_id: pageId,
             icon_active: false,
-            bg_active: false
+            button_design: "color"
         }));
         setShowLinkTypeRadio(false);
 
@@ -114,7 +114,8 @@ const LinkTypeRadio = ({
                     page_id: pageId,
                     position: data.position,
                     folder_id: editLink.folder_id,
-                    icon: icon
+                    icon: icon,
+                    button_design: "color"
                 }
 
                 if (editLink.folder_id) {

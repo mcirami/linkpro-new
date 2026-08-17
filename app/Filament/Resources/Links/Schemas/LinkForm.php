@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Links\Schemas;
 
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
@@ -28,8 +29,15 @@ class LinkForm
                     ->required(),
                 FileUpload::make('bg_image')
                     ->image(),
-                Toggle::make('bg_active')
+                Select::make('button_design')
+                    ->options([
+                        'color' => 'Color',
+                        'image' => 'Background Image',
+                    ])
+                    ->default('color')
                     ->required(),
+                TextInput::make('bg_color'),
+                TextInput::make('text_color'),
                 TextInput::make('description'),
                 TextInput::make('position')
                     ->required()

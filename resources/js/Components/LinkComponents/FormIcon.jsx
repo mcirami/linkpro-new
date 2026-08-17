@@ -1,4 +1,5 @@
 import React from 'react';
+import { toInteger } from "lodash";
 
 const FormIcon = ({
                       colClasses,
@@ -40,7 +41,7 @@ const FormIcon = ({
     }
 
     return (
-        <div className={ ` ${colClasses} ${mainIndex == value && clickType === type ? " open" : "" }`}
+        <div className={ ` ${colClasses} ${toInteger(mainIndex) === toInteger(value) && clickType === type ? " open" : "" }`}
              data-row={ dataRow }
              onClick={(e) => {handleClick(e)} }
         >

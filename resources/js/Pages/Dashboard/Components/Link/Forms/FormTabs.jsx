@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import EventBus from '@/Utils/Bus.jsx';
 import SelectorComponent
     from "@/Components/SelectorComponent.jsx";
@@ -15,14 +15,32 @@ const FormTabs = ({
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
+        setHasList(editLink.type !== "mailchimp" || Boolean(editLink.mailchimp_list_id));
+    },[editLink.type, editLink.mailchimp_list_id])
+
+    // Identity of the link the tab choice belongs to. Everything else about
+    // editLink changes as the user edits, and this effect used to depend on
+    // the whole object - which is why picking an icon or a color bounced the
+    // form back to the first tab.
+    const linkKey = `${editLink.id}-${editLink.type}-${editLink.mailchimp_list_id ? 1 : 0}`;
+    const pickedFor = useRef(null);
+
+    useEffect(() => {
+
+        if (pickedFor.current === linkKey) return;
+
+        // showFormTab lives in the parent, so it outlives this component being
+        // unmounted while an image is cropped. Coming back from that is not a
+        // new link - leave the user on the tab they were already on.
+        if (pickedFor.current === null && showFormTab) {
+            pickedFor.current = linkKey;
+            return;
+        }
+
+        pickedFor.current = linkKey;
+
         if (editLink.type === "mailchimp") {
-            if (!editLink.mailchimp_list_id) {
-                setHasList(false);
-                setShowFormTab("integration");
-            } else {
-                setHasList(true);
-                setShowFormTab("icon");
-            }
+            setShowFormTab(editLink.mailchimp_list_id ? "icon" : "integration");
         } else if (editLink.type === "offer") {
             setShowFormTab("offers");
         } else if (editLink.type === "video") {
@@ -31,7 +49,7 @@ const FormTabs = ({
             setShowFormTab("icon");
         }
 
-    },[setShowFormTab, editLink])
+    },[linkKey])
 
     useEffect(() => {
         const optionsArray = [];
@@ -67,8 +85,8 @@ const FormTabs = ({
 
         if (pageLayout === "layout_two") {
             optionsArray.push({
-                value: "image",
-                label: "Button Image"
+                value: "design",
+                label: "Button Design"
             })
         }
 
@@ -80,12 +98,12 @@ const FormTabs = ({
         }
 
         setOptions(optionsArray);
-    },[editLink])
+    },[editLink.type, pageLayout])
 
     const handleOnClick = (e, type) => {
         e.preventDefault();
 
-        if(!hasList && editLink.type === "mailchimp" && (type === "icon" || type === "image")) {
+        if(!hasList && editLink.type === "mailchimp" && (type === "icon" || type === "design")) {
             EventBus.dispatch("error", {message: "Connect a Mailchimp List to enable more options"});
         } else if (!e.target.classList.contains("active")) {
             //document.querySelector('.tab_link.active').classList.remove('active');

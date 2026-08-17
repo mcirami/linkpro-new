@@ -29,8 +29,12 @@ class LinkInfolist
                     ->boolean(),
                 ImageEntry::make('bg_image')
                     ->placeholder('-'),
-                IconEntry::make('bg_active')
-                    ->boolean(),
+                TextEntry::make('button_design')
+                    ->placeholder('-'),
+                TextEntry::make('bg_color')
+                    ->placeholder('-'),
+                TextEntry::make('text_color')
+                    ->placeholder('-'),
                 TextEntry::make('created_at')
                     ->dateTime()
                     ->placeholder('-'),

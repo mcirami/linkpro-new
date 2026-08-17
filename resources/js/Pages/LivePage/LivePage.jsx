@@ -11,6 +11,7 @@ import VideoButton from '@/Components/LinkComponents/VideoButton.jsx';
 import VideoEmbed from '@/Components/LinkComponents/VideoEmbed.jsx';
 //import IconDescription from '@/Components/LinkComponents/IconDescription.jsx';
 import { IoOpenOutline } from "react-icons/io5";
+import {getButtonDesign} from '@/Utils/ButtonDesign.jsx';
 function LivePage({links, page, subscribed}) {
 
     const {
@@ -136,19 +137,14 @@ function LivePage({links, page, subscribed}) {
                                         icon_active,
                                         active_status,
                                         links,
-                                        bg_image,
-                                        bg_active
                                     } = linkItem;
 
-                                    let styles = {};
-                                    if (bg_image && bg_active && page_layout === "layout_two") {
-                                        styles = {
-                                            backgroundImage: `url(${bg_image})`,
-                                            backgroundRepeat: "no-repeat",
-                                            backgroundSize: "cover",
-                                            backgroundPosition: "center",
-                                        }
-                                    }
+                                    const {
+                                        useImage,
+                                        colStyle,
+                                        bgStyle,
+                                        textStyle
+                                    } = getButtonDesign(linkItem, page_layout);
 
                                     if (type === "email") {
                                         url = "mailto:" + email;
@@ -169,14 +165,14 @@ function LivePage({links, page, subscribed}) {
                                     let colClasses = "";
                                     if (type === "folder" || type === "mailchimp" || type === "shopify" || type === "advanced" || (type === "video" && page_layout === "layout_one")) {
                                         colClasses=`icon_col folder
-                                        ${bg_image && bg_active && page_layout ==="layout_two" ?
+                                        ${useImage ?
                                             "bg_image"
                                             :
                                             ""
                                         }
                                         ${page_layout ==="layout_two" ? "!shadow-md" : ""}`
                                     } else {
-                                        colClasses = `icon_col ${!icon_active ? "no_icon" : "" } ${bg_image && bg_active && page_layout ==="layout_two" ?
+                                        colClasses = `icon_col ${!icon_active ? "no_icon" : "" } ${useImage ?
                                             "bg_image"
                                             :
                                             ""
@@ -220,7 +216,7 @@ function LivePage({links, page, subscribed}) {
                                                     case "phone":
                                                         return (
                                                             (!active_status && page_layout=== "layout_one") || active_status ?
-                                                                <div className={` ${colClasses} `}>
+                                                                <div className={` ${colClasses} `} style={colStyle}>
                                                                     {active_status ? page_layout === "layout_one" ?
                                                                         <>
                                                                             <a className={`shadow-md rounded-lg hover:!shadow-lg ${!url || !displayIcon ? "default" : ""}`}
@@ -238,12 +234,12 @@ function LivePage({links, page, subscribed}) {
                                                                         </>
                                                                         :
                                                                         <>
-                                                                            <div className="bg_image_wrap" style={styles}></div>
+                                                                            <div className="bg_image_wrap" style={bgStyle}></div>
                                                                             <a className={`icon_wrap
                                                                             ${ (!url || !displayIcon) ? "default" : ""}`}
                                                                                target="_blank"
                                                                                href={url || "#"}>
-                                                                                <div className={`${bg_image && bg_active ?
+                                                                                <div className={`${useImage ?
                                                                                     "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
                                                                                     :
                                                                                     "flex items-center justify-between w-full"}`}>
@@ -253,9 +249,9 @@ function LivePage({links, page, subscribed}) {
                                                                                             :
                                                                                             ""
                                                                                         }
-                                                                                        <h3>{name || "Link Name"}</h3>
+                                                                                        <h3 style={textStyle}>{name || "Link Name"}</h3>
                                                                                     </span>
-                                                                                    <span className="flex items-center justify-end ext_icon">
+                                                                                    <span className="flex items-center justify-end ext_icon" style={textStyle}>
                                                                                         <IoOpenOutline />
                                                                                     </span>
 

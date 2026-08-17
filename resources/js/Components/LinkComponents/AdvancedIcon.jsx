@@ -1,6 +1,7 @@
 import React from 'react';
 import {TrackIconClick} from '@/Services/TrackClicks.jsx';
 import { IoOpenOutline } from "react-icons/io5";
+import {getButtonDesign} from '@/Utils/ButtonDesign.jsx';
 
 const AdvancedIcon = ({
                           linkItem,
@@ -16,7 +17,6 @@ const AdvancedIcon = ({
                           clickType,
                           viewType,
                           pageLayout,
-                          styles
                       }) => {
 
     let {
@@ -26,9 +26,9 @@ const AdvancedIcon = ({
         url,
         icon_active,
         active_status,
-        bg_image,
-        bg_active
     } = linkItem;
+
+    const { useImage, colStyle, bgStyle, textStyle } = getButtonDesign(linkItem, pageLayout);
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -65,6 +65,7 @@ const AdvancedIcon = ({
         active_status ?
             <div className={`${colClasses} ${mainIndex === value.index &&
                 clickType === type ? "open" : ""}`}
+                     style={colStyle}
                      data-row={dataRow}
                      onClick={(e) => {
                          handleClick(e)
@@ -88,13 +89,13 @@ const AdvancedIcon = ({
                         </>
                         :
                         <>
-                            <div className="bg_image_wrap" style={styles}></div>
+                            <div className="bg_image_wrap" style={bgStyle}></div>
                             <a className={`icon_wrap flex items-center !justify-between ${!displayIcon ?
                                 "default" :
                                 ""}`}
                                target="_blank"
                                href={url || "#"}>
-                                <div className={`${ (bg_image && bg_active) ?
+                                <div className={`${ useImage ?
                                     "w-full icon_info absolute left-0 bottom-0 p-3 flex items-center justify-between gap-2"
                                     :
                                     "flex items-center justify-between w-full"}`}>
@@ -104,7 +105,7 @@ const AdvancedIcon = ({
                                             :
                                             ""
                                         }
-                                        <h3>{name || "Link Name"}</h3>
+                                        <h3 style={textStyle}>{name || "Link Name"}</h3>
                                     </span>
                                 </div>
                             </a>

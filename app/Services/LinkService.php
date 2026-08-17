@@ -279,6 +279,9 @@ class LinkService {
     public function deleteLink($link): void {
 
         if ($link->icon && $link->url) {
+            // replicate()'s argument is an *exclude* list: anything not named
+            // here is copied onto the deleted_links row, so every column that
+            // table doesn't have has to be listed or the insert blows up.
             $newLink = $link->replicate([
                 'mailchimp_list_id',
                 'shopify_products',
@@ -286,7 +289,11 @@ class LinkService {
                 'type',
                 'course_id',
                 'description',
-                'bg_image'
+                'bg_image',
+                'icon_active',
+                'button_design',
+                'bg_color',
+                'text_color'
             ]);
             $newLink->setTable( 'deleted_links' );
             $newLink->link_id = $link->id;

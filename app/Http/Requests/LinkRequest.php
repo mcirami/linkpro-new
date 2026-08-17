@@ -36,7 +36,10 @@ class LinkRequest extends FormRequest
             'shopify_products'  => 'sometimes|nullable|json',
             'description'       => 'sometimes|nullable|string',
             'icon'              => 'sometimes|nullable|string',
-            'bg_image'          => 'sometimes|nullable|string'
+            'bg_image'          => 'sometimes|nullable|string',
+            'button_design'     => 'sometimes|nullable|in:color,image',
+            'bg_color'          => 'sometimes|nullable|string|max:40',
+            'text_color'        => 'sometimes|nullable|string|max:40'
         ];
     }
 }

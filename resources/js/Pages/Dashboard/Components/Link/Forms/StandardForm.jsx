@@ -7,6 +7,7 @@ import React, {
 import IconList from '../IconList';
 import RadioGroup from '@/Components/RadioGroup.jsx';
 import {
+    commitLinkUpdate,
     handleSwitchChange,
     updateLink
 } from '@/Services/LinksRequest.jsx';
@@ -16,7 +17,6 @@ import {
 import {usePageContext} from '@/Context/PageContext.jsx';
 import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 
-import IconDescription from './IconDescription.jsx';
 import ImageUploader from '@/Components/ImageUploader.jsx';
 
 import FormTabs from '@/Pages/Dashboard/Components/Link/Forms/FormTabs.jsx';
@@ -28,6 +28,7 @@ import {getIconPaths} from '@/Services/ImageService.jsx';
 import MailChimp from '@/Pages/Dashboard/Components/Link/Forms/Mailchimp/MailChimp.jsx';
 import VideoForm from '@/Pages/Dashboard/Components/Link/Forms/VideoForm.jsx';
 import ToolTipIcon from '@/Utils/ToolTips/ToolTipIcon.jsx';
+import LinkColorPicker from '@/Components/LinkComponents/LinkColorPicker.jsx';
 import { LINKS_ACTIONS } from '@/Services/Reducer.jsx';
 const StandardForm = ({
                           editLink,
@@ -82,7 +83,9 @@ const StandardForm = ({
                 description: null,
                 type: editLink.type,
                 icon_active: editLink.icon_active,
-                bg_active: editLink.bg_active,
+                button_design: editLink.button_design || "color",
+                bg_color: null,
+                text_color: null,
             }
         );
     }, []);
@@ -195,6 +198,29 @@ const StandardForm = ({
             }
         });
     }, [showIconList.type]);
+
+    // Links created before the column existed come back null.
+    const buttonDesign = editLink.button_design || "color";
+
+    // Switching modes only flips the flag - bg_image and the colors are left
+    // alone so toggling back restores what was there.
+    const handleDesignChange = (e, option) => {
+        e.preventDefault();
+
+        if (option === buttonDesign) return;
+
+        setEditLink(prev => ({
+            ...prev,
+            button_design: option
+        }));
+
+        commitLinkUpdate({ button_design: option }, {
+            editLink,
+            dispatch,
+            dispatchFolderLinks,
+            pageId: pageSettings.id,
+        });
+    }
 
     const handleCloseForm = (e) => {
         e.preventDefault();
@@ -372,70 +398,95 @@ const StandardForm = ({
                     :
                     ""
                 }
-                { showFormTab === "image" &&
+                { showFormTab === "design" &&
                     <div className="form_nav_content inline-block relative p-5 w-full bg-white">
-                        { (editLink.bg_image && !imageSelected) ?
+                        {!imageSelected &&
+                            <div className="setting_wrap w-full !mb-5">
+                                <div className="section_title w-full flex justify-start gap-2 !mb-4">
+                                    <h4>Button Design</h4>
+                                </div>
+                                <RadioGroup
+                                    value={buttonDesign}
+                                    options={["color", "image"]}
+                                    onChange={handleDesignChange}
+                                />
+                            </div>
+                        }
+
+                        { buttonDesign === "image" ?
                             <>
-                                <div className="w-full flex justify-between setting_row mb-5">
-                                    <div className="section_title w-full flex justify-start items-center gap-2 !mb-0">
-                                        <h4>Button Background</h4>
-                                        <ToolTipIcon section="button_image" />
-                                    </div>
-                                    <div className="switch_wrap !mb-0">
-                                        <IOSSwitch
-                                            onChange={() => handleSwitchChange(editLink, setEditLink, dispatch, "bg_active")}
-                                            checked={Boolean(editLink.bg_active)}
-                                        />
-                                        <div className="hover_text switch">
-                                            <p>
-                                                {Boolean(editLink.bg_active) ? "Hide" : "Show"}
-                                            </p>
+                                { (editLink.bg_image && !imageSelected) ?
+                                    <div className="w-full">
+                                        <p className="label !text-gray-500 w-full text-center mb-2">Current</p>
+                                        <div className="image_wrap">
+                                            <img src={editLink.bg_image} alt=""/>
                                         </div>
                                     </div>
-                                </div>
+                                    :
+                                    ""
+                                }
+
                                 <div className="w-full">
-                                    <p className="label !text-gray-500 w-full text-center mb-2">Current</p>
-                                    <div className="image_wrap">
-                                        <img src={editLink.bg_image} alt=""/>
-                                    </div>
+                                    <ImageUploader
+                                        elementName="bg_image"
+                                        label="Background Image"
+                                        cropSettings={{ unit: '%', width: 100 }}
+                                        aspect={16 / 5}
+                                        setShowLoader={setShowLoader}
+                                        onImageSelect={setImageSelected}
+                                        startCollapsed={editLink.bg_image}
+                                        onUpload={(response) => {
+                                            const packets = {
+                                                bg_image: response.key,
+                                                ext: response.extension,
+                                                button_design: "image",
+                                            };
+                                            return updateLink(packets, editLink.id).then((data) => {
+                                                dispatch({
+                                                    type: LINKS_ACTIONS.UPDATE_LINK,
+                                                    payload: {
+                                                        id: editLink.id,
+                                                        bg_image: data.imagePath.bg_image,
+                                                        button_design: "image",
+                                                    },
+                                                });
+                                                setEditLink((prev) => ({
+                                                    ...prev,
+                                                    bg_image: data.imagePath.bg_image,
+                                                    button_design: "image",
+                                                }));
+                                            });
+                                        }}
+                                    />
                                 </div>
                             </>
                             :
-                            ""
+                            <div className="w-full mb-4">
+                                <LinkColorPicker
+                                    key={`bg_color-${editLink.id}`}
+                                    label="Button Color"
+                                    elementName="bg_color"
+                                    editLink={editLink}
+                                    setEditLink={setEditLink}
+                                    fallback="rgba(255,255,255,1)"
+                                />
+                            </div>
                         }
-                        <div className="w-full">
-                            <ImageUploader
-                                elementName="bg_image"
-                                label="Background Image"
-                                cropSettings={{ unit: '%', width: 100 }}
-                                aspect={16 / 5}
-                                setShowLoader={setShowLoader}
-                                onImageSelect={setImageSelected}
-                                startCollapsed={editLink.bg_image}
-                                onUpload={(response) => {
-                                    const packets = {
-                                        bg_image: response.key,
-                                        ext: response.extension,
-                                        bg_active: true,
-                                    };
-                                    return updateLink(packets, editLink.id).then((data) => {
-                                        dispatch({
-                                            type: LINKS_ACTIONS.UPDATE_LINK,
-                                            payload: {
-                                                id: editLink.id,
-                                                bg_image: data.imagePath.bg_image,
-                                                bg_active: true,
-                                            },
-                                        });
-                                        setEditLink((prev) => ({
-                                            ...prev,
-                                            bg_image: data.imagePath.bg_image,
-                                            bg_active: true,
-                                        }));
-                                    });
-                                }}
-                            />
-                        </div>
+
+                        {/* Text sits over the image as well as the color, so this
+                            one stays visible in both modes. */}
+                        {!imageSelected &&
+                            <div className="w-full">
+                                <LinkColorPicker
+                                    key={`text_color-${editLink.id}-${buttonDesign}`}
+                                    label="Text Color"
+                                    elementName="text_color"
+                                    editLink={editLink}
+                                    setEditLink={setEditLink}
+                                    fallback={buttonDesign === "image" ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)"}
+                                />
+                            </div>
+                        }
                     </div>
                 }
                 {showFormTab === "integration" &&
