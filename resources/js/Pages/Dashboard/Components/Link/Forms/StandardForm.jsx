@@ -336,7 +336,11 @@ const StandardForm = ({
                                     </div>
                                     <RadioGroup
                                         value={editLink.type}
-                                        options={["url", "email", "phone"]}
+                                        options={[
+                                            { value: "url", label: "URL", },
+                                            { value: "email", label: "Email", },
+                                            { value: "phone", label: "Phone", },
+                                        ]}
                                         onChange={(e, option) => {
                                             e.preventDefault();
                                             setEditLink(prev => ({
@@ -401,7 +405,10 @@ const StandardForm = ({
                                 </div>
                                 <RadioGroup
                                     value={buttonDesign}
-                                    options={["color", "image"]}
+                                    options={[
+                                        { value: "color", label: "Solid Color", },
+                                        { value: "image", label: "Button Image", },
+                                    ]}
                                     onChange={handleDesignChange}
                                 />
                             </div>

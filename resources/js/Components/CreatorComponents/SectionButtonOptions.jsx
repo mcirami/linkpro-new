@@ -149,7 +149,10 @@ const SectionButtonOptions = ({
                                     </div>
                                     <RadioGroup
                                         value={buttonPositionValue || "above"}
-                                        options={["above", "below"]}
+                                        options={[
+                                            { label: "Above", value: "above" },
+                                            { label: "Below", value: "below"}
+                                        ]}
                                         onChange={handleRadioChange}
                                     />
                                 </FormControl>
