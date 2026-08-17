@@ -315,18 +315,19 @@ form .bottom_row a {
     }
 
     .close_wrap {
-        border-top: 1px solid $borderGray;
+        border-top: 1px solid rgba(209, 213, 219, 1);
 
         .close_button {
             @include osbold;
             font-size: 1rem;
-            position: absolute;
             z-index: 1 ;
-            color: $borderGray;
-            top: -14px;
+            color: rgba(209, 213, 219, 1);
             background: $white;
-            left: 50%;
-            transform: translateX(-20px);
+            padding: 10px;
+            display: block;
+            width: 100%;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
 
             &:hover {
                 color: $darkGray;

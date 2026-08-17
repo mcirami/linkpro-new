@@ -102,7 +102,7 @@ function LivePage({links, page, subscribed}) {
                     <div className="links_wrap live_page h-full">
                         <div className={`inner_content live_page ${main_img_type === "page" ? "bg_image" : ""}`} style={pageStyle}>
                             <div className={`page_header ${!header_img ? "default" : ""} `} style={headerStyle}>
-                                {!header_img &&
+                                {!header_img && main_img_type !== "page" &&
                                     <img src={ Vapor.asset( 'images/default-img.png' ) } alt="Header Image" />
                                 }
                             </div>

@@ -237,12 +237,6 @@ const StandardForm = ({
 
     return (
         <>
-            {pageSettings.page_layout === "layout_two" &&
-                <div className="close_wrap w-full text-center">
-                    <a className="close_button uppercase" href="#" onClick={(e) => handleCloseForm(e)}><small>close</small></a>
-                </div>
-            }
-
             <div className={`form_content w-full ${showFormTab === "integration" ? 'pb-5' : ""}`}>
                 {!imageSelected &&
                     <>
@@ -522,6 +516,11 @@ const StandardForm = ({
                                 setImageSelected={setImageSelected}
                             />
                         </div>
+                    </div>
+                }
+                {pageSettings.page_layout === "layout_two" &&
+                    <div className="close_wrap w-full text-center">
+                        <a className="close_button uppercase" href="#" onClick={(e) => handleCloseForm(e)}><small>close</small></a>
                     </div>
                 }
             </div>
