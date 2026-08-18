@@ -414,10 +414,34 @@ const StandardForm = ({
                             </div>
                         }
 
+                        {/* Text sits over the image as well as the color, so this
+                            one stays visible in both modes. */}
+                        {!imageSelected &&
+                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 text-sm">
+                                <LinkColorPicker
+                                    key={`text_color-${editLink.id}-${buttonDesign}`}
+                                    label="Text"
+                                    elementName="text_color"
+                                    editLink={editLink}
+                                    setEditLink={setEditLink}
+                                    fallback={buttonDesign === "image" ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)"}
+                                />
+                                {buttonDesign === "color" &&
+                                    <LinkColorPicker
+                                        key={`bg_color-${editLink.id}`}
+                                        label="Background"
+                                        elementName="bg_color"
+                                        editLink={editLink}
+                                        setEditLink={setEditLink}
+                                        fallback="rgba(255,255,255,1)"
+                                    />
+                                }
+                            </div>
+                        }
                         { buttonDesign === "image" ?
                             <>
                                 { (editLink.bg_image && !imageSelected) ?
-                                    <div className="w-full">
+                                    <div className="w-full mt-4 inline-block">
                                         <p className="label !text-gray-500 w-full text-center mb-2">Current</p>
                                         <div className="image_wrap">
                                             <img src={editLink.bg_image} alt=""/>
@@ -427,7 +451,7 @@ const StandardForm = ({
                                     ""
                                 }
 
-                                <div className="w-full">
+                                <div className="w-full mt-4 inline-block">
                                     <ImageUploader
                                         elementName="bg_image"
                                         label="Background Image"
@@ -462,32 +486,9 @@ const StandardForm = ({
                                 </div>
                             </>
                             :
-                            <div className="w-full mb-4">
-                                <LinkColorPicker
-                                    key={`bg_color-${editLink.id}`}
-                                    label="Button Color"
-                                    elementName="bg_color"
-                                    editLink={editLink}
-                                    setEditLink={setEditLink}
-                                    fallback="rgba(255,255,255,1)"
-                                />
-                            </div>
+                            ""
                         }
 
-                        {/* Text sits over the image as well as the color, so this
-                            one stays visible in both modes. */}
-                        {!imageSelected &&
-                            <div className="w-full">
-                                <LinkColorPicker
-                                    key={`text_color-${editLink.id}-${buttonDesign}`}
-                                    label="Text Color"
-                                    elementName="text_color"
-                                    editLink={editLink}
-                                    setEditLink={setEditLink}
-                                    fallback={buttonDesign === "image" ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)"}
-                                />
-                            </div>
-                        }
                     </div>
                 }
                 {showFormTab === "integration" &&
