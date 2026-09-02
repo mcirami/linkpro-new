@@ -13,6 +13,7 @@ import {FolderLinksContext} from '@/Pages/Dashboard/Dashboard.jsx';
 import {useUserLinksContext} from '@/Context/UserLinksContext.jsx';
 import { RiEdit2Fill } from "react-icons/ri";
 import ToolTipIcon from "@/Utils/ToolTips/ToolTipIcon.jsx";
+import * as url from "node:url";
 const IconSettingComponent = ({
                                   inputType,
                                   editLink,
@@ -81,6 +82,9 @@ const IconSettingComponent = ({
     // ----- Commit logic (updateLink) mirrors your existing cases
     const commitValue = async (value) => {
 
+        if (elementName === 'url' && !elementName.includes('https')) {
+            value = 'https://' + value;
+        }
         // Case A: inline quick-edit path using isEditing payload
         if (isEditing?.id && setIsEditing && isEditing?.section ===
             elementName) {
