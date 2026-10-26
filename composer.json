@@ -5,7 +5,7 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.4",
+        "php": "^8.5",
         "ext-bcmath": "*",
         "ext-curl": "*",
         "doctrine/dbal": "^4.3",
@@ -14,18 +14,16 @@
         "inertiajs/inertia-laravel": "^2.0",
         "intervention/image": "^3.0",
         "laracasts/utilities": "^3.2.4",
-        "laravel/framework": "^11.45",
+        "laravel/framework": "^13.0",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.23",
-        "laravel/tinker": "^2.10",
-        "laravel/ui": "^4.6",
+        "laravel/tinker": "^3.0",
         "laravel/vapor-cli": "^1.65.7",
         "laravel/vapor-core": "^2.41",
         "league/flysystem-aws-s3-v3": "^3.30",
         "mailchimp/marketing": "^3.0",
         "mchev/banhammer": "^2.4",
         "shopify/shopify-api": "^6.0",
-        "signifly/laravel-shopify": "^1.2.9",
         "socialiteproviders/mailchimp": "^4.1",
         "socialiteproviders/manager": "^4.4",
         "socialiteproviders/shopify": "^4.2",
@@ -37,7 +35,7 @@
         "stripe/stripe-php": "^18.0",
         "symfony/http-client": "^7.0",
         "symfony/mailgun-mailer": "^7.0",
-        "tightenco/ziggy": "*"
+        "tightenco/ziggy": "^2.6"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24",
@@ -90,7 +88,7 @@
             "php-http/discovery": true
         },
         "platform": {
-            "php": "8.4"
+            "php": "8.5"
         }
     },
     "minimum-stability": "stable",

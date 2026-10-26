@@ -22,6 +22,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Session Serialization
+    |--------------------------------------------------------------------------
+    |
+    | Laravel 13 ships new applications with "json" to harden against PHP
+    | deserialization attacks. This application is pinned to "php" so that
+    | existing sessions survive the upgrade. Switching to "json" logs every
+    | user out, so it should be done as a deliberate, separate change.
+    |
+    | Supported: "php", "json"
+    |
+    */
+
+    'serialization' => 'php',
+
+    /*
+    |--------------------------------------------------------------------------
     | Session Lifetime
     |--------------------------------------------------------------------------
     |

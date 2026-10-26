@@ -27,7 +27,6 @@ use App\Http\Controllers\Auth\CourseRegisterController;
 use App\Http\Controllers\Auth\CoursePasswordController;
 use App\Http\Controllers\Admin\AdminStatsController;
 use App\Http\Controllers\AffiliateController;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -154,8 +153,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/purchases', [App\Http\Controllers\VoyagerFilterController::class, 'index']);
     Route::post('/offers', [App\Http\Controllers\VoyagerFilterController::class, 'index']);*/
 /*});*/
-
-Auth::routes();
 
 Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user', 'auth.banned']], function () {
 

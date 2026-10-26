@@ -4,6 +4,7 @@ namespace App\Http\Traits;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Query\Builder;
@@ -83,6 +84,17 @@ trait ShopifyTrait {
         Log::channel( 'cloudwatch' )->debug("-- postToShopifyFunc-- " . print_r($res, true ) );
 
         //Log::channel( 'webhooks' )->info( " --- posted to shopify --- " . print_r($res, true) );
+    }
+
+    public function fetchShopifyProducts($accessToken, $domain) {
+        $apiVersion = config('services.shopify.api_version');
+
+        $response = Http::withHeaders(['X-Shopify-Access-Token' => $accessToken])
+            ->get("https://{$domain}/admin/api/{$apiVersion}/products.json");
+
+        $response->throw();
+
+        return $response->json('products', []);
     }
 }
 
