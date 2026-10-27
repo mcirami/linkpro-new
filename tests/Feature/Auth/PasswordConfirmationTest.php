@@ -2,8 +2,13 @@
 
 use App\Models\User;
 
-// There is no test for rendering the confirm-password screen: GET /confirm-password
-// is shadowed by the catch-all '/{page}' in routes/web.php.
+test('confirm password screen can be rendered', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get('/confirm-password');
+
+    $response->assertStatus(200);
+});
 
 test('password can be confirmed', function () {
     $user = User::factory()->create();

@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Http\Client\Factory;
 use Illuminate\Support\Facades\Http;
 
 abstract class TestCase extends BaseTestCase
@@ -14,21 +15,32 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         // Banhammer's BlockByCountry middleware runs on every web request and
-        // Stevebauman\Location is called on login and registration. Both geolocate
-        // the client through ip-api.com, so left live the suite stalls on the 30
-        // second cURL timeout and is non-deterministic. Banhammer only geolocates
-        // when it has countries to block, so emptying the list short-circuits it
-        // before the network -- which also stops an unreachable ip-api.com from
-        // turning into a blanket 403.
+        // Stevebauman\Location is called on login and registration. Both
+        // geolocate the client through ip-api.com. Banhammer only geolocates
+        // when it has countries to block, so emptying the list short-circuits
+        // it before the network; Location is stubbed below.
         config()->set('ban.blocked_countries', []);
 
-        Http::fake([
-            'ip-api.com/*' => Http::response([
-                'status' => 'success',
-                'country' => 'United States',
-                'countryCode' => 'US',
-                'query' => '127.0.0.1',
-            ]),
-        ]);
+        $this->fakeGeolocation(Http::response([
+            'status' => 'success',
+            'country' => 'United States',
+            'countryCode' => 'US',
+            'query' => '127.0.0.1',
+        ]));
+    }
+
+    /**
+     * Stub the ip-api.com geolocation lookup.
+     *
+     * Http::fake() appends stubs and the first match wins, so a test cannot
+     * override the default above by calling Http::fake() again -- the client
+     * has to be rebuilt first.
+     */
+    protected function fakeGeolocation(mixed $response): void
+    {
+        $this->app->forgetInstance(Factory::class);
+        Http::clearResolvedInstances();
+
+        Http::fake(['ip-api.com/*' => $response]);
     }
 }

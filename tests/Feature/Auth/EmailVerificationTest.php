@@ -6,8 +6,15 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 
-// There is no test for rendering the verify-email screen: GET /verify-email is
-// shadowed by the catch-all '/{page}' in routes/web.php.
+test('email verification screen can be rendered', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => null,
+    ]);
+
+    $response = $this->actingAs($user)->get('/verify-email');
+
+    $response->assertStatus(200);
+});
 
 test('email can be verified', function () {
     $user = User::factory()->create([

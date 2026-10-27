@@ -288,8 +288,14 @@ Route::get('/email-subscription/{user}', [UserController::class, 'emailSubscript
 Route::post('/link-click/{link}', [TrackingController::class, 'storeLinkVisit']);
 Route::post('/folder-click/{folder}', [TrackingController::class, 'storeFolderClick']);
 
-Route::get('/{page}', [PageController::class, 'show'])->name('show.live.page');
-
 Route::get('/offers/{offer}/{user}', [OfferController::class, 'redirectToLandingPage'])->name('show.offer.page');
 
 require __DIR__ . '/auth.php';
+
+/*
+ * Must stay last. This matches any single path segment, so anything registered
+ * after it is unreachable: with auth.php required below it, route('login') and
+ * the rest of the auth screens resolved as Page lookups and returned 404 -- a
+ * successful password reset redirected to route('login') and landed on one.
+ */
+Route::get('/{page}', [PageController::class, 'show'])->name('show.live.page');

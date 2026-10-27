@@ -24,7 +24,9 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            // The users table has no 'name' column; the application identifies
+            // users by a unique 'username' alongside the email.
+            'username' => fake()->unique()->userName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             // Hash with the configured driver/rounds so the value passes the

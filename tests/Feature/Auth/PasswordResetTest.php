@@ -4,12 +4,15 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
 
-// There is no test for rendering the forgot-password screen: GET /forgot-password
-// is shadowed by the catch-all '/{page}' in routes/web.php.
-//
 // PasswordResetLinkController and NewPasswordController both take a single
 // 'login' field and decide for themselves whether it is an email or a username,
 // so these post 'login' rather than Breeze's 'email'.
+
+test('reset password link screen can be rendered', function () {
+    $response = $this->get('/forgot-password');
+
+    $response->assertStatus(200);
+});
 
 test('reset password link can be requested', function () {
     Notification::fake();
