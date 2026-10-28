@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\NotReservedPageName;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PageNameRequest extends FormRequest
@@ -24,7 +25,13 @@ class PageNameRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255|unique:pages|regex:/^([A-Za-z0-9\_\-\.]*)$/'
+            'name' => [
+                'required',
+                'max:255',
+                'unique:pages',
+                'regex:/^([A-Za-z0-9\_\-\.]*)$/',
+                new NotReservedPageName,
+            ],
         ];
     }
 }

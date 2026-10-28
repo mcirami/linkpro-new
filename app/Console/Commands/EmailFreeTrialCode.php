@@ -51,7 +51,7 @@ class EmailFreeTrialCode extends Command
 
                 if($user->getRoleNames()->contains('lp.user')) {
                     $created = Carbon::parse( $user->created_at )->startOfDay();
-                    $diff    = $created->diffInDays( $now );
+                    $diff    = (int) $created->diffInDays( $now, true );
 
                     if ( $diff == 7 && ! $user->subscription ) {
 

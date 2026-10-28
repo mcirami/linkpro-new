@@ -27,7 +27,6 @@ use App\Http\Controllers\Auth\CourseRegisterController;
 use App\Http\Controllers\Auth\CoursePasswordController;
 use App\Http\Controllers\Admin\AdminStatsController;
 use App\Http\Controllers\AffiliateController;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -154,8 +153,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/purchases', [App\Http\Controllers\VoyagerFilterController::class, 'index']);
     Route::post('/offers', [App\Http\Controllers\VoyagerFilterController::class, 'index']);*/
 /*});*/
-
-Auth::routes();
 
 Route::group(['middleware' => ['auth', 'EnsureLinkIsCreated', 'lp.user', 'auth.banned']], function () {
 
@@ -291,8 +288,14 @@ Route::get('/email-subscription/{user}', [UserController::class, 'emailSubscript
 Route::post('/link-click/{link}', [TrackingController::class, 'storeLinkVisit']);
 Route::post('/folder-click/{folder}', [TrackingController::class, 'storeFolderClick']);
 
-Route::get('/{page}', [PageController::class, 'show'])->name('show.live.page');
-
 Route::get('/offers/{offer}/{user}', [OfferController::class, 'redirectToLandingPage'])->name('show.offer.page');
 
 require __DIR__ . '/auth.php';
+
+/*
+ * Must stay last. This matches any single path segment, so anything registered
+ * after it is unreachable: with auth.php required below it, route('login') and
+ * the rest of the auth screens resolved as Page lookups and returned 404 -- a
+ * successful password reset redirected to route('login') and landed on one.
+ */
+Route::get('/{page}', [PageController::class, 'show'])->name('show.live.page');

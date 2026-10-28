@@ -53,7 +53,7 @@ class EmailInactiveUsers extends Command
                     $userLinks = $user->links()->get();
                     $linkCount = $userLinks->count();
                     $created   = Carbon::parse( $user->created_at );
-                    $diff      = $created->diffInDays( $now );
+                    $diff      = (int) $created->diffInDays( $now, true );
                     $page      = $user->pages()->where( 'default', true )->get();
 
                     if ( $linkCount == 0 && count( $page ) > 0 && ( $diff == 3 || $diff == 7 || $diff == 30 ) ) {

@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
-use Signifly\Shopify\Shopify;
 use App\Http\Traits\ShopifyTrait;
 use Exception;
 use Inertia\Inertia;
@@ -42,13 +41,7 @@ class ShopifyController extends Controller
             $accessToken = $shopifyUser->accessTokenResponseBody["access_token"];
             $domain = $shopifyUser->getNickname();
 
-            $shopify = new Shopify(
-                $accessToken,
-                $domain,
-                config('services.shopify.api_version')
-            );
-
-            $products = $shopify->getProducts()->toArray();
+            $products = $this->fetchShopifyProducts($accessToken, $domain);
 
             $productsArray = [];
             foreach($products as $product) {
@@ -128,13 +121,7 @@ class ShopifyController extends Controller
             $accessToken = $shopifyUser->accessTokenResponseBody["access_token"];
             $domain = $shopifyUser->getNickname();
 
-            $shopify = new Shopify(
-                $accessToken,
-                $domain,
-                config('services.shopify.api_version')
-            );
-
-            $products = $shopify->getProducts()->toArray();
+            $products = $this->fetchShopifyProducts($accessToken, $domain);
 
             $productsArray = [];
             foreach($products as $product) {

@@ -52,7 +52,7 @@ class EmailSocialShare extends Command
 
                 if($user->getRoleNames()->contains('lp.user')) {
                     $created = Carbon::parse( $user->created_at );
-                    $diff    = $created->diffInDays( $now );
+                    $diff    = (int) $created->diffInDays( $now, true );
 
                     if ( $diff == 5 ) {
                         $page = $user->pages()->where( 'default', true )->get();

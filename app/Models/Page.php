@@ -20,6 +20,16 @@ class Page extends Model
         'updated_at'
     ];
 
+    /**
+     * Normalise a submitted page name into the form that is stored and served.
+     *
+     * A page is reached at /{name}, so this is also the value that has to be
+     * checked against the application's own top-level routes.
+     */
+    public static function normalizeName(string $name): string {
+        return preg_replace("/[\s_]/", "-", strtolower($name));
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }
