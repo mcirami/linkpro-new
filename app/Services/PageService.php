@@ -68,7 +68,7 @@ class PageService {
 
         //$path = $request->session()->get('_previous');
 
-        $name = preg_replace("/[\s_]/", "-", strtolower($request->name));
+        $name = Page::normalizeName($request->name);
 
         $userPages = $this->getUserPages($this->user);
 
